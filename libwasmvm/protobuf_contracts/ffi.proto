@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package ffi.ffi;
 
+option go_package = "./";
+
 //General request
 
 message Hello {

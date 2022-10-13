@@ -6,9 +6,12 @@ import "C"
 
 import (
 	"fmt"
+	"github.com/golang/protobuf/proto"
+	"log"
 	"runtime"
 	"syscall"
 
+	ffi "github.com/CosmWasm/wasmvm/go_protobuf_gen"
 	"github.com/CosmWasm/wasmvm/types"
 )
 
@@ -34,6 +37,18 @@ type Cache struct {
 
 type Querier = types.Querier
 
+func HelloWorld(name string) {
+	req := ffi.FFIRequest{Req: &ffi.FFIRequest_HelloWorld{HelloWorld: &ffi.Hello{Name: name}}}
+	reqBytes, err := proto.Marshal(&req)
+	if err != nil {
+		log.Fatalln("Failed to encode req:", err)
+	}
+
+	//d := makeView(reqBytes)
+	defer runtime.KeepAlive(reqBytes)
+	log.Println(reqBytes)
+	//ptr, err := C.
+}
 func InitCache(dataDir string, supportedFeatures string, cacheSize uint32, instanceMemoryLimit uint32) (Cache, error) {
 	dataDirBytes := []byte(dataDir)
 	supportedFeaturesBytes := []byte(supportedFeatures)

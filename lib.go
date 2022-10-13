@@ -34,6 +34,10 @@ type VM struct {
 	printDebug bool
 }
 
+func HelloWorld(name string) {
+	api.HelloWorld(name)
+}
+
 // NewVM creates a new VM.
 //
 // `dataDir` is a base directory for Wasm blobs and various caches.
