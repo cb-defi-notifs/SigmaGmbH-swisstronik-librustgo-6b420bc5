@@ -43,6 +43,13 @@ pub enum RustError {
         #[cfg(feature = "backtraces")]
         backtrace: Backtrace,
     },
+    #[error("Error decoding protobuf: {}", msg)]
+    ProtobufDecodeError {
+        msg: String,
+        #[cfg(feature = "backtraces")]
+        backtrace: Backtrace,
+    },
+
 }
 
 impl RustError {
@@ -56,6 +63,14 @@ impl RustError {
 
     pub fn invalid_utf8<S: ToString>(msg: S) -> Self {
         RustError::InvalidUtf8 {
+            msg: msg.to_string(),
+            #[cfg(feature = "backtraces")]
+            backtrace: Backtrace::capture(),
+        }
+    }
+
+    pub fn protobuf_decode<S: ToString>(msg: S) -> Self {
+        RustError::ProtobufDecodeError {
             msg: msg.to_string(),
             #[cfg(feature = "backtraces")]
             backtrace: Backtrace::capture(),

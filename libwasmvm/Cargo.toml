@@ -32,6 +32,7 @@ errno = "0.2.8"
 serde_json = "1.0.86"
 thiserror = "1.0.37"
 hex = "0.4.3"
+protobuf = "2.28.0"
 
 [dev-dependencies]
 serde = { version = "1.0.145", default-features = false, features = ["derive"] }

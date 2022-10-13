@@ -391,7 +391,8 @@ impl ::protobuf::reflect::ProtobufValue for FFIRequest {
 static file_descriptor_proto_data: &'static [u8] = b"\
     \n\tffi.proto\x12\x07ffi.ffi\"\x1b\n\x05Hello\x12\x12\n\x04name\x18\x01\
     \x20\x01(\tR\x04name\"F\n\nFFIRequest\x121\n\x0bhello_world\x18\x01\x20\
-    \x01(\x0b2\x0e.ffi.ffi.HelloH\0R\nhelloWorldB\x05\n\x03reqb\x06proto3\
+    \x01(\x0b2\x0e.ffi.ffi.HelloH\0R\nhelloWorldB\x05\n\x03reqB\x04Z\x02./b\
+    \x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;

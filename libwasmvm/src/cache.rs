@@ -5,12 +5,16 @@ use std::str::from_utf8;
 
 use cosmwasm_vm::{capabilities_from_csv, Cache, CacheOptions, Checksum, Size};
 
+use protobuf::Message;
+
 use crate::api::GoApi;
-use crate::args::{AVAILABLE_CAPABILITIES_ARG, CACHE_ARG, CHECKSUM_ARG, DATA_DIR_ARG, WASM_ARG};
+use crate::args::{AVAILABLE_CAPABILITIES_ARG, CACHE_ARG, CHECKSUM_ARG, DATA_DIR_ARG, WASM_ARG, PB_REQUEST_ARG};
 use crate::error::{handle_c_error_binary, handle_c_error_default, handle_c_error_ptr, Error};
 use crate::memory::{ByteSliceView, UnmanagedVector};
 use crate::querier::GoQuerier;
 use crate::storage::GoStorage;
+use crate::protobuf_generated::ffi::{FFIRequest, FFIRequest_oneof_req};
+
 
 #[repr(C)]
 pub struct cache_t {}
@@ -22,6 +26,37 @@ pub fn to_cache(ptr: *mut cache_t) -> Option<&'static mut Cache<GoApi, GoStorage
         let c = unsafe { &mut *(ptr as *mut Cache<GoApi, GoStorage, GoQuerier>) };
         Some(c)
     }
+}
+
+#[no_mangle]
+pub extern "C" fn make_pb_request(
+    request: ByteSliceView,
+    error_msg: Option<&mut UnmanagedVector>,
+) -> *mut cache_t {
+    let r = catch_unwind(|| {
+        let req_bytes = request
+            .read()
+            .ok_or_else(|| Error::unset_arg(PB_REQUEST_ARG))?;
+        match FFIRequest::parse_from_bytes(req_bytes) {
+            Ok(request) => {
+                if let Some(req) = request.req {
+                    match req {
+                        FFIRequest_oneof_req::hello_world(hello_obj) => {
+                            println!("Hello from Rust, {}!",hello_obj.name);
+                        }
+                    }
+                } else {
+                    return Err(Error::protobuf_decode("Request unwrapping failed"))
+                }
+                Ok(std::ptr::null_mut())
+            },
+            Err(e) => {
+                return Err(Error::protobuf_decode(e.to_string()))
+            }
+        }
+    })
+        .unwrap_or_else(|_| Err(Error::panic()));
+    handle_c_error_ptr(r, error_msg) as *mut cache_t
 }
 
 #[no_mangle]

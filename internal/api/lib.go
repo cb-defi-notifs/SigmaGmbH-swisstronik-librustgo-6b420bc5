@@ -37,17 +37,24 @@ type Cache struct {
 
 type Querier = types.Querier
 
-func HelloWorld(name string) {
+func HelloWorld(name string) error {
 	req := ffi.FFIRequest{Req: &ffi.FFIRequest_HelloWorld{HelloWorld: &ffi.Hello{Name: name}}}
 	reqBytes, err := proto.Marshal(&req)
 	if err != nil {
 		log.Fatalln("Failed to encode req:", err)
 	}
 
-	//d := makeView(reqBytes)
+	d := makeView(reqBytes)
 	defer runtime.KeepAlive(reqBytes)
-	log.Println(reqBytes)
-	//ptr, err := C.
+	errmsg := newUnmanagedVector(nil)
+
+	ptr, err := C.make_pb_request(d, &errmsg)
+	log.Println(ptr)
+	if err != nil {
+		return errorWithMessage(err, errmsg)
+	}
+	return nil
+
 }
 func InitCache(dataDir string, supportedFeatures string, cacheSize uint32, instanceMemoryLimit uint32) (Cache, error) {
 	dataDirBytes := []byte(dataDir)

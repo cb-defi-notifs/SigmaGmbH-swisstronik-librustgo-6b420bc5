@@ -34,8 +34,12 @@ type VM struct {
 	printDebug bool
 }
 
-func HelloWorld(name string) {
-	api.HelloWorld(name)
+func HelloWorld(name string) error {
+	err := api.HelloWorld(name)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // NewVM creates a new VM.

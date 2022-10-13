@@ -13,13 +13,13 @@ const (
 
 // This is just a demo to ensure we can compile a static go binary
 func main() {
-	wasmvm.HelloWorld("Admin")
+	err := wasmvm.HelloWorld("Admin")
 	//file := os.Args[1]
 	//fmt.Printf("Running %s...\n", file)
 	//bz, err := ioutil.ReadFile(file)
-	//if err != nil {
-	//	panic(err)
-	//}
+	if err != nil {
+		panic(err)
+	}
 	//fmt.Println("Loaded!")
 	//
 	//os.MkdirAll("tmp", 0o755)

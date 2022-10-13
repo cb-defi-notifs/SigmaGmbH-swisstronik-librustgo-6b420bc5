@@ -1941,6 +1941,7 @@ dependencies = [
  "cosmwasm-vm",
  "errno",
  "hex",
+ "protobuf",
  "protoc-rust",
  "serde",
  "serde_json",
