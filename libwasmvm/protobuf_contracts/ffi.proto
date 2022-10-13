@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package ffi.ffi;
+
+//General request
+
+message Hello {
+  string name = 1;
+}
+
+message FFIRequest {
+  oneof req {
+    Hello hello_world = 1;
+  }
+}
