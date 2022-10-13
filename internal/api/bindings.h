@@ -1,4 +1,4 @@
-/* (c) 2019 Confio OÜ. Licensed under Apache-2.0 */
+/* (c) 2022 Sigma Assets GmbH. Licensed under Apache-2.0 */
 
 /* Generated with cbindgen:0.24.3 */
 

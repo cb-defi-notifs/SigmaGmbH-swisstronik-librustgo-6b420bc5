@@ -11,8 +11,8 @@ import (
 	"runtime"
 	"syscall"
 
-	ffi "github.com/CosmWasm/wasmvm/go_protobuf_gen"
-	"github.com/CosmWasm/wasmvm/types"
+	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
+	"github.com/SigmaGmbH/librustgo/types"
 )
 
 // Value types

@@ -1,7 +1,7 @@
 package main
 
 import (
-	wasmvm "github.com/CosmWasm/wasmvm"
+	wasmvm "github.com/SigmaGmbH/librustgo"
 )
 
 const (

@@ -1,4 +1,4 @@
-package cosmwasm
+package librustgo
 
 import (
 	"encoding/json"
@@ -6,8 +6,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/CosmWasm/wasmvm/internal/api"
-	"github.com/CosmWasm/wasmvm/types"
+	"github.com/SigmaGmbH/librustgo/internal/api"
+	"github.com/SigmaGmbH/librustgo/types"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

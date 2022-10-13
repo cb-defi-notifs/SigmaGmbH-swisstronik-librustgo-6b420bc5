@@ -1,4 +1,4 @@
-module github.com/CosmWasm/wasmvm
+module github.com/SigmaGmbH/librustgo
 
 go 1.17
 

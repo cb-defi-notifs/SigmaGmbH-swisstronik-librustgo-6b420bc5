@@ -1,11 +1,11 @@
-package cosmwasm
+package librustgo
 
 import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/CosmWasm/wasmvm/internal/api"
-	"github.com/CosmWasm/wasmvm/types"
+	"github.com/SigmaGmbH/librustgo/internal/api"
+	"github.com/SigmaGmbH/librustgo/types"
 )
 
 // Checksum represents a hash of the Wasm bytecode that serves as an ID. Must be generated from this library.
