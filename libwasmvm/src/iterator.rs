@@ -1,7 +1,6 @@
-use cosmwasm_std::Record;
-use cosmwasm_vm::{BackendError, BackendResult, GasInfo};
+// use cosmwasm_std::Record;
+// use cosmwasm_vm::{BackendError, BackendResult, GasInfo};
 
-use crate::error::GoError;
 use crate::gas_meter::gas_meter_t;
 use crate::memory::UnmanagedVector;
 
@@ -47,54 +46,54 @@ impl GoIter {
         }
     }
 
-    pub fn next(&mut self) -> BackendResult<Option<Record>> {
-        let next_db = match self.vtable.next_db {
-            Some(f) => f,
-            None => {
-                let result = Err(BackendError::unknown("iterator vtable not set"));
-                return (result, GasInfo::free());
-            }
-        };
-
-        let mut output_key = UnmanagedVector::default();
-        let mut output_value = UnmanagedVector::default();
-        let mut error_msg = UnmanagedVector::default();
-        let mut used_gas = 0_u64;
-        let go_result: GoError = (next_db)(
-            self.state,
-            self.gas_meter,
-            &mut used_gas as *mut u64,
-            &mut output_key as *mut UnmanagedVector,
-            &mut output_value as *mut UnmanagedVector,
-            &mut error_msg as *mut UnmanagedVector,
-        )
-        .into();
-        // We destruct the `UnmanagedVector`s here, no matter if we need the data.
-        let output_key = output_key.consume();
-        let output_value = output_value.consume();
-
-        let gas_info = GasInfo::with_externally_used(used_gas);
-
-        // return complete error message (reading from buffer for GoError::Other)
-        let default = || "Failed to fetch next item from iterator".to_string();
-        unsafe {
-            if let Err(err) = go_result.into_result(error_msg, default) {
-                return (Err(err), gas_info);
-            }
-        }
-
-        let result = match output_key {
-            Some(key) => {
-                if let Some(value) = output_value {
-                    Ok(Some((key, value)))
-                } else {
-                    Err(BackendError::unknown(
-                        "Failed to read value while reading the next key in the db",
-                    ))
-                }
-            }
-            None => Ok(None),
-        };
-        (result, gas_info)
-    }
+    // pub fn next(&mut self) -> BackendResult<Option<Record>> {
+    //     let next_db = match self.vtable.next_db {
+    //         Some(f) => f,
+    //         None => {
+    //             let result = Err(BackendError::unknown("iterator vtable not set"));
+    //             return (result, GasInfo::free());
+    //         }
+    //     };
+    //
+    //     let mut output_key = UnmanagedVector::default();
+    //     let mut output_value = UnmanagedVector::default();
+    //     let mut error_msg = UnmanagedVector::default();
+    //     let mut used_gas = 0_u64;
+    //     let go_result: GoError = (next_db)(
+    //         self.state,
+    //         self.gas_meter,
+    //         &mut used_gas as *mut u64,
+    //         &mut output_key as *mut UnmanagedVector,
+    //         &mut output_value as *mut UnmanagedVector,
+    //         &mut error_msg as *mut UnmanagedVector,
+    //     )
+    //     .into();
+    //     // We destruct the `UnmanagedVector`s here, no matter if we need the data.
+    //     let output_key = output_key.consume();
+    //     let output_value = output_value.consume();
+    //
+    //     let gas_info = GasInfo::with_externally_used(used_gas);
+    //
+    //     // return complete error message (reading from buffer for GoError::Other)
+    //     let default = || "Failed to fetch next item from iterator".to_string();
+    //     unsafe {
+    //         if let Err(err) = go_result.into_result(error_msg, default) {
+    //             return (Err(err), gas_info);
+    //         }
+    //     }
+    //
+    //     let result = match output_key {
+    //         Some(key) => {
+    //             if let Some(value) = output_value {
+    //                 Ok(Some((key, value)))
+    //             } else {
+    //                 Err(BackendError::unknown(
+    //                     "Failed to read value while reading the next key in the db",
+    //                 ))
+    //             }
+    //         }
+    //         None => Ok(None),
+    //     };
+    //     (result, gas_info)
+    // }
 }

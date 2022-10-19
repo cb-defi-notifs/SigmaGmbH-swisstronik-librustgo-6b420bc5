@@ -1,4 +1,3 @@
-use cosmwasm_vm::VmError;
 use errno::{set_errno, Errno};
 #[cfg(feature = "backtraces")]
 use std::backtrace::Backtrace;
@@ -108,14 +107,6 @@ impl RustError {
     }
 }
 
-impl From<VmError> for RustError {
-    fn from(source: VmError) -> Self {
-        match source {
-            VmError::GasDepletion { .. } => RustError::out_of_gas(),
-            _ => RustError::vm_err(source),
-        }
-    }
-}
 
 impl From<std::str::Utf8Error> for RustError {
     fn from(source: std::str::Utf8Error) -> Self {
@@ -233,7 +224,6 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use cosmwasm_vm::{BackendError, Checksum};
     use errno::errno;
     use std::str;
 
@@ -297,19 +287,6 @@ mod tests {
         match error {
             RustError::VmErr { msg, .. } => {
                 assert_eq!(msg, "my text");
-            }
-            _ => panic!("expect different error"),
-        }
-    }
-
-    #[test]
-    fn vm_err_works_for_errors() {
-        // No public interface exists to generate a VmError directly
-        let original: VmError = BackendError::out_of_gas().into();
-        let error = RustError::vm_err(original);
-        match error {
-            RustError::VmErr { msg, .. } => {
-                assert_eq!(msg, "Ran out of gas during contract execution");
             }
             _ => panic!("expect different error"),
         }
@@ -382,24 +359,24 @@ mod tests {
         let _ = error_msg.consume();
 
         // Ok (checksum)
-        let mut error_msg = UnmanagedVector::default();
-        let res: Result<Checksum, RustError> = Ok(Checksum::from([
-            0x72, 0x2c, 0x8c, 0x99, 0x3f, 0xd7, 0x5a, 0x76, 0x27, 0xd6, 0x9e, 0xd9, 0x41, 0x34,
-            0x4f, 0xe2, 0xa1, 0x42, 0x3a, 0x3e, 0x75, 0xef, 0xd3, 0xe6, 0x77, 0x8a, 0x14, 0x28,
-            0x84, 0x22, 0x71, 0x04,
-        ]));
-        let data = handle_c_error_binary(res, Some(&mut error_msg));
-        assert_eq!(errno().0, ErrnoValue::Success as i32);
-        assert!(error_msg.is_none());
-        assert_eq!(
-            data,
-            vec![
-                0x72, 0x2c, 0x8c, 0x99, 0x3f, 0xd7, 0x5a, 0x76, 0x27, 0xd6, 0x9e, 0xd9, 0x41, 0x34,
-                0x4f, 0xe2, 0xa1, 0x42, 0x3a, 0x3e, 0x75, 0xef, 0xd3, 0xe6, 0x77, 0x8a, 0x14, 0x28,
-                0x84, 0x22, 0x71, 0x04,
-            ]
-        );
-        let _ = error_msg.consume();
+        // let mut error_msg = UnmanagedVector::default();
+        // let res: Result<Checksum, RustError> = Ok(Checksum::from([
+        //     0x72, 0x2c, 0x8c, 0x99, 0x3f, 0xd7, 0x5a, 0x76, 0x27, 0xd6, 0x9e, 0xd9, 0x41, 0x34,
+        //     0x4f, 0xe2, 0xa1, 0x42, 0x3a, 0x3e, 0x75, 0xef, 0xd3, 0xe6, 0x77, 0x8a, 0x14, 0x28,
+        //     0x84, 0x22, 0x71, 0x04,
+        // ]));
+        // let data = handle_c_error_binary(res, Some(&mut error_msg));
+        // assert_eq!(errno().0, ErrnoValue::Success as i32);
+        // assert!(error_msg.is_none());
+        // assert_eq!(
+        //     data,
+        //     vec![
+        //         0x72, 0x2c, 0x8c, 0x99, 0x3f, 0xd7, 0x5a, 0x76, 0x27, 0xd6, 0x9e, 0xd9, 0x41, 0x34,
+        //         0x4f, 0xe2, 0xa1, 0x42, 0x3a, 0x3e, 0x75, 0xef, 0xd3, 0xe6, 0x77, 0x8a, 0x14, 0x28,
+        //         0x84, 0x22, 0x71, 0x04,
+        //     ]
+        // );
+        // let _ = error_msg.consume();
 
         // Err (vector)
         let mut error_msg = UnmanagedVector::default();
@@ -420,13 +397,13 @@ mod tests {
         let _ = error_msg.consume();
 
         // Err (checksum)
-        let mut error_msg = UnmanagedVector::default();
-        let res: Result<Checksum, RustError> = Err(RustError::panic());
-        let data = handle_c_error_binary(res, Some(&mut error_msg));
-        assert_eq!(errno().0, ErrnoValue::Other as i32);
-        assert!(error_msg.is_some());
-        assert_eq!(data, Vec::<u8>::new());
-        let _ = error_msg.consume();
+        // let mut error_msg = UnmanagedVector::default();
+        // let res: Result<Checksum, RustError> = Err(RustError::panic());
+        // let data = handle_c_error_binary(res, Some(&mut error_msg));
+        // assert_eq!(errno().0, ErrnoValue::Other as i32);
+        // assert!(error_msg.is_some());
+        // assert_eq!(data, Vec::<u8>::new());
+        // let _ = error_msg.consume();
     }
 
     #[test]
