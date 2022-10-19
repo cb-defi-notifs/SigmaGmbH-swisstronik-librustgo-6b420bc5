@@ -393,17 +393,6 @@ type MockQuerier struct {
 
 var _ types.Querier = MockQuerier{}
 
-func DefaultQuerier(contractAddr string, coins types.Coins) Querier {
-	balances := map[string]types.Coins{
-		contractAddr: coins,
-	}
-	return MockQuerier{
-		Bank:    NewBankQuerier(balances),
-		Custom:  NoCustom{},
-		usedGas: 0,
-	}
-}
-
 func (q MockQuerier) Query(request types.QueryRequest, _gasLimit uint64) ([]byte, error) {
 	marshaled, err := json.Marshal(request)
 	if err != nil {
@@ -518,96 +507,6 @@ func (q ReflectCustom) Query(request json.RawMessage) ([]byte, error) {
 }
 
 //************ test code for mocks *************************//
-
-func TestBankQuerierAllBalances(t *testing.T) {
-	addr := "foobar"
-	balance := types.Coins{types.NewCoin(12345678, "ATOM"), types.NewCoin(54321, "ETH")}
-	q := DefaultQuerier(addr, balance)
-
-	// query existing account
-	req := types.QueryRequest{
-		Bank: &types.BankQuery{
-			AllBalances: &types.AllBalancesQuery{
-				Address: addr,
-			},
-		},
-	}
-	res, err := q.Query(req, DEFAULT_QUERIER_GAS_LIMIT)
-	require.NoError(t, err)
-	var resp types.AllBalancesResponse
-	err = json.Unmarshal(res, &resp)
-	require.NoError(t, err)
-	assert.Equal(t, resp.Amount, balance)
-
-	// query missing account
-	req2 := types.QueryRequest{
-		Bank: &types.BankQuery{
-			AllBalances: &types.AllBalancesQuery{
-				Address: "someone-else",
-			},
-		},
-	}
-	res, err = q.Query(req2, DEFAULT_QUERIER_GAS_LIMIT)
-	require.NoError(t, err)
-	var resp2 types.AllBalancesResponse
-	err = json.Unmarshal(res, &resp2)
-	require.NoError(t, err)
-	assert.Nil(t, resp2.Amount)
-}
-
-func TestBankQuerierBalance(t *testing.T) {
-	addr := "foobar"
-	balance := types.Coins{types.NewCoin(12345678, "ATOM"), types.NewCoin(54321, "ETH")}
-	q := DefaultQuerier(addr, balance)
-
-	// query existing account with matching denom
-	req := types.QueryRequest{
-		Bank: &types.BankQuery{
-			Balance: &types.BalanceQuery{
-				Address: addr,
-				Denom:   "ATOM",
-			},
-		},
-	}
-	res, err := q.Query(req, DEFAULT_QUERIER_GAS_LIMIT)
-	require.NoError(t, err)
-	var resp types.BalanceResponse
-	err = json.Unmarshal(res, &resp)
-	require.NoError(t, err)
-	assert.Equal(t, resp.Amount, types.NewCoin(12345678, "ATOM"))
-
-	// query existing account with missing denom
-	req2 := types.QueryRequest{
-		Bank: &types.BankQuery{
-			Balance: &types.BalanceQuery{
-				Address: addr,
-				Denom:   "BTC",
-			},
-		},
-	}
-	res, err = q.Query(req2, DEFAULT_QUERIER_GAS_LIMIT)
-	require.NoError(t, err)
-	var resp2 types.BalanceResponse
-	err = json.Unmarshal(res, &resp2)
-	require.NoError(t, err)
-	assert.Equal(t, resp2.Amount, types.NewCoin(0, "BTC"))
-
-	// query missing account
-	req3 := types.QueryRequest{
-		Bank: &types.BankQuery{
-			Balance: &types.BalanceQuery{
-				Address: "someone-else",
-				Denom:   "ATOM",
-			},
-		},
-	}
-	res, err = q.Query(req3, DEFAULT_QUERIER_GAS_LIMIT)
-	require.NoError(t, err)
-	var resp3 types.BalanceResponse
-	err = json.Unmarshal(res, &resp3)
-	require.NoError(t, err)
-	assert.Equal(t, resp3.Amount, types.NewCoin(0, "ATOM"))
-}
 
 func TestReflectCustomQuerier(t *testing.T) {
 	q := ReflectCustom{}

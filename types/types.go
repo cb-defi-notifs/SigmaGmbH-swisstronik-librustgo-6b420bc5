@@ -57,25 +57,3 @@ var _ error = OutOfGasError{}
 func (o OutOfGasError) Error() string {
 	return "Out of gas"
 }
-
-// Contains static analysis info of the contract (the Wasm code to be precise).
-// This type is returned by VM.AnalyzeCode().
-type AnalysisReport struct {
-	HasIBCEntryPoints bool
-	// Deprecated, use RequiredCapabilities. For now both fields contain the same value.
-	RequiredFeatures     string
-	RequiredCapabilities string
-}
-
-type Metrics struct {
-	HitsPinnedMemoryCache     uint32
-	HitsMemoryCache           uint32
-	HitsFsCache               uint32
-	Misses                    uint32
-	ElementsPinnedMemoryCache uint64
-	ElementsMemoryCache       uint64
-	// Cumulative size of all elements in pinned memory cache (in bytes)
-	SizePinnedMemoryCache uint64
-	// Cumulative size of all elements in memory cache (in bytes)
-	SizeMemoryCache uint64
-}
