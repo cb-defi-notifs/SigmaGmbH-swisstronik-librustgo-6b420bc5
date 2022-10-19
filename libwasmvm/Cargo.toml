@@ -1,10 +1,10 @@
 [package]
 name = "wasmvm"
-version = "1.1.1"
+version = "1.1.2"
 publish = false
 authors = ["Admin <admin@swisstronik.com>"]
 edition = "2021"
-description = "Go bindings for cosmwasm contracts"
+description = "Go bindings for Rust functionality"
 repository = "https://github.com/SigmaGmbH/librustgo"
 license = "Apache-2.0"
 readme = "README.md"
