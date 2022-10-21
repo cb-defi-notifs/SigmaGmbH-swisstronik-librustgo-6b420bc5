@@ -44,6 +44,7 @@ func HelloWorld(name string) error {
 
 	ptr, err := C.make_pb_request(d, &errmsg)
 	log.Println(ptr)
+	log.Println(err)
 	if err != nil {
 		return errorWithMessage(err, errmsg)
 	}

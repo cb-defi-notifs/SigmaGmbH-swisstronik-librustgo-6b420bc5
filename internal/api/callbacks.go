@@ -109,24 +109,6 @@ func buildDBState(kv KVStore, callID uint64) DBState {
 	}
 }
 
-// An iterator including referenced objects is 117 bytes large (calculated using https://github.com/DmitriyVTitov/size).
-// We limit the number of iterators per contract call ID here in order limit memory usage to 32768*117 = ~3.8 MB as a safety measure.
-// In any reasonable contract, gas limits should hit sooner than that though.
-const frameLenLimit = 32768
-
-// contract: original pointer/struct referenced must live longer than C.Db struct
-// since this is only used internally, we can verify the code that this is the case
-func buildIterator(callID uint64, it dbm.Iterator) (C.iterator_t, error) {
-	idx, err := storeIterator(callID, it, frameLenLimit)
-	if err != nil {
-		return C.iterator_t{}, err
-	}
-	return C.iterator_t{
-		call_id:        cu64(callID),
-		iterator_index: cu64(idx),
-	}, nil
-}
-
 /***** GoAPI *******/
 
 type (
