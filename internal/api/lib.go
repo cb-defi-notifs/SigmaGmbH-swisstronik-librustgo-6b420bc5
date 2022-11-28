@@ -32,7 +32,10 @@ type (
 type cu8_ptr = *C.uint8_t
 
 func HelloWorld(name string) error {
-	req := ffi.FFIRequest{Req: &ffi.FFIRequest_HelloWorld{HelloWorld: &ffi.Hello{Name: name}}}
+	req := ffi.FFIRequest{Req: &ffi.FFIRequest_HelloWorld{HelloWorld: &ffi.Hello{
+		Name: name,
+		Balance: 100,
+	}}}
 	reqBytes, err := proto.Marshal(&req)
 	if err != nil {
 		log.Fatalln("Failed to encode req:", err)

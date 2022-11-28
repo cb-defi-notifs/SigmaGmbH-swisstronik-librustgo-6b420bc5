@@ -37,7 +37,7 @@ pub extern "C" fn make_pb_request(
                 if let Some(req) = request.req {
                     match req {
                         FFIRequest_oneof_req::hello_world(hello_obj) => {
-                            println!("Hello from Rust, {}!",hello_obj.name);
+                            println!("Hello from Rust, {} with balance: {:?}!",hello_obj.name, hello_obj.balance);
                         }
                     }
                 } else {

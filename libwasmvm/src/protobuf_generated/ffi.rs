@@ -27,6 +27,7 @@
 pub struct Hello {
     // message fields
     pub name: ::std::string::String,
+    pub balance: u64,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -68,6 +69,21 @@ impl Hello {
     pub fn take_name(&mut self) -> ::std::string::String {
         ::std::mem::replace(&mut self.name, ::std::string::String::new())
     }
+
+    // uint64 balance = 2;
+
+
+    pub fn get_balance(&self) -> u64 {
+        self.balance
+    }
+    pub fn clear_balance(&mut self) {
+        self.balance = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_balance(&mut self, v: u64) {
+        self.balance = v;
+    }
 }
 
 impl ::protobuf::Message for Hello {
@@ -81,6 +97,13 @@ impl ::protobuf::Message for Hello {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.name)?;
+                },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.balance = tmp;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -97,6 +120,9 @@ impl ::protobuf::Message for Hello {
         if !self.name.is_empty() {
             my_size += ::protobuf::rt::string_size(1, &self.name);
         }
+        if self.balance != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.balance, ::protobuf::wire_format::WireTypeVarint);
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -105,6 +131,9 @@ impl ::protobuf::Message for Hello {
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
         if !self.name.is_empty() {
             os.write_string(1, &self.name)?;
+        }
+        if self.balance != 0 {
+            os.write_uint64(2, self.balance)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -149,6 +178,11 @@ impl ::protobuf::Message for Hello {
                 |m: &Hello| { &m.name },
                 |m: &mut Hello| { &mut m.name },
             ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                "balance",
+                |m: &Hello| { &m.balance },
+                |m: &mut Hello| { &mut m.balance },
+            ));
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<Hello>(
                 "Hello",
                 fields,
@@ -166,6 +200,7 @@ impl ::protobuf::Message for Hello {
 impl ::protobuf::Clear for Hello {
     fn clear(&mut self) {
         self.name.clear();
+        self.balance = 0;
         self.unknown_fields.clear();
     }
 }
@@ -389,10 +424,10 @@ impl ::protobuf::reflect::ProtobufValue for FFIRequest {
 }
 
 static file_descriptor_proto_data: &'static [u8] = b"\
-    \n\tffi.proto\x12\x07ffi.ffi\"\x1b\n\x05Hello\x12\x12\n\x04name\x18\x01\
-    \x20\x01(\tR\x04name\"F\n\nFFIRequest\x121\n\x0bhello_world\x18\x01\x20\
-    \x01(\x0b2\x0e.ffi.ffi.HelloH\0R\nhelloWorldB\x05\n\x03reqB\x04Z\x02./b\
-    \x06proto3\
+    \n\tffi.proto\x12\x07ffi.ffi\"5\n\x05Hello\x12\x12\n\x04name\x18\x01\x20\
+    \x01(\tR\x04name\x12\x18\n\x07balance\x18\x02\x20\x01(\x04R\x07balance\"\
+    F\n\nFFIRequest\x121\n\x0bhello_world\x18\x01\x20\x01(\x0b2\x0e.ffi.ffi.\
+    HelloH\0R\nhelloWorldB\x05\n\x03reqB\x04Z\x02./b\x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;
