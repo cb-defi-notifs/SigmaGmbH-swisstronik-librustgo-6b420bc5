@@ -31,6 +31,14 @@ func HelloWorld(name string) error {
 	return nil
 }
 
+func HandleTx() error {
+	err := api.HandleTx()
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 // LibwasmvmVersion returns the version of the loaded library
 // at runtime. This can be used for debugging to verify the loaded version
 // matches the expected version.

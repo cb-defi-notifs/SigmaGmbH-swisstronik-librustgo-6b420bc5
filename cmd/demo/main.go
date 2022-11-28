@@ -13,7 +13,8 @@ const (
 
 // This is just a demo to ensure we can compile a static go binary
 func main() {
-	err := wasmvm.HelloWorld("Admin")
+	//err := wasmvm.HelloWorld("Admin")
+	err := wasmvm.HandleTx()
 	//file := os.Args[1]
 	//fmt.Printf("Running %s...\n", file)
 	//bz, err := ioutil.ReadFile(file)
