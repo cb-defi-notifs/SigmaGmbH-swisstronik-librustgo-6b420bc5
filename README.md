@@ -4,6 +4,22 @@ This is a wrapper around the [CosmWasm VM](https://github.com/CosmWasm/cosmwasm/
 It allows you to compile, initialize and execute CosmWasm smart contracts
 from Go applications, in particular from [x/wasm](https://github.com/CosmWasm/wasmd/tree/master/x/wasm).
 
+## Build & Run
+
+`cd libwasmvm`
+
+`cargo build --release --target x86_64-apple-darwin`
+
+`lipo -output ../internal/api/libwasmvm.dylib -create target/x86_64-apple-darwin/release/deps/libwasmvm.dylib`
+
+To generate bindings for Go run:
+
+`protoc --go_out=go_protobuf_gen  --proto_path=libwasmvm/protobuf_contracts/ libwasmvm/protobuf_contracts/ffi.proto`
+
+To run demo:
+
+`go run ../cmd/demo/main.go`
+
 ## Structure
 
 This repo contains both Rust and Go code. The rust code is compiled into a dll/so
