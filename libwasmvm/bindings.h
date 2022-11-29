@@ -189,6 +189,20 @@ typedef struct ByteSliceView {
   uintptr_t len;
 } ByteSliceView;
 
+/**
+ * A view into a `Option<&[u8]>`, created and maintained by Rust.
+ *
+ * This can be copied into a []byte in Go.
+ */
+typedef struct U8SliceView {
+  /**
+   * True if and only if this is None. If this is true, the other fields must be ignored.
+   */
+  bool is_none;
+  const uint8_t *ptr;
+  uintptr_t len;
+} U8SliceView;
+
 struct UnmanagedVector make_pb_request(struct ByteSliceView request,
                                        struct UnmanagedVector *error_msg);
 
