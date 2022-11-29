@@ -24,8 +24,12 @@ message TransactionData {
   map<string, AccessListItem> accessList = 11; // Usage of string is workaround to use [u8; 32] as key in a map
 }
 
+message HandleTransactionResponse {
+  string hash = 1;
+}
+
 message FFIRequest {
   oneof req {
-    TransactionData handleTransaction = 1; 
+    TransactionData handleTransaction = 1;
   }
 }

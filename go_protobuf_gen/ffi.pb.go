@@ -194,6 +194,53 @@ func (x *TransactionData) GetAccessList() map[string]*AccessListItem {
 	return nil
 }
 
+type HandleTransactionResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Hash string `protobuf:"bytes,1,opt,name=hash,proto3" json:"hash,omitempty"`
+}
+
+func (x *HandleTransactionResponse) Reset() {
+	*x = HandleTransactionResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *HandleTransactionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HandleTransactionResponse) ProtoMessage() {}
+
+func (x *HandleTransactionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HandleTransactionResponse.ProtoReflect.Descriptor instead.
+func (*HandleTransactionResponse) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *HandleTransactionResponse) GetHash() string {
+	if x != nil {
+		return x.Hash
+	}
+	return ""
+}
+
 type FFIRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -208,7 +255,7 @@ type FFIRequest struct {
 func (x *FFIRequest) Reset() {
 	*x = FFIRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_ffi_proto_msgTypes[2]
+		mi := &file_ffi_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -221,7 +268,7 @@ func (x *FFIRequest) String() string {
 func (*FFIRequest) ProtoMessage() {}
 
 func (x *FFIRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_ffi_proto_msgTypes[2]
+	mi := &file_ffi_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -234,7 +281,7 @@ func (x *FFIRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FFIRequest.ProtoReflect.Descriptor instead.
 func (*FFIRequest) Descriptor() ([]byte, []int) {
-	return file_ffi_proto_rawDescGZIP(), []int{2}
+	return file_ffi_proto_rawDescGZIP(), []int{3}
 }
 
 func (m *FFIRequest) GetReq() isFFIRequest_Req {
@@ -302,13 +349,17 @@ var file_ffi_proto_rawDesc = []byte{
 	0x0d, 0x5f, 0x6d, 0x61, 0x78, 0x46, 0x65, 0x65, 0x50, 0x65, 0x72, 0x47, 0x61, 0x73, 0x42, 0x17,
 	0x0a, 0x15, 0x5f, 0x6d, 0x61, 0x78, 0x50, 0x72, 0x69, 0x6f, 0x72, 0x69, 0x74, 0x79, 0x46, 0x65,
 	0x65, 0x50, 0x65, 0x72, 0x47, 0x61, 0x73, 0x42, 0x0a, 0x0a, 0x08, 0x5f, 0x63, 0x68, 0x61, 0x69,
-	0x6e, 0x49, 0x64, 0x22, 0x5d, 0x0a, 0x0a, 0x46, 0x46, 0x49, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x12, 0x48, 0x0a, 0x11, 0x68, 0x61, 0x6e, 0x64, 0x6c, 0x65, 0x54, 0x72, 0x61, 0x6e, 0x73,
-	0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x18, 0x2e, 0x66,
-	0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69,
-	0x6f, 0x6e, 0x44, 0x61, 0x74, 0x61, 0x48, 0x00, 0x52, 0x11, 0x68, 0x61, 0x6e, 0x64, 0x6c, 0x65,
-	0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0x05, 0x0a, 0x03, 0x72,
-	0x65, 0x71, 0x42, 0x04, 0x5a, 0x02, 0x2e, 0x2f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6e, 0x49, 0x64, 0x22, 0x2f, 0x0a, 0x19, 0x48, 0x61, 0x6e, 0x64, 0x6c, 0x65, 0x54, 0x72, 0x61,
+	0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x12, 0x0a, 0x04, 0x68, 0x61, 0x73, 0x68, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
+	0x68, 0x61, 0x73, 0x68, 0x22, 0x5d, 0x0a, 0x0a, 0x46, 0x46, 0x49, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x12, 0x48, 0x0a, 0x11, 0x68, 0x61, 0x6e, 0x64, 0x6c, 0x65, 0x54, 0x72, 0x61, 0x6e,
+	0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x18, 0x2e,
+	0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74,
+	0x69, 0x6f, 0x6e, 0x44, 0x61, 0x74, 0x61, 0x48, 0x00, 0x52, 0x11, 0x68, 0x61, 0x6e, 0x64, 0x6c,
+	0x65, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0x05, 0x0a, 0x03,
+	0x72, 0x65, 0x71, 0x42, 0x04, 0x5a, 0x02, 0x2e, 0x2f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f,
+	0x33,
 }
 
 var (
@@ -323,15 +374,16 @@ func file_ffi_proto_rawDescGZIP() []byte {
 	return file_ffi_proto_rawDescData
 }
 
-var file_ffi_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_ffi_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_ffi_proto_goTypes = []interface{}{
-	(*AccessListItem)(nil),  // 0: ffi.ffi.AccessListItem
-	(*TransactionData)(nil), // 1: ffi.ffi.TransactionData
-	(*FFIRequest)(nil),      // 2: ffi.ffi.FFIRequest
-	nil,                     // 3: ffi.ffi.TransactionData.AccessListEntry
+	(*AccessListItem)(nil),            // 0: ffi.ffi.AccessListItem
+	(*TransactionData)(nil),           // 1: ffi.ffi.TransactionData
+	(*HandleTransactionResponse)(nil), // 2: ffi.ffi.HandleTransactionResponse
+	(*FFIRequest)(nil),                // 3: ffi.ffi.FFIRequest
+	nil,                               // 4: ffi.ffi.TransactionData.AccessListEntry
 }
 var file_ffi_proto_depIdxs = []int32{
-	3, // 0: ffi.ffi.TransactionData.accessList:type_name -> ffi.ffi.TransactionData.AccessListEntry
+	4, // 0: ffi.ffi.TransactionData.accessList:type_name -> ffi.ffi.TransactionData.AccessListEntry
 	1, // 1: ffi.ffi.FFIRequest.handleTransaction:type_name -> ffi.ffi.TransactionData
 	0, // 2: ffi.ffi.TransactionData.AccessListEntry.value:type_name -> ffi.ffi.AccessListItem
 	3, // [3:3] is the sub-list for method output_type
@@ -372,6 +424,18 @@ func file_ffi_proto_init() {
 			}
 		}
 		file_ffi_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*HandleTransactionResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*FFIRequest); i {
 			case 0:
 				return &v.state
@@ -385,7 +449,7 @@ func file_ffi_proto_init() {
 		}
 	}
 	file_ffi_proto_msgTypes[1].OneofWrappers = []interface{}{}
-	file_ffi_proto_msgTypes[2].OneofWrappers = []interface{}{
+	file_ffi_proto_msgTypes[3].OneofWrappers = []interface{}{
 		(*FFIRequest_HandleTransaction)(nil),
 	}
 	type x struct{}
@@ -394,7 +458,7 @@ func file_ffi_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_ffi_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

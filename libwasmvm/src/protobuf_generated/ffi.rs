@@ -889,6 +889,165 @@ impl ::protobuf::reflect::ProtobufValue for TransactionData {
 }
 
 #[derive(PartialEq,Clone,Default)]
+pub struct HandleTransactionResponse {
+    // message fields
+    pub hash: ::std::string::String,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a HandleTransactionResponse {
+    fn default() -> &'a HandleTransactionResponse {
+        <HandleTransactionResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl HandleTransactionResponse {
+    pub fn new() -> HandleTransactionResponse {
+        ::std::default::Default::default()
+    }
+
+    // string hash = 1;
+
+
+    pub fn get_hash(&self) -> &str {
+        &self.hash
+    }
+    pub fn clear_hash(&mut self) {
+        self.hash.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_hash(&mut self, v: ::std::string::String) {
+        self.hash = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_hash(&mut self) -> &mut ::std::string::String {
+        &mut self.hash
+    }
+
+    // Take field
+    pub fn take_hash(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.hash, ::std::string::String::new())
+    }
+}
+
+impl ::protobuf::Message for HandleTransactionResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.hash)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.hash.is_empty() {
+            my_size += ::protobuf::rt::string_size(1, &self.hash);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.hash.is_empty() {
+            os.write_string(1, &self.hash)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> HandleTransactionResponse {
+        HandleTransactionResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
+                "hash",
+                |m: &HandleTransactionResponse| { &m.hash },
+                |m: &mut HandleTransactionResponse| { &mut m.hash },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<HandleTransactionResponse>(
+                "HandleTransactionResponse",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static HandleTransactionResponse {
+        static instance: ::protobuf::rt::LazyV2<HandleTransactionResponse> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(HandleTransactionResponse::new)
+    }
+}
+
+impl ::protobuf::Clear for HandleTransactionResponse {
+    fn clear(&mut self) {
+        self.hash.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for HandleTransactionResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for HandleTransactionResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
 pub struct FFIRequest {
     // message oneof groups
     pub req: ::std::option::Option<FFIRequest_oneof_req>,
@@ -1110,9 +1269,10 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x0fAccessListEntry\x12\x10\n\x03key\x18\x01\x20\x01(\tR\x03key\x12-\n\
     \x05value\x18\x02\x20\x01(\x0b2\x17.ffi.ffi.AccessListItemR\x05value:\
     \x028\x01B\x0b\n\t_gasPriceB\x0f\n\r_maxFeePerGasB\x17\n\x15_maxPriority\
-    FeePerGasB\n\n\x08_chainId\"]\n\nFFIRequest\x12H\n\x11handleTransaction\
-    \x18\x01\x20\x01(\x0b2\x18.ffi.ffi.TransactionDataH\0R\x11handleTransact\
-    ionB\x05\n\x03reqB\x04Z\x02./b\x06proto3\
+    FeePerGasB\n\n\x08_chainId\"/\n\x19HandleTransactionResponse\x12\x12\n\
+    \x04hash\x18\x01\x20\x01(\tR\x04hash\"]\n\nFFIRequest\x12H\n\x11handleTr\
+    ansaction\x18\x01\x20\x01(\x0b2\x18.ffi.ffi.TransactionDataH\0R\x11handl\
+    eTransactionB\x05\n\x03reqB\x04Z\x02./b\x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;
