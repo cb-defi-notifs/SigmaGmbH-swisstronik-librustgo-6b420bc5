@@ -59,18 +59,6 @@ func HandleTx() error {
 	return nil
 }
 
-func HelloWorld(name string) error {
-	req := ffi.FFIRequest{Req: &ffi.FFIRequest_HelloWorld{HelloWorld: &ffi.Hello{
-		Name:    name,
-		Balance: 100,
-	}}}
-	if err := marshalAndBroadcast(&req); err != nil {
-		return err
-	}
-
-	return nil
-}
-
 /**** To error module ***/
 
 func errorWithMessage(err error, b C.UnmanagedVector) error {

@@ -23,14 +23,6 @@ type Querier = types.Querier
 // GasMeter is a read-only version of the sdk gas meter
 type GasMeter = api.GasMeter
 
-func HelloWorld(name string) error {
-	err := api.HelloWorld(name)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
 func HandleTx() error {
 	err := api.HandleTx()
 	if err != nil {
