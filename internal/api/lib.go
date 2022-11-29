@@ -31,30 +31,32 @@ type (
 // Pointers
 type cu8_ptr = *C.uint8_t
 
-func marshalAndBroadcast(req *ffi.FFIRequest) error {
-	reqBytes, err := proto.Marshal(req)
+func HandleTx() error {
+	// Create protobuf encoded request
+	req := ffi.FFIRequest{Req: &ffi.FFIRequest_HandleTransaction{HandleTransaction: &ffi.TransactionData{}}}
+	reqBytes, err := proto.Marshal(&req)
 	if err != nil {
 		log.Fatalln("Failed to encode req:", err)
 	}
 
+	// Pass request to Rust
 	d := makeView(reqBytes)
 	defer runtime.KeepAlive(reqBytes)
-	errmsg := newUnmanagedVector(nil)
 
+	errmsg := newUnmanagedVector(nil)
 	ptr, err := C.make_pb_request(d, &errmsg)
-	log.Println(ptr)
-	log.Println(err)
 	if err != nil {
 		return errorWithMessage(err, errmsg)
 	}
-	return nil
-}
 
-func HandleTx() error {
-	req := ffi.FFIRequest{Req: &ffi.FFIRequest_HandleTransaction{HandleTransaction: &ffi.TransactionData{}}}
-	if err := marshalAndBroadcast(&req); err != nil {
-		return err
+	// Recover returned value
+	data := copyAndDestroyUnmanagedVector(ptr)
+	response := ffi.HandleTransactionResponse{}
+	if err := proto.Unmarshal(data, &response); err != nil {
+		log.Fatalln("Failed to decode result:", err)
 	}
+
+	println(response.Hash)
 
 	return nil
 }
