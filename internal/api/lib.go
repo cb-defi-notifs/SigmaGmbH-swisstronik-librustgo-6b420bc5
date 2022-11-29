@@ -31,9 +31,8 @@ type (
 // Pointers
 type cu8_ptr = *C.uint8_t
 
-func HandleTx() error {
-	req := ffi.FFIRequest{Req: &ffi.FFIRequest_HandleTransaction{HandleTransaction: &ffi.TransactionData{}}}
-	reqBytes, err := proto.Marshal(&req)
+func marshalAndBroadcast(req *ffi.FFIRequest) error {
+	reqBytes, err := proto.Marshal(req)
 	if err != nil {
 		log.Fatalln("Failed to encode req:", err)
 	}
@@ -51,26 +50,24 @@ func HandleTx() error {
 	return nil
 }
 
+func HandleTx() error {
+	req := ffi.FFIRequest{Req: &ffi.FFIRequest_HandleTransaction{HandleTransaction: &ffi.TransactionData{}}}
+	if err := marshalAndBroadcast(&req); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func HelloWorld(name string) error {
 	req := ffi.FFIRequest{Req: &ffi.FFIRequest_HelloWorld{HelloWorld: &ffi.Hello{
 		Name:    name,
 		Balance: 100,
 	}}}
-	reqBytes, err := proto.Marshal(&req)
-	if err != nil {
-		log.Fatalln("Failed to encode req:", err)
+	if err := marshalAndBroadcast(&req); err != nil {
+		return err
 	}
 
-	d := makeView(reqBytes)
-	defer runtime.KeepAlive(reqBytes)
-	errmsg := newUnmanagedVector(nil)
-
-	ptr, err := C.make_pb_request(d, &errmsg)
-	log.Println(ptr)
-	log.Println(err)
-	if err != nil {
-		return errorWithMessage(err, errmsg)
-	}
 	return nil
 }
 
