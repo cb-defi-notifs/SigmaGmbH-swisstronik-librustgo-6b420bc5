@@ -5,6 +5,8 @@ package api
 import "C"
 
 import (
+	"encoding/binary"
+	"encoding/hex"
 	"fmt"
 	"github.com/golang/protobuf/proto"
 	"log"
@@ -32,8 +34,23 @@ type (
 type cu8_ptr = *C.uint8_t
 
 func HandleTx() error {
+	// Create sample execution data
+	from, decodingErr := hex.DecodeString("91e1f4Bb1C1895F6c65cD8379DE1323A8bF3Cf7c")
+	if decodingErr != nil {
+		log.Fatalln("Failed to decode address:", decodingErr)
+	}
+	to, decodingErr := hex.DecodeString("91b126ff9AF242408090A223829Eb88A61724AA5")
+	if decodingErr != nil {
+		log.Fatalln("Failed to decode address:", decodingErr)
+	}
+
 	// Create protobuf encoded request
-	req := ffi.FFIRequest{Req: &ffi.FFIRequest_HandleTransaction{HandleTransaction: &ffi.TransactionData{}}}
+	req := ffi.FFIRequest{Req: &ffi.FFIRequest_HandleTransaction{HandleTransaction: &ffi.TransactionData{
+		From:     from,
+		To:       to,
+		Value:    make([]byte, binary.MaxVarintLen32),
+		GasLimit: make([]byte, binary.MaxVarintLen32),
+	}}}
 	reqBytes, err := proto.Marshal(&req)
 	if err != nil {
 		log.Fatalln("Failed to encode req:", err)
