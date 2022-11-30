@@ -5,6 +5,7 @@ use std::panic::{catch_unwind};
 
 use protobuf::Message;
 
+use crate::evm;
 use crate::args::{PB_REQUEST_ARG};
 use crate::error::{ handle_c_error_default, Error};
 use crate::memory::{ByteSliceView, UnmanagedVector};
@@ -38,7 +39,10 @@ pub extern "C" fn make_pb_request(
                     match req {
                         FFIRequest_oneof_req::handleTransaction(tx) => {
                             println!("RUST: handleTransaction invoked");
-                            
+
+                            let execution_result = evm::handle_transaction_mocked(tx);
+                            println!("RUST: handleTransaction result: {:?}", execution_result);
+
                             let mut response = HandleTransactionResponse::new();
                             response.set_hash("0x12341234".to_string());
 

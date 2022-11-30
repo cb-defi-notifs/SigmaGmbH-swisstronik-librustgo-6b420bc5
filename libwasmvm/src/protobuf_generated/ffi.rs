@@ -27,6 +27,7 @@
 pub struct AccessListItem {
     // message fields
     pub storageSlot: ::protobuf::RepeatedField<::std::vec::Vec<u8>>,
+    pub address: ::std::vec::Vec<u8>,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -67,6 +68,32 @@ impl AccessListItem {
     pub fn take_storageSlot(&mut self) -> ::protobuf::RepeatedField<::std::vec::Vec<u8>> {
         ::std::mem::replace(&mut self.storageSlot, ::protobuf::RepeatedField::new())
     }
+
+    // bytes address = 2;
+
+
+    pub fn get_address(&self) -> &[u8] {
+        &self.address
+    }
+    pub fn clear_address(&mut self) {
+        self.address.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_address(&mut self, v: ::std::vec::Vec<u8>) {
+        self.address = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_address(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.address
+    }
+
+    // Take field
+    pub fn take_address(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.address, ::std::vec::Vec::new())
+    }
 }
 
 impl ::protobuf::Message for AccessListItem {
@@ -80,6 +107,9 @@ impl ::protobuf::Message for AccessListItem {
             match field_number {
                 1 => {
                     ::protobuf::rt::read_repeated_bytes_into(wire_type, is, &mut self.storageSlot)?;
+                },
+                2 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.address)?;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -96,6 +126,9 @@ impl ::protobuf::Message for AccessListItem {
         for value in &self.storageSlot {
             my_size += ::protobuf::rt::bytes_size(1, &value);
         };
+        if !self.address.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(2, &self.address);
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
@@ -105,6 +138,9 @@ impl ::protobuf::Message for AccessListItem {
         for v in &self.storageSlot {
             os.write_bytes(1, &v)?;
         };
+        if !self.address.is_empty() {
+            os.write_bytes(2, &self.address)?;
+        }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
     }
@@ -148,6 +184,11 @@ impl ::protobuf::Message for AccessListItem {
                 |m: &AccessListItem| { &m.storageSlot },
                 |m: &mut AccessListItem| { &mut m.storageSlot },
             ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "address",
+                |m: &AccessListItem| { &m.address },
+                |m: &mut AccessListItem| { &mut m.address },
+            ));
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<AccessListItem>(
                 "AccessListItem",
                 fields,
@@ -165,6 +206,7 @@ impl ::protobuf::Message for AccessListItem {
 impl ::protobuf::Clear for AccessListItem {
     fn clear(&mut self) {
         self.storageSlot.clear();
+        self.address.clear();
         self.unknown_fields.clear();
     }
 }
@@ -190,7 +232,7 @@ pub struct TransactionData {
     pub nonce: ::std::vec::Vec<u8>,
     pub gasLimit: ::std::vec::Vec<u8>,
     pub value: ::std::vec::Vec<u8>,
-    pub accessList: ::std::collections::HashMap<::std::string::String, AccessListItem>,
+    pub accessList: ::protobuf::RepeatedField<AccessListItem>,
     // message oneof groups
     pub _gasPrice: ::std::option::Option<TransactionData_oneof__gasPrice>,
     pub _maxFeePerGas: ::std::option::Option<TransactionData_oneof__maxFeePerGas>,
@@ -560,10 +602,10 @@ impl TransactionData {
         self._chainId = ::std::option::Option::Some(TransactionData_oneof__chainId::chainId(v))
     }
 
-    // repeated .ffi.ffi.TransactionData.AccessListEntry accessList = 11;
+    // repeated .ffi.ffi.AccessListItem accessList = 11;
 
 
-    pub fn get_accessList(&self) -> &::std::collections::HashMap<::std::string::String, AccessListItem> {
+    pub fn get_accessList(&self) -> &[AccessListItem] {
         &self.accessList
     }
     pub fn clear_accessList(&mut self) {
@@ -571,23 +613,28 @@ impl TransactionData {
     }
 
     // Param is passed by value, moved
-    pub fn set_accessList(&mut self, v: ::std::collections::HashMap<::std::string::String, AccessListItem>) {
+    pub fn set_accessList(&mut self, v: ::protobuf::RepeatedField<AccessListItem>) {
         self.accessList = v;
     }
 
     // Mutable pointer to the field.
-    pub fn mut_accessList(&mut self) -> &mut ::std::collections::HashMap<::std::string::String, AccessListItem> {
+    pub fn mut_accessList(&mut self) -> &mut ::protobuf::RepeatedField<AccessListItem> {
         &mut self.accessList
     }
 
     // Take field
-    pub fn take_accessList(&mut self) -> ::std::collections::HashMap<::std::string::String, AccessListItem> {
-        ::std::mem::replace(&mut self.accessList, ::std::collections::HashMap::new())
+    pub fn take_accessList(&mut self) -> ::protobuf::RepeatedField<AccessListItem> {
+        ::std::mem::replace(&mut self.accessList, ::protobuf::RepeatedField::new())
     }
 }
 
 impl ::protobuf::Message for TransactionData {
     fn is_initialized(&self) -> bool {
+        for v in &self.accessList {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
         true
     }
 
@@ -638,7 +685,7 @@ impl ::protobuf::Message for TransactionData {
                     self._chainId = ::std::option::Option::Some(TransactionData_oneof__chainId::chainId(is.read_uint64()?));
                 },
                 11 => {
-                    ::protobuf::rt::read_map_into::<::protobuf::types::ProtobufTypeString, ::protobuf::types::ProtobufTypeMessage<AccessListItem>>(wire_type, is, &mut self.accessList)?;
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.accessList)?;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -670,7 +717,10 @@ impl ::protobuf::Message for TransactionData {
         if !self.value.is_empty() {
             my_size += ::protobuf::rt::bytes_size(9, &self.value);
         }
-        my_size += ::protobuf::rt::compute_map_size::<::protobuf::types::ProtobufTypeString, ::protobuf::types::ProtobufTypeMessage<AccessListItem>>(11, &self.accessList);
+        for value in &self.accessList {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        };
         if let ::std::option::Option::Some(ref v) = self._gasPrice {
             match v {
                 &TransactionData_oneof__gasPrice::gasPrice(ref v) => {
@@ -723,7 +773,11 @@ impl ::protobuf::Message for TransactionData {
         if !self.value.is_empty() {
             os.write_bytes(9, &self.value)?;
         }
-        ::protobuf::rt::write_map_with_cached_sizes::<::protobuf::types::ProtobufTypeString, ::protobuf::types::ProtobufTypeMessage<AccessListItem>>(11, &self.accessList, os)?;
+        for v in &self.accessList {
+            os.write_tag(11, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        };
         if let ::std::option::Option::Some(ref v) = self._gasPrice {
             match v {
                 &TransactionData_oneof__gasPrice::gasPrice(ref v) => {
@@ -840,7 +894,7 @@ impl ::protobuf::Message for TransactionData {
                 TransactionData::has_chainId,
                 TransactionData::get_chainId,
             ));
-            fields.push(::protobuf::reflect::accessor::make_map_accessor::<_, ::protobuf::types::ProtobufTypeString, ::protobuf::types::ProtobufTypeMessage<AccessListItem>>(
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<AccessListItem>>(
                 "accessList",
                 |m: &TransactionData| { &m.accessList },
                 |m: &mut TransactionData| { &mut m.accessList },
@@ -1254,25 +1308,23 @@ impl ::protobuf::reflect::ProtobufValue for FFIRequest {
 }
 
 static file_descriptor_proto_data: &'static [u8] = b"\
-    \n\tffi.proto\x12\x07ffi.ffi\"2\n\x0eAccessListItem\x12\x20\n\x0bstorage\
-    Slot\x18\x01\x20\x03(\x0cR\x0bstorageSlot\"\x98\x04\n\x0fTransactionData\
-    \x12\x12\n\x04from\x18\x01\x20\x01(\x0cR\x04from\x12\x0e\n\x02to\x18\x02\
-    \x20\x01(\x0cR\x02to\x12\x12\n\x04data\x18\x03\x20\x01(\x0cR\x04data\x12\
-    \x14\n\x05nonce\x18\x04\x20\x01(\x0cR\x05nonce\x12\x1a\n\x08gasLimit\x18\
-    \x05\x20\x01(\x0cR\x08gasLimit\x12\x1f\n\x08gasPrice\x18\x06\x20\x01(\
-    \x0cH\0R\x08gasPrice\x88\x01\x01\x12'\n\x0cmaxFeePerGas\x18\x07\x20\x01(\
-    \x0cH\x01R\x0cmaxFeePerGas\x88\x01\x01\x127\n\x14maxPriorityFeePerGas\
-    \x18\x08\x20\x01(\x0cH\x02R\x14maxPriorityFeePerGas\x88\x01\x01\x12\x14\
-    \n\x05value\x18\t\x20\x01(\x0cR\x05value\x12\x1d\n\x07chainId\x18\n\x20\
-    \x01(\x04H\x03R\x07chainId\x88\x01\x01\x12H\n\naccessList\x18\x0b\x20\
-    \x03(\x0b2(.ffi.ffi.TransactionData.AccessListEntryR\naccessList\x1aV\n\
-    \x0fAccessListEntry\x12\x10\n\x03key\x18\x01\x20\x01(\tR\x03key\x12-\n\
-    \x05value\x18\x02\x20\x01(\x0b2\x17.ffi.ffi.AccessListItemR\x05value:\
-    \x028\x01B\x0b\n\t_gasPriceB\x0f\n\r_maxFeePerGasB\x17\n\x15_maxPriority\
-    FeePerGasB\n\n\x08_chainId\"/\n\x19HandleTransactionResponse\x12\x12\n\
-    \x04hash\x18\x01\x20\x01(\tR\x04hash\"]\n\nFFIRequest\x12H\n\x11handleTr\
-    ansaction\x18\x01\x20\x01(\x0b2\x18.ffi.ffi.TransactionDataH\0R\x11handl\
-    eTransactionB\x05\n\x03reqB\x04Z\x02./b\x06proto3\
+    \n\tffi.proto\x12\x07ffi.ffi\"L\n\x0eAccessListItem\x12\x20\n\x0bstorage\
+    Slot\x18\x01\x20\x03(\x0cR\x0bstorageSlot\x12\x18\n\x07address\x18\x02\
+    \x20\x01(\x0cR\x07address\"\xaf\x03\n\x0fTransactionData\x12\x12\n\x04fr\
+    om\x18\x01\x20\x01(\x0cR\x04from\x12\x0e\n\x02to\x18\x02\x20\x01(\x0cR\
+    \x02to\x12\x12\n\x04data\x18\x03\x20\x01(\x0cR\x04data\x12\x14\n\x05nonc\
+    e\x18\x04\x20\x01(\x0cR\x05nonce\x12\x1a\n\x08gasLimit\x18\x05\x20\x01(\
+    \x0cR\x08gasLimit\x12\x1f\n\x08gasPrice\x18\x06\x20\x01(\x0cH\0R\x08gasP\
+    rice\x88\x01\x01\x12'\n\x0cmaxFeePerGas\x18\x07\x20\x01(\x0cH\x01R\x0cma\
+    xFeePerGas\x88\x01\x01\x127\n\x14maxPriorityFeePerGas\x18\x08\x20\x01(\
+    \x0cH\x02R\x14maxPriorityFeePerGas\x88\x01\x01\x12\x14\n\x05value\x18\t\
+    \x20\x01(\x0cR\x05value\x12\x1d\n\x07chainId\x18\n\x20\x01(\x04H\x03R\
+    \x07chainId\x88\x01\x01\x127\n\naccessList\x18\x0b\x20\x03(\x0b2\x17.ffi\
+    .ffi.AccessListItemR\naccessListB\x0b\n\t_gasPriceB\x0f\n\r_maxFeePerGas\
+    B\x17\n\x15_maxPriorityFeePerGasB\n\n\x08_chainId\"/\n\x19HandleTransact\
+    ionResponse\x12\x12\n\x04hash\x18\x01\x20\x01(\tR\x04hash\"]\n\nFFIReque\
+    st\x12H\n\x11handleTransaction\x18\x01\x20\x01(\x0b2\x18.ffi.ffi.Transac\
+    tionDataH\0R\x11handleTransactionB\x05\n\x03reqB\x04Z\x02./b\x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;

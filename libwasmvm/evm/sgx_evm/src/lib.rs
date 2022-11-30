@@ -12,6 +12,7 @@ mod precompiles;
 
 pub use evm;
 pub use primitive_types;
+pub use ethereum;
 
 use crate::backend::{Backend, Vicinity, GASOMETER_CONFIG};
 use crate::primitives::{raw_transaction::TransactionData, QueryData};
@@ -68,7 +69,7 @@ pub fn handle_transaction(body: &[u8], storage: &mut dyn Storage) -> Vec<u8> {
 }
 
 /// Handles EVM query
-fn handle_query_inner(query: QueryData, storage: &mut dyn Storage) -> ExecutionResult {
+pub fn handle_query_inner(query: QueryData, storage: &mut dyn Storage) -> ExecutionResult {
     let vicinity = Vicinity {
         origin: query.from,
     };
@@ -112,7 +113,7 @@ fn handle_query_inner(query: QueryData, storage: &mut dyn Storage) -> ExecutionR
 }
 
 /// Handles EVM transaction
-fn handle_transaction_inner(transaction_data: TransactionData, storage: &mut dyn Storage) -> ExecutionResult {
+pub fn handle_transaction_inner(transaction_data: TransactionData, storage: &mut dyn Storage) -> ExecutionResult {
     // Prepare environment
     let vicinity = Vicinity {
         origin: transaction_data.origin,

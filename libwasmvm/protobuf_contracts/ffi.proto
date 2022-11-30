@@ -8,6 +8,7 @@ option go_package = "./";
 
 message AccessListItem {
   repeated bytes storageSlot = 1;
+  bytes address = 2;
 }
 
 message TransactionData {
@@ -21,7 +22,7 @@ message TransactionData {
   optional bytes maxPriorityFeePerGas = 8;
   bytes value = 9;
   optional uint64 chainId = 10;
-  map<string, AccessListItem> accessList = 11; // Usage of string is workaround to use [u8; 32] as key in a map
+  repeated AccessListItem accessList = 11;
 }
 
 message HandleTransactionResponse {
