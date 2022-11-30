@@ -134,17 +134,17 @@ fn recover_origin(
 
     // Recover origin
     let recovered_key = recover_public_key(&recoverable_signature, &message_hash)?;
-    
+
     Ok(
         public_key_to_address(
             &recovered_key.to_encoded_point(false).as_bytes()[1..]
         )
     )
-    
+
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub struct TransactionData {
+pub struct FullTransactionData {
     pub origin: H160,
     pub action: TransactionAction,
     pub input: Vec<u8>,
@@ -158,7 +158,7 @@ pub struct TransactionData {
     pub access_list: Vec<(H160, Vec<H256>)>,
 }
 
-impl TransactionData {
+impl FullTransactionData {
     pub fn decode_transaction(body: &[u8]) -> Result<Self, EvmError> {
         let transaction_v2 = match rlp::decode::<TransactionV2>(body) {
             Ok(tx) => tx,
@@ -174,7 +174,7 @@ impl TransactionData {
 
         // Extract transaction data
         let decoded_tx = match transaction_v2 {
-            TransactionV2::Legacy(t) => TransactionData {
+            TransactionV2::Legacy(t) => FullTransactionData {
                 origin,
                 action: t.action,
                 input: t.input.clone(),
@@ -187,7 +187,7 @@ impl TransactionData {
                 chain_id: t.signature.chain_id(),
                 access_list: Vec::new(),
             },
-            TransactionV2::EIP2930(t) => TransactionData {
+            TransactionV2::EIP2930(t) => FullTransactionData {
                 origin,
                 action: t.action,
                 input: t.input.clone(),
@@ -204,7 +204,7 @@ impl TransactionData {
                     .map(|d| (d.address, d.storage_keys.clone()))
                     .collect(),
             },
-            TransactionV2::EIP1559(t) => TransactionData {
+            TransactionV2::EIP1559(t) => FullTransactionData {
                 origin,
                 action: t.action,
                 input: t.input.clone(),

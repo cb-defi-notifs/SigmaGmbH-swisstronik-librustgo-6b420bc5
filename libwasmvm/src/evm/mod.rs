@@ -1,5 +1,5 @@
 use sgx_evm;
-use sgx_evm::primitives::raw_transaction::TransactionData;
+use sgx_evm::ExecutionData;
 use common_types::ExecutionResult;
 use sgx_evm::primitive_types::{U256, H160, H256};
 use sgx_evm::ethereum::TransactionAction;
@@ -19,36 +19,16 @@ pub fn handle_transaction_mocked(data: ProtoTransactionData) -> ExecutionResult 
 }
 
 /// This function converts decoded protobuf transaction data into a regulat TransactionData struct
-fn parse_protobuf_transaction_data(data: ProtoTransactionData) -> TransactionData {
+fn parse_protobuf_transaction_data(data: ProtoTransactionData) -> ExecutionData {
     let action = match data.to.is_empty() {
         true => TransactionAction::Create,
         false => TransactionAction::Call(H160::from_slice(&data.to))
     };
 
-    let gas_price = match data.has_gasPrice() {
-        true => Some(U256::from_big_endian(data.get_gasPrice())),
-        false => None,
-    };
-
-    let max_fee_per_gas = match data.has_maxFeePerGas() {
-        true => Some(U256::from_big_endian(data.get_maxFeePerGas())),
-        false => None,
-    };
-
-    let max_priority_fee_per_gas = match data.has_maxPriorityFeePerGas() {
-        true => Some(U256::from_big_endian(data.get_maxPriorityFeePerGas())),
-        false => None,
-    };
-
-    let chain_id = match data.has_chainId() {
-        true => Some(data.get_chainId()),
-        false => None,
-    };
-
     let mut access_list = Vec::default();
-    for accessListItem in data.accessList.to_vec() {
-        let address = H160::from_slice(&accessListItem.address);
-        let slots = accessListItem.storageSlot
+    for access_list_item in data.accessList.to_vec() {
+        let address = H160::from_slice(&access_list_item.address);
+        let slots = access_list_item.storageSlot
             .to_vec()
             .into_iter()
             .map(|item| { H256::from_slice(&item) })
@@ -57,17 +37,12 @@ fn parse_protobuf_transaction_data(data: ProtoTransactionData) -> TransactionDat
         access_list.push((address, slots));
     }
 
-    TransactionData {
+    ExecutionData {
         origin: H160::from_slice(&data.from),
         action,
         input: data.data,
-        nonce: U256::from_big_endian(&data.nonce),
         gas_limit: U256::from_big_endian(&data.gasLimit),
-        gas_price,
-        max_fee_per_gas,
-        max_priority_fee_per_gas,
         value: U256::from_big_endian(&data.value),
-        chain_id,
         access_list,
     }
 }

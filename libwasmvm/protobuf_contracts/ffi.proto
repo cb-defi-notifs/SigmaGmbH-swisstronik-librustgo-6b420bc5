@@ -15,14 +15,9 @@ message TransactionData {
   bytes from = 1;
   bytes to = 2;
   bytes data = 3;
-  bytes nonce = 4;
-  bytes gasLimit = 5;
-  optional bytes gasPrice = 6;
-  optional bytes maxFeePerGas = 7;
-  optional bytes maxPriorityFeePerGas = 8;
-  bytes value = 9;
-  optional uint64 chainId = 10;
-  repeated AccessListItem accessList = 11;
+  bytes gasLimit = 4;
+  bytes value = 5;
+  repeated AccessListItem accessList = 6;
 }
 
 message HandleTransactionResponse {
