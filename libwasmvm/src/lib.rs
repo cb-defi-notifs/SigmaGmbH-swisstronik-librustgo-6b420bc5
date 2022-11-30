@@ -14,6 +14,7 @@ mod test_utils;
 mod tests;
 mod version;
 mod protobuf_generated;
+mod evm;
 
 // We only interact with this crate via `extern "C"` interfaces, not those public
 // exports. There are no guarantees those exports are stable.
