@@ -52,6 +52,7 @@ style = "both"
 include = [
     "GoError",
     "ErrnoValue",
+    "U8SliceView"
 ]
 exclude = []
 # prefix = "CAPI_"

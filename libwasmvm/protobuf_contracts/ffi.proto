@@ -6,12 +6,30 @@ option go_package = "./";
 
 //General request
 
-message Hello {
-  string name = 1;
+message AccessListItem {
+  repeated bytes storageSlot = 1;
+}
+
+message TransactionData {
+  bytes from = 1;
+  bytes to = 2;
+  bytes data = 3;
+  bytes nonce = 4;
+  bytes gasLimit = 5;
+  optional bytes gasPrice = 6;
+  optional bytes maxFeePerGas = 7;
+  optional bytes maxPriorityFeePerGas = 8;
+  bytes value = 9;
+  optional uint64 chainId = 10;
+  map<string, AccessListItem> accessList = 11; // Usage of string is workaround to use [u8; 32] as key in a map
+}
+
+message HandleTransactionResponse {
+  string hash = 1;
 }
 
 message FFIRequest {
   oneof req {
-    Hello hello_world = 1;
+    TransactionData handleTransaction = 1;
   }
 }

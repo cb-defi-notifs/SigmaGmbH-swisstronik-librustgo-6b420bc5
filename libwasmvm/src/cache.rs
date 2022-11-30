@@ -8,7 +8,7 @@ use protobuf::Message;
 use crate::args::{PB_REQUEST_ARG};
 use crate::error::{ handle_c_error_default, Error};
 use crate::memory::{ByteSliceView, UnmanagedVector};
-use crate::protobuf_generated::ffi::{FFIRequest, FFIRequest_oneof_req};
+use crate::protobuf_generated::ffi::{FFIRequest, FFIRequest_oneof_req, HandleTransactionResponse};
 
 //
 // #[repr(C)]
@@ -27,7 +27,7 @@ use crate::protobuf_generated::ffi::{FFIRequest, FFIRequest_oneof_req};
 pub extern "C" fn make_pb_request(
     request: ByteSliceView,
     error_msg: Option<&mut UnmanagedVector>,
-) {
+) -> UnmanagedVector {
     let r = catch_unwind(|| {
         let req_bytes = request
             .read()
@@ -36,14 +36,27 @@ pub extern "C" fn make_pb_request(
             Ok(request) => {
                 if let Some(req) = request.req {
                     match req {
-                        FFIRequest_oneof_req::hello_world(hello_obj) => {
-                            println!("Hello from Rust, {}!",hello_obj.name);
+                        FFIRequest_oneof_req::handleTransaction(tx) => {
+                            println!("RUST: handleTransaction invoked");
+                            
+                            let mut response = HandleTransactionResponse::new();
+                            response.set_hash("0x12341234".to_string());
+
+                            let response_bytes = match response.write_to_bytes() {
+                                Ok(res) => res,
+                                Err(_) => {
+                                    return Err(Error::protobuf_decode("Response encoding failed"));
+                                }
+                            };
+
+                            println!("RUST: handleTransaction trying to return unmanaged vector");
+
+                            return Ok(response_bytes)
                         }
                     }
                 } else {
-                    return Err(Error::protobuf_decode("Request unwrapping failed"))
+                    return Err(Error::protobuf_decode("Request unwrapping failed"));
                 }
-                Ok(())
             },
             Err(e) => {
                 return Err(Error::protobuf_decode(e.to_string()))
@@ -51,7 +64,8 @@ pub extern "C" fn make_pb_request(
         }
     }).unwrap_or_else(|_| Err(Error::panic()));
 
-    handle_c_error_default(r, error_msg)
+    let data = handle_c_error_default(r, error_msg);
+    UnmanagedVector::new(Some(data))
 }
 
 //

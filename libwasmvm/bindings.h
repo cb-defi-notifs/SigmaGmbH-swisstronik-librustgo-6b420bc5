@@ -54,22 +54,6 @@ enum GoError {
 typedef int32_t GoError;
 
 /**
- * A view into an externally owned byte slice (Go `[]byte`).
- * Use this for the current call only. A view cannot be copied for safety reasons.
- * If you need a copy, use [`ByteSliceView::to_owned`].
- *
- * Go's nil value is fully supported, such that we can differentiate between nil and an empty slice.
- */
-typedef struct ByteSliceView {
-  /**
-   * True if and only if the byte slice is nil in Go. If this is true, the other fields must be ignored.
-   */
-  bool is_nil;
-  const uint8_t *ptr;
-  uintptr_t len;
-} ByteSliceView;
-
-/**
  * An optional Vector type that requires explicit creation and destruction
  * and can be sent via FFI.
  * It can be created from `Option<Vec<u8>>` and be converted into `Option<Vec<u8>>`.
@@ -189,7 +173,38 @@ typedef struct UnmanagedVector {
   uintptr_t cap;
 } UnmanagedVector;
 
-void make_pb_request(struct ByteSliceView request, struct UnmanagedVector *error_msg);
+/**
+ * A view into an externally owned byte slice (Go `[]byte`).
+ * Use this for the current call only. A view cannot be copied for safety reasons.
+ * If you need a copy, use [`ByteSliceView::to_owned`].
+ *
+ * Go's nil value is fully supported, such that we can differentiate between nil and an empty slice.
+ */
+typedef struct ByteSliceView {
+  /**
+   * True if and only if the byte slice is nil in Go. If this is true, the other fields must be ignored.
+   */
+  bool is_nil;
+  const uint8_t *ptr;
+  uintptr_t len;
+} ByteSliceView;
+
+/**
+ * A view into a `Option<&[u8]>`, created and maintained by Rust.
+ *
+ * This can be copied into a []byte in Go.
+ */
+typedef struct U8SliceView {
+  /**
+   * True if and only if this is None. If this is true, the other fields must be ignored.
+   */
+  bool is_none;
+  const uint8_t *ptr;
+  uintptr_t len;
+} U8SliceView;
+
+struct UnmanagedVector make_pb_request(struct ByteSliceView request,
+                                       struct UnmanagedVector *error_msg);
 
 struct UnmanagedVector new_unmanaged_vector(bool nil, const uint8_t *ptr, uintptr_t length);
 

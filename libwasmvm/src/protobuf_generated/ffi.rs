@@ -24,53 +24,52 @@
 // const _PROTOBUF_VERSION_CHECK: () = ::protobuf::VERSION_2_28_0;
 
 #[derive(PartialEq,Clone,Default)]
-pub struct Hello {
+pub struct AccessListItem {
     // message fields
-    pub name: ::std::string::String,
+    pub storageSlot: ::protobuf::RepeatedField<::std::vec::Vec<u8>>,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
 }
 
-impl<'a> ::std::default::Default for &'a Hello {
-    fn default() -> &'a Hello {
-        <Hello as ::protobuf::Message>::default_instance()
+impl<'a> ::std::default::Default for &'a AccessListItem {
+    fn default() -> &'a AccessListItem {
+        <AccessListItem as ::protobuf::Message>::default_instance()
     }
 }
 
-impl Hello {
-    pub fn new() -> Hello {
+impl AccessListItem {
+    pub fn new() -> AccessListItem {
         ::std::default::Default::default()
     }
 
-    // string name = 1;
+    // repeated bytes storageSlot = 1;
 
 
-    pub fn get_name(&self) -> &str {
-        &self.name
+    pub fn get_storageSlot(&self) -> &[::std::vec::Vec<u8>] {
+        &self.storageSlot
     }
-    pub fn clear_name(&mut self) {
-        self.name.clear();
+    pub fn clear_storageSlot(&mut self) {
+        self.storageSlot.clear();
     }
 
     // Param is passed by value, moved
-    pub fn set_name(&mut self, v: ::std::string::String) {
-        self.name = v;
+    pub fn set_storageSlot(&mut self, v: ::protobuf::RepeatedField<::std::vec::Vec<u8>>) {
+        self.storageSlot = v;
     }
 
     // Mutable pointer to the field.
-    // If field is not initialized, it is initialized with default value first.
-    pub fn mut_name(&mut self) -> &mut ::std::string::String {
-        &mut self.name
+    pub fn mut_storageSlot(&mut self) -> &mut ::protobuf::RepeatedField<::std::vec::Vec<u8>> {
+        &mut self.storageSlot
     }
 
     // Take field
-    pub fn take_name(&mut self) -> ::std::string::String {
-        ::std::mem::replace(&mut self.name, ::std::string::String::new())
+    pub fn take_storageSlot(&mut self) -> ::protobuf::RepeatedField<::std::vec::Vec<u8>> {
+        ::std::mem::replace(&mut self.storageSlot, ::protobuf::RepeatedField::new())
     }
 }
 
-impl ::protobuf::Message for Hello {
+impl ::protobuf::Message for AccessListItem {
     fn is_initialized(&self) -> bool {
         true
     }
@@ -80,7 +79,7 @@ impl ::protobuf::Message for Hello {
             let (field_number, wire_type) = is.read_tag_unpack()?;
             match field_number {
                 1 => {
-                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.name)?;
+                    ::protobuf::rt::read_repeated_bytes_into(wire_type, is, &mut self.storageSlot)?;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -94,8 +93,611 @@ impl ::protobuf::Message for Hello {
     #[allow(unused_variables)]
     fn compute_size(&self) -> u32 {
         let mut my_size = 0;
-        if !self.name.is_empty() {
-            my_size += ::protobuf::rt::string_size(1, &self.name);
+        for value in &self.storageSlot {
+            my_size += ::protobuf::rt::bytes_size(1, &value);
+        };
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        for v in &self.storageSlot {
+            os.write_bytes(1, &v)?;
+        };
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> AccessListItem {
+        AccessListItem::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "storageSlot",
+                |m: &AccessListItem| { &m.storageSlot },
+                |m: &mut AccessListItem| { &mut m.storageSlot },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<AccessListItem>(
+                "AccessListItem",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static AccessListItem {
+        static instance: ::protobuf::rt::LazyV2<AccessListItem> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(AccessListItem::new)
+    }
+}
+
+impl ::protobuf::Clear for AccessListItem {
+    fn clear(&mut self) {
+        self.storageSlot.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for AccessListItem {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for AccessListItem {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct TransactionData {
+    // message fields
+    pub from: ::std::vec::Vec<u8>,
+    pub to: ::std::vec::Vec<u8>,
+    pub data: ::std::vec::Vec<u8>,
+    pub nonce: ::std::vec::Vec<u8>,
+    pub gasLimit: ::std::vec::Vec<u8>,
+    pub value: ::std::vec::Vec<u8>,
+    pub accessList: ::std::collections::HashMap<::std::string::String, AccessListItem>,
+    // message oneof groups
+    pub _gasPrice: ::std::option::Option<TransactionData_oneof__gasPrice>,
+    pub _maxFeePerGas: ::std::option::Option<TransactionData_oneof__maxFeePerGas>,
+    pub _maxPriorityFeePerGas: ::std::option::Option<TransactionData_oneof__maxPriorityFeePerGas>,
+    pub _chainId: ::std::option::Option<TransactionData_oneof__chainId>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a TransactionData {
+    fn default() -> &'a TransactionData {
+        <TransactionData as ::protobuf::Message>::default_instance()
+    }
+}
+
+#[derive(Clone,PartialEq,Debug)]
+pub enum TransactionData_oneof__gasPrice {
+    gasPrice(::std::vec::Vec<u8>),
+}
+
+#[derive(Clone,PartialEq,Debug)]
+pub enum TransactionData_oneof__maxFeePerGas {
+    maxFeePerGas(::std::vec::Vec<u8>),
+}
+
+#[derive(Clone,PartialEq,Debug)]
+pub enum TransactionData_oneof__maxPriorityFeePerGas {
+    maxPriorityFeePerGas(::std::vec::Vec<u8>),
+}
+
+#[derive(Clone,PartialEq,Debug)]
+pub enum TransactionData_oneof__chainId {
+    chainId(u64),
+}
+
+impl TransactionData {
+    pub fn new() -> TransactionData {
+        ::std::default::Default::default()
+    }
+
+    // bytes from = 1;
+
+
+    pub fn get_from(&self) -> &[u8] {
+        &self.from
+    }
+    pub fn clear_from(&mut self) {
+        self.from.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_from(&mut self, v: ::std::vec::Vec<u8>) {
+        self.from = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_from(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.from
+    }
+
+    // Take field
+    pub fn take_from(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.from, ::std::vec::Vec::new())
+    }
+
+    // bytes to = 2;
+
+
+    pub fn get_to(&self) -> &[u8] {
+        &self.to
+    }
+    pub fn clear_to(&mut self) {
+        self.to.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_to(&mut self, v: ::std::vec::Vec<u8>) {
+        self.to = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_to(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.to
+    }
+
+    // Take field
+    pub fn take_to(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.to, ::std::vec::Vec::new())
+    }
+
+    // bytes data = 3;
+
+
+    pub fn get_data(&self) -> &[u8] {
+        &self.data
+    }
+    pub fn clear_data(&mut self) {
+        self.data.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_data(&mut self, v: ::std::vec::Vec<u8>) {
+        self.data = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_data(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.data
+    }
+
+    // Take field
+    pub fn take_data(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.data, ::std::vec::Vec::new())
+    }
+
+    // bytes nonce = 4;
+
+
+    pub fn get_nonce(&self) -> &[u8] {
+        &self.nonce
+    }
+    pub fn clear_nonce(&mut self) {
+        self.nonce.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_nonce(&mut self, v: ::std::vec::Vec<u8>) {
+        self.nonce = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_nonce(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.nonce
+    }
+
+    // Take field
+    pub fn take_nonce(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.nonce, ::std::vec::Vec::new())
+    }
+
+    // bytes gasLimit = 5;
+
+
+    pub fn get_gasLimit(&self) -> &[u8] {
+        &self.gasLimit
+    }
+    pub fn clear_gasLimit(&mut self) {
+        self.gasLimit.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_gasLimit(&mut self, v: ::std::vec::Vec<u8>) {
+        self.gasLimit = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_gasLimit(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.gasLimit
+    }
+
+    // Take field
+    pub fn take_gasLimit(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.gasLimit, ::std::vec::Vec::new())
+    }
+
+    // bytes gasPrice = 6;
+
+
+    pub fn get_gasPrice(&self) -> &[u8] {
+        match self._gasPrice {
+            ::std::option::Option::Some(TransactionData_oneof__gasPrice::gasPrice(ref v)) => v,
+            _ => &[],
+        }
+    }
+    pub fn clear_gasPrice(&mut self) {
+        self._gasPrice = ::std::option::Option::None;
+    }
+
+    pub fn has_gasPrice(&self) -> bool {
+        match self._gasPrice {
+            ::std::option::Option::Some(TransactionData_oneof__gasPrice::gasPrice(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_gasPrice(&mut self, v: ::std::vec::Vec<u8>) {
+        self._gasPrice = ::std::option::Option::Some(TransactionData_oneof__gasPrice::gasPrice(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_gasPrice(&mut self) -> &mut ::std::vec::Vec<u8> {
+        if let ::std::option::Option::Some(TransactionData_oneof__gasPrice::gasPrice(_)) = self._gasPrice {
+        } else {
+            self._gasPrice = ::std::option::Option::Some(TransactionData_oneof__gasPrice::gasPrice(::std::vec::Vec::new()));
+        }
+        match self._gasPrice {
+            ::std::option::Option::Some(TransactionData_oneof__gasPrice::gasPrice(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_gasPrice(&mut self) -> ::std::vec::Vec<u8> {
+        if self.has_gasPrice() {
+            match self._gasPrice.take() {
+                ::std::option::Option::Some(TransactionData_oneof__gasPrice::gasPrice(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            ::std::vec::Vec::new()
+        }
+    }
+
+    // bytes maxFeePerGas = 7;
+
+
+    pub fn get_maxFeePerGas(&self) -> &[u8] {
+        match self._maxFeePerGas {
+            ::std::option::Option::Some(TransactionData_oneof__maxFeePerGas::maxFeePerGas(ref v)) => v,
+            _ => &[],
+        }
+    }
+    pub fn clear_maxFeePerGas(&mut self) {
+        self._maxFeePerGas = ::std::option::Option::None;
+    }
+
+    pub fn has_maxFeePerGas(&self) -> bool {
+        match self._maxFeePerGas {
+            ::std::option::Option::Some(TransactionData_oneof__maxFeePerGas::maxFeePerGas(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_maxFeePerGas(&mut self, v: ::std::vec::Vec<u8>) {
+        self._maxFeePerGas = ::std::option::Option::Some(TransactionData_oneof__maxFeePerGas::maxFeePerGas(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_maxFeePerGas(&mut self) -> &mut ::std::vec::Vec<u8> {
+        if let ::std::option::Option::Some(TransactionData_oneof__maxFeePerGas::maxFeePerGas(_)) = self._maxFeePerGas {
+        } else {
+            self._maxFeePerGas = ::std::option::Option::Some(TransactionData_oneof__maxFeePerGas::maxFeePerGas(::std::vec::Vec::new()));
+        }
+        match self._maxFeePerGas {
+            ::std::option::Option::Some(TransactionData_oneof__maxFeePerGas::maxFeePerGas(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_maxFeePerGas(&mut self) -> ::std::vec::Vec<u8> {
+        if self.has_maxFeePerGas() {
+            match self._maxFeePerGas.take() {
+                ::std::option::Option::Some(TransactionData_oneof__maxFeePerGas::maxFeePerGas(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            ::std::vec::Vec::new()
+        }
+    }
+
+    // bytes maxPriorityFeePerGas = 8;
+
+
+    pub fn get_maxPriorityFeePerGas(&self) -> &[u8] {
+        match self._maxPriorityFeePerGas {
+            ::std::option::Option::Some(TransactionData_oneof__maxPriorityFeePerGas::maxPriorityFeePerGas(ref v)) => v,
+            _ => &[],
+        }
+    }
+    pub fn clear_maxPriorityFeePerGas(&mut self) {
+        self._maxPriorityFeePerGas = ::std::option::Option::None;
+    }
+
+    pub fn has_maxPriorityFeePerGas(&self) -> bool {
+        match self._maxPriorityFeePerGas {
+            ::std::option::Option::Some(TransactionData_oneof__maxPriorityFeePerGas::maxPriorityFeePerGas(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_maxPriorityFeePerGas(&mut self, v: ::std::vec::Vec<u8>) {
+        self._maxPriorityFeePerGas = ::std::option::Option::Some(TransactionData_oneof__maxPriorityFeePerGas::maxPriorityFeePerGas(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_maxPriorityFeePerGas(&mut self) -> &mut ::std::vec::Vec<u8> {
+        if let ::std::option::Option::Some(TransactionData_oneof__maxPriorityFeePerGas::maxPriorityFeePerGas(_)) = self._maxPriorityFeePerGas {
+        } else {
+            self._maxPriorityFeePerGas = ::std::option::Option::Some(TransactionData_oneof__maxPriorityFeePerGas::maxPriorityFeePerGas(::std::vec::Vec::new()));
+        }
+        match self._maxPriorityFeePerGas {
+            ::std::option::Option::Some(TransactionData_oneof__maxPriorityFeePerGas::maxPriorityFeePerGas(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_maxPriorityFeePerGas(&mut self) -> ::std::vec::Vec<u8> {
+        if self.has_maxPriorityFeePerGas() {
+            match self._maxPriorityFeePerGas.take() {
+                ::std::option::Option::Some(TransactionData_oneof__maxPriorityFeePerGas::maxPriorityFeePerGas(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            ::std::vec::Vec::new()
+        }
+    }
+
+    // bytes value = 9;
+
+
+    pub fn get_value(&self) -> &[u8] {
+        &self.value
+    }
+    pub fn clear_value(&mut self) {
+        self.value.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_value(&mut self, v: ::std::vec::Vec<u8>) {
+        self.value = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_value(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.value
+    }
+
+    // Take field
+    pub fn take_value(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.value, ::std::vec::Vec::new())
+    }
+
+    // uint64 chainId = 10;
+
+
+    pub fn get_chainId(&self) -> u64 {
+        match self._chainId {
+            ::std::option::Option::Some(TransactionData_oneof__chainId::chainId(v)) => v,
+            _ => 0,
+        }
+    }
+    pub fn clear_chainId(&mut self) {
+        self._chainId = ::std::option::Option::None;
+    }
+
+    pub fn has_chainId(&self) -> bool {
+        match self._chainId {
+            ::std::option::Option::Some(TransactionData_oneof__chainId::chainId(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_chainId(&mut self, v: u64) {
+        self._chainId = ::std::option::Option::Some(TransactionData_oneof__chainId::chainId(v))
+    }
+
+    // repeated .ffi.ffi.TransactionData.AccessListEntry accessList = 11;
+
+
+    pub fn get_accessList(&self) -> &::std::collections::HashMap<::std::string::String, AccessListItem> {
+        &self.accessList
+    }
+    pub fn clear_accessList(&mut self) {
+        self.accessList.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_accessList(&mut self, v: ::std::collections::HashMap<::std::string::String, AccessListItem>) {
+        self.accessList = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_accessList(&mut self) -> &mut ::std::collections::HashMap<::std::string::String, AccessListItem> {
+        &mut self.accessList
+    }
+
+    // Take field
+    pub fn take_accessList(&mut self) -> ::std::collections::HashMap<::std::string::String, AccessListItem> {
+        ::std::mem::replace(&mut self.accessList, ::std::collections::HashMap::new())
+    }
+}
+
+impl ::protobuf::Message for TransactionData {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.from)?;
+                },
+                2 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.to)?;
+                },
+                3 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.data)?;
+                },
+                4 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.nonce)?;
+                },
+                5 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.gasLimit)?;
+                },
+                6 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self._gasPrice = ::std::option::Option::Some(TransactionData_oneof__gasPrice::gasPrice(is.read_bytes()?));
+                },
+                7 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self._maxFeePerGas = ::std::option::Option::Some(TransactionData_oneof__maxFeePerGas::maxFeePerGas(is.read_bytes()?));
+                },
+                8 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self._maxPriorityFeePerGas = ::std::option::Option::Some(TransactionData_oneof__maxPriorityFeePerGas::maxPriorityFeePerGas(is.read_bytes()?));
+                },
+                9 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.value)?;
+                },
+                10 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self._chainId = ::std::option::Option::Some(TransactionData_oneof__chainId::chainId(is.read_uint64()?));
+                },
+                11 => {
+                    ::protobuf::rt::read_map_into::<::protobuf::types::ProtobufTypeString, ::protobuf::types::ProtobufTypeMessage<AccessListItem>>(wire_type, is, &mut self.accessList)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.from.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.from);
+        }
+        if !self.to.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(2, &self.to);
+        }
+        if !self.data.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(3, &self.data);
+        }
+        if !self.nonce.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(4, &self.nonce);
+        }
+        if !self.gasLimit.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(5, &self.gasLimit);
+        }
+        if !self.value.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(9, &self.value);
+        }
+        my_size += ::protobuf::rt::compute_map_size::<::protobuf::types::ProtobufTypeString, ::protobuf::types::ProtobufTypeMessage<AccessListItem>>(11, &self.accessList);
+        if let ::std::option::Option::Some(ref v) = self._gasPrice {
+            match v {
+                &TransactionData_oneof__gasPrice::gasPrice(ref v) => {
+                    my_size += ::protobuf::rt::bytes_size(6, &v);
+                },
+            };
+        }
+        if let ::std::option::Option::Some(ref v) = self._maxFeePerGas {
+            match v {
+                &TransactionData_oneof__maxFeePerGas::maxFeePerGas(ref v) => {
+                    my_size += ::protobuf::rt::bytes_size(7, &v);
+                },
+            };
+        }
+        if let ::std::option::Option::Some(ref v) = self._maxPriorityFeePerGas {
+            match v {
+                &TransactionData_oneof__maxPriorityFeePerGas::maxPriorityFeePerGas(ref v) => {
+                    my_size += ::protobuf::rt::bytes_size(8, &v);
+                },
+            };
+        }
+        if let ::std::option::Option::Some(ref v) = self._chainId {
+            match v {
+                &TransactionData_oneof__chainId::chainId(v) => {
+                    my_size += ::protobuf::rt::value_size(10, v, ::protobuf::wire_format::WireTypeVarint);
+                },
+            };
         }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
@@ -103,8 +705,52 @@ impl ::protobuf::Message for Hello {
     }
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        if !self.name.is_empty() {
-            os.write_string(1, &self.name)?;
+        if !self.from.is_empty() {
+            os.write_bytes(1, &self.from)?;
+        }
+        if !self.to.is_empty() {
+            os.write_bytes(2, &self.to)?;
+        }
+        if !self.data.is_empty() {
+            os.write_bytes(3, &self.data)?;
+        }
+        if !self.nonce.is_empty() {
+            os.write_bytes(4, &self.nonce)?;
+        }
+        if !self.gasLimit.is_empty() {
+            os.write_bytes(5, &self.gasLimit)?;
+        }
+        if !self.value.is_empty() {
+            os.write_bytes(9, &self.value)?;
+        }
+        ::protobuf::rt::write_map_with_cached_sizes::<::protobuf::types::ProtobufTypeString, ::protobuf::types::ProtobufTypeMessage<AccessListItem>>(11, &self.accessList, os)?;
+        if let ::std::option::Option::Some(ref v) = self._gasPrice {
+            match v {
+                &TransactionData_oneof__gasPrice::gasPrice(ref v) => {
+                    os.write_bytes(6, v)?;
+                },
+            };
+        }
+        if let ::std::option::Option::Some(ref v) = self._maxFeePerGas {
+            match v {
+                &TransactionData_oneof__maxFeePerGas::maxFeePerGas(ref v) => {
+                    os.write_bytes(7, v)?;
+                },
+            };
+        }
+        if let ::std::option::Option::Some(ref v) = self._maxPriorityFeePerGas {
+            match v {
+                &TransactionData_oneof__maxPriorityFeePerGas::maxPriorityFeePerGas(ref v) => {
+                    os.write_bytes(8, v)?;
+                },
+            };
+        }
+        if let ::std::option::Option::Some(ref v) = self._chainId {
+            match v {
+                &TransactionData_oneof__chainId::chainId(v) => {
+                    os.write_uint64(10, v)?;
+                },
+            };
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -136,8 +782,227 @@ impl ::protobuf::Message for Hello {
         Self::descriptor_static()
     }
 
-    fn new() -> Hello {
-        Hello::new()
+    fn new() -> TransactionData {
+        TransactionData::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "from",
+                |m: &TransactionData| { &m.from },
+                |m: &mut TransactionData| { &mut m.from },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "to",
+                |m: &TransactionData| { &m.to },
+                |m: &mut TransactionData| { &mut m.to },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "data",
+                |m: &TransactionData| { &m.data },
+                |m: &mut TransactionData| { &mut m.data },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "nonce",
+                |m: &TransactionData| { &m.nonce },
+                |m: &mut TransactionData| { &mut m.nonce },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "gasLimit",
+                |m: &TransactionData| { &m.gasLimit },
+                |m: &mut TransactionData| { &mut m.gasLimit },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_bytes_accessor::<_>(
+                "gasPrice",
+                TransactionData::has_gasPrice,
+                TransactionData::get_gasPrice,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_bytes_accessor::<_>(
+                "maxFeePerGas",
+                TransactionData::has_maxFeePerGas,
+                TransactionData::get_maxFeePerGas,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_bytes_accessor::<_>(
+                "maxPriorityFeePerGas",
+                TransactionData::has_maxPriorityFeePerGas,
+                TransactionData::get_maxPriorityFeePerGas,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "value",
+                |m: &TransactionData| { &m.value },
+                |m: &mut TransactionData| { &mut m.value },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_u64_accessor::<_>(
+                "chainId",
+                TransactionData::has_chainId,
+                TransactionData::get_chainId,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_map_accessor::<_, ::protobuf::types::ProtobufTypeString, ::protobuf::types::ProtobufTypeMessage<AccessListItem>>(
+                "accessList",
+                |m: &TransactionData| { &m.accessList },
+                |m: &mut TransactionData| { &mut m.accessList },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<TransactionData>(
+                "TransactionData",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static TransactionData {
+        static instance: ::protobuf::rt::LazyV2<TransactionData> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(TransactionData::new)
+    }
+}
+
+impl ::protobuf::Clear for TransactionData {
+    fn clear(&mut self) {
+        self.from.clear();
+        self.to.clear();
+        self.data.clear();
+        self.nonce.clear();
+        self.gasLimit.clear();
+        self._gasPrice = ::std::option::Option::None;
+        self._maxFeePerGas = ::std::option::Option::None;
+        self._maxPriorityFeePerGas = ::std::option::Option::None;
+        self.value.clear();
+        self._chainId = ::std::option::Option::None;
+        self.accessList.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for TransactionData {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for TransactionData {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct HandleTransactionResponse {
+    // message fields
+    pub hash: ::std::string::String,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a HandleTransactionResponse {
+    fn default() -> &'a HandleTransactionResponse {
+        <HandleTransactionResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl HandleTransactionResponse {
+    pub fn new() -> HandleTransactionResponse {
+        ::std::default::Default::default()
+    }
+
+    // string hash = 1;
+
+
+    pub fn get_hash(&self) -> &str {
+        &self.hash
+    }
+    pub fn clear_hash(&mut self) {
+        self.hash.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_hash(&mut self, v: ::std::string::String) {
+        self.hash = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_hash(&mut self) -> &mut ::std::string::String {
+        &mut self.hash
+    }
+
+    // Take field
+    pub fn take_hash(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.hash, ::std::string::String::new())
+    }
+}
+
+impl ::protobuf::Message for HandleTransactionResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.hash)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.hash.is_empty() {
+            my_size += ::protobuf::rt::string_size(1, &self.hash);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.hash.is_empty() {
+            os.write_string(1, &self.hash)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> HandleTransactionResponse {
+        HandleTransactionResponse::new()
     }
 
     fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
@@ -145,38 +1010,38 @@ impl ::protobuf::Message for Hello {
         descriptor.get(|| {
             let mut fields = ::std::vec::Vec::new();
             fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
-                "name",
-                |m: &Hello| { &m.name },
-                |m: &mut Hello| { &mut m.name },
+                "hash",
+                |m: &HandleTransactionResponse| { &m.hash },
+                |m: &mut HandleTransactionResponse| { &mut m.hash },
             ));
-            ::protobuf::reflect::MessageDescriptor::new_pb_name::<Hello>(
-                "Hello",
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<HandleTransactionResponse>(
+                "HandleTransactionResponse",
                 fields,
                 file_descriptor_proto()
             )
         })
     }
 
-    fn default_instance() -> &'static Hello {
-        static instance: ::protobuf::rt::LazyV2<Hello> = ::protobuf::rt::LazyV2::INIT;
-        instance.get(Hello::new)
+    fn default_instance() -> &'static HandleTransactionResponse {
+        static instance: ::protobuf::rt::LazyV2<HandleTransactionResponse> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(HandleTransactionResponse::new)
     }
 }
 
-impl ::protobuf::Clear for Hello {
+impl ::protobuf::Clear for HandleTransactionResponse {
     fn clear(&mut self) {
-        self.name.clear();
+        self.hash.clear();
         self.unknown_fields.clear();
     }
 }
 
-impl ::std::fmt::Debug for Hello {
+impl ::std::fmt::Debug for HandleTransactionResponse {
     fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
         ::protobuf::text_format::fmt(self, f)
     }
 }
 
-impl ::protobuf::reflect::ProtobufValue for Hello {
+impl ::protobuf::reflect::ProtobufValue for HandleTransactionResponse {
     fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
         ::protobuf::reflect::ReflectValueRef::Message(self)
     }
@@ -199,7 +1064,7 @@ impl<'a> ::std::default::Default for &'a FFIRequest {
 
 #[derive(Clone,PartialEq,Debug)]
 pub enum FFIRequest_oneof_req {
-    hello_world(Hello),
+    handleTransaction(TransactionData),
 }
 
 impl FFIRequest {
@@ -207,59 +1072,59 @@ impl FFIRequest {
         ::std::default::Default::default()
     }
 
-    // .ffi.ffi.Hello hello_world = 1;
+    // .ffi.ffi.TransactionData handleTransaction = 1;
 
 
-    pub fn get_hello_world(&self) -> &Hello {
+    pub fn get_handleTransaction(&self) -> &TransactionData {
         match self.req {
-            ::std::option::Option::Some(FFIRequest_oneof_req::hello_world(ref v)) => v,
-            _ => <Hello as ::protobuf::Message>::default_instance(),
+            ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(ref v)) => v,
+            _ => <TransactionData as ::protobuf::Message>::default_instance(),
         }
     }
-    pub fn clear_hello_world(&mut self) {
+    pub fn clear_handleTransaction(&mut self) {
         self.req = ::std::option::Option::None;
     }
 
-    pub fn has_hello_world(&self) -> bool {
+    pub fn has_handleTransaction(&self) -> bool {
         match self.req {
-            ::std::option::Option::Some(FFIRequest_oneof_req::hello_world(..)) => true,
+            ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(..)) => true,
             _ => false,
         }
     }
 
     // Param is passed by value, moved
-    pub fn set_hello_world(&mut self, v: Hello) {
-        self.req = ::std::option::Option::Some(FFIRequest_oneof_req::hello_world(v))
+    pub fn set_handleTransaction(&mut self, v: TransactionData) {
+        self.req = ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(v))
     }
 
     // Mutable pointer to the field.
-    pub fn mut_hello_world(&mut self) -> &mut Hello {
-        if let ::std::option::Option::Some(FFIRequest_oneof_req::hello_world(_)) = self.req {
+    pub fn mut_handleTransaction(&mut self) -> &mut TransactionData {
+        if let ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(_)) = self.req {
         } else {
-            self.req = ::std::option::Option::Some(FFIRequest_oneof_req::hello_world(Hello::new()));
+            self.req = ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(TransactionData::new()));
         }
         match self.req {
-            ::std::option::Option::Some(FFIRequest_oneof_req::hello_world(ref mut v)) => v,
+            ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(ref mut v)) => v,
             _ => panic!(),
         }
     }
 
     // Take field
-    pub fn take_hello_world(&mut self) -> Hello {
-        if self.has_hello_world() {
+    pub fn take_handleTransaction(&mut self) -> TransactionData {
+        if self.has_handleTransaction() {
             match self.req.take() {
-                ::std::option::Option::Some(FFIRequest_oneof_req::hello_world(v)) => v,
+                ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(v)) => v,
                 _ => panic!(),
             }
         } else {
-            Hello::new()
+            TransactionData::new()
         }
     }
 }
 
 impl ::protobuf::Message for FFIRequest {
     fn is_initialized(&self) -> bool {
-        if let Some(FFIRequest_oneof_req::hello_world(ref v)) = self.req {
+        if let Some(FFIRequest_oneof_req::handleTransaction(ref v)) = self.req {
             if !v.is_initialized() {
                 return false;
             }
@@ -275,7 +1140,7 @@ impl ::protobuf::Message for FFIRequest {
                     if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
-                    self.req = ::std::option::Option::Some(FFIRequest_oneof_req::hello_world(is.read_message()?));
+                    self.req = ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(is.read_message()?));
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -291,7 +1156,7 @@ impl ::protobuf::Message for FFIRequest {
         let mut my_size = 0;
         if let ::std::option::Option::Some(ref v) = self.req {
             match v {
-                &FFIRequest_oneof_req::hello_world(ref v) => {
+                &FFIRequest_oneof_req::handleTransaction(ref v) => {
                     let len = v.compute_size();
                     my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
                 },
@@ -305,7 +1170,7 @@ impl ::protobuf::Message for FFIRequest {
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
         if let ::std::option::Option::Some(ref v) = self.req {
             match v {
-                &FFIRequest_oneof_req::hello_world(ref v) => {
+                &FFIRequest_oneof_req::handleTransaction(ref v) => {
                     os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
                     os.write_raw_varint32(v.get_cached_size())?;
                     v.write_to_with_cached_sizes(os)?;
@@ -350,10 +1215,10 @@ impl ::protobuf::Message for FFIRequest {
         static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
         descriptor.get(|| {
             let mut fields = ::std::vec::Vec::new();
-            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, Hello>(
-                "hello_world",
-                FFIRequest::has_hello_world,
-                FFIRequest::get_hello_world,
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, TransactionData>(
+                "handleTransaction",
+                FFIRequest::has_handleTransaction,
+                FFIRequest::get_handleTransaction,
             ));
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<FFIRequest>(
                 "FFIRequest",
@@ -389,10 +1254,25 @@ impl ::protobuf::reflect::ProtobufValue for FFIRequest {
 }
 
 static file_descriptor_proto_data: &'static [u8] = b"\
-    \n\tffi.proto\x12\x07ffi.ffi\"\x1b\n\x05Hello\x12\x12\n\x04name\x18\x01\
-    \x20\x01(\tR\x04name\"F\n\nFFIRequest\x121\n\x0bhello_world\x18\x01\x20\
-    \x01(\x0b2\x0e.ffi.ffi.HelloH\0R\nhelloWorldB\x05\n\x03reqB\x04Z\x02./b\
-    \x06proto3\
+    \n\tffi.proto\x12\x07ffi.ffi\"2\n\x0eAccessListItem\x12\x20\n\x0bstorage\
+    Slot\x18\x01\x20\x03(\x0cR\x0bstorageSlot\"\x98\x04\n\x0fTransactionData\
+    \x12\x12\n\x04from\x18\x01\x20\x01(\x0cR\x04from\x12\x0e\n\x02to\x18\x02\
+    \x20\x01(\x0cR\x02to\x12\x12\n\x04data\x18\x03\x20\x01(\x0cR\x04data\x12\
+    \x14\n\x05nonce\x18\x04\x20\x01(\x0cR\x05nonce\x12\x1a\n\x08gasLimit\x18\
+    \x05\x20\x01(\x0cR\x08gasLimit\x12\x1f\n\x08gasPrice\x18\x06\x20\x01(\
+    \x0cH\0R\x08gasPrice\x88\x01\x01\x12'\n\x0cmaxFeePerGas\x18\x07\x20\x01(\
+    \x0cH\x01R\x0cmaxFeePerGas\x88\x01\x01\x127\n\x14maxPriorityFeePerGas\
+    \x18\x08\x20\x01(\x0cH\x02R\x14maxPriorityFeePerGas\x88\x01\x01\x12\x14\
+    \n\x05value\x18\t\x20\x01(\x0cR\x05value\x12\x1d\n\x07chainId\x18\n\x20\
+    \x01(\x04H\x03R\x07chainId\x88\x01\x01\x12H\n\naccessList\x18\x0b\x20\
+    \x03(\x0b2(.ffi.ffi.TransactionData.AccessListEntryR\naccessList\x1aV\n\
+    \x0fAccessListEntry\x12\x10\n\x03key\x18\x01\x20\x01(\tR\x03key\x12-\n\
+    \x05value\x18\x02\x20\x01(\x0b2\x17.ffi.ffi.AccessListItemR\x05value:\
+    \x028\x01B\x0b\n\t_gasPriceB\x0f\n\r_maxFeePerGasB\x17\n\x15_maxPriority\
+    FeePerGasB\n\n\x08_chainId\"/\n\x19HandleTransactionResponse\x12\x12\n\
+    \x04hash\x18\x01\x20\x01(\tR\x04hash\"]\n\nFFIRequest\x12H\n\x11handleTr\
+    ansaction\x18\x01\x20\x01(\x0b2\x18.ffi.ffi.TransactionDataH\0R\x11handl\
+    eTransactionB\x05\n\x03reqB\x04Z\x02./b\x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;
