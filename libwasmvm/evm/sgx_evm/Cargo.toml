@@ -1,0 +1,46 @@
+[package]
+name = "sgx_evm"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+evm = { version = "0.36.0", default-features = false }
+sgx_tstd = { git = "https://github.com/apache/teaclave-sgx-sdk.git", optional = true }
+primitive-types = { version = "0.11", default-features = false, features = ["rlp"] }
+hex = { version = "0.4.3", default-features = false, features = ["alloc"] }
+ethereum = { version = "0.12.0", default-features = false, features = ["with-codec", "with-serde"] }
+sha3 = { version = "0.10", default-features = false }
+rlp = { version = "0.5.1", default-features = false }
+k256 = { version = "0.11.6", default-features = false, features = ["keccak256", "ecdsa"] }
+rlp-derive = "0.1.0"
+common_types = { path = "../common-types", default-features = false }
+
+# Precompiles
+precompile-std = { path = "../precompiles/precompile-std", default-features = false }
+evm-precompile-simple = { path = "../precompiles/simple", default-features = false }
+evm-precompile-sha3fips = { path = "../precompiles/sha3fips", default-features = false }
+evm-precompile-modexp = { path = "../precompiles/modexp", default-features = false }
+evm-precompile-bn128 = { path = "../precompiles/bn128", default-features = false }
+evm-precompile-blake2f = { path = "../precompiles/blake2f", default-features = false }
+
+[features]
+default = ["std"]
+std = [
+    "common_types/std",
+    "precompile-std/std",
+    "evm-precompile-simple/std",
+    "evm-precompile-sha3fips/std",
+    "evm-precompile-modexp/std",
+    "evm-precompile-bn128/std",
+    "evm-precompile-blake2f/std"
+]
+sgx = [
+    "sgx_tstd",
+    "common_types/sgx",
+    "precompile-std/sgx",
+    "evm-precompile-simple/sgx",
+    "evm-precompile-sha3fips/sgx",
+    "evm-precompile-modexp/sgx",
+    "evm-precompile-bn128/sgx",
+    "evm-precompile-blake2f/sgx"
+]

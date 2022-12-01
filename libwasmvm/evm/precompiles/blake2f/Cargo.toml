@@ -1,0 +1,15 @@
+[package]
+name = "evm-precompile-blake2f"
+version = "1.0.0-dev"
+edition = "2021"
+description = "Blake2F precompiles for EVM"
+
+[dependencies]
+precompile-std = { version = "1.0.0-dev", path = "../precompile-std", default-features = false }
+
+[features]
+default = ["std"]
+std = [
+    "precompile-std/std",
+]
+sgx = ["precompile-std/sgx"]

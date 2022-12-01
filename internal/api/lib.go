@@ -31,9 +31,22 @@ type (
 // Pointers
 type cu8_ptr = *C.uint8_t
 
-func HandleTx() error {
+// Handles incoming ethereum transaction
+func HandleTx(
+	from []byte,
+	to []byte,
+	data []byte,
+	value []byte,
+	gasLimit []byte,
+) error {
 	// Create protobuf encoded request
-	req := ffi.FFIRequest{Req: &ffi.FFIRequest_HandleTransaction{HandleTransaction: &ffi.TransactionData{}}}
+	req := ffi.FFIRequest{Req: &ffi.FFIRequest_HandleTransaction{HandleTransaction: &ffi.TransactionData{
+		From:     from,
+		To:       to,
+		Value:    value,
+		GasLimit: gasLimit,
+		Data: data,
+	}}}
 	reqBytes, err := proto.Marshal(&req)
 	if err != nil {
 		log.Fatalln("Failed to encode req:", err)
@@ -50,10 +63,10 @@ func HandleTx() error {
 	}
 
 	// Recover returned value
-	data := copyAndDestroyUnmanagedVector(ptr)
+	executionResult := copyAndDestroyUnmanagedVector(ptr)
 	response := ffi.HandleTransactionResponse{}
-	if err := proto.Unmarshal(data, &response); err != nil {
-		log.Fatalln("Failed to decode result:", err)
+	if err := proto.Unmarshal(executionResult, &response); err != nil {
+		log.Fatalln("Failed to decode execution result:", err)
 	}
 
 	println(response.Hash)
