@@ -37,11 +37,13 @@ fn parse_protobuf_transaction_data(data: ProtoTransactionData) -> ExecutionData 
         access_list.push((address, slots));
     }
 
+    let gas_limit = U256::from(data.get_gasLimit());
+
     ExecutionData {
         origin: H160::from_slice(&data.from),
         action,
         input: data.data,
-        gas_limit: U256::from_big_endian(&data.gasLimit),
+        gas_limit: gas_limit,
         value: U256::from_big_endian(&data.value),
         access_list,
     }

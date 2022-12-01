@@ -27,7 +27,7 @@ func main() {
 	}
 
 	value := make([]byte, binary.MaxVarintLen32)
-	gasLimit := make([]byte, binary.MaxVarintLen32)
+	gasLimit := uint64(10000000)
 	data := make([]byte, 0)
 
 	err := wasmvm.HandleTx(from, to, data, value, gasLimit)
