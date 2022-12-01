@@ -1,6 +1,9 @@
 package main
 
 import (
+	"encoding/hex"
+	"encoding/binary"
+
 	wasmvm "github.com/SigmaGmbH/librustgo"
 )
 
@@ -13,8 +16,22 @@ const (
 
 // This is just a demo to ensure we can compile a static go binary
 func main() {
+	// Create sample execution data
+	from, decodingErr := hex.DecodeString("91e1f4Bb1C1895F6c65cD8379DE1323A8bF3Cf7c")
+	if decodingErr != nil {
+		panic(decodingErr)
+	}
+	to, decodingErr := hex.DecodeString("91b126ff9AF242408090A223829Eb88A61724AA5")
+	if decodingErr != nil {
+		panic(decodingErr)
+	}
+
+	value := make([]byte, binary.MaxVarintLen32)
+	gasLimit := make([]byte, binary.MaxVarintLen32)
+	data := make([]byte, 0)
+
+	err := wasmvm.HandleTx(from, to, data, value, gasLimit)
 	//err := wasmvm.HelloWorld("Admin")
-	err := wasmvm.HandleTx()
 	//file := os.Args[1]
 	//fmt.Printf("Running %s...\n", file)
 	//bz, err := ioutil.ReadFile(file)
