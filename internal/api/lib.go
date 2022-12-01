@@ -32,13 +32,7 @@ type (
 type cu8_ptr = *C.uint8_t
 
 // Handles incoming ethereum transaction
-func HandleTx(
-	from []byte,
-	to []byte,
-	data []byte,
-	value []byte,
-	gasLimit []byte,
-) error {
+func HandleTx(from, to, data, value []byte, gasLimit uint64) error {
 	// Create protobuf encoded request
 	req := ffi.FFIRequest{Req: &ffi.FFIRequest_HandleTransaction{HandleTransaction: &ffi.TransactionData{
 		From:     from,

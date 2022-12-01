@@ -229,7 +229,7 @@ pub struct TransactionData {
     pub from: ::std::vec::Vec<u8>,
     pub to: ::std::vec::Vec<u8>,
     pub data: ::std::vec::Vec<u8>,
-    pub gasLimit: ::std::vec::Vec<u8>,
+    pub gasLimit: u64,
     pub value: ::std::vec::Vec<u8>,
     pub accessList: ::protobuf::RepeatedField<AccessListItem>,
     // special fields
@@ -326,30 +326,19 @@ impl TransactionData {
         ::std::mem::replace(&mut self.data, ::std::vec::Vec::new())
     }
 
-    // bytes gasLimit = 4;
+    // uint64 gasLimit = 4;
 
 
-    pub fn get_gasLimit(&self) -> &[u8] {
-        &self.gasLimit
+    pub fn get_gasLimit(&self) -> u64 {
+        self.gasLimit
     }
     pub fn clear_gasLimit(&mut self) {
-        self.gasLimit.clear();
+        self.gasLimit = 0;
     }
 
     // Param is passed by value, moved
-    pub fn set_gasLimit(&mut self, v: ::std::vec::Vec<u8>) {
+    pub fn set_gasLimit(&mut self, v: u64) {
         self.gasLimit = v;
-    }
-
-    // Mutable pointer to the field.
-    // If field is not initialized, it is initialized with default value first.
-    pub fn mut_gasLimit(&mut self) -> &mut ::std::vec::Vec<u8> {
-        &mut self.gasLimit
-    }
-
-    // Take field
-    pub fn take_gasLimit(&mut self) -> ::std::vec::Vec<u8> {
-        ::std::mem::replace(&mut self.gasLimit, ::std::vec::Vec::new())
     }
 
     // bytes value = 5;
@@ -428,7 +417,11 @@ impl ::protobuf::Message for TransactionData {
                     ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.data)?;
                 },
                 4 => {
-                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.gasLimit)?;
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.gasLimit = tmp;
                 },
                 5 => {
                     ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.value)?;
@@ -457,8 +450,8 @@ impl ::protobuf::Message for TransactionData {
         if !self.data.is_empty() {
             my_size += ::protobuf::rt::bytes_size(3, &self.data);
         }
-        if !self.gasLimit.is_empty() {
-            my_size += ::protobuf::rt::bytes_size(4, &self.gasLimit);
+        if self.gasLimit != 0 {
+            my_size += ::protobuf::rt::value_size(4, self.gasLimit, ::protobuf::wire_format::WireTypeVarint);
         }
         if !self.value.is_empty() {
             my_size += ::protobuf::rt::bytes_size(5, &self.value);
@@ -482,8 +475,8 @@ impl ::protobuf::Message for TransactionData {
         if !self.data.is_empty() {
             os.write_bytes(3, &self.data)?;
         }
-        if !self.gasLimit.is_empty() {
-            os.write_bytes(4, &self.gasLimit)?;
+        if self.gasLimit != 0 {
+            os.write_uint64(4, self.gasLimit)?;
         }
         if !self.value.is_empty() {
             os.write_bytes(5, &self.value)?;
@@ -546,7 +539,7 @@ impl ::protobuf::Message for TransactionData {
                 |m: &TransactionData| { &m.data },
                 |m: &mut TransactionData| { &mut m.data },
             ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
                 "gasLimit",
                 |m: &TransactionData| { &m.gasLimit },
                 |m: &mut TransactionData| { &mut m.gasLimit },
@@ -580,7 +573,7 @@ impl ::protobuf::Clear for TransactionData {
         self.from.clear();
         self.to.clear();
         self.data.clear();
-        self.gasLimit.clear();
+        self.gasLimit = 0;
         self.value.clear();
         self.accessList.clear();
         self.unknown_fields.clear();
@@ -970,7 +963,7 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x20\x01(\x0cR\x07address\"\xb4\x01\n\x0fTransactionData\x12\x12\n\x04fr\
     om\x18\x01\x20\x01(\x0cR\x04from\x12\x0e\n\x02to\x18\x02\x20\x01(\x0cR\
     \x02to\x12\x12\n\x04data\x18\x03\x20\x01(\x0cR\x04data\x12\x1a\n\x08gasL\
-    imit\x18\x04\x20\x01(\x0cR\x08gasLimit\x12\x14\n\x05value\x18\x05\x20\
+    imit\x18\x04\x20\x01(\x04R\x08gasLimit\x12\x14\n\x05value\x18\x05\x20\
     \x01(\x0cR\x05value\x127\n\naccessList\x18\x06\x20\x03(\x0b2\x17.ffi.ffi\
     .AccessListItemR\naccessList\"/\n\x19HandleTransactionResponse\x12\x12\n\
     \x04hash\x18\x01\x20\x01(\tR\x04hash\"]\n\nFFIRequest\x12H\n\x11handleTr\

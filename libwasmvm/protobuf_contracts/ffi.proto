@@ -15,7 +15,7 @@ message TransactionData {
   bytes from = 1;
   bytes to = 2;
   bytes data = 3;
-  bytes gasLimit = 4;
+  uint64 gasLimit = 4;
   bytes value = 5;
   repeated AccessListItem accessList = 6;
 }
