@@ -39,7 +39,7 @@ pub extern "C" fn make_pb_request(
                     match req {
                         FFIRequest_oneof_req::handleTransaction(tx) => {
                             // Execute provided transaction
-                            let execution_result = evm::handle_transaction_mocked(tx);
+                            let execution_result = evm::handle_transaction(tx);
 
                             // Create protobuf-encoded response
                             let mut response = HandleTransactionResponse::new();
