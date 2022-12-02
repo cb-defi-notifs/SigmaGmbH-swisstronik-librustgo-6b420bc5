@@ -15,7 +15,7 @@ pub struct ExecutionResult {
     pub logs: Vec<Log>,
     pub data: Vec<u8>,
     pub gas_used: u64,
-    pub errors: Vec<String>
+    pub vm_error: String
 }
 
 impl ExecutionResult {
@@ -25,7 +25,7 @@ impl ExecutionResult {
             logs: Vec::default(),
             data: Vec::default(),
             gas_used: gas_used.unwrap_or(21000), // This is minimum gas fee to apply the transaction
-            errors: vec![reason]
+            vm_error: reason
         }
     }
 }
@@ -50,7 +50,7 @@ mod tests {
             logs: vec![log],
             gas_used: 1000u64,
             data: vec![255u8],
-            errors: vec!["reverted".to_string()],
+            vm_error: "reverted".to_string(),
         };
 
         // Encode and decode
