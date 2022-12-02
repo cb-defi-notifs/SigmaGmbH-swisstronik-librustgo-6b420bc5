@@ -32,7 +32,7 @@ type (
 type cu8_ptr = *C.uint8_t
 
 // Handles incoming ethereum transaction
-func HandleTx(from, to, data, value []byte, gasLimit uint64) error {
+func HandleTx(from, to, data, value []byte, gasLimit uint64) (*ffi.HandleTransactionResponse, error) {
 	// Create protobuf encoded request
 	req := ffi.FFIRequest{Req: &ffi.FFIRequest_HandleTransaction{HandleTransaction: &ffi.TransactionData{
 		From:     from,
@@ -53,7 +53,7 @@ func HandleTx(from, to, data, value []byte, gasLimit uint64) error {
 	errmsg := newUnmanagedVector(nil)
 	ptr, err := C.make_pb_request(d, &errmsg)
 	if err != nil {
-		return errorWithMessage(err, errmsg)
+		return &ffi.HandleTransactionResponse{}, errorWithMessage(err, errmsg)
 	}
 
 	// Recover returned value
@@ -63,9 +63,7 @@ func HandleTx(from, to, data, value []byte, gasLimit uint64) error {
 		log.Fatalln("Failed to decode execution result:", err)
 	}
 
-	println(response.Hash)
-
-	return nil
+	return &response, nil
 }
 
 /**** To error module ***/

@@ -9,7 +9,7 @@ use crate::evm;
 use crate::args::{PB_REQUEST_ARG};
 use crate::error::{ handle_c_error_default, Error};
 use crate::memory::{ByteSliceView, UnmanagedVector};
-use crate::protobuf_generated::ffi::{FFIRequest, FFIRequest_oneof_req, HandleTransactionResponse};
+use crate::protobuf_generated::ffi::{FFIRequest, FFIRequest_oneof_req, HandleTransactionResponse, self};
 
 //
 // #[repr(C)]
@@ -38,22 +38,38 @@ pub extern "C" fn make_pb_request(
                 if let Some(req) = request.req {
                     match req {
                         FFIRequest_oneof_req::handleTransaction(tx) => {
-                            println!("RUST: handleTransaction invoked");
-
+                            // Execute provided transaction
                             let execution_result = evm::handle_transaction_mocked(tx);
-                            println!("RUST: handleTransaction result: {:?}", execution_result);
 
+                            // Create protobuf-encoded response
                             let mut response = HandleTransactionResponse::new();
-                            response.set_hash("0x12341234".to_string());
+                            response.set_gas_used(execution_result.gas_used);
+                            response.set_vm_error(execution_result.vm_error);
+                            response.set_ret(execution_result.data);
 
+                            // Convert logs into proper format
+                            let converted_logs = execution_result.logs
+                                .into_iter()
+                                .map(|log| {
+                                    let mut proto_log = ffi::Log::new();
+                                    proto_log.set_address(log.address.to_string());
+                                    proto_log.set_data(log.data);
+
+                                    let converted_topics: Vec<String> = log.topics.into_iter().map(|topic| topic.to_string()).collect();
+                                    proto_log.set_topics(converted_topics.into());
+
+                                    return proto_log
+                                }).collect();
+
+                            response.set_logs(converted_logs);
+
+                            // Convert to bytes and return it
                             let response_bytes = match response.write_to_bytes() {
                                 Ok(res) => res,
                                 Err(_) => {
                                     return Err(Error::protobuf_decode("Response encoding failed"));
                                 }
                             };
-
-                            println!("RUST: handleTransaction trying to return unmanaged vector");
 
                             return Ok(response_bytes)
                         }

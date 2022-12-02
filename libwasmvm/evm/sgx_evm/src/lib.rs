@@ -132,7 +132,7 @@ pub fn handle_query_inner(query: QueryData, storage: &mut dyn Storage) -> Execut
         logs: backend.logs.clone(),
         data: exit_value,
         gas_used: used_gas,
-        errors: Vec::default(),
+        vm_error: "".to_string()
     }
 }
 
@@ -203,7 +203,7 @@ pub fn handle_transaction_inner(transaction_data: ExecutionData, storage: &mut d
         logs: backend.logs.clone(),
         data: exit_value,
         gas_used,
-        errors: Vec::default(),
+        vm_error: "".to_string(),
     }
 }
 
