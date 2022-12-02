@@ -1,8 +1,9 @@
 package main
 
 import (
-	"encoding/hex"
 	"encoding/binary"
+	"encoding/hex"
+	"fmt"
 
 	wasmvm "github.com/SigmaGmbH/librustgo"
 )
@@ -30,7 +31,7 @@ func main() {
 	gasLimit := uint64(10000000)
 	data := make([]byte, 0)
 
-	err := wasmvm.HandleTx(from, to, data, value, gasLimit)
+	result, err := wasmvm.HandleTx(from, to, data, value, gasLimit)
 	//err := wasmvm.HelloWorld("Admin")
 	//file := os.Args[1]
 	//fmt.Printf("Running %s...\n", file)
@@ -38,6 +39,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println("GO: execution result: ", result)
 	//fmt.Println("Loaded!")
 	//
 	//os.MkdirAll("tmp", 0o755)

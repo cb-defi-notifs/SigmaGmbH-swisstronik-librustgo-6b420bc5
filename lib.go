@@ -3,6 +3,8 @@ package librustgo
 import (
 	"github.com/SigmaGmbH/librustgo/internal/api"
 	"github.com/SigmaGmbH/librustgo/types"
+
+	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
 )
 
 // Checksum represents a hash of the Wasm bytecode that serves as an ID. Must be generated from this library.
@@ -23,12 +25,13 @@ type Querier = types.Querier
 // GasMeter is a read-only version of the sdk gas meter
 type GasMeter = api.GasMeter
 
-func HandleTx(from, to, data, value []byte, gasLimit uint64) error {
-	err := api.HandleTx(from, to, data, value, gasLimit)
+func HandleTx(from, to, data, value []byte, gasLimit uint64) (*ffi.HandleTransactionResponse, error) {
+	executionResult, err := api.HandleTx(from, to, data, value, gasLimit)
 	if err != nil {
-		return err
+		return &ffi.HandleTransactionResponse{}, err
 	}
-	return nil
+
+	return executionResult, nil
 }
 
 // LibwasmvmVersion returns the version of the loaded library
