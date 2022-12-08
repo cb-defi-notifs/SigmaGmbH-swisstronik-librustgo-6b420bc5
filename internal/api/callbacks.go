@@ -15,6 +15,9 @@ import (
 	"log"
 	"reflect"
 	"runtime/debug"
+	"unsafe"
+
+	"github.com/SigmaGmbH/librustgo/types"
 )
 
 // Note: we have to include all exports in the same file (at least since they both import bindings.h),
@@ -119,4 +122,37 @@ type (
 type GoAPI struct {
 	HumanAddress     HumanizeAddress
 	CanonicalAddress CanonicalizeAddress
+}
+
+/***** GoQuerier ******/
+
+func cQueryExternal(ptr *C.querier_t, gasLimit C.uint64_t, usedGas *C.uint64_t, request C.U8SliceView, result *C.UnmanagedVector, errOut *C.UnmanagedVector) (ret C.GoError) {
+	defer recoverPanic(&ret)
+
+	if ptr == nil || usedGas == nil || result == nil || errOut == nil {
+		// we received an invalid pointer
+		return C.GoError_BadArgument
+	}
+	if !(*result).is_none || !(*errOut).is_none {
+		panic("Got a non-none UnmanagedVector we're about to override. This is a bug because someone has to drop the old one.")
+	}
+
+	// query the data
+	querier := *(*Querier)(unsafe.Pointer(ptr))
+	req := copyU8Slice(request)
+
+	gasBefore := querier.GasConsumed()
+	_= types.RustQuery(querier, req, uint64(gasLimit))
+	gasAfter := querier.GasConsumed()
+	*usedGas = (C.uint64_t)(gasAfter - gasBefore)
+
+	// TODO: Use protobuf to encode response
+	// serialize the response
+	// bz, err := json.Marshal(res)
+	// if err != nil {
+	// 	*errOut = newUnmanagedVector([]byte(err.Error()))
+	// 	return C.GoError_CannotSerialize
+	// }
+	// *result = newUnmanagedVector(bz)
+	return C.GoError_None
 }

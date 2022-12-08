@@ -203,6 +203,10 @@ typedef struct U8SliceView {
   uintptr_t len;
 } U8SliceView;
 
+typedef struct querier_t {
+  uint8_t _private[0];
+} querier_t;
+
 struct UnmanagedVector make_pb_request(struct ByteSliceView request,
                                        struct UnmanagedVector *error_msg);
 

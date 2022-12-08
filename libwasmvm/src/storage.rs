@@ -167,3 +167,10 @@ impl GoStorage {
 //         (Ok(()), gas_info)
 //     }
 // }
+
+// this represents something passed in from the caller side of FFI
+#[repr(C)]
+#[derive(Clone)]
+pub struct querier_t {
+    _private: [u8; 0],
+}

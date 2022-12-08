@@ -31,6 +31,8 @@ type (
 // Pointers
 type cu8_ptr = *C.uint8_t
 
+type Querier = types.Querier
+
 // Handles incoming ethereum transaction
 func HandleTx(from, to, data, value []byte, gasLimit uint64) (*ffi.HandleTransactionResponse, error) {
 	// Create protobuf encoded request
