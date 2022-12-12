@@ -55,7 +55,7 @@ pub extern "C" fn make_pb_request(
                     match req {
                         FFIRequest_oneof_req::handleTransaction(tx) => {
                             // Execute provided transaction
-                            let execution_result = evm::handle_transaction(tx);
+                            let execution_result = evm::handle_transaction(querier, tx);
 
                             // Create protobuf-encoded response
                             let mut response = HandleTransactionResponse::new();
@@ -86,10 +86,6 @@ pub extern "C" fn make_pb_request(
                                     return Err(Error::protobuf_decode("Response encoding failed"));
                                 }
                             };
-                            
-                            let request = [1u8; 32];
-                            let gas_limit = 1000;
-                            querier.query_raw(&request, gas_limit);
 
                             return Ok(response_bytes)
                         }

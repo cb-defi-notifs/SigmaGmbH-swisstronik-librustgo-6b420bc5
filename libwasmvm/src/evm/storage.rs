@@ -3,12 +3,15 @@ use sgx_evm::primitive_types::{H160, H256, U256};
 use sgx_evm::storage::Storage;
 use std::{collections::BTreeMap, str::FromStr};
 
+use crate::storage::GoQuerier;
+
 /// This struct allows us to obtain state from keeper
 /// that is located outside of Rust code
 pub struct FFIStorage {
     storage: BTreeMap<H160, BTreeMap<H256, H256>>,
     contracts: BTreeMap<H160, Vec<u8>>,
     accounts: BTreeMap<H160, Basic>,
+    querier: GoQuerier,
 }
 
 impl Storage for FFIStorage {
@@ -25,14 +28,16 @@ impl Storage for FFIStorage {
     }
 
     fn get_account(&self, key: &H160) -> Basic {
+        let (balance, nonce) = self.querier.query_account(key);
+        Basic { balance, nonce }
         // TODO: Start from obtaining account balance and nonce from Cosmos side
-        self.accounts
-            .get(key)
-            .map(|v| Basic {
-                balance: v.balance,
-                nonce: v.nonce,
-            })
-            .unwrap_or_default()
+        // self.accounts
+        //     .get(key)
+        //     .map(|v| Basic {
+        //         balance: v.balance,
+        //         nonce: v.nonce,
+        //     })
+        //     .unwrap_or_default()
     }
 
     fn insert_account(&mut self, key: H160, data: Basic) {
@@ -70,8 +75,8 @@ impl Storage for FFIStorage {
     }
 }
 
-impl Default for FFIStorage {
-    fn default() -> Self {
+impl FFIStorage{
+    pub fn new_mocked(querier: GoQuerier) -> Self {
         let mut accounts = BTreeMap::new();
 
         accounts.insert(
@@ -86,6 +91,7 @@ impl Default for FFIStorage {
             storage: BTreeMap::new(),
             contracts: BTreeMap::new(),
             accounts,
+            querier
         }
     }
 }

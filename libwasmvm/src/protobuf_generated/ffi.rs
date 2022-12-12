@@ -1120,6 +1120,366 @@ impl ::protobuf::reflect::ProtobufValue for HandleTransactionResponse {
 }
 
 #[derive(PartialEq,Clone,Default)]
+pub struct QueryGetAccount {
+    // message fields
+    pub address: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryGetAccount {
+    fn default() -> &'a QueryGetAccount {
+        <QueryGetAccount as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryGetAccount {
+    pub fn new() -> QueryGetAccount {
+        ::std::default::Default::default()
+    }
+
+    // bytes address = 1;
+
+
+    pub fn get_address(&self) -> &[u8] {
+        &self.address
+    }
+    pub fn clear_address(&mut self) {
+        self.address.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_address(&mut self, v: ::std::vec::Vec<u8>) {
+        self.address = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_address(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.address
+    }
+
+    // Take field
+    pub fn take_address(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.address, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for QueryGetAccount {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.address)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.address.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.address);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.address.is_empty() {
+            os.write_bytes(1, &self.address)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryGetAccount {
+        QueryGetAccount::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "address",
+                |m: &QueryGetAccount| { &m.address },
+                |m: &mut QueryGetAccount| { &mut m.address },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryGetAccount>(
+                "QueryGetAccount",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryGetAccount {
+        static instance: ::protobuf::rt::LazyV2<QueryGetAccount> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryGetAccount::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryGetAccount {
+    fn clear(&mut self) {
+        self.address.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryGetAccount {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryGetAccount {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryGetAccountResponse {
+    // message fields
+    pub balance: ::std::vec::Vec<u8>,
+    pub nonce: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryGetAccountResponse {
+    fn default() -> &'a QueryGetAccountResponse {
+        <QueryGetAccountResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryGetAccountResponse {
+    pub fn new() -> QueryGetAccountResponse {
+        ::std::default::Default::default()
+    }
+
+    // bytes balance = 1;
+
+
+    pub fn get_balance(&self) -> &[u8] {
+        &self.balance
+    }
+    pub fn clear_balance(&mut self) {
+        self.balance.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_balance(&mut self, v: ::std::vec::Vec<u8>) {
+        self.balance = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_balance(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.balance
+    }
+
+    // Take field
+    pub fn take_balance(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.balance, ::std::vec::Vec::new())
+    }
+
+    // bytes nonce = 2;
+
+
+    pub fn get_nonce(&self) -> &[u8] {
+        &self.nonce
+    }
+    pub fn clear_nonce(&mut self) {
+        self.nonce.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_nonce(&mut self, v: ::std::vec::Vec<u8>) {
+        self.nonce = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_nonce(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.nonce
+    }
+
+    // Take field
+    pub fn take_nonce(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.nonce, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for QueryGetAccountResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.balance)?;
+                },
+                2 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.nonce)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.balance.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.balance);
+        }
+        if !self.nonce.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(2, &self.nonce);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.balance.is_empty() {
+            os.write_bytes(1, &self.balance)?;
+        }
+        if !self.nonce.is_empty() {
+            os.write_bytes(2, &self.nonce)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryGetAccountResponse {
+        QueryGetAccountResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "balance",
+                |m: &QueryGetAccountResponse| { &m.balance },
+                |m: &mut QueryGetAccountResponse| { &mut m.balance },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "nonce",
+                |m: &QueryGetAccountResponse| { &m.nonce },
+                |m: &mut QueryGetAccountResponse| { &mut m.nonce },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryGetAccountResponse>(
+                "QueryGetAccountResponse",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryGetAccountResponse {
+        static instance: ::protobuf::rt::LazyV2<QueryGetAccountResponse> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryGetAccountResponse::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryGetAccountResponse {
+    fn clear(&mut self) {
+        self.balance.clear();
+        self.nonce.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryGetAccountResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryGetAccountResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
 pub struct FFIRequest {
     // message oneof groups
     pub req: ::std::option::Option<FFIRequest_oneof_req>,
@@ -1339,7 +1699,10 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     ransactionResponse\x12\x20\n\x04logs\x18\x02\x20\x03(\x0b2\x0c.ffi.ffi.L\
     ogR\x04logs\x12\x10\n\x03ret\x18\x03\x20\x01(\x0cR\x03ret\x12\x19\n\x08v\
     m_error\x18\x04\x20\x01(\tR\x07vmError\x12\x19\n\x08gas_used\x18\x05\x20\
-    \x01(\x04R\x07gasUsed\"]\n\nFFIRequest\x12H\n\x11handleTransaction\x18\
+    \x01(\x04R\x07gasUsed\"+\n\x0fQueryGetAccount\x12\x18\n\x07address\x18\
+    \x01\x20\x01(\x0cR\x07address\"I\n\x17QueryGetAccountResponse\x12\x18\n\
+    \x07balance\x18\x01\x20\x01(\x0cR\x07balance\x12\x14\n\x05nonce\x18\x02\
+    \x20\x01(\x0cR\x05nonce\"]\n\nFFIRequest\x12H\n\x11handleTransaction\x18\
     \x01\x20\x01(\x0b2\x18.ffi.ffi.TransactionDataH\0R\x11handleTransactionB\
     \x05\n\x03reqB\x04Z\x02./b\x06proto3\
 ";
