@@ -1,4 +1,5 @@
 use std::collections::HashSet;
+use std::marker::PhantomData;
 use std::panic::{catch_unwind};
 
 // use cosmwasm_vm::{capabilities_from_csv, Cache, CacheOptions, Checksum, Size};
@@ -7,14 +8,28 @@ use protobuf::Message;
 
 use crate::evm;
 use crate::args::{PB_REQUEST_ARG};
-use crate::error::{ handle_c_error_default, Error};
+use crate::error::{ handle_c_error_default, handle_c_error_ptr, Error};
 use crate::memory::{ByteSliceView, UnmanagedVector};
 use crate::protobuf_generated::ffi::{FFIRequest, FFIRequest_oneof_req, HandleTransactionResponse, self};
+use crate::storage::GoQuerier;
 
-//
-// #[repr(C)]
-// pub struct cache_t {}
-//
+
+#[repr(C)]
+pub struct cache_t {}
+
+pub struct Cache {
+    querier: PhantomData<GoQuerier>,
+}
+
+pub fn to_cache(ptr: *mut cache_t) -> Option<&'static mut Cache> {
+    if ptr.is_null() {
+        None
+    } else {
+        let c = unsafe { &mut *(ptr as *mut Cache) };
+        Some(c)
+    }
+}
+
 // pub fn to_cache(ptr: *mut cache_t) -> Option<&'static mut Cache<GoApi, GoStorage, GoQuerier>> {
 //     if ptr.is_null() {
 //         None
@@ -88,62 +103,26 @@ pub extern "C" fn make_pb_request(
     UnmanagedVector::new(Some(data))
 }
 
-//
-// #[no_mangle]
-// pub extern "C" fn init_cache(
-//     data_dir: ByteSliceView,
-//     available_capabilities: ByteSliceView,
-//     cache_size: u32,            // in MiB
-//     instance_memory_limit: u32, // in MiB
-//     error_msg: Option<&mut UnmanagedVector>,
-// ) -> *mut cache_t {
-//     let r = catch_unwind(|| {
-//         do_init_cache(
-//             data_dir,
-//             available_capabilities,
-//             cache_size,
-//             instance_memory_limit,
-//         )
-//     })
-//     .unwrap_or_else(|_| Err(Error::panic()));
-//     handle_c_error_ptr(r, error_msg) as *mut cache_t
-// }
-//
-// fn do_init_cache(
-//     data_dir: ByteSliceView,
-//     available_capabilities: ByteSliceView,
-//     cache_size: u32,            // in MiB
-//     instance_memory_limit: u32, // in MiB
-// ) -> Result<*mut Cache<GoApi, GoStorage, GoQuerier>, Error> {
-//     let dir = data_dir
-//         .read()
-//         .ok_or_else(|| Error::unset_arg(DATA_DIR_ARG))?;
-//     let dir_str = String::from_utf8(dir.to_vec())?;
-//     // parse the supported features
-//     let capabilities_bin = available_capabilities
-//         .read()
-//         .ok_or_else(|| Error::unset_arg(AVAILABLE_CAPABILITIES_ARG))?;
-//     let capabilities = capabilities_from_csv(from_utf8(capabilities_bin)?);
-//     let memory_cache_size = Size::mebi(
-//         cache_size
-//             .try_into()
-//             .expect("Cannot convert u32 to usize. What kind of system is this?"),
-//     );
-//     let instance_memory_limit = Size::mebi(
-//         instance_memory_limit
-//             .try_into()
-//             .expect("Cannot convert u32 to usize. What kind of system is this?"),
-//     );
-//     let options = CacheOptions {
-//         base_dir: dir_str.into(),
-//         available_capabilities: capabilities,
-//         memory_cache_size,
-//         instance_memory_limit,
-//     };
-//     let cache = unsafe { Cache::new(options) }?;
-//     let out = Box::new(cache);
-//     Ok(Box::into_raw(out))
-// }
+
+#[no_mangle]
+pub extern "C" fn init_cache(
+    error_msg: Option<&mut UnmanagedVector>,
+) -> *mut cache_t {
+    let r = catch_unwind(|| {
+        do_init_cache()
+    })
+    .unwrap_or_else(|_| Err(Error::panic()));
+    handle_c_error_ptr(r, error_msg) as *mut cache_t
+}
+
+// Dummy do_init_cache fn for testing
+fn do_init_cache() -> Result<*mut Cache, Error> {
+    let cache = Cache {
+        querier: PhantomData::<GoQuerier>,
+    };
+    let out = Box::new(cache);
+    Ok(Box::into_raw(out))
+}
 
 fn _set_to_csv(set: HashSet<String>) -> String {
     let mut list: Vec<String> = set.into_iter().collect();

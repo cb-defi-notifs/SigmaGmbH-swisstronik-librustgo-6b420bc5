@@ -5,7 +5,7 @@ use std::collections::HashMap;
 
 use crate::db::Db;
 use crate::iterator::GoIter;
-use crate::{UnmanagedVector, U8SliceView}; 
+use crate::{UnmanagedVector, U8SliceView, GoError}; 
 
 pub struct GoStorage {
     db: Db,
@@ -195,4 +195,53 @@ pub struct Querier_vtable {
 pub struct GoQuerier {
     pub state: *const querier_t,
     pub vtable: Querier_vtable,
+}
+
+impl GoQuerier {
+    fn query_raw(
+        &self,
+        request: &[u8],
+        gas_limit: u64,
+    ) {
+        let mut output = UnmanagedVector::default();
+        let mut error_msg = UnmanagedVector::default();
+        let mut used_gas = 0_u64;
+        let go_result: GoError = (self.vtable.query_external)(
+            self.state,
+            gas_limit,
+            &mut used_gas as *mut u64,
+            U8SliceView::new(Some(request)),
+            &mut output as *mut UnmanagedVector,
+            &mut error_msg as *mut UnmanagedVector,
+        )
+        .into();
+
+        println!("RUST: query called");
+        // // We destruct the UnmanagedVector here, no matter if we need the data.
+        // let output = output.consume();
+
+        // let gas_info = GasInfo::with_externally_used(used_gas);
+
+        // // return complete error message (reading from buffer for GoError::Other)
+        // let default = || {
+        //     format!(
+        //         "Failed to query another contract with this request: {}",
+        //         String::from_utf8_lossy(request)
+        //     )
+        // };
+        // unsafe {
+        //     if let Err(err) = go_result.into_result(error_msg, default) {
+        //         return (Err(err), gas_info);
+        //     }
+        // }
+
+        // let bin_result: Vec<u8> = output.unwrap_or_default();
+        // let result = serde_json::from_slice(&bin_result).or_else(|e| {
+        //     Ok(SystemResult::Err(SystemError::InvalidResponse {
+        //         error: format!("Parsing Go response: {}", e),
+        //         response: bin_result.into(),
+        //     }))
+        // });
+        // (result, gas_info)
+    }
 }
