@@ -189,10 +189,6 @@ typedef struct ByteSliceView {
   uintptr_t len;
 } ByteSliceView;
 
-typedef struct cache_t {
-
-} cache_t;
-
 /**
  * A view into a `Option<&[u8]>`, created and maintained by Rust.
  *
@@ -222,8 +218,6 @@ typedef struct GoQuerier {
 
 struct UnmanagedVector make_pb_request(struct ByteSliceView request,
                                        struct UnmanagedVector *error_msg);
-
-struct cache_t *init_cache(struct UnmanagedVector *error_msg);
 
 struct UnmanagedVector new_unmanaged_vector(bool nil, const uint8_t *ptr, uintptr_t length);
 

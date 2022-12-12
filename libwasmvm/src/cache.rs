@@ -103,27 +103,6 @@ pub extern "C" fn make_pb_request(
     UnmanagedVector::new(Some(data))
 }
 
-
-#[no_mangle]
-pub extern "C" fn init_cache(
-    error_msg: Option<&mut UnmanagedVector>,
-) -> *mut cache_t {
-    let r = catch_unwind(|| {
-        do_init_cache()
-    })
-    .unwrap_or_else(|_| Err(Error::panic()));
-    handle_c_error_ptr(r, error_msg) as *mut cache_t
-}
-
-// Dummy do_init_cache fn for testing
-fn do_init_cache() -> Result<*mut Cache, Error> {
-    let cache = Cache {
-        querier: PhantomData::<GoQuerier>,
-    };
-    let out = Box::new(cache);
-    Ok(Box::into_raw(out))
-}
-
 fn _set_to_csv(set: HashSet<String>) -> String {
     let mut list: Vec<String> = set.into_iter().collect();
     list.sort_unstable();
