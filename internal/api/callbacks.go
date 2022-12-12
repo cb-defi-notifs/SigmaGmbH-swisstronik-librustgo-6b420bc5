@@ -6,6 +6,9 @@ package api
 /*
 #include "bindings.h"
 
+// typedefs for _cgo functions (db)
+typedef GoError (*query_external_fn)(querier_t *ptr, uint64_t gas_limit, uint64_t *used_gas, U8SliceView request, UnmanagedVector *result, UnmanagedVector *errOut);
+GoError cQueryExternal_cgo(querier_t *ptr, uint64_t gas_limit, uint64_t *used_gas, U8SliceView request, UnmanagedVector *result, UnmanagedVector *errOut);
 
 */
 import "C"
@@ -126,6 +129,20 @@ type GoAPI struct {
 
 /***** GoQuerier ******/
 
+var querier_vtable = C.Querier_vtable{
+	query_external: (C.query_external_fn)(C.cQueryExternal_cgo),
+}
+
+// contract: original pointer/struct referenced must live longer than C.GoQuerier struct
+// since this is only used internally, we can verify the code that this is the case
+func buildQuerier(q *Querier) C.GoQuerier {
+	return C.GoQuerier{
+		state:  (*C.querier_t)(unsafe.Pointer(q)),
+		vtable: querier_vtable,
+	}
+}
+
+//export cQueryExternal
 func cQueryExternal(ptr *C.querier_t, gasLimit C.uint64_t, usedGas *C.uint64_t, request C.U8SliceView, result *C.UnmanagedVector, errOut *C.UnmanagedVector) (ret C.GoError) {
 	defer recoverPanic(&ret)
 
@@ -154,5 +171,8 @@ func cQueryExternal(ptr *C.querier_t, gasLimit C.uint64_t, usedGas *C.uint64_t, 
 	// 	return C.GoError_CannotSerialize
 	// }
 	// *result = newUnmanagedVector(bz)
+
+	println("cQueryExternal called successfully")
+
 	return C.GoError_None
 }

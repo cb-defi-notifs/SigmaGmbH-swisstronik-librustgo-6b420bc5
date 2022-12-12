@@ -5,6 +5,7 @@ use std::collections::HashMap;
 
 use crate::db::Db;
 use crate::iterator::GoIter;
+use crate::{UnmanagedVector, U8SliceView}; 
 
 pub struct GoStorage {
     db: Db,
@@ -173,4 +174,25 @@ impl GoStorage {
 #[derive(Clone)]
 pub struct querier_t {
     _private: [u8; 0],
+}
+
+#[repr(C)]
+#[derive(Clone)]
+pub struct Querier_vtable {
+    // We return errors through the return buffer, but may return non-zero error codes on panic
+    pub query_external: extern "C" fn(
+        *const querier_t,
+        u64,
+        *mut u64,
+        U8SliceView,
+        *mut UnmanagedVector, // result output
+        *mut UnmanagedVector, // error message output
+    ) -> i32,
+}
+
+#[repr(C)]
+#[derive(Clone)]
+pub struct GoQuerier {
+    pub state: *const querier_t,
+    pub vtable: Querier_vtable,
 }

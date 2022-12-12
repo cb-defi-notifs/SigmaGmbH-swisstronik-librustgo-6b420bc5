@@ -53,7 +53,9 @@ include = [
     "GoError",
     "ErrnoValue",
     "U8SliceView",
-    "querier_t"
+    "querier_t",
+    "Querier_vtable",
+    "GoQuerier",
 ]
 exclude = []
 # prefix = "CAPI_"

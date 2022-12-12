@@ -207,6 +207,15 @@ typedef struct querier_t {
   uint8_t _private[0];
 } querier_t;
 
+typedef struct Querier_vtable {
+  int32_t (*query_external)(const struct querier_t*, uint64_t, uint64_t*, struct U8SliceView, struct UnmanagedVector*, struct UnmanagedVector*);
+} Querier_vtable;
+
+typedef struct GoQuerier {
+  const struct querier_t *state;
+  struct Querier_vtable vtable;
+} GoQuerier;
+
 struct UnmanagedVector make_pb_request(struct ByteSliceView request,
                                        struct UnmanagedVector *error_msg);
 
