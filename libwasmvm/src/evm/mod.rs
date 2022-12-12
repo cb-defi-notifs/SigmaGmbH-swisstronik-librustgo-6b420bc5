@@ -5,7 +5,7 @@ use sgx_evm::primitive_types::{U256, H160, H256};
 use sgx_evm::ethereum::TransactionAction;
 
 use crate::protobuf_generated::ffi::TransactionData as ProtoTransactionData;
-use crate::storage::GoQuerier;
+use crate::querier::GoQuerier;
 
 mod storage;
 

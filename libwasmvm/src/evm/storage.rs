@@ -3,7 +3,7 @@ use sgx_evm::primitive_types::{H160, H256, U256};
 use sgx_evm::storage::Storage;
 use std::{collections::BTreeMap, str::FromStr};
 
-use crate::storage::GoQuerier;
+use crate::querier::GoQuerier;
 
 /// This struct allows us to obtain state from keeper
 /// that is located outside of Rust code

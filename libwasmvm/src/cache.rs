@@ -11,7 +11,7 @@ use crate::args::{PB_REQUEST_ARG};
 use crate::error::{ handle_c_error_default, handle_c_error_ptr, Error};
 use crate::memory::{ByteSliceView, UnmanagedVector};
 use crate::protobuf_generated::ffi::{FFIRequest, FFIRequest_oneof_req, HandleTransactionResponse, self};
-use crate::storage::GoQuerier;
+use crate::querier::GoQuerier;
 
 
 #[repr(C)]

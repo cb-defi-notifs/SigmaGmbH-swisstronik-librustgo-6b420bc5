@@ -15,6 +15,7 @@ mod tests;
 mod version;
 mod protobuf_generated;
 mod evm;
+mod querier;
 
 // We only interact with this crate via `extern "C"` interfaces, not those public
 // exports. There are no guarantees those exports are stable.
@@ -25,4 +26,5 @@ pub use error::GoError;
 pub use memory::{
     destroy_unmanaged_vector, new_unmanaged_vector, ByteSliceView, U8SliceView, UnmanagedVector,
 };
-pub use storage::{GoStorage, querier_t};
+pub use storage::{GoStorage};
+
