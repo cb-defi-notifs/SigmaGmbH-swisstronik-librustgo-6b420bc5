@@ -18,9 +18,9 @@ import (
 	"log"
 	"reflect"
 	"runtime/debug"
-	"unsafe"
+	// "unsafe"
 
-	"github.com/SigmaGmbH/librustgo/types"
+	// "github.com/SigmaGmbH/librustgo/types"
 )
 
 // Note: we have to include all exports in the same file (at least since they both import bindings.h),
@@ -135,18 +135,18 @@ var querier_vtable = C.Querier_vtable{
 
 // contract: original pointer/struct referenced must live longer than C.GoQuerier struct
 // since this is only used internally, we can verify the code that this is the case
-func buildQuerier(q *Querier) C.GoQuerier {
+func buildQuerier() C.GoQuerier {
 	return C.GoQuerier{
-		state:  (*C.querier_t)(unsafe.Pointer(q)),
+		// state:  (*C.querier_t)(unsafe.Pointer(q)),
 		vtable: querier_vtable,
 	}
 }
 
 //export cQueryExternal
-func cQueryExternal(ptr *C.querier_t, gasLimit C.uint64_t, usedGas *C.uint64_t, request C.U8SliceView, result *C.UnmanagedVector, errOut *C.UnmanagedVector) (ret C.GoError) {
+func cQueryExternal(gasLimit C.uint64_t, usedGas *C.uint64_t, request C.U8SliceView, result *C.UnmanagedVector, errOut *C.UnmanagedVector) (ret C.GoError) {
 	defer recoverPanic(&ret)
 
-	if ptr == nil || usedGas == nil || result == nil || errOut == nil {
+	if usedGas == nil || result == nil || errOut == nil {
 		// we received an invalid pointer
 		return C.GoError_BadArgument
 	}
@@ -155,13 +155,8 @@ func cQueryExternal(ptr *C.querier_t, gasLimit C.uint64_t, usedGas *C.uint64_t, 
 	}
 
 	// query the data
-	querier := *(*Querier)(unsafe.Pointer(ptr))
-	req := copyU8Slice(request)
-
-	gasBefore := querier.GasConsumed()
-	_= types.RustQuery(querier, req, uint64(gasLimit))
-	gasAfter := querier.GasConsumed()
-	*usedGas = (C.uint64_t)(gasAfter - gasBefore)
+	// req := copyU8Slice(request)
+	_ = copyU8Slice(request)
 
 	// TODO: Use protobuf to encode response
 	// serialize the response

@@ -41,6 +41,7 @@ pub fn to_cache(ptr: *mut cache_t) -> Option<&'static mut Cache> {
 
 #[no_mangle]
 pub extern "C" fn make_pb_request(
+    querier: GoQuerier, // TODO: Will be used soon
     request: ByteSliceView,
     error_msg: Option<&mut UnmanagedVector>,
 ) -> UnmanagedVector {
@@ -85,6 +86,10 @@ pub extern "C" fn make_pb_request(
                                     return Err(Error::protobuf_decode("Response encoding failed"));
                                 }
                             };
+                            
+                            let request = [1u8; 32];
+                            let gas_limit = 1000;
+                            querier.query_raw(&request, gas_limit);
 
                             return Ok(response_bytes)
                         }

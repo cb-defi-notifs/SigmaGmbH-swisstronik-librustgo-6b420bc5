@@ -181,7 +181,6 @@ pub struct querier_t {
 pub struct Querier_vtable {
     // We return errors through the return buffer, but may return non-zero error codes on panic
     pub query_external: extern "C" fn(
-        *const querier_t,
         u64,
         *mut u64,
         U8SliceView,
@@ -193,12 +192,12 @@ pub struct Querier_vtable {
 #[repr(C)]
 #[derive(Clone)]
 pub struct GoQuerier {
-    pub state: *const querier_t,
+    // pub state: *const querier_t,
     pub vtable: Querier_vtable,
 }
 
 impl GoQuerier {
-    fn query_raw(
+    pub fn query_raw(
         &self,
         request: &[u8],
         gas_limit: u64,
@@ -207,7 +206,6 @@ impl GoQuerier {
         let mut error_msg = UnmanagedVector::default();
         let mut used_gas = 0_u64;
         let go_result: GoError = (self.vtable.query_external)(
-            self.state,
             gas_limit,
             &mut used_gas as *mut u64,
             U8SliceView::new(Some(request)),

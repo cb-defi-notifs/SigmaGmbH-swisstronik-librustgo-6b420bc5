@@ -174,6 +174,28 @@ typedef struct UnmanagedVector {
 } UnmanagedVector;
 
 /**
+ * A view into a `Option<&[u8]>`, created and maintained by Rust.
+ *
+ * This can be copied into a []byte in Go.
+ */
+typedef struct U8SliceView {
+  /**
+   * True if and only if this is None. If this is true, the other fields must be ignored.
+   */
+  bool is_none;
+  const uint8_t *ptr;
+  uintptr_t len;
+} U8SliceView;
+
+typedef struct Querier_vtable {
+  int32_t (*query_external)(uint64_t, uint64_t*, struct U8SliceView, struct UnmanagedVector*, struct UnmanagedVector*);
+} Querier_vtable;
+
+typedef struct GoQuerier {
+  struct Querier_vtable vtable;
+} GoQuerier;
+
+/**
  * A view into an externally owned byte slice (Go `[]byte`).
  * Use this for the current call only. A view cannot be copied for safety reasons.
  * If you need a copy, use [`ByteSliceView::to_owned`].
@@ -189,34 +211,12 @@ typedef struct ByteSliceView {
   uintptr_t len;
 } ByteSliceView;
 
-/**
- * A view into a `Option<&[u8]>`, created and maintained by Rust.
- *
- * This can be copied into a []byte in Go.
- */
-typedef struct U8SliceView {
-  /**
-   * True if and only if this is None. If this is true, the other fields must be ignored.
-   */
-  bool is_none;
-  const uint8_t *ptr;
-  uintptr_t len;
-} U8SliceView;
-
 typedef struct querier_t {
   uint8_t _private[0];
 } querier_t;
 
-typedef struct Querier_vtable {
-  int32_t (*query_external)(const struct querier_t*, uint64_t, uint64_t*, struct U8SliceView, struct UnmanagedVector*, struct UnmanagedVector*);
-} Querier_vtable;
-
-typedef struct GoQuerier {
-  const struct querier_t *state;
-  struct Querier_vtable vtable;
-} GoQuerier;
-
-struct UnmanagedVector make_pb_request(struct ByteSliceView request,
+struct UnmanagedVector make_pb_request(struct GoQuerier querier,
+                                       struct ByteSliceView request,
                                        struct UnmanagedVector *error_msg);
 
 struct UnmanagedVector new_unmanaged_vector(bool nil, const uint8_t *ptr, uintptr_t length);
