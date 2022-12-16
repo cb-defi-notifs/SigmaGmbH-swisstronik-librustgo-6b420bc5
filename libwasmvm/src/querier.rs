@@ -29,69 +29,66 @@ pub struct Querier_vtable {
 }
 
 impl GoQuerier {
-    pub fn query_account(&self, account_address: &H160) -> (U256, U256) {
-        let mut output = UnmanagedVector::default();
-        let mut error_msg = UnmanagedVector::default();
-        
-        // Encode request
+    /// Queries account balance and nonce from the network
+    /// * account_address - 20-bytes ethereum account address
+    pub fn query_account(&self, account_address: &H160) -> (U256, U256) {        
         let mut request = ffi::QueryGetAccount::new();
         request.set_address(account_address.as_bytes().to_vec());
         let request_bytes = request.write_to_bytes().unwrap();
 
-        let go_result: GoError = (self.vtable.query_external)(
-            U8SliceView::new(Some(request_bytes.as_slice())),
-            &mut output as *mut UnmanagedVector,
-            &mut error_msg as *mut UnmanagedVector,
-        ).into();
-
-        // TODO: Decode result
-        let output = output.consume();
-        println!("Output: {:?}", output);
-        let error_msg = error_msg.consume();
-        println!("error_msg: {:?}", error_msg);
-
-        (U256::default(), U256::default())
+        let query_result = self.query_raw(request_bytes);
+        match query_result {
+            Ok(raw_result) => {
+                match ffi::QueryGetAccountResponse::parse_from_bytes(&raw_result) {
+                    Ok(result) => {
+                        let balance = U256::from_big_endian(result.get_balance());
+                        let nonce = U256::from_big_endian(result.get_nonce());
+                        println!("[Rust] query_account: got balance: {:?}, nonce: {:?}", balance, nonce);
+                        return (balance, nonce)
+                    },
+                    Err(err) => {
+                        println!("[Rust] query_account: cannot decode protobuf: {:?}", err);
+                        return(U256::default(), U256::default());
+                    }
+                }
+            },
+            Err(err) => {
+                println!("[Rust] query_account: got error: {:?}", err);
+                return(U256::default(), U256::default())
+            }
+        }
     }
 
-    pub fn query_raw(
+    fn query_raw(
         &self,
-        request: &[u8],
-    ) {
+        request: Vec<u8>,
+    ) -> Result<Vec<u8>, GoError> {
         let mut output = UnmanagedVector::default();
         let mut error_msg = UnmanagedVector::default();
+
         let go_result: GoError = (self.vtable.query_external)(
-            U8SliceView::new(Some(request)),
+            U8SliceView::new(Some(&request)),
             &mut output as *mut UnmanagedVector,
             &mut error_msg as *mut UnmanagedVector,
         )
         .into();
 
-        println!("RUST: query called");
-        // // We destruct the UnmanagedVector here, no matter if we need the data.
-        // let output = output.consume();
+        let output = output.consume();
+        let error_msg = error_msg.consume();
 
-        // let gas_info = GasInfo::with_externally_used(used_gas);
-
-        // // return complete error message (reading from buffer for GoError::Other)
-        // let default = || {
-        //     format!(
-        //         "Failed to query another contract with this request: {}",
-        //         String::from_utf8_lossy(request)
-        //     )
-        // };
-        // unsafe {
-        //     if let Err(err) = go_result.into_result(error_msg, default) {
-        //         return (Err(err), gas_info);
-        //     }
-        // }
-
-        // let bin_result: Vec<u8> = output.unwrap_or_default();
-        // let result = serde_json::from_slice(&bin_result).or_else(|e| {
-        //     Ok(SystemResult::Err(SystemError::InvalidResponse {
-        //         error: format!("Parsing Go response: {}", e),
-        //         response: bin_result.into(),
-        //     }))
-        // });
-        // (result, gas_info)
+        match go_result {
+            GoError::None => {
+                Ok(output.unwrap_or_default())
+            },
+            _ => {
+                let err_msg = error_msg.unwrap_or_default();
+                println!(
+                    "[Rust] query_raw: got error: {:?} with message: {:?}", 
+                    go_result, 
+                    String::from_utf8_lossy(&err_msg)
+                );
+                Err(go_result)
+            }
+        }
     }
 }

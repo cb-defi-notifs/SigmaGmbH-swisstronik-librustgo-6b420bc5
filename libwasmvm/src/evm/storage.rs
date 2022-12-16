@@ -30,14 +30,6 @@ impl Storage for FFIStorage {
     fn get_account(&self, key: &H160) -> Basic {
         let (balance, nonce) = self.querier.query_account(key);
         Basic { balance, nonce }
-        // TODO: Start from obtaining account balance and nonce from Cosmos side
-        // self.accounts
-        //     .get(key)
-        //     .map(|v| Basic {
-        //         balance: v.balance,
-        //         nonce: v.nonce,
-        //     })
-        //     .unwrap_or_default()
     }
 
     fn insert_account(&mut self, key: H160, data: Basic) {

@@ -22,6 +22,7 @@ import (
 	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
 	"github.com/golang/protobuf/proto"
 	dbm "github.com/tendermint/tm-db"
+	"github.com/holiman/uint256"
 	// "unsafe"
 	// "github.com/SigmaGmbH/librustgo/types"
 )
@@ -166,10 +167,15 @@ func cQueryExternal(request C.U8SliceView, result *C.UnmanagedVector, errOut *C.
 	}
 	println("Go: Request balance and nonce for: ", hex.EncodeToString(decodedRequest.Address))
 
-	// Encode response
+	// TODO: Broadcast request to the network
+
+	// Encode mocked response
+	balance := uint256.NewInt(222).Bytes32()
+	nonce := uint256.NewInt(16).Bytes32()
+
 	response, err := proto.Marshal(&ffi.QueryGetAccountResponse{
-		Balance: make([]byte, 32),
-		Nonce: make([]byte, 32),
+		Balance: balance[:],
+		Nonce: nonce[:],
 	})
 	if err != nil {
 		*errOut = newUnmanagedVector([]byte(err.Error()))

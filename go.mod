@@ -3,8 +3,11 @@ module github.com/SigmaGmbH/librustgo
 go 1.17
 
 require (
+	github.com/golang/protobuf v1.4.3
+	github.com/holiman/uint256 v1.2.1
 	github.com/stretchr/testify v1.7.1
 	github.com/tendermint/tm-db v0.6.7
+	google.golang.org/protobuf v1.25.0
 )
 
 require (
@@ -16,7 +19,6 @@ require (
 	github.com/dgraph-io/ristretto v0.0.3-0.20200630154024-f66de99634de // indirect
 	github.com/dgryski/go-farm v0.0.0-20190423205320-6a90982ecee2 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
-	github.com/golang/protobuf v1.4.3 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/google/btree v1.0.0 // indirect
 	github.com/jmhodges/levigo v1.0.0 // indirect
@@ -26,6 +28,5 @@ require (
 	go.etcd.io/bbolt v1.3.6 // indirect
 	golang.org/x/net v0.0.0-20201021035429-f5854403a974 // indirect
 	golang.org/x/sys v0.0.0-20200930185726-fdedc70b468f // indirect
-	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
 )
