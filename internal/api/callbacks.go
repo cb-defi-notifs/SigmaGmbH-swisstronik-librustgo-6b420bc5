@@ -7,19 +7,22 @@ package api
 #include "bindings.h"
 
 // typedefs for _cgo functions (db)
-typedef GoError (*query_external_fn)(querier_t *ptr, uint64_t gas_limit, uint64_t *used_gas, U8SliceView request, UnmanagedVector *result, UnmanagedVector *errOut);
-GoError cQueryExternal_cgo(querier_t *ptr, uint64_t gas_limit, uint64_t *used_gas, U8SliceView request, UnmanagedVector *result, UnmanagedVector *errOut);
+typedef GoError (*query_external_fn)(querier_t *ptr, U8SliceView request, UnmanagedVector *result, UnmanagedVector *errOut);
+GoError cQueryExternal_cgo(querier_t *ptr, U8SliceView request, UnmanagedVector *result, UnmanagedVector *errOut);
 
 */
 import "C"
 
 import (
-	dbm "github.com/tendermint/tm-db"
+	"encoding/hex"
 	"log"
 	"reflect"
 	"runtime/debug"
-	// "unsafe"
 
+	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
+	"github.com/golang/protobuf/proto"
+	dbm "github.com/tendermint/tm-db"
+	// "unsafe"
 	// "github.com/SigmaGmbH/librustgo/types"
 )
 
@@ -143,10 +146,10 @@ func buildQuerier() C.GoQuerier {
 }
 
 //export cQueryExternal
-func cQueryExternal(gasLimit C.uint64_t, usedGas *C.uint64_t, request C.U8SliceView, result *C.UnmanagedVector, errOut *C.UnmanagedVector) (ret C.GoError) {
+func cQueryExternal(request C.U8SliceView, result *C.UnmanagedVector, errOut *C.UnmanagedVector) (ret C.GoError) {
 	defer recoverPanic(&ret)
 
-	if usedGas == nil || result == nil || errOut == nil {
+	if result == nil || errOut == nil {
 		// we received an invalid pointer
 		return C.GoError_BadArgument
 	}
@@ -154,18 +157,25 @@ func cQueryExternal(gasLimit C.uint64_t, usedGas *C.uint64_t, request C.U8SliceV
 		panic("Got a non-none UnmanagedVector we're about to override. This is a bug because someone has to drop the old one.")
 	}
 
-	// query the data
-	// req := copyU8Slice(request)
-	_ = copyU8Slice(request)
+	// Decode request
+	decodedRequest := ffi.QueryGetAccount{}
+	req := copyU8Slice(request)
+	if err := proto.Unmarshal(req, &decodedRequest); err != nil {
+		*errOut = newUnmanagedVector([]byte(err.Error()))
+		return C.GoError_Panic
+	}
+	println("Go: Request balance and nonce for: ", hex.EncodeToString(decodedRequest.Address))
 
-	// TODO: Use protobuf to encode response
-	// serialize the response
-	// bz, err := json.Marshal(res)
-	// if err != nil {
-	// 	*errOut = newUnmanagedVector([]byte(err.Error()))
-	// 	return C.GoError_CannotSerialize
-	// }
-	// *result = newUnmanagedVector(bz)
+	// Encode response
+	response, err := proto.Marshal(&ffi.QueryGetAccountResponse{
+		Balance: make([]byte, 32),
+		Nonce: make([]byte, 32),
+	})
+	if err != nil {
+		*errOut = newUnmanagedVector([]byte(err.Error()))
+		return C.GoError_CannotSerialize
+	}
+	*result = newUnmanagedVector(response)
 
 	println("cQueryExternal called successfully")
 
