@@ -14,15 +14,15 @@ GoError cQueryExternal_cgo(querier_t *ptr, U8SliceView request, UnmanagedVector 
 import "C"
 
 import (
-	"encoding/hex"
+	// "encoding/hex"
 	"log"
 	"reflect"
 	"runtime/debug"
 
-	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
-	"github.com/golang/protobuf/proto"
+	// ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
+	// "github.com/golang/protobuf/proto"
 	dbm "github.com/tendermint/tm-db"
-	"github.com/holiman/uint256"
+	// "github.com/holiman/uint256"
 	"unsafe"
 	types "github.com/SigmaGmbH/librustgo/types"
 )
@@ -147,7 +147,7 @@ func buildQuerier(q types.DataQuerier) C.GoQuerier {
 }
 
 //export cQueryExternal
-func cQueryExternal(request C.U8SliceView, result *C.UnmanagedVector, errOut *C.UnmanagedVector) (ret C.GoError) {
+func cQueryExternal(ptr *C.querier_t, request C.U8SliceView, result *C.UnmanagedVector, errOut *C.UnmanagedVector) (ret C.GoError) {
 	defer recoverPanic(&ret)
 
 	if result == nil || errOut == nil {
@@ -158,25 +158,10 @@ func cQueryExternal(request C.U8SliceView, result *C.UnmanagedVector, errOut *C.
 		panic("Got a non-none UnmanagedVector we're about to override. This is a bug because someone has to drop the old one.")
 	}
 
-	// Decode request
-	decodedRequest := ffi.QueryGetAccount{}
 	req := copyU8Slice(request)
-	if err := proto.Unmarshal(req, &decodedRequest); err != nil {
-		*errOut = newUnmanagedVector([]byte(err.Error()))
-		return C.GoError_Panic
-	}
-	println("Go: Request balance and nonce for: ", hex.EncodeToString(decodedRequest.Address))
+	querier := *(*types.DataQuerier)(unsafe.Pointer(ptr))
+	response, err := querier.Query(req)
 
-	// TODO: Broadcast request to the network
-
-	// Encode mocked response
-	balance := uint256.NewInt(222).Bytes32()
-	nonce := uint256.NewInt(16).Bytes32()
-
-	response, err := proto.Marshal(&ffi.QueryGetAccountResponse{
-		Balance: balance[:],
-		Nonce: nonce[:],
-	})
 	if err != nil {
 		*errOut = newUnmanagedVector([]byte(err.Error()))
 		return C.GoError_CannotSerialize

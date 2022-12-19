@@ -24,8 +24,8 @@ type MockedQueryHandler struct {}
 var _ types.DataQuerier = MockedQueryHandler{}
 
 func (MockedQueryHandler) Query(request []byte) ([]byte, error) {
-	balance := uint256.NewInt(2341).Bytes32()
-	nonce := uint256.NewInt(122).Bytes32()
+	balance := uint256.NewInt(155).Bytes32()
+	nonce := uint256.NewInt(133).Bytes32()
 
 	return proto.Marshal(&ffi.QueryGetAccountResponse{
 		Balance: balance[:],

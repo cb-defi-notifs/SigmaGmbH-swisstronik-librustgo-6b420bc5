@@ -192,7 +192,7 @@ typedef struct U8SliceView {
 } U8SliceView;
 
 typedef struct Querier_vtable {
-  int32_t (*query_external)(struct U8SliceView, struct UnmanagedVector*, struct UnmanagedVector*);
+  int32_t (*query_external)(const struct querier_t*, struct U8SliceView, struct UnmanagedVector*, struct UnmanagedVector*);
 } Querier_vtable;
 
 typedef struct GoQuerier {
