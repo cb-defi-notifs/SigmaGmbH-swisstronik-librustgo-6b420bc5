@@ -1480,6 +1480,5104 @@ impl ::protobuf::reflect::ProtobufValue for QueryGetAccountResponse {
 }
 
 #[derive(PartialEq,Clone,Default)]
+pub struct QueryInsertAccount {
+    // message fields
+    pub address: ::std::vec::Vec<u8>,
+    pub balance: ::std::vec::Vec<u8>,
+    pub nonce: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryInsertAccount {
+    fn default() -> &'a QueryInsertAccount {
+        <QueryInsertAccount as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryInsertAccount {
+    pub fn new() -> QueryInsertAccount {
+        ::std::default::Default::default()
+    }
+
+    // bytes address = 1;
+
+
+    pub fn get_address(&self) -> &[u8] {
+        &self.address
+    }
+    pub fn clear_address(&mut self) {
+        self.address.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_address(&mut self, v: ::std::vec::Vec<u8>) {
+        self.address = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_address(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.address
+    }
+
+    // Take field
+    pub fn take_address(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.address, ::std::vec::Vec::new())
+    }
+
+    // bytes balance = 2;
+
+
+    pub fn get_balance(&self) -> &[u8] {
+        &self.balance
+    }
+    pub fn clear_balance(&mut self) {
+        self.balance.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_balance(&mut self, v: ::std::vec::Vec<u8>) {
+        self.balance = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_balance(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.balance
+    }
+
+    // Take field
+    pub fn take_balance(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.balance, ::std::vec::Vec::new())
+    }
+
+    // bytes nonce = 3;
+
+
+    pub fn get_nonce(&self) -> &[u8] {
+        &self.nonce
+    }
+    pub fn clear_nonce(&mut self) {
+        self.nonce.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_nonce(&mut self, v: ::std::vec::Vec<u8>) {
+        self.nonce = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_nonce(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.nonce
+    }
+
+    // Take field
+    pub fn take_nonce(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.nonce, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for QueryInsertAccount {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.address)?;
+                },
+                2 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.balance)?;
+                },
+                3 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.nonce)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.address.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.address);
+        }
+        if !self.balance.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(2, &self.balance);
+        }
+        if !self.nonce.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(3, &self.nonce);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.address.is_empty() {
+            os.write_bytes(1, &self.address)?;
+        }
+        if !self.balance.is_empty() {
+            os.write_bytes(2, &self.balance)?;
+        }
+        if !self.nonce.is_empty() {
+            os.write_bytes(3, &self.nonce)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryInsertAccount {
+        QueryInsertAccount::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "address",
+                |m: &QueryInsertAccount| { &m.address },
+                |m: &mut QueryInsertAccount| { &mut m.address },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "balance",
+                |m: &QueryInsertAccount| { &m.balance },
+                |m: &mut QueryInsertAccount| { &mut m.balance },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "nonce",
+                |m: &QueryInsertAccount| { &m.nonce },
+                |m: &mut QueryInsertAccount| { &mut m.nonce },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryInsertAccount>(
+                "QueryInsertAccount",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryInsertAccount {
+        static instance: ::protobuf::rt::LazyV2<QueryInsertAccount> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryInsertAccount::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryInsertAccount {
+    fn clear(&mut self) {
+        self.address.clear();
+        self.balance.clear();
+        self.nonce.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryInsertAccount {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryInsertAccount {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryInsertAccountResponse {
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryInsertAccountResponse {
+    fn default() -> &'a QueryInsertAccountResponse {
+        <QueryInsertAccountResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryInsertAccountResponse {
+    pub fn new() -> QueryInsertAccountResponse {
+        ::std::default::Default::default()
+    }
+}
+
+impl ::protobuf::Message for QueryInsertAccountResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryInsertAccountResponse {
+        QueryInsertAccountResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let fields = ::std::vec::Vec::new();
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryInsertAccountResponse>(
+                "QueryInsertAccountResponse",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryInsertAccountResponse {
+        static instance: ::protobuf::rt::LazyV2<QueryInsertAccountResponse> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryInsertAccountResponse::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryInsertAccountResponse {
+    fn clear(&mut self) {
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryInsertAccountResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryInsertAccountResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryContainsKey {
+    // message fields
+    pub key: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryContainsKey {
+    fn default() -> &'a QueryContainsKey {
+        <QueryContainsKey as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryContainsKey {
+    pub fn new() -> QueryContainsKey {
+        ::std::default::Default::default()
+    }
+
+    // bytes key = 1;
+
+
+    pub fn get_key(&self) -> &[u8] {
+        &self.key
+    }
+    pub fn clear_key(&mut self) {
+        self.key.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_key(&mut self, v: ::std::vec::Vec<u8>) {
+        self.key = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_key(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.key
+    }
+
+    // Take field
+    pub fn take_key(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.key, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for QueryContainsKey {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.key)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.key.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.key);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.key.is_empty() {
+            os.write_bytes(1, &self.key)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryContainsKey {
+        QueryContainsKey::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "key",
+                |m: &QueryContainsKey| { &m.key },
+                |m: &mut QueryContainsKey| { &mut m.key },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryContainsKey>(
+                "QueryContainsKey",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryContainsKey {
+        static instance: ::protobuf::rt::LazyV2<QueryContainsKey> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryContainsKey::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryContainsKey {
+    fn clear(&mut self) {
+        self.key.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryContainsKey {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryContainsKey {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryContainsKeyResponse {
+    // message fields
+    pub contains: bool,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryContainsKeyResponse {
+    fn default() -> &'a QueryContainsKeyResponse {
+        <QueryContainsKeyResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryContainsKeyResponse {
+    pub fn new() -> QueryContainsKeyResponse {
+        ::std::default::Default::default()
+    }
+
+    // bool contains = 1;
+
+
+    pub fn get_contains(&self) -> bool {
+        self.contains
+    }
+    pub fn clear_contains(&mut self) {
+        self.contains = false;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_contains(&mut self, v: bool) {
+        self.contains = v;
+    }
+}
+
+impl ::protobuf::Message for QueryContainsKeyResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_bool()?;
+                    self.contains = tmp;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if self.contains != false {
+            my_size += 2;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if self.contains != false {
+            os.write_bool(1, self.contains)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryContainsKeyResponse {
+        QueryContainsKeyResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
+                "contains",
+                |m: &QueryContainsKeyResponse| { &m.contains },
+                |m: &mut QueryContainsKeyResponse| { &mut m.contains },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryContainsKeyResponse>(
+                "QueryContainsKeyResponse",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryContainsKeyResponse {
+        static instance: ::protobuf::rt::LazyV2<QueryContainsKeyResponse> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryContainsKeyResponse::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryContainsKeyResponse {
+    fn clear(&mut self) {
+        self.contains = false;
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryContainsKeyResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryContainsKeyResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryGetAccountStorageCell {
+    // message fields
+    pub address: ::std::vec::Vec<u8>,
+    pub index: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryGetAccountStorageCell {
+    fn default() -> &'a QueryGetAccountStorageCell {
+        <QueryGetAccountStorageCell as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryGetAccountStorageCell {
+    pub fn new() -> QueryGetAccountStorageCell {
+        ::std::default::Default::default()
+    }
+
+    // bytes address = 1;
+
+
+    pub fn get_address(&self) -> &[u8] {
+        &self.address
+    }
+    pub fn clear_address(&mut self) {
+        self.address.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_address(&mut self, v: ::std::vec::Vec<u8>) {
+        self.address = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_address(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.address
+    }
+
+    // Take field
+    pub fn take_address(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.address, ::std::vec::Vec::new())
+    }
+
+    // bytes index = 2;
+
+
+    pub fn get_index(&self) -> &[u8] {
+        &self.index
+    }
+    pub fn clear_index(&mut self) {
+        self.index.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_index(&mut self, v: ::std::vec::Vec<u8>) {
+        self.index = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_index(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.index
+    }
+
+    // Take field
+    pub fn take_index(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.index, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for QueryGetAccountStorageCell {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.address)?;
+                },
+                2 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.index)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.address.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.address);
+        }
+        if !self.index.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(2, &self.index);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.address.is_empty() {
+            os.write_bytes(1, &self.address)?;
+        }
+        if !self.index.is_empty() {
+            os.write_bytes(2, &self.index)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryGetAccountStorageCell {
+        QueryGetAccountStorageCell::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "address",
+                |m: &QueryGetAccountStorageCell| { &m.address },
+                |m: &mut QueryGetAccountStorageCell| { &mut m.address },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "index",
+                |m: &QueryGetAccountStorageCell| { &m.index },
+                |m: &mut QueryGetAccountStorageCell| { &mut m.index },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryGetAccountStorageCell>(
+                "QueryGetAccountStorageCell",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryGetAccountStorageCell {
+        static instance: ::protobuf::rt::LazyV2<QueryGetAccountStorageCell> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryGetAccountStorageCell::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryGetAccountStorageCell {
+    fn clear(&mut self) {
+        self.address.clear();
+        self.index.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryGetAccountStorageCell {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryGetAccountStorageCell {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryGetAccountStorageCellResponse {
+    // message fields
+    pub value: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryGetAccountStorageCellResponse {
+    fn default() -> &'a QueryGetAccountStorageCellResponse {
+        <QueryGetAccountStorageCellResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryGetAccountStorageCellResponse {
+    pub fn new() -> QueryGetAccountStorageCellResponse {
+        ::std::default::Default::default()
+    }
+
+    // bytes value = 1;
+
+
+    pub fn get_value(&self) -> &[u8] {
+        &self.value
+    }
+    pub fn clear_value(&mut self) {
+        self.value.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_value(&mut self, v: ::std::vec::Vec<u8>) {
+        self.value = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_value(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.value
+    }
+
+    // Take field
+    pub fn take_value(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.value, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for QueryGetAccountStorageCellResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.value)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.value.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.value);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.value.is_empty() {
+            os.write_bytes(1, &self.value)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryGetAccountStorageCellResponse {
+        QueryGetAccountStorageCellResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "value",
+                |m: &QueryGetAccountStorageCellResponse| { &m.value },
+                |m: &mut QueryGetAccountStorageCellResponse| { &mut m.value },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryGetAccountStorageCellResponse>(
+                "QueryGetAccountStorageCellResponse",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryGetAccountStorageCellResponse {
+        static instance: ::protobuf::rt::LazyV2<QueryGetAccountStorageCellResponse> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryGetAccountStorageCellResponse::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryGetAccountStorageCellResponse {
+    fn clear(&mut self) {
+        self.value.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryGetAccountStorageCellResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryGetAccountStorageCellResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryGetAccountCode {
+    // message fields
+    pub address: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryGetAccountCode {
+    fn default() -> &'a QueryGetAccountCode {
+        <QueryGetAccountCode as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryGetAccountCode {
+    pub fn new() -> QueryGetAccountCode {
+        ::std::default::Default::default()
+    }
+
+    // bytes address = 1;
+
+
+    pub fn get_address(&self) -> &[u8] {
+        &self.address
+    }
+    pub fn clear_address(&mut self) {
+        self.address.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_address(&mut self, v: ::std::vec::Vec<u8>) {
+        self.address = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_address(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.address
+    }
+
+    // Take field
+    pub fn take_address(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.address, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for QueryGetAccountCode {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.address)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.address.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.address);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.address.is_empty() {
+            os.write_bytes(1, &self.address)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryGetAccountCode {
+        QueryGetAccountCode::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "address",
+                |m: &QueryGetAccountCode| { &m.address },
+                |m: &mut QueryGetAccountCode| { &mut m.address },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryGetAccountCode>(
+                "QueryGetAccountCode",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryGetAccountCode {
+        static instance: ::protobuf::rt::LazyV2<QueryGetAccountCode> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryGetAccountCode::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryGetAccountCode {
+    fn clear(&mut self) {
+        self.address.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryGetAccountCode {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryGetAccountCode {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryGetAccountCodeResponse {
+    // message fields
+    pub code: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryGetAccountCodeResponse {
+    fn default() -> &'a QueryGetAccountCodeResponse {
+        <QueryGetAccountCodeResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryGetAccountCodeResponse {
+    pub fn new() -> QueryGetAccountCodeResponse {
+        ::std::default::Default::default()
+    }
+
+    // bytes code = 1;
+
+
+    pub fn get_code(&self) -> &[u8] {
+        &self.code
+    }
+    pub fn clear_code(&mut self) {
+        self.code.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_code(&mut self, v: ::std::vec::Vec<u8>) {
+        self.code = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_code(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.code
+    }
+
+    // Take field
+    pub fn take_code(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.code, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for QueryGetAccountCodeResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.code)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.code.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.code);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.code.is_empty() {
+            os.write_bytes(1, &self.code)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryGetAccountCodeResponse {
+        QueryGetAccountCodeResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "code",
+                |m: &QueryGetAccountCodeResponse| { &m.code },
+                |m: &mut QueryGetAccountCodeResponse| { &mut m.code },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryGetAccountCodeResponse>(
+                "QueryGetAccountCodeResponse",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryGetAccountCodeResponse {
+        static instance: ::protobuf::rt::LazyV2<QueryGetAccountCodeResponse> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryGetAccountCodeResponse::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryGetAccountCodeResponse {
+    fn clear(&mut self) {
+        self.code.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryGetAccountCodeResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryGetAccountCodeResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryInsertAccountCode {
+    // message fields
+    pub address: ::std::vec::Vec<u8>,
+    pub code: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryInsertAccountCode {
+    fn default() -> &'a QueryInsertAccountCode {
+        <QueryInsertAccountCode as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryInsertAccountCode {
+    pub fn new() -> QueryInsertAccountCode {
+        ::std::default::Default::default()
+    }
+
+    // bytes address = 1;
+
+
+    pub fn get_address(&self) -> &[u8] {
+        &self.address
+    }
+    pub fn clear_address(&mut self) {
+        self.address.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_address(&mut self, v: ::std::vec::Vec<u8>) {
+        self.address = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_address(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.address
+    }
+
+    // Take field
+    pub fn take_address(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.address, ::std::vec::Vec::new())
+    }
+
+    // bytes code = 2;
+
+
+    pub fn get_code(&self) -> &[u8] {
+        &self.code
+    }
+    pub fn clear_code(&mut self) {
+        self.code.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_code(&mut self, v: ::std::vec::Vec<u8>) {
+        self.code = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_code(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.code
+    }
+
+    // Take field
+    pub fn take_code(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.code, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for QueryInsertAccountCode {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.address)?;
+                },
+                2 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.code)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.address.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.address);
+        }
+        if !self.code.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(2, &self.code);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.address.is_empty() {
+            os.write_bytes(1, &self.address)?;
+        }
+        if !self.code.is_empty() {
+            os.write_bytes(2, &self.code)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryInsertAccountCode {
+        QueryInsertAccountCode::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "address",
+                |m: &QueryInsertAccountCode| { &m.address },
+                |m: &mut QueryInsertAccountCode| { &mut m.address },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "code",
+                |m: &QueryInsertAccountCode| { &m.code },
+                |m: &mut QueryInsertAccountCode| { &mut m.code },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryInsertAccountCode>(
+                "QueryInsertAccountCode",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryInsertAccountCode {
+        static instance: ::protobuf::rt::LazyV2<QueryInsertAccountCode> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryInsertAccountCode::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryInsertAccountCode {
+    fn clear(&mut self) {
+        self.address.clear();
+        self.code.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryInsertAccountCode {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryInsertAccountCode {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryInsertAccountCodeResponse {
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryInsertAccountCodeResponse {
+    fn default() -> &'a QueryInsertAccountCodeResponse {
+        <QueryInsertAccountCodeResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryInsertAccountCodeResponse {
+    pub fn new() -> QueryInsertAccountCodeResponse {
+        ::std::default::Default::default()
+    }
+}
+
+impl ::protobuf::Message for QueryInsertAccountCodeResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryInsertAccountCodeResponse {
+        QueryInsertAccountCodeResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let fields = ::std::vec::Vec::new();
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryInsertAccountCodeResponse>(
+                "QueryInsertAccountCodeResponse",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryInsertAccountCodeResponse {
+        static instance: ::protobuf::rt::LazyV2<QueryInsertAccountCodeResponse> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryInsertAccountCodeResponse::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryInsertAccountCodeResponse {
+    fn clear(&mut self) {
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryInsertAccountCodeResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryInsertAccountCodeResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryInsertStorageCell {
+    // message fields
+    pub address: ::std::vec::Vec<u8>,
+    pub index: ::std::vec::Vec<u8>,
+    pub value: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryInsertStorageCell {
+    fn default() -> &'a QueryInsertStorageCell {
+        <QueryInsertStorageCell as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryInsertStorageCell {
+    pub fn new() -> QueryInsertStorageCell {
+        ::std::default::Default::default()
+    }
+
+    // bytes address = 1;
+
+
+    pub fn get_address(&self) -> &[u8] {
+        &self.address
+    }
+    pub fn clear_address(&mut self) {
+        self.address.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_address(&mut self, v: ::std::vec::Vec<u8>) {
+        self.address = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_address(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.address
+    }
+
+    // Take field
+    pub fn take_address(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.address, ::std::vec::Vec::new())
+    }
+
+    // bytes index = 2;
+
+
+    pub fn get_index(&self) -> &[u8] {
+        &self.index
+    }
+    pub fn clear_index(&mut self) {
+        self.index.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_index(&mut self, v: ::std::vec::Vec<u8>) {
+        self.index = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_index(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.index
+    }
+
+    // Take field
+    pub fn take_index(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.index, ::std::vec::Vec::new())
+    }
+
+    // bytes value = 3;
+
+
+    pub fn get_value(&self) -> &[u8] {
+        &self.value
+    }
+    pub fn clear_value(&mut self) {
+        self.value.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_value(&mut self, v: ::std::vec::Vec<u8>) {
+        self.value = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_value(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.value
+    }
+
+    // Take field
+    pub fn take_value(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.value, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for QueryInsertStorageCell {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.address)?;
+                },
+                2 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.index)?;
+                },
+                3 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.value)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.address.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.address);
+        }
+        if !self.index.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(2, &self.index);
+        }
+        if !self.value.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(3, &self.value);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.address.is_empty() {
+            os.write_bytes(1, &self.address)?;
+        }
+        if !self.index.is_empty() {
+            os.write_bytes(2, &self.index)?;
+        }
+        if !self.value.is_empty() {
+            os.write_bytes(3, &self.value)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryInsertStorageCell {
+        QueryInsertStorageCell::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "address",
+                |m: &QueryInsertStorageCell| { &m.address },
+                |m: &mut QueryInsertStorageCell| { &mut m.address },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "index",
+                |m: &QueryInsertStorageCell| { &m.index },
+                |m: &mut QueryInsertStorageCell| { &mut m.index },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "value",
+                |m: &QueryInsertStorageCell| { &m.value },
+                |m: &mut QueryInsertStorageCell| { &mut m.value },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryInsertStorageCell>(
+                "QueryInsertStorageCell",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryInsertStorageCell {
+        static instance: ::protobuf::rt::LazyV2<QueryInsertStorageCell> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryInsertStorageCell::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryInsertStorageCell {
+    fn clear(&mut self) {
+        self.address.clear();
+        self.index.clear();
+        self.value.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryInsertStorageCell {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryInsertStorageCell {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryInsertStorageCellResponse {
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryInsertStorageCellResponse {
+    fn default() -> &'a QueryInsertStorageCellResponse {
+        <QueryInsertStorageCellResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryInsertStorageCellResponse {
+    pub fn new() -> QueryInsertStorageCellResponse {
+        ::std::default::Default::default()
+    }
+}
+
+impl ::protobuf::Message for QueryInsertStorageCellResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryInsertStorageCellResponse {
+        QueryInsertStorageCellResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let fields = ::std::vec::Vec::new();
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryInsertStorageCellResponse>(
+                "QueryInsertStorageCellResponse",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryInsertStorageCellResponse {
+        static instance: ::protobuf::rt::LazyV2<QueryInsertStorageCellResponse> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryInsertStorageCellResponse::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryInsertStorageCellResponse {
+    fn clear(&mut self) {
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryInsertStorageCellResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryInsertStorageCellResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryRemove {
+    // message fields
+    pub address: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryRemove {
+    fn default() -> &'a QueryRemove {
+        <QueryRemove as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryRemove {
+    pub fn new() -> QueryRemove {
+        ::std::default::Default::default()
+    }
+
+    // bytes address = 1;
+
+
+    pub fn get_address(&self) -> &[u8] {
+        &self.address
+    }
+    pub fn clear_address(&mut self) {
+        self.address.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_address(&mut self, v: ::std::vec::Vec<u8>) {
+        self.address = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_address(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.address
+    }
+
+    // Take field
+    pub fn take_address(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.address, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for QueryRemove {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.address)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.address.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.address);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.address.is_empty() {
+            os.write_bytes(1, &self.address)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryRemove {
+        QueryRemove::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "address",
+                |m: &QueryRemove| { &m.address },
+                |m: &mut QueryRemove| { &mut m.address },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryRemove>(
+                "QueryRemove",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryRemove {
+        static instance: ::protobuf::rt::LazyV2<QueryRemove> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryRemove::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryRemove {
+    fn clear(&mut self) {
+        self.address.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryRemove {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryRemove {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryRemoveResponse {
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryRemoveResponse {
+    fn default() -> &'a QueryRemoveResponse {
+        <QueryRemoveResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryRemoveResponse {
+    pub fn new() -> QueryRemoveResponse {
+        ::std::default::Default::default()
+    }
+}
+
+impl ::protobuf::Message for QueryRemoveResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryRemoveResponse {
+        QueryRemoveResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let fields = ::std::vec::Vec::new();
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryRemoveResponse>(
+                "QueryRemoveResponse",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryRemoveResponse {
+        static instance: ::protobuf::rt::LazyV2<QueryRemoveResponse> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryRemoveResponse::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryRemoveResponse {
+    fn clear(&mut self) {
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryRemoveResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryRemoveResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryRemoveAccountCode {
+    // message fields
+    pub address: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryRemoveAccountCode {
+    fn default() -> &'a QueryRemoveAccountCode {
+        <QueryRemoveAccountCode as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryRemoveAccountCode {
+    pub fn new() -> QueryRemoveAccountCode {
+        ::std::default::Default::default()
+    }
+
+    // bytes address = 1;
+
+
+    pub fn get_address(&self) -> &[u8] {
+        &self.address
+    }
+    pub fn clear_address(&mut self) {
+        self.address.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_address(&mut self, v: ::std::vec::Vec<u8>) {
+        self.address = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_address(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.address
+    }
+
+    // Take field
+    pub fn take_address(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.address, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for QueryRemoveAccountCode {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.address)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.address.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.address);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.address.is_empty() {
+            os.write_bytes(1, &self.address)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryRemoveAccountCode {
+        QueryRemoveAccountCode::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "address",
+                |m: &QueryRemoveAccountCode| { &m.address },
+                |m: &mut QueryRemoveAccountCode| { &mut m.address },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryRemoveAccountCode>(
+                "QueryRemoveAccountCode",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryRemoveAccountCode {
+        static instance: ::protobuf::rt::LazyV2<QueryRemoveAccountCode> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryRemoveAccountCode::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryRemoveAccountCode {
+    fn clear(&mut self) {
+        self.address.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryRemoveAccountCode {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryRemoveAccountCode {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryRemoveAccountCodeResponse {
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryRemoveAccountCodeResponse {
+    fn default() -> &'a QueryRemoveAccountCodeResponse {
+        <QueryRemoveAccountCodeResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryRemoveAccountCodeResponse {
+    pub fn new() -> QueryRemoveAccountCodeResponse {
+        ::std::default::Default::default()
+    }
+}
+
+impl ::protobuf::Message for QueryRemoveAccountCodeResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryRemoveAccountCodeResponse {
+        QueryRemoveAccountCodeResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let fields = ::std::vec::Vec::new();
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryRemoveAccountCodeResponse>(
+                "QueryRemoveAccountCodeResponse",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryRemoveAccountCodeResponse {
+        static instance: ::protobuf::rt::LazyV2<QueryRemoveAccountCodeResponse> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryRemoveAccountCodeResponse::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryRemoveAccountCodeResponse {
+    fn clear(&mut self) {
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryRemoveAccountCodeResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryRemoveAccountCodeResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryRemoveStorageCell {
+    // message fields
+    pub address: ::std::vec::Vec<u8>,
+    pub index: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryRemoveStorageCell {
+    fn default() -> &'a QueryRemoveStorageCell {
+        <QueryRemoveStorageCell as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryRemoveStorageCell {
+    pub fn new() -> QueryRemoveStorageCell {
+        ::std::default::Default::default()
+    }
+
+    // bytes address = 1;
+
+
+    pub fn get_address(&self) -> &[u8] {
+        &self.address
+    }
+    pub fn clear_address(&mut self) {
+        self.address.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_address(&mut self, v: ::std::vec::Vec<u8>) {
+        self.address = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_address(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.address
+    }
+
+    // Take field
+    pub fn take_address(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.address, ::std::vec::Vec::new())
+    }
+
+    // bytes index = 2;
+
+
+    pub fn get_index(&self) -> &[u8] {
+        &self.index
+    }
+    pub fn clear_index(&mut self) {
+        self.index.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_index(&mut self, v: ::std::vec::Vec<u8>) {
+        self.index = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_index(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.index
+    }
+
+    // Take field
+    pub fn take_index(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.index, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for QueryRemoveStorageCell {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.address)?;
+                },
+                2 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.index)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.address.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.address);
+        }
+        if !self.index.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(2, &self.index);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.address.is_empty() {
+            os.write_bytes(1, &self.address)?;
+        }
+        if !self.index.is_empty() {
+            os.write_bytes(2, &self.index)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryRemoveStorageCell {
+        QueryRemoveStorageCell::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "address",
+                |m: &QueryRemoveStorageCell| { &m.address },
+                |m: &mut QueryRemoveStorageCell| { &mut m.address },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "index",
+                |m: &QueryRemoveStorageCell| { &m.index },
+                |m: &mut QueryRemoveStorageCell| { &mut m.index },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryRemoveStorageCell>(
+                "QueryRemoveStorageCell",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryRemoveStorageCell {
+        static instance: ::protobuf::rt::LazyV2<QueryRemoveStorageCell> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryRemoveStorageCell::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryRemoveStorageCell {
+    fn clear(&mut self) {
+        self.address.clear();
+        self.index.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryRemoveStorageCell {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryRemoveStorageCell {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryRemoveStorageCellResponse {
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryRemoveStorageCellResponse {
+    fn default() -> &'a QueryRemoveStorageCellResponse {
+        <QueryRemoveStorageCellResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryRemoveStorageCellResponse {
+    pub fn new() -> QueryRemoveStorageCellResponse {
+        ::std::default::Default::default()
+    }
+}
+
+impl ::protobuf::Message for QueryRemoveStorageCellResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryRemoveStorageCellResponse {
+        QueryRemoveStorageCellResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let fields = ::std::vec::Vec::new();
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryRemoveStorageCellResponse>(
+                "QueryRemoveStorageCellResponse",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryRemoveStorageCellResponse {
+        static instance: ::protobuf::rt::LazyV2<QueryRemoveStorageCellResponse> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryRemoveStorageCellResponse::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryRemoveStorageCellResponse {
+    fn clear(&mut self) {
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryRemoveStorageCellResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryRemoveStorageCellResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryRemoveStorage {
+    // message fields
+    pub address: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryRemoveStorage {
+    fn default() -> &'a QueryRemoveStorage {
+        <QueryRemoveStorage as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryRemoveStorage {
+    pub fn new() -> QueryRemoveStorage {
+        ::std::default::Default::default()
+    }
+
+    // bytes address = 1;
+
+
+    pub fn get_address(&self) -> &[u8] {
+        &self.address
+    }
+    pub fn clear_address(&mut self) {
+        self.address.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_address(&mut self, v: ::std::vec::Vec<u8>) {
+        self.address = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_address(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.address
+    }
+
+    // Take field
+    pub fn take_address(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.address, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for QueryRemoveStorage {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.address)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.address.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.address);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.address.is_empty() {
+            os.write_bytes(1, &self.address)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryRemoveStorage {
+        QueryRemoveStorage::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "address",
+                |m: &QueryRemoveStorage| { &m.address },
+                |m: &mut QueryRemoveStorage| { &mut m.address },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryRemoveStorage>(
+                "QueryRemoveStorage",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryRemoveStorage {
+        static instance: ::protobuf::rt::LazyV2<QueryRemoveStorage> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryRemoveStorage::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryRemoveStorage {
+    fn clear(&mut self) {
+        self.address.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryRemoveStorage {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryRemoveStorage {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryRemoveStorageResponse {
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryRemoveStorageResponse {
+    fn default() -> &'a QueryRemoveStorageResponse {
+        <QueryRemoveStorageResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryRemoveStorageResponse {
+    pub fn new() -> QueryRemoveStorageResponse {
+        ::std::default::Default::default()
+    }
+}
+
+impl ::protobuf::Message for QueryRemoveStorageResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryRemoveStorageResponse {
+        QueryRemoveStorageResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let fields = ::std::vec::Vec::new();
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryRemoveStorageResponse>(
+                "QueryRemoveStorageResponse",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryRemoveStorageResponse {
+        static instance: ::protobuf::rt::LazyV2<QueryRemoveStorageResponse> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryRemoveStorageResponse::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryRemoveStorageResponse {
+    fn clear(&mut self) {
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryRemoveStorageResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryRemoveStorageResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct CosmosRequest {
+    // message oneof groups
+    pub req: ::std::option::Option<CosmosRequest_oneof_req>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a CosmosRequest {
+    fn default() -> &'a CosmosRequest {
+        <CosmosRequest as ::protobuf::Message>::default_instance()
+    }
+}
+
+#[derive(Clone,PartialEq,Debug)]
+pub enum CosmosRequest_oneof_req {
+    getAccount(QueryGetAccount),
+    insertAccount(QueryInsertAccount),
+    containsKey(QueryContainsKey),
+    accountCode(QueryGetAccountCode),
+    storageCell(QueryGetAccountStorageCell),
+    insertAccountCode(QueryInsertAccountCode),
+    insertStorageCell(QueryInsertStorageCell),
+    remove(QueryRemove),
+    removeAccountCode(QueryRemoveAccountCode),
+    removeStorageCell(QueryRemoveStorageCell),
+    removeStorage(QueryRemoveStorage),
+}
+
+impl CosmosRequest {
+    pub fn new() -> CosmosRequest {
+        ::std::default::Default::default()
+    }
+
+    // .ffi.ffi.QueryGetAccount getAccount = 1;
+
+
+    pub fn get_getAccount(&self) -> &QueryGetAccount {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::getAccount(ref v)) => v,
+            _ => <QueryGetAccount as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_getAccount(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_getAccount(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::getAccount(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_getAccount(&mut self, v: QueryGetAccount) {
+        self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::getAccount(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_getAccount(&mut self) -> &mut QueryGetAccount {
+        if let ::std::option::Option::Some(CosmosRequest_oneof_req::getAccount(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::getAccount(QueryGetAccount::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::getAccount(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_getAccount(&mut self) -> QueryGetAccount {
+        if self.has_getAccount() {
+            match self.req.take() {
+                ::std::option::Option::Some(CosmosRequest_oneof_req::getAccount(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryGetAccount::new()
+        }
+    }
+
+    // .ffi.ffi.QueryInsertAccount insertAccount = 2;
+
+
+    pub fn get_insertAccount(&self) -> &QueryInsertAccount {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::insertAccount(ref v)) => v,
+            _ => <QueryInsertAccount as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_insertAccount(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_insertAccount(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::insertAccount(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_insertAccount(&mut self, v: QueryInsertAccount) {
+        self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::insertAccount(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_insertAccount(&mut self) -> &mut QueryInsertAccount {
+        if let ::std::option::Option::Some(CosmosRequest_oneof_req::insertAccount(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::insertAccount(QueryInsertAccount::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::insertAccount(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_insertAccount(&mut self) -> QueryInsertAccount {
+        if self.has_insertAccount() {
+            match self.req.take() {
+                ::std::option::Option::Some(CosmosRequest_oneof_req::insertAccount(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryInsertAccount::new()
+        }
+    }
+
+    // .ffi.ffi.QueryContainsKey containsKey = 3;
+
+
+    pub fn get_containsKey(&self) -> &QueryContainsKey {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::containsKey(ref v)) => v,
+            _ => <QueryContainsKey as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_containsKey(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_containsKey(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::containsKey(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_containsKey(&mut self, v: QueryContainsKey) {
+        self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::containsKey(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_containsKey(&mut self) -> &mut QueryContainsKey {
+        if let ::std::option::Option::Some(CosmosRequest_oneof_req::containsKey(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::containsKey(QueryContainsKey::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::containsKey(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_containsKey(&mut self) -> QueryContainsKey {
+        if self.has_containsKey() {
+            match self.req.take() {
+                ::std::option::Option::Some(CosmosRequest_oneof_req::containsKey(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryContainsKey::new()
+        }
+    }
+
+    // .ffi.ffi.QueryGetAccountCode accountCode = 4;
+
+
+    pub fn get_accountCode(&self) -> &QueryGetAccountCode {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::accountCode(ref v)) => v,
+            _ => <QueryGetAccountCode as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_accountCode(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_accountCode(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::accountCode(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_accountCode(&mut self, v: QueryGetAccountCode) {
+        self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::accountCode(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_accountCode(&mut self) -> &mut QueryGetAccountCode {
+        if let ::std::option::Option::Some(CosmosRequest_oneof_req::accountCode(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::accountCode(QueryGetAccountCode::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::accountCode(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_accountCode(&mut self) -> QueryGetAccountCode {
+        if self.has_accountCode() {
+            match self.req.take() {
+                ::std::option::Option::Some(CosmosRequest_oneof_req::accountCode(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryGetAccountCode::new()
+        }
+    }
+
+    // .ffi.ffi.QueryGetAccountStorageCell storageCell = 5;
+
+
+    pub fn get_storageCell(&self) -> &QueryGetAccountStorageCell {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::storageCell(ref v)) => v,
+            _ => <QueryGetAccountStorageCell as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_storageCell(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_storageCell(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::storageCell(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_storageCell(&mut self, v: QueryGetAccountStorageCell) {
+        self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::storageCell(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_storageCell(&mut self) -> &mut QueryGetAccountStorageCell {
+        if let ::std::option::Option::Some(CosmosRequest_oneof_req::storageCell(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::storageCell(QueryGetAccountStorageCell::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::storageCell(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_storageCell(&mut self) -> QueryGetAccountStorageCell {
+        if self.has_storageCell() {
+            match self.req.take() {
+                ::std::option::Option::Some(CosmosRequest_oneof_req::storageCell(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryGetAccountStorageCell::new()
+        }
+    }
+
+    // .ffi.ffi.QueryInsertAccountCode insertAccountCode = 6;
+
+
+    pub fn get_insertAccountCode(&self) -> &QueryInsertAccountCode {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::insertAccountCode(ref v)) => v,
+            _ => <QueryInsertAccountCode as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_insertAccountCode(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_insertAccountCode(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::insertAccountCode(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_insertAccountCode(&mut self, v: QueryInsertAccountCode) {
+        self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::insertAccountCode(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_insertAccountCode(&mut self) -> &mut QueryInsertAccountCode {
+        if let ::std::option::Option::Some(CosmosRequest_oneof_req::insertAccountCode(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::insertAccountCode(QueryInsertAccountCode::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::insertAccountCode(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_insertAccountCode(&mut self) -> QueryInsertAccountCode {
+        if self.has_insertAccountCode() {
+            match self.req.take() {
+                ::std::option::Option::Some(CosmosRequest_oneof_req::insertAccountCode(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryInsertAccountCode::new()
+        }
+    }
+
+    // .ffi.ffi.QueryInsertStorageCell insertStorageCell = 7;
+
+
+    pub fn get_insertStorageCell(&self) -> &QueryInsertStorageCell {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::insertStorageCell(ref v)) => v,
+            _ => <QueryInsertStorageCell as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_insertStorageCell(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_insertStorageCell(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::insertStorageCell(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_insertStorageCell(&mut self, v: QueryInsertStorageCell) {
+        self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::insertStorageCell(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_insertStorageCell(&mut self) -> &mut QueryInsertStorageCell {
+        if let ::std::option::Option::Some(CosmosRequest_oneof_req::insertStorageCell(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::insertStorageCell(QueryInsertStorageCell::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::insertStorageCell(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_insertStorageCell(&mut self) -> QueryInsertStorageCell {
+        if self.has_insertStorageCell() {
+            match self.req.take() {
+                ::std::option::Option::Some(CosmosRequest_oneof_req::insertStorageCell(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryInsertStorageCell::new()
+        }
+    }
+
+    // .ffi.ffi.QueryRemove remove = 8;
+
+
+    pub fn get_remove(&self) -> &QueryRemove {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::remove(ref v)) => v,
+            _ => <QueryRemove as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_remove(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_remove(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::remove(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_remove(&mut self, v: QueryRemove) {
+        self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::remove(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_remove(&mut self) -> &mut QueryRemove {
+        if let ::std::option::Option::Some(CosmosRequest_oneof_req::remove(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::remove(QueryRemove::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::remove(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_remove(&mut self) -> QueryRemove {
+        if self.has_remove() {
+            match self.req.take() {
+                ::std::option::Option::Some(CosmosRequest_oneof_req::remove(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryRemove::new()
+        }
+    }
+
+    // .ffi.ffi.QueryRemoveAccountCode removeAccountCode = 9;
+
+
+    pub fn get_removeAccountCode(&self) -> &QueryRemoveAccountCode {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::removeAccountCode(ref v)) => v,
+            _ => <QueryRemoveAccountCode as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_removeAccountCode(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_removeAccountCode(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::removeAccountCode(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_removeAccountCode(&mut self, v: QueryRemoveAccountCode) {
+        self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::removeAccountCode(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_removeAccountCode(&mut self) -> &mut QueryRemoveAccountCode {
+        if let ::std::option::Option::Some(CosmosRequest_oneof_req::removeAccountCode(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::removeAccountCode(QueryRemoveAccountCode::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::removeAccountCode(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_removeAccountCode(&mut self) -> QueryRemoveAccountCode {
+        if self.has_removeAccountCode() {
+            match self.req.take() {
+                ::std::option::Option::Some(CosmosRequest_oneof_req::removeAccountCode(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryRemoveAccountCode::new()
+        }
+    }
+
+    // .ffi.ffi.QueryRemoveStorageCell removeStorageCell = 10;
+
+
+    pub fn get_removeStorageCell(&self) -> &QueryRemoveStorageCell {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorageCell(ref v)) => v,
+            _ => <QueryRemoveStorageCell as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_removeStorageCell(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_removeStorageCell(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorageCell(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_removeStorageCell(&mut self, v: QueryRemoveStorageCell) {
+        self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorageCell(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_removeStorageCell(&mut self) -> &mut QueryRemoveStorageCell {
+        if let ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorageCell(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorageCell(QueryRemoveStorageCell::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorageCell(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_removeStorageCell(&mut self) -> QueryRemoveStorageCell {
+        if self.has_removeStorageCell() {
+            match self.req.take() {
+                ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorageCell(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryRemoveStorageCell::new()
+        }
+    }
+
+    // .ffi.ffi.QueryRemoveStorage removeStorage = 11;
+
+
+    pub fn get_removeStorage(&self) -> &QueryRemoveStorage {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorage(ref v)) => v,
+            _ => <QueryRemoveStorage as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_removeStorage(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_removeStorage(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorage(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_removeStorage(&mut self, v: QueryRemoveStorage) {
+        self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorage(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_removeStorage(&mut self) -> &mut QueryRemoveStorage {
+        if let ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorage(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorage(QueryRemoveStorage::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorage(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_removeStorage(&mut self) -> QueryRemoveStorage {
+        if self.has_removeStorage() {
+            match self.req.take() {
+                ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorage(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryRemoveStorage::new()
+        }
+    }
+}
+
+impl ::protobuf::Message for CosmosRequest {
+    fn is_initialized(&self) -> bool {
+        if let Some(CosmosRequest_oneof_req::getAccount(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosRequest_oneof_req::insertAccount(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosRequest_oneof_req::containsKey(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosRequest_oneof_req::accountCode(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosRequest_oneof_req::storageCell(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosRequest_oneof_req::insertAccountCode(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosRequest_oneof_req::insertStorageCell(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosRequest_oneof_req::remove(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosRequest_oneof_req::removeAccountCode(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosRequest_oneof_req::removeStorageCell(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosRequest_oneof_req::removeStorage(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::getAccount(is.read_message()?));
+                },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::insertAccount(is.read_message()?));
+                },
+                3 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::containsKey(is.read_message()?));
+                },
+                4 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::accountCode(is.read_message()?));
+                },
+                5 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::storageCell(is.read_message()?));
+                },
+                6 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::insertAccountCode(is.read_message()?));
+                },
+                7 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::insertStorageCell(is.read_message()?));
+                },
+                8 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::remove(is.read_message()?));
+                },
+                9 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::removeAccountCode(is.read_message()?));
+                },
+                10 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorageCell(is.read_message()?));
+                },
+                11 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorage(is.read_message()?));
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if let ::std::option::Option::Some(ref v) = self.req {
+            match v {
+                &CosmosRequest_oneof_req::getAccount(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosRequest_oneof_req::insertAccount(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosRequest_oneof_req::containsKey(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosRequest_oneof_req::accountCode(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosRequest_oneof_req::storageCell(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosRequest_oneof_req::insertAccountCode(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosRequest_oneof_req::insertStorageCell(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosRequest_oneof_req::remove(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosRequest_oneof_req::removeAccountCode(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosRequest_oneof_req::removeStorageCell(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosRequest_oneof_req::removeStorage(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+            };
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if let ::std::option::Option::Some(ref v) = self.req {
+            match v {
+                &CosmosRequest_oneof_req::getAccount(ref v) => {
+                    os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosRequest_oneof_req::insertAccount(ref v) => {
+                    os.write_tag(2, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosRequest_oneof_req::containsKey(ref v) => {
+                    os.write_tag(3, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosRequest_oneof_req::accountCode(ref v) => {
+                    os.write_tag(4, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosRequest_oneof_req::storageCell(ref v) => {
+                    os.write_tag(5, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosRequest_oneof_req::insertAccountCode(ref v) => {
+                    os.write_tag(6, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosRequest_oneof_req::insertStorageCell(ref v) => {
+                    os.write_tag(7, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosRequest_oneof_req::remove(ref v) => {
+                    os.write_tag(8, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosRequest_oneof_req::removeAccountCode(ref v) => {
+                    os.write_tag(9, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosRequest_oneof_req::removeStorageCell(ref v) => {
+                    os.write_tag(10, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosRequest_oneof_req::removeStorage(ref v) => {
+                    os.write_tag(11, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+            };
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> CosmosRequest {
+        CosmosRequest::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryGetAccount>(
+                "getAccount",
+                CosmosRequest::has_getAccount,
+                CosmosRequest::get_getAccount,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryInsertAccount>(
+                "insertAccount",
+                CosmosRequest::has_insertAccount,
+                CosmosRequest::get_insertAccount,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryContainsKey>(
+                "containsKey",
+                CosmosRequest::has_containsKey,
+                CosmosRequest::get_containsKey,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryGetAccountCode>(
+                "accountCode",
+                CosmosRequest::has_accountCode,
+                CosmosRequest::get_accountCode,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryGetAccountStorageCell>(
+                "storageCell",
+                CosmosRequest::has_storageCell,
+                CosmosRequest::get_storageCell,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryInsertAccountCode>(
+                "insertAccountCode",
+                CosmosRequest::has_insertAccountCode,
+                CosmosRequest::get_insertAccountCode,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryInsertStorageCell>(
+                "insertStorageCell",
+                CosmosRequest::has_insertStorageCell,
+                CosmosRequest::get_insertStorageCell,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryRemove>(
+                "remove",
+                CosmosRequest::has_remove,
+                CosmosRequest::get_remove,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryRemoveAccountCode>(
+                "removeAccountCode",
+                CosmosRequest::has_removeAccountCode,
+                CosmosRequest::get_removeAccountCode,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryRemoveStorageCell>(
+                "removeStorageCell",
+                CosmosRequest::has_removeStorageCell,
+                CosmosRequest::get_removeStorageCell,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryRemoveStorage>(
+                "removeStorage",
+                CosmosRequest::has_removeStorage,
+                CosmosRequest::get_removeStorage,
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<CosmosRequest>(
+                "CosmosRequest",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static CosmosRequest {
+        static instance: ::protobuf::rt::LazyV2<CosmosRequest> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(CosmosRequest::new)
+    }
+}
+
+impl ::protobuf::Clear for CosmosRequest {
+    fn clear(&mut self) {
+        self.req = ::std::option::Option::None;
+        self.req = ::std::option::Option::None;
+        self.req = ::std::option::Option::None;
+        self.req = ::std::option::Option::None;
+        self.req = ::std::option::Option::None;
+        self.req = ::std::option::Option::None;
+        self.req = ::std::option::Option::None;
+        self.req = ::std::option::Option::None;
+        self.req = ::std::option::Option::None;
+        self.req = ::std::option::Option::None;
+        self.req = ::std::option::Option::None;
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for CosmosRequest {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for CosmosRequest {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct CosmosResponse {
+    // message oneof groups
+    pub res: ::std::option::Option<CosmosResponse_oneof_res>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a CosmosResponse {
+    fn default() -> &'a CosmosResponse {
+        <CosmosResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+#[derive(Clone,PartialEq,Debug)]
+pub enum CosmosResponse_oneof_res {
+    getAccountResponse(QueryGetAccountResponse),
+    insertAccountResponse(QueryInsertAccountResponse),
+    containsKeyResponse(QueryContainsKeyResponse),
+    accountCodeResponse(QueryGetAccountCodeResponse),
+    storageCellResponse(QueryGetAccountStorageCellResponse),
+    insertCodeResponse(QueryInsertAccountCodeResponse),
+    insertStorageCellResponse(QueryInsertStorageCellResponse),
+    removeResponse(QueryRemoveResponse),
+    removeAccountCodeResponse(QueryRemoveAccountCode),
+    removeStorageCellResponse(QueryRemoveStorageCellResponse),
+    removeStorageResponse(QueryRemoveStorageResponse),
+}
+
+impl CosmosResponse {
+    pub fn new() -> CosmosResponse {
+        ::std::default::Default::default()
+    }
+
+    // .ffi.ffi.QueryGetAccountResponse getAccountResponse = 1;
+
+
+    pub fn get_getAccountResponse(&self) -> &QueryGetAccountResponse {
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::getAccountResponse(ref v)) => v,
+            _ => <QueryGetAccountResponse as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_getAccountResponse(&mut self) {
+        self.res = ::std::option::Option::None;
+    }
+
+    pub fn has_getAccountResponse(&self) -> bool {
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::getAccountResponse(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_getAccountResponse(&mut self, v: QueryGetAccountResponse) {
+        self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::getAccountResponse(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_getAccountResponse(&mut self) -> &mut QueryGetAccountResponse {
+        if let ::std::option::Option::Some(CosmosResponse_oneof_res::getAccountResponse(_)) = self.res {
+        } else {
+            self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::getAccountResponse(QueryGetAccountResponse::new()));
+        }
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::getAccountResponse(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_getAccountResponse(&mut self) -> QueryGetAccountResponse {
+        if self.has_getAccountResponse() {
+            match self.res.take() {
+                ::std::option::Option::Some(CosmosResponse_oneof_res::getAccountResponse(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryGetAccountResponse::new()
+        }
+    }
+
+    // .ffi.ffi.QueryInsertAccountResponse insertAccountResponse = 2;
+
+
+    pub fn get_insertAccountResponse(&self) -> &QueryInsertAccountResponse {
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::insertAccountResponse(ref v)) => v,
+            _ => <QueryInsertAccountResponse as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_insertAccountResponse(&mut self) {
+        self.res = ::std::option::Option::None;
+    }
+
+    pub fn has_insertAccountResponse(&self) -> bool {
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::insertAccountResponse(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_insertAccountResponse(&mut self, v: QueryInsertAccountResponse) {
+        self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::insertAccountResponse(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_insertAccountResponse(&mut self) -> &mut QueryInsertAccountResponse {
+        if let ::std::option::Option::Some(CosmosResponse_oneof_res::insertAccountResponse(_)) = self.res {
+        } else {
+            self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::insertAccountResponse(QueryInsertAccountResponse::new()));
+        }
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::insertAccountResponse(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_insertAccountResponse(&mut self) -> QueryInsertAccountResponse {
+        if self.has_insertAccountResponse() {
+            match self.res.take() {
+                ::std::option::Option::Some(CosmosResponse_oneof_res::insertAccountResponse(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryInsertAccountResponse::new()
+        }
+    }
+
+    // .ffi.ffi.QueryContainsKeyResponse containsKeyResponse = 3;
+
+
+    pub fn get_containsKeyResponse(&self) -> &QueryContainsKeyResponse {
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::containsKeyResponse(ref v)) => v,
+            _ => <QueryContainsKeyResponse as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_containsKeyResponse(&mut self) {
+        self.res = ::std::option::Option::None;
+    }
+
+    pub fn has_containsKeyResponse(&self) -> bool {
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::containsKeyResponse(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_containsKeyResponse(&mut self, v: QueryContainsKeyResponse) {
+        self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::containsKeyResponse(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_containsKeyResponse(&mut self) -> &mut QueryContainsKeyResponse {
+        if let ::std::option::Option::Some(CosmosResponse_oneof_res::containsKeyResponse(_)) = self.res {
+        } else {
+            self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::containsKeyResponse(QueryContainsKeyResponse::new()));
+        }
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::containsKeyResponse(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_containsKeyResponse(&mut self) -> QueryContainsKeyResponse {
+        if self.has_containsKeyResponse() {
+            match self.res.take() {
+                ::std::option::Option::Some(CosmosResponse_oneof_res::containsKeyResponse(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryContainsKeyResponse::new()
+        }
+    }
+
+    // .ffi.ffi.QueryGetAccountCodeResponse accountCodeResponse = 4;
+
+
+    pub fn get_accountCodeResponse(&self) -> &QueryGetAccountCodeResponse {
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::accountCodeResponse(ref v)) => v,
+            _ => <QueryGetAccountCodeResponse as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_accountCodeResponse(&mut self) {
+        self.res = ::std::option::Option::None;
+    }
+
+    pub fn has_accountCodeResponse(&self) -> bool {
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::accountCodeResponse(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_accountCodeResponse(&mut self, v: QueryGetAccountCodeResponse) {
+        self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::accountCodeResponse(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_accountCodeResponse(&mut self) -> &mut QueryGetAccountCodeResponse {
+        if let ::std::option::Option::Some(CosmosResponse_oneof_res::accountCodeResponse(_)) = self.res {
+        } else {
+            self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::accountCodeResponse(QueryGetAccountCodeResponse::new()));
+        }
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::accountCodeResponse(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_accountCodeResponse(&mut self) -> QueryGetAccountCodeResponse {
+        if self.has_accountCodeResponse() {
+            match self.res.take() {
+                ::std::option::Option::Some(CosmosResponse_oneof_res::accountCodeResponse(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryGetAccountCodeResponse::new()
+        }
+    }
+
+    // .ffi.ffi.QueryGetAccountStorageCellResponse storageCellResponse = 5;
+
+
+    pub fn get_storageCellResponse(&self) -> &QueryGetAccountStorageCellResponse {
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::storageCellResponse(ref v)) => v,
+            _ => <QueryGetAccountStorageCellResponse as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_storageCellResponse(&mut self) {
+        self.res = ::std::option::Option::None;
+    }
+
+    pub fn has_storageCellResponse(&self) -> bool {
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::storageCellResponse(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_storageCellResponse(&mut self, v: QueryGetAccountStorageCellResponse) {
+        self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::storageCellResponse(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_storageCellResponse(&mut self) -> &mut QueryGetAccountStorageCellResponse {
+        if let ::std::option::Option::Some(CosmosResponse_oneof_res::storageCellResponse(_)) = self.res {
+        } else {
+            self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::storageCellResponse(QueryGetAccountStorageCellResponse::new()));
+        }
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::storageCellResponse(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_storageCellResponse(&mut self) -> QueryGetAccountStorageCellResponse {
+        if self.has_storageCellResponse() {
+            match self.res.take() {
+                ::std::option::Option::Some(CosmosResponse_oneof_res::storageCellResponse(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryGetAccountStorageCellResponse::new()
+        }
+    }
+
+    // .ffi.ffi.QueryInsertAccountCodeResponse insertCodeResponse = 6;
+
+
+    pub fn get_insertCodeResponse(&self) -> &QueryInsertAccountCodeResponse {
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::insertCodeResponse(ref v)) => v,
+            _ => <QueryInsertAccountCodeResponse as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_insertCodeResponse(&mut self) {
+        self.res = ::std::option::Option::None;
+    }
+
+    pub fn has_insertCodeResponse(&self) -> bool {
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::insertCodeResponse(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_insertCodeResponse(&mut self, v: QueryInsertAccountCodeResponse) {
+        self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::insertCodeResponse(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_insertCodeResponse(&mut self) -> &mut QueryInsertAccountCodeResponse {
+        if let ::std::option::Option::Some(CosmosResponse_oneof_res::insertCodeResponse(_)) = self.res {
+        } else {
+            self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::insertCodeResponse(QueryInsertAccountCodeResponse::new()));
+        }
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::insertCodeResponse(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_insertCodeResponse(&mut self) -> QueryInsertAccountCodeResponse {
+        if self.has_insertCodeResponse() {
+            match self.res.take() {
+                ::std::option::Option::Some(CosmosResponse_oneof_res::insertCodeResponse(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryInsertAccountCodeResponse::new()
+        }
+    }
+
+    // .ffi.ffi.QueryInsertStorageCellResponse insertStorageCellResponse = 7;
+
+
+    pub fn get_insertStorageCellResponse(&self) -> &QueryInsertStorageCellResponse {
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::insertStorageCellResponse(ref v)) => v,
+            _ => <QueryInsertStorageCellResponse as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_insertStorageCellResponse(&mut self) {
+        self.res = ::std::option::Option::None;
+    }
+
+    pub fn has_insertStorageCellResponse(&self) -> bool {
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::insertStorageCellResponse(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_insertStorageCellResponse(&mut self, v: QueryInsertStorageCellResponse) {
+        self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::insertStorageCellResponse(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_insertStorageCellResponse(&mut self) -> &mut QueryInsertStorageCellResponse {
+        if let ::std::option::Option::Some(CosmosResponse_oneof_res::insertStorageCellResponse(_)) = self.res {
+        } else {
+            self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::insertStorageCellResponse(QueryInsertStorageCellResponse::new()));
+        }
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::insertStorageCellResponse(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_insertStorageCellResponse(&mut self) -> QueryInsertStorageCellResponse {
+        if self.has_insertStorageCellResponse() {
+            match self.res.take() {
+                ::std::option::Option::Some(CosmosResponse_oneof_res::insertStorageCellResponse(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryInsertStorageCellResponse::new()
+        }
+    }
+
+    // .ffi.ffi.QueryRemoveResponse removeResponse = 8;
+
+
+    pub fn get_removeResponse(&self) -> &QueryRemoveResponse {
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::removeResponse(ref v)) => v,
+            _ => <QueryRemoveResponse as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_removeResponse(&mut self) {
+        self.res = ::std::option::Option::None;
+    }
+
+    pub fn has_removeResponse(&self) -> bool {
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::removeResponse(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_removeResponse(&mut self, v: QueryRemoveResponse) {
+        self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::removeResponse(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_removeResponse(&mut self) -> &mut QueryRemoveResponse {
+        if let ::std::option::Option::Some(CosmosResponse_oneof_res::removeResponse(_)) = self.res {
+        } else {
+            self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::removeResponse(QueryRemoveResponse::new()));
+        }
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::removeResponse(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_removeResponse(&mut self) -> QueryRemoveResponse {
+        if self.has_removeResponse() {
+            match self.res.take() {
+                ::std::option::Option::Some(CosmosResponse_oneof_res::removeResponse(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryRemoveResponse::new()
+        }
+    }
+
+    // .ffi.ffi.QueryRemoveAccountCode removeAccountCodeResponse = 9;
+
+
+    pub fn get_removeAccountCodeResponse(&self) -> &QueryRemoveAccountCode {
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::removeAccountCodeResponse(ref v)) => v,
+            _ => <QueryRemoveAccountCode as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_removeAccountCodeResponse(&mut self) {
+        self.res = ::std::option::Option::None;
+    }
+
+    pub fn has_removeAccountCodeResponse(&self) -> bool {
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::removeAccountCodeResponse(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_removeAccountCodeResponse(&mut self, v: QueryRemoveAccountCode) {
+        self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::removeAccountCodeResponse(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_removeAccountCodeResponse(&mut self) -> &mut QueryRemoveAccountCode {
+        if let ::std::option::Option::Some(CosmosResponse_oneof_res::removeAccountCodeResponse(_)) = self.res {
+        } else {
+            self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::removeAccountCodeResponse(QueryRemoveAccountCode::new()));
+        }
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::removeAccountCodeResponse(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_removeAccountCodeResponse(&mut self) -> QueryRemoveAccountCode {
+        if self.has_removeAccountCodeResponse() {
+            match self.res.take() {
+                ::std::option::Option::Some(CosmosResponse_oneof_res::removeAccountCodeResponse(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryRemoveAccountCode::new()
+        }
+    }
+
+    // .ffi.ffi.QueryRemoveStorageCellResponse removeStorageCellResponse = 10;
+
+
+    pub fn get_removeStorageCellResponse(&self) -> &QueryRemoveStorageCellResponse {
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::removeStorageCellResponse(ref v)) => v,
+            _ => <QueryRemoveStorageCellResponse as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_removeStorageCellResponse(&mut self) {
+        self.res = ::std::option::Option::None;
+    }
+
+    pub fn has_removeStorageCellResponse(&self) -> bool {
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::removeStorageCellResponse(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_removeStorageCellResponse(&mut self, v: QueryRemoveStorageCellResponse) {
+        self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::removeStorageCellResponse(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_removeStorageCellResponse(&mut self) -> &mut QueryRemoveStorageCellResponse {
+        if let ::std::option::Option::Some(CosmosResponse_oneof_res::removeStorageCellResponse(_)) = self.res {
+        } else {
+            self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::removeStorageCellResponse(QueryRemoveStorageCellResponse::new()));
+        }
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::removeStorageCellResponse(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_removeStorageCellResponse(&mut self) -> QueryRemoveStorageCellResponse {
+        if self.has_removeStorageCellResponse() {
+            match self.res.take() {
+                ::std::option::Option::Some(CosmosResponse_oneof_res::removeStorageCellResponse(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryRemoveStorageCellResponse::new()
+        }
+    }
+
+    // .ffi.ffi.QueryRemoveStorageResponse removeStorageResponse = 11;
+
+
+    pub fn get_removeStorageResponse(&self) -> &QueryRemoveStorageResponse {
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::removeStorageResponse(ref v)) => v,
+            _ => <QueryRemoveStorageResponse as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_removeStorageResponse(&mut self) {
+        self.res = ::std::option::Option::None;
+    }
+
+    pub fn has_removeStorageResponse(&self) -> bool {
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::removeStorageResponse(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_removeStorageResponse(&mut self, v: QueryRemoveStorageResponse) {
+        self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::removeStorageResponse(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_removeStorageResponse(&mut self) -> &mut QueryRemoveStorageResponse {
+        if let ::std::option::Option::Some(CosmosResponse_oneof_res::removeStorageResponse(_)) = self.res {
+        } else {
+            self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::removeStorageResponse(QueryRemoveStorageResponse::new()));
+        }
+        match self.res {
+            ::std::option::Option::Some(CosmosResponse_oneof_res::removeStorageResponse(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_removeStorageResponse(&mut self) -> QueryRemoveStorageResponse {
+        if self.has_removeStorageResponse() {
+            match self.res.take() {
+                ::std::option::Option::Some(CosmosResponse_oneof_res::removeStorageResponse(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryRemoveStorageResponse::new()
+        }
+    }
+}
+
+impl ::protobuf::Message for CosmosResponse {
+    fn is_initialized(&self) -> bool {
+        if let Some(CosmosResponse_oneof_res::getAccountResponse(ref v)) = self.res {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosResponse_oneof_res::insertAccountResponse(ref v)) = self.res {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosResponse_oneof_res::containsKeyResponse(ref v)) = self.res {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosResponse_oneof_res::accountCodeResponse(ref v)) = self.res {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosResponse_oneof_res::storageCellResponse(ref v)) = self.res {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosResponse_oneof_res::insertCodeResponse(ref v)) = self.res {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosResponse_oneof_res::insertStorageCellResponse(ref v)) = self.res {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosResponse_oneof_res::removeResponse(ref v)) = self.res {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosResponse_oneof_res::removeAccountCodeResponse(ref v)) = self.res {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosResponse_oneof_res::removeStorageCellResponse(ref v)) = self.res {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosResponse_oneof_res::removeStorageResponse(ref v)) = self.res {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::getAccountResponse(is.read_message()?));
+                },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::insertAccountResponse(is.read_message()?));
+                },
+                3 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::containsKeyResponse(is.read_message()?));
+                },
+                4 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::accountCodeResponse(is.read_message()?));
+                },
+                5 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::storageCellResponse(is.read_message()?));
+                },
+                6 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::insertCodeResponse(is.read_message()?));
+                },
+                7 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::insertStorageCellResponse(is.read_message()?));
+                },
+                8 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::removeResponse(is.read_message()?));
+                },
+                9 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::removeAccountCodeResponse(is.read_message()?));
+                },
+                10 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::removeStorageCellResponse(is.read_message()?));
+                },
+                11 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.res = ::std::option::Option::Some(CosmosResponse_oneof_res::removeStorageResponse(is.read_message()?));
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if let ::std::option::Option::Some(ref v) = self.res {
+            match v {
+                &CosmosResponse_oneof_res::getAccountResponse(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosResponse_oneof_res::insertAccountResponse(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosResponse_oneof_res::containsKeyResponse(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosResponse_oneof_res::accountCodeResponse(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosResponse_oneof_res::storageCellResponse(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosResponse_oneof_res::insertCodeResponse(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosResponse_oneof_res::insertStorageCellResponse(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosResponse_oneof_res::removeResponse(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosResponse_oneof_res::removeAccountCodeResponse(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosResponse_oneof_res::removeStorageCellResponse(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosResponse_oneof_res::removeStorageResponse(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+            };
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if let ::std::option::Option::Some(ref v) = self.res {
+            match v {
+                &CosmosResponse_oneof_res::getAccountResponse(ref v) => {
+                    os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosResponse_oneof_res::insertAccountResponse(ref v) => {
+                    os.write_tag(2, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosResponse_oneof_res::containsKeyResponse(ref v) => {
+                    os.write_tag(3, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosResponse_oneof_res::accountCodeResponse(ref v) => {
+                    os.write_tag(4, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosResponse_oneof_res::storageCellResponse(ref v) => {
+                    os.write_tag(5, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosResponse_oneof_res::insertCodeResponse(ref v) => {
+                    os.write_tag(6, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosResponse_oneof_res::insertStorageCellResponse(ref v) => {
+                    os.write_tag(7, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosResponse_oneof_res::removeResponse(ref v) => {
+                    os.write_tag(8, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosResponse_oneof_res::removeAccountCodeResponse(ref v) => {
+                    os.write_tag(9, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosResponse_oneof_res::removeStorageCellResponse(ref v) => {
+                    os.write_tag(10, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosResponse_oneof_res::removeStorageResponse(ref v) => {
+                    os.write_tag(11, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+            };
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> CosmosResponse {
+        CosmosResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryGetAccountResponse>(
+                "getAccountResponse",
+                CosmosResponse::has_getAccountResponse,
+                CosmosResponse::get_getAccountResponse,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryInsertAccountResponse>(
+                "insertAccountResponse",
+                CosmosResponse::has_insertAccountResponse,
+                CosmosResponse::get_insertAccountResponse,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryContainsKeyResponse>(
+                "containsKeyResponse",
+                CosmosResponse::has_containsKeyResponse,
+                CosmosResponse::get_containsKeyResponse,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryGetAccountCodeResponse>(
+                "accountCodeResponse",
+                CosmosResponse::has_accountCodeResponse,
+                CosmosResponse::get_accountCodeResponse,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryGetAccountStorageCellResponse>(
+                "storageCellResponse",
+                CosmosResponse::has_storageCellResponse,
+                CosmosResponse::get_storageCellResponse,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryInsertAccountCodeResponse>(
+                "insertCodeResponse",
+                CosmosResponse::has_insertCodeResponse,
+                CosmosResponse::get_insertCodeResponse,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryInsertStorageCellResponse>(
+                "insertStorageCellResponse",
+                CosmosResponse::has_insertStorageCellResponse,
+                CosmosResponse::get_insertStorageCellResponse,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryRemoveResponse>(
+                "removeResponse",
+                CosmosResponse::has_removeResponse,
+                CosmosResponse::get_removeResponse,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryRemoveAccountCode>(
+                "removeAccountCodeResponse",
+                CosmosResponse::has_removeAccountCodeResponse,
+                CosmosResponse::get_removeAccountCodeResponse,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryRemoveStorageCellResponse>(
+                "removeStorageCellResponse",
+                CosmosResponse::has_removeStorageCellResponse,
+                CosmosResponse::get_removeStorageCellResponse,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryRemoveStorageResponse>(
+                "removeStorageResponse",
+                CosmosResponse::has_removeStorageResponse,
+                CosmosResponse::get_removeStorageResponse,
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<CosmosResponse>(
+                "CosmosResponse",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static CosmosResponse {
+        static instance: ::protobuf::rt::LazyV2<CosmosResponse> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(CosmosResponse::new)
+    }
+}
+
+impl ::protobuf::Clear for CosmosResponse {
+    fn clear(&mut self) {
+        self.res = ::std::option::Option::None;
+        self.res = ::std::option::Option::None;
+        self.res = ::std::option::Option::None;
+        self.res = ::std::option::Option::None;
+        self.res = ::std::option::Option::None;
+        self.res = ::std::option::Option::None;
+        self.res = ::std::option::Option::None;
+        self.res = ::std::option::Option::None;
+        self.res = ::std::option::Option::None;
+        self.res = ::std::option::Option::None;
+        self.res = ::std::option::Option::None;
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for CosmosResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for CosmosResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
 pub struct FFIRequest {
     // message oneof groups
     pub req: ::std::option::Option<FFIRequest_oneof_req>,
@@ -1702,9 +6800,67 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x01(\x04R\x07gasUsed\"+\n\x0fQueryGetAccount\x12\x18\n\x07address\x18\
     \x01\x20\x01(\x0cR\x07address\"I\n\x17QueryGetAccountResponse\x12\x18\n\
     \x07balance\x18\x01\x20\x01(\x0cR\x07balance\x12\x14\n\x05nonce\x18\x02\
-    \x20\x01(\x0cR\x05nonce\"]\n\nFFIRequest\x12H\n\x11handleTransaction\x18\
-    \x01\x20\x01(\x0b2\x18.ffi.ffi.TransactionDataH\0R\x11handleTransactionB\
-    \x05\n\x03reqB\x04Z\x02./b\x06proto3\
+    \x20\x01(\x0cR\x05nonce\"^\n\x12QueryInsertAccount\x12\x18\n\x07address\
+    \x18\x01\x20\x01(\x0cR\x07address\x12\x18\n\x07balance\x18\x02\x20\x01(\
+    \x0cR\x07balance\x12\x14\n\x05nonce\x18\x03\x20\x01(\x0cR\x05nonce\"\x1c\
+    \n\x1aQueryInsertAccountResponse\"$\n\x10QueryContainsKey\x12\x10\n\x03k\
+    ey\x18\x01\x20\x01(\x0cR\x03key\"6\n\x18QueryContainsKeyResponse\x12\x1a\
+    \n\x08contains\x18\x01\x20\x01(\x08R\x08contains\"L\n\x1aQueryGetAccount\
+    StorageCell\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\x12\
+    \x14\n\x05index\x18\x02\x20\x01(\x0cR\x05index\":\n\"QueryGetAccountStor\
+    ageCellResponse\x12\x14\n\x05value\x18\x01\x20\x01(\x0cR\x05value\"/\n\
+    \x13QueryGetAccountCode\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07ad\
+    dress\"1\n\x1bQueryGetAccountCodeResponse\x12\x12\n\x04code\x18\x01\x20\
+    \x01(\x0cR\x04code\"F\n\x16QueryInsertAccountCode\x12\x18\n\x07address\
+    \x18\x01\x20\x01(\x0cR\x07address\x12\x12\n\x04code\x18\x02\x20\x01(\x0c\
+    R\x04code\"\x20\n\x1eQueryInsertAccountCodeResponse\"^\n\x16QueryInsertS\
+    torageCell\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\x12\x14\
+    \n\x05index\x18\x02\x20\x01(\x0cR\x05index\x12\x14\n\x05value\x18\x03\
+    \x20\x01(\x0cR\x05value\"\x20\n\x1eQueryInsertStorageCellResponse\"'\n\
+    \x0bQueryRemove\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\"\
+    \x15\n\x13QueryRemoveResponse\"2\n\x16QueryRemoveAccountCode\x12\x18\n\
+    \x07address\x18\x01\x20\x01(\x0cR\x07address\"\x20\n\x1eQueryRemoveAccou\
+    ntCodeResponse\"H\n\x16QueryRemoveStorageCell\x12\x18\n\x07address\x18\
+    \x01\x20\x01(\x0cR\x07address\x12\x14\n\x05index\x18\x02\x20\x01(\x0cR\
+    \x05index\"\x20\n\x1eQueryRemoveStorageCellResponse\".\n\x12QueryRemoveS\
+    torage\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\"\x1c\n\x1a\
+    QueryRemoveStorageResponse\"\x9a\x06\n\rCosmosRequest\x12:\n\ngetAccount\
+    \x18\x01\x20\x01(\x0b2\x18.ffi.ffi.QueryGetAccountH\0R\ngetAccount\x12C\
+    \n\rinsertAccount\x18\x02\x20\x01(\x0b2\x1b.ffi.ffi.QueryInsertAccountH\
+    \0R\rinsertAccount\x12=\n\x0bcontainsKey\x18\x03\x20\x01(\x0b2\x19.ffi.f\
+    fi.QueryContainsKeyH\0R\x0bcontainsKey\x12@\n\x0baccountCode\x18\x04\x20\
+    \x01(\x0b2\x1c.ffi.ffi.QueryGetAccountCodeH\0R\x0baccountCode\x12G\n\x0b\
+    storageCell\x18\x05\x20\x01(\x0b2#.ffi.ffi.QueryGetAccountStorageCellH\0\
+    R\x0bstorageCell\x12O\n\x11insertAccountCode\x18\x06\x20\x01(\x0b2\x1f.f\
+    fi.ffi.QueryInsertAccountCodeH\0R\x11insertAccountCode\x12O\n\x11insertS\
+    torageCell\x18\x07\x20\x01(\x0b2\x1f.ffi.ffi.QueryInsertStorageCellH\0R\
+    \x11insertStorageCell\x12.\n\x06remove\x18\x08\x20\x01(\x0b2\x14.ffi.ffi\
+    .QueryRemoveH\0R\x06remove\x12O\n\x11removeAccountCode\x18\t\x20\x01(\
+    \x0b2\x1f.ffi.ffi.QueryRemoveAccountCodeH\0R\x11removeAccountCode\x12O\n\
+    \x11removeStorageCell\x18\n\x20\x01(\x0b2\x1f.ffi.ffi.QueryRemoveStorage\
+    CellH\0R\x11removeStorageCell\x12C\n\rremoveStorage\x18\x0b\x20\x01(\x0b\
+    2\x1b.ffi.ffi.QueryRemoveStorageH\0R\rremoveStorageB\x05\n\x03req\"\x8d\
+    \x08\n\x0eCosmosResponse\x12R\n\x12getAccountResponse\x18\x01\x20\x01(\
+    \x0b2\x20.ffi.ffi.QueryGetAccountResponseH\0R\x12getAccountResponse\x12[\
+    \n\x15insertAccountResponse\x18\x02\x20\x01(\x0b2#.ffi.ffi.QueryInsertAc\
+    countResponseH\0R\x15insertAccountResponse\x12U\n\x13containsKeyResponse\
+    \x18\x03\x20\x01(\x0b2!.ffi.ffi.QueryContainsKeyResponseH\0R\x13contains\
+    KeyResponse\x12X\n\x13accountCodeResponse\x18\x04\x20\x01(\x0b2$.ffi.ffi\
+    .QueryGetAccountCodeResponseH\0R\x13accountCodeResponse\x12_\n\x13storag\
+    eCellResponse\x18\x05\x20\x01(\x0b2+.ffi.ffi.QueryGetAccountStorageCellR\
+    esponseH\0R\x13storageCellResponse\x12Y\n\x12insertCodeResponse\x18\x06\
+    \x20\x01(\x0b2'.ffi.ffi.QueryInsertAccountCodeResponseH\0R\x12insertCode\
+    Response\x12g\n\x19insertStorageCellResponse\x18\x07\x20\x01(\x0b2'.ffi.\
+    ffi.QueryInsertStorageCellResponseH\0R\x19insertStorageCellResponse\x12F\
+    \n\x0eremoveResponse\x18\x08\x20\x01(\x0b2\x1c.ffi.ffi.QueryRemoveRespon\
+    seH\0R\x0eremoveResponse\x12_\n\x19removeAccountCodeResponse\x18\t\x20\
+    \x01(\x0b2\x1f.ffi.ffi.QueryRemoveAccountCodeH\0R\x19removeAccountCodeRe\
+    sponse\x12g\n\x19removeStorageCellResponse\x18\n\x20\x01(\x0b2'.ffi.ffi.\
+    QueryRemoveStorageCellResponseH\0R\x19removeStorageCellResponse\x12[\n\
+    \x15removeStorageResponse\x18\x0b\x20\x01(\x0b2#.ffi.ffi.QueryRemoveStor\
+    ageResponseH\0R\x15removeStorageResponseB\x05\n\x03res\"]\n\nFFIRequest\
+    \x12H\n\x11handleTransaction\x18\x01\x20\x01(\x0b2\x18.ffi.ffi.Transacti\
+    onDataH\0R\x11handleTransactionB\x05\n\x03reqB\x04Z\x02./b\x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;

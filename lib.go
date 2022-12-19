@@ -25,9 +25,31 @@ type Querier = types.Querier
 // GasMeter is a read-only version of the sdk gas meter
 type GasMeter = api.GasMeter
 
-// Protobuf messages for FFI
+// Export protobuf messages for FFI
 type QueryGetAccount = ffi.QueryGetAccount
 type QueryGetAccountResponse = ffi.QueryGetAccountResponse
+type CosmosRequest = ffi.CosmosRequest
+type CosmosResponse = ffi.CosmosResponse
+type QueryInsertAccount = ffi.QueryInsertAccount
+type QueryInsertAccountResponse = ffi.QueryInsertAccountResponse
+type QueryContainsKey = ffi.QueryContainsKey
+type QueryContainsKeyResponse = ffi.QueryContainsKeyResponse
+type QueryGetAccountStorageCell = ffi.QueryGetAccountStorageCell
+type QueryGetAccountStorageCellResponse = ffi.QueryGetAccountStorageCellResponse
+type QueryGetAccountCode = ffi.QueryGetAccountCode
+type QueryGetAccountCodeResponse = ffi.QueryGetAccountCodeResponse
+type QueryInsertAccountCode = ffi.QueryInsertAccountCode
+type QueryInsertAccountCodeResponse = ffi.QueryInsertAccountCodeResponse
+type QueryInsertStorageCell = ffi.QueryInsertStorageCell
+type QueryInsertStorageCellResponse = ffi.QueryInsertStorageCellResponse
+type QueryRemove = ffi.QueryRemove
+type QueryRemoveResponse = ffi.QueryRemoveResponse
+type QueryRemoveAccountCode = ffi.QueryRemoveAccountCode
+type QueryRemoveAccountCodeResponse = ffi.QueryRemoveAccountCodeResponse
+type QueryRemoveStorageCell = ffi.QueryRemoveStorageCell
+type QueryRemoveStorageCellResponse = ffi.QueryRemoveStorageCellResponse
+type QueryRemoveStorage = ffi.QueryRemoveStorage
+type QueryRemoveStorageResponse = ffi.QueryRemoveStorageResponse
 
 func HandleTx(querier types.DataQuerier, from, to, data, value []byte, gasLimit uint64) (*ffi.HandleTransactionResponse, error) {
 	executionResult, err := api.HandleTx(querier, from, to, data, value, gasLimit)

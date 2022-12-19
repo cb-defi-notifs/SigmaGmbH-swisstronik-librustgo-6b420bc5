@@ -58,6 +58,113 @@ message QueryGetAccountResponse {
   bytes nonce = 2;
 }
 
+// Request to insert account data such as balance and nonce
+message QueryInsertAccount {
+  bytes address = 1;
+  bytes balance = 2;
+  bytes nonce = 3;
+}
+
+// Response for account insertion
+message QueryInsertAccountResponse {}
+
+message QueryContainsKey {
+  bytes key = 1;
+}
+
+message QueryContainsKeyResponse {
+  bool contains = 1;
+}
+
+message QueryGetAccountStorageCell {
+  bytes address = 1;
+  bytes index = 2;
+}
+
+message QueryGetAccountStorageCellResponse {
+  bytes value = 1;
+}
+
+message QueryGetAccountCode {
+  bytes address = 1;
+}
+
+message QueryGetAccountCodeResponse {
+  bytes code = 1;
+}
+
+message QueryInsertAccountCode {
+  bytes address = 1;
+  bytes code = 2;
+}
+
+message QueryInsertAccountCodeResponse {}
+
+message QueryInsertStorageCell {
+  bytes address = 1;
+  bytes index = 2;
+  bytes value = 3;
+}
+
+message QueryInsertStorageCellResponse {}
+
+message QueryRemove {
+  bytes address = 1;
+}
+
+message QueryRemoveResponse {}
+
+message QueryRemoveAccountCode {
+  bytes address = 1;
+}
+
+message QueryRemoveAccountCodeResponse {}
+
+message QueryRemoveStorageCell {
+  bytes address = 1;
+  bytes index = 2;
+}
+
+message QueryRemoveStorageCellResponse {}
+
+message QueryRemoveStorage {
+  bytes address = 1;
+}
+
+message QueryRemoveStorageResponse {}
+
+message CosmosRequest {
+  oneof req {
+    QueryGetAccount getAccount = 1;
+    QueryInsertAccount insertAccount = 2;
+    QueryContainsKey containsKey = 3;
+    QueryGetAccountCode accountCode = 4;
+    QueryGetAccountStorageCell storageCell = 5;
+    QueryInsertAccountCode insertAccountCode = 6;
+    QueryInsertStorageCell insertStorageCell = 7;
+    QueryRemove remove = 8;
+    QueryRemoveAccountCode removeAccountCode = 9;
+    QueryRemoveStorageCell removeStorageCell = 10;
+    QueryRemoveStorage removeStorage = 11;
+  }
+}
+
+message CosmosResponse {
+  oneof res {
+    QueryGetAccountResponse getAccountResponse = 1;
+    QueryInsertAccountResponse insertAccountResponse = 2;
+    QueryContainsKeyResponse containsKeyResponse = 3;
+    QueryGetAccountCodeResponse accountCodeResponse = 4;
+    QueryGetAccountStorageCellResponse storageCellResponse = 5;
+    QueryInsertAccountCodeResponse insertCodeResponse = 6;
+    QueryInsertStorageCellResponse insertStorageCellResponse = 7;
+    QueryRemoveResponse removeResponse = 8;
+    QueryRemoveAccountCode removeAccountCodeResponse = 9;
+    QueryRemoveStorageCellResponse removeStorageCellResponse = 10;
+    QueryRemoveStorageResponse removeStorageResponse = 11;
+  }
+}
+
 message FFIRequest {
   oneof req {
     TransactionData handleTransaction = 1;

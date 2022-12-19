@@ -414,6 +414,1355 @@ func (x *QueryGetAccountResponse) GetNonce() []byte {
 	return nil
 }
 
+// Request to insert account data such as balance and nonce
+type QueryInsertAccount struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Address []byte `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	Balance []byte `protobuf:"bytes,2,opt,name=balance,proto3" json:"balance,omitempty"`
+	Nonce   []byte `protobuf:"bytes,3,opt,name=nonce,proto3" json:"nonce,omitempty"`
+}
+
+func (x *QueryInsertAccount) Reset() {
+	*x = QueryInsertAccount{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryInsertAccount) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryInsertAccount) ProtoMessage() {}
+
+func (x *QueryInsertAccount) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryInsertAccount.ProtoReflect.Descriptor instead.
+func (*QueryInsertAccount) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *QueryInsertAccount) GetAddress() []byte {
+	if x != nil {
+		return x.Address
+	}
+	return nil
+}
+
+func (x *QueryInsertAccount) GetBalance() []byte {
+	if x != nil {
+		return x.Balance
+	}
+	return nil
+}
+
+func (x *QueryInsertAccount) GetNonce() []byte {
+	if x != nil {
+		return x.Nonce
+	}
+	return nil
+}
+
+// Response for account insertion
+type QueryInsertAccountResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *QueryInsertAccountResponse) Reset() {
+	*x = QueryInsertAccountResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[7]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryInsertAccountResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryInsertAccountResponse) ProtoMessage() {}
+
+func (x *QueryInsertAccountResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[7]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryInsertAccountResponse.ProtoReflect.Descriptor instead.
+func (*QueryInsertAccountResponse) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{7}
+}
+
+type QueryContainsKey struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Key []byte `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+}
+
+func (x *QueryContainsKey) Reset() {
+	*x = QueryContainsKey{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[8]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryContainsKey) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryContainsKey) ProtoMessage() {}
+
+func (x *QueryContainsKey) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[8]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryContainsKey.ProtoReflect.Descriptor instead.
+func (*QueryContainsKey) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *QueryContainsKey) GetKey() []byte {
+	if x != nil {
+		return x.Key
+	}
+	return nil
+}
+
+type QueryContainsKeyResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Contains bool `protobuf:"varint,1,opt,name=contains,proto3" json:"contains,omitempty"`
+}
+
+func (x *QueryContainsKeyResponse) Reset() {
+	*x = QueryContainsKeyResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[9]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryContainsKeyResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryContainsKeyResponse) ProtoMessage() {}
+
+func (x *QueryContainsKeyResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[9]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryContainsKeyResponse.ProtoReflect.Descriptor instead.
+func (*QueryContainsKeyResponse) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *QueryContainsKeyResponse) GetContains() bool {
+	if x != nil {
+		return x.Contains
+	}
+	return false
+}
+
+type QueryGetAccountStorageCell struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Address []byte `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	Index   []byte `protobuf:"bytes,2,opt,name=index,proto3" json:"index,omitempty"`
+}
+
+func (x *QueryGetAccountStorageCell) Reset() {
+	*x = QueryGetAccountStorageCell{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryGetAccountStorageCell) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryGetAccountStorageCell) ProtoMessage() {}
+
+func (x *QueryGetAccountStorageCell) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryGetAccountStorageCell.ProtoReflect.Descriptor instead.
+func (*QueryGetAccountStorageCell) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *QueryGetAccountStorageCell) GetAddress() []byte {
+	if x != nil {
+		return x.Address
+	}
+	return nil
+}
+
+func (x *QueryGetAccountStorageCell) GetIndex() []byte {
+	if x != nil {
+		return x.Index
+	}
+	return nil
+}
+
+type QueryGetAccountStorageCellResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Value []byte `protobuf:"bytes,1,opt,name=value,proto3" json:"value,omitempty"`
+}
+
+func (x *QueryGetAccountStorageCellResponse) Reset() {
+	*x = QueryGetAccountStorageCellResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[11]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryGetAccountStorageCellResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryGetAccountStorageCellResponse) ProtoMessage() {}
+
+func (x *QueryGetAccountStorageCellResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[11]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryGetAccountStorageCellResponse.ProtoReflect.Descriptor instead.
+func (*QueryGetAccountStorageCellResponse) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *QueryGetAccountStorageCellResponse) GetValue() []byte {
+	if x != nil {
+		return x.Value
+	}
+	return nil
+}
+
+type QueryGetAccountCode struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Address []byte `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+}
+
+func (x *QueryGetAccountCode) Reset() {
+	*x = QueryGetAccountCode{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[12]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryGetAccountCode) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryGetAccountCode) ProtoMessage() {}
+
+func (x *QueryGetAccountCode) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[12]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryGetAccountCode.ProtoReflect.Descriptor instead.
+func (*QueryGetAccountCode) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *QueryGetAccountCode) GetAddress() []byte {
+	if x != nil {
+		return x.Address
+	}
+	return nil
+}
+
+type QueryGetAccountCodeResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Code []byte `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+}
+
+func (x *QueryGetAccountCodeResponse) Reset() {
+	*x = QueryGetAccountCodeResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[13]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryGetAccountCodeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryGetAccountCodeResponse) ProtoMessage() {}
+
+func (x *QueryGetAccountCodeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[13]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryGetAccountCodeResponse.ProtoReflect.Descriptor instead.
+func (*QueryGetAccountCodeResponse) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *QueryGetAccountCodeResponse) GetCode() []byte {
+	if x != nil {
+		return x.Code
+	}
+	return nil
+}
+
+type QueryInsertAccountCode struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Address []byte `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	Code    []byte `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+}
+
+func (x *QueryInsertAccountCode) Reset() {
+	*x = QueryInsertAccountCode{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[14]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryInsertAccountCode) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryInsertAccountCode) ProtoMessage() {}
+
+func (x *QueryInsertAccountCode) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[14]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryInsertAccountCode.ProtoReflect.Descriptor instead.
+func (*QueryInsertAccountCode) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *QueryInsertAccountCode) GetAddress() []byte {
+	if x != nil {
+		return x.Address
+	}
+	return nil
+}
+
+func (x *QueryInsertAccountCode) GetCode() []byte {
+	if x != nil {
+		return x.Code
+	}
+	return nil
+}
+
+type QueryInsertAccountCodeResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *QueryInsertAccountCodeResponse) Reset() {
+	*x = QueryInsertAccountCodeResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[15]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryInsertAccountCodeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryInsertAccountCodeResponse) ProtoMessage() {}
+
+func (x *QueryInsertAccountCodeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[15]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryInsertAccountCodeResponse.ProtoReflect.Descriptor instead.
+func (*QueryInsertAccountCodeResponse) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{15}
+}
+
+type QueryInsertStorageCell struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Address []byte `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	Index   []byte `protobuf:"bytes,2,opt,name=index,proto3" json:"index,omitempty"`
+	Value   []byte `protobuf:"bytes,3,opt,name=value,proto3" json:"value,omitempty"`
+}
+
+func (x *QueryInsertStorageCell) Reset() {
+	*x = QueryInsertStorageCell{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[16]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryInsertStorageCell) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryInsertStorageCell) ProtoMessage() {}
+
+func (x *QueryInsertStorageCell) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[16]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryInsertStorageCell.ProtoReflect.Descriptor instead.
+func (*QueryInsertStorageCell) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *QueryInsertStorageCell) GetAddress() []byte {
+	if x != nil {
+		return x.Address
+	}
+	return nil
+}
+
+func (x *QueryInsertStorageCell) GetIndex() []byte {
+	if x != nil {
+		return x.Index
+	}
+	return nil
+}
+
+func (x *QueryInsertStorageCell) GetValue() []byte {
+	if x != nil {
+		return x.Value
+	}
+	return nil
+}
+
+type QueryInsertStorageCellResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *QueryInsertStorageCellResponse) Reset() {
+	*x = QueryInsertStorageCellResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[17]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryInsertStorageCellResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryInsertStorageCellResponse) ProtoMessage() {}
+
+func (x *QueryInsertStorageCellResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[17]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryInsertStorageCellResponse.ProtoReflect.Descriptor instead.
+func (*QueryInsertStorageCellResponse) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{17}
+}
+
+type QueryRemove struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Address []byte `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+}
+
+func (x *QueryRemove) Reset() {
+	*x = QueryRemove{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[18]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryRemove) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryRemove) ProtoMessage() {}
+
+func (x *QueryRemove) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[18]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryRemove.ProtoReflect.Descriptor instead.
+func (*QueryRemove) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *QueryRemove) GetAddress() []byte {
+	if x != nil {
+		return x.Address
+	}
+	return nil
+}
+
+type QueryRemoveResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *QueryRemoveResponse) Reset() {
+	*x = QueryRemoveResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[19]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryRemoveResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryRemoveResponse) ProtoMessage() {}
+
+func (x *QueryRemoveResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[19]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryRemoveResponse.ProtoReflect.Descriptor instead.
+func (*QueryRemoveResponse) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{19}
+}
+
+type QueryRemoveAccountCode struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Address []byte `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+}
+
+func (x *QueryRemoveAccountCode) Reset() {
+	*x = QueryRemoveAccountCode{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[20]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryRemoveAccountCode) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryRemoveAccountCode) ProtoMessage() {}
+
+func (x *QueryRemoveAccountCode) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[20]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryRemoveAccountCode.ProtoReflect.Descriptor instead.
+func (*QueryRemoveAccountCode) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *QueryRemoveAccountCode) GetAddress() []byte {
+	if x != nil {
+		return x.Address
+	}
+	return nil
+}
+
+type QueryRemoveAccountCodeResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *QueryRemoveAccountCodeResponse) Reset() {
+	*x = QueryRemoveAccountCodeResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[21]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryRemoveAccountCodeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryRemoveAccountCodeResponse) ProtoMessage() {}
+
+func (x *QueryRemoveAccountCodeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[21]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryRemoveAccountCodeResponse.ProtoReflect.Descriptor instead.
+func (*QueryRemoveAccountCodeResponse) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{21}
+}
+
+type QueryRemoveStorageCell struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Address []byte `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+	Index   []byte `protobuf:"bytes,2,opt,name=index,proto3" json:"index,omitempty"`
+}
+
+func (x *QueryRemoveStorageCell) Reset() {
+	*x = QueryRemoveStorageCell{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[22]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryRemoveStorageCell) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryRemoveStorageCell) ProtoMessage() {}
+
+func (x *QueryRemoveStorageCell) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[22]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryRemoveStorageCell.ProtoReflect.Descriptor instead.
+func (*QueryRemoveStorageCell) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *QueryRemoveStorageCell) GetAddress() []byte {
+	if x != nil {
+		return x.Address
+	}
+	return nil
+}
+
+func (x *QueryRemoveStorageCell) GetIndex() []byte {
+	if x != nil {
+		return x.Index
+	}
+	return nil
+}
+
+type QueryRemoveStorageCellResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *QueryRemoveStorageCellResponse) Reset() {
+	*x = QueryRemoveStorageCellResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[23]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryRemoveStorageCellResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryRemoveStorageCellResponse) ProtoMessage() {}
+
+func (x *QueryRemoveStorageCellResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[23]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryRemoveStorageCellResponse.ProtoReflect.Descriptor instead.
+func (*QueryRemoveStorageCellResponse) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{23}
+}
+
+type QueryRemoveStorage struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Address []byte `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
+}
+
+func (x *QueryRemoveStorage) Reset() {
+	*x = QueryRemoveStorage{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[24]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryRemoveStorage) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryRemoveStorage) ProtoMessage() {}
+
+func (x *QueryRemoveStorage) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[24]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryRemoveStorage.ProtoReflect.Descriptor instead.
+func (*QueryRemoveStorage) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *QueryRemoveStorage) GetAddress() []byte {
+	if x != nil {
+		return x.Address
+	}
+	return nil
+}
+
+type QueryRemoveStorageResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *QueryRemoveStorageResponse) Reset() {
+	*x = QueryRemoveStorageResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[25]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *QueryRemoveStorageResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QueryRemoveStorageResponse) ProtoMessage() {}
+
+func (x *QueryRemoveStorageResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[25]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QueryRemoveStorageResponse.ProtoReflect.Descriptor instead.
+func (*QueryRemoveStorageResponse) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{25}
+}
+
+type CosmosRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Types that are assignable to Req:
+	//
+	//	*CosmosRequest_GetAccount
+	//	*CosmosRequest_InsertAccount
+	//	*CosmosRequest_ContainsKey
+	//	*CosmosRequest_AccountCode
+	//	*CosmosRequest_StorageCell
+	//	*CosmosRequest_InsertAccountCode
+	//	*CosmosRequest_InsertStorageCell
+	//	*CosmosRequest_Remove
+	//	*CosmosRequest_RemoveAccountCode
+	//	*CosmosRequest_RemoveStorageCell
+	//	*CosmosRequest_RemoveStorage
+	Req isCosmosRequest_Req `protobuf_oneof:"req"`
+}
+
+func (x *CosmosRequest) Reset() {
+	*x = CosmosRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[26]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CosmosRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CosmosRequest) ProtoMessage() {}
+
+func (x *CosmosRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[26]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CosmosRequest.ProtoReflect.Descriptor instead.
+func (*CosmosRequest) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{26}
+}
+
+func (m *CosmosRequest) GetReq() isCosmosRequest_Req {
+	if m != nil {
+		return m.Req
+	}
+	return nil
+}
+
+func (x *CosmosRequest) GetGetAccount() *QueryGetAccount {
+	if x, ok := x.GetReq().(*CosmosRequest_GetAccount); ok {
+		return x.GetAccount
+	}
+	return nil
+}
+
+func (x *CosmosRequest) GetInsertAccount() *QueryInsertAccount {
+	if x, ok := x.GetReq().(*CosmosRequest_InsertAccount); ok {
+		return x.InsertAccount
+	}
+	return nil
+}
+
+func (x *CosmosRequest) GetContainsKey() *QueryContainsKey {
+	if x, ok := x.GetReq().(*CosmosRequest_ContainsKey); ok {
+		return x.ContainsKey
+	}
+	return nil
+}
+
+func (x *CosmosRequest) GetAccountCode() *QueryGetAccountCode {
+	if x, ok := x.GetReq().(*CosmosRequest_AccountCode); ok {
+		return x.AccountCode
+	}
+	return nil
+}
+
+func (x *CosmosRequest) GetStorageCell() *QueryGetAccountStorageCell {
+	if x, ok := x.GetReq().(*CosmosRequest_StorageCell); ok {
+		return x.StorageCell
+	}
+	return nil
+}
+
+func (x *CosmosRequest) GetInsertAccountCode() *QueryInsertAccountCode {
+	if x, ok := x.GetReq().(*CosmosRequest_InsertAccountCode); ok {
+		return x.InsertAccountCode
+	}
+	return nil
+}
+
+func (x *CosmosRequest) GetInsertStorageCell() *QueryInsertStorageCell {
+	if x, ok := x.GetReq().(*CosmosRequest_InsertStorageCell); ok {
+		return x.InsertStorageCell
+	}
+	return nil
+}
+
+func (x *CosmosRequest) GetRemove() *QueryRemove {
+	if x, ok := x.GetReq().(*CosmosRequest_Remove); ok {
+		return x.Remove
+	}
+	return nil
+}
+
+func (x *CosmosRequest) GetRemoveAccountCode() *QueryRemoveAccountCode {
+	if x, ok := x.GetReq().(*CosmosRequest_RemoveAccountCode); ok {
+		return x.RemoveAccountCode
+	}
+	return nil
+}
+
+func (x *CosmosRequest) GetRemoveStorageCell() *QueryRemoveStorageCell {
+	if x, ok := x.GetReq().(*CosmosRequest_RemoveStorageCell); ok {
+		return x.RemoveStorageCell
+	}
+	return nil
+}
+
+func (x *CosmosRequest) GetRemoveStorage() *QueryRemoveStorage {
+	if x, ok := x.GetReq().(*CosmosRequest_RemoveStorage); ok {
+		return x.RemoveStorage
+	}
+	return nil
+}
+
+type isCosmosRequest_Req interface {
+	isCosmosRequest_Req()
+}
+
+type CosmosRequest_GetAccount struct {
+	GetAccount *QueryGetAccount `protobuf:"bytes,1,opt,name=getAccount,proto3,oneof"`
+}
+
+type CosmosRequest_InsertAccount struct {
+	InsertAccount *QueryInsertAccount `protobuf:"bytes,2,opt,name=insertAccount,proto3,oneof"`
+}
+
+type CosmosRequest_ContainsKey struct {
+	ContainsKey *QueryContainsKey `protobuf:"bytes,3,opt,name=containsKey,proto3,oneof"`
+}
+
+type CosmosRequest_AccountCode struct {
+	AccountCode *QueryGetAccountCode `protobuf:"bytes,4,opt,name=accountCode,proto3,oneof"`
+}
+
+type CosmosRequest_StorageCell struct {
+	StorageCell *QueryGetAccountStorageCell `protobuf:"bytes,5,opt,name=storageCell,proto3,oneof"`
+}
+
+type CosmosRequest_InsertAccountCode struct {
+	InsertAccountCode *QueryInsertAccountCode `protobuf:"bytes,6,opt,name=insertAccountCode,proto3,oneof"`
+}
+
+type CosmosRequest_InsertStorageCell struct {
+	InsertStorageCell *QueryInsertStorageCell `protobuf:"bytes,7,opt,name=insertStorageCell,proto3,oneof"`
+}
+
+type CosmosRequest_Remove struct {
+	Remove *QueryRemove `protobuf:"bytes,8,opt,name=remove,proto3,oneof"`
+}
+
+type CosmosRequest_RemoveAccountCode struct {
+	RemoveAccountCode *QueryRemoveAccountCode `protobuf:"bytes,9,opt,name=removeAccountCode,proto3,oneof"`
+}
+
+type CosmosRequest_RemoveStorageCell struct {
+	RemoveStorageCell *QueryRemoveStorageCell `protobuf:"bytes,10,opt,name=removeStorageCell,proto3,oneof"`
+}
+
+type CosmosRequest_RemoveStorage struct {
+	RemoveStorage *QueryRemoveStorage `protobuf:"bytes,11,opt,name=removeStorage,proto3,oneof"`
+}
+
+func (*CosmosRequest_GetAccount) isCosmosRequest_Req() {}
+
+func (*CosmosRequest_InsertAccount) isCosmosRequest_Req() {}
+
+func (*CosmosRequest_ContainsKey) isCosmosRequest_Req() {}
+
+func (*CosmosRequest_AccountCode) isCosmosRequest_Req() {}
+
+func (*CosmosRequest_StorageCell) isCosmosRequest_Req() {}
+
+func (*CosmosRequest_InsertAccountCode) isCosmosRequest_Req() {}
+
+func (*CosmosRequest_InsertStorageCell) isCosmosRequest_Req() {}
+
+func (*CosmosRequest_Remove) isCosmosRequest_Req() {}
+
+func (*CosmosRequest_RemoveAccountCode) isCosmosRequest_Req() {}
+
+func (*CosmosRequest_RemoveStorageCell) isCosmosRequest_Req() {}
+
+func (*CosmosRequest_RemoveStorage) isCosmosRequest_Req() {}
+
+type CosmosResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Types that are assignable to Res:
+	//
+	//	*CosmosResponse_GetAccountResponse
+	//	*CosmosResponse_InsertAccountResponse
+	//	*CosmosResponse_ContainsKeyResponse
+	//	*CosmosResponse_AccountCodeResponse
+	//	*CosmosResponse_StorageCellResponse
+	//	*CosmosResponse_InsertCodeResponse
+	//	*CosmosResponse_InsertStorageCellResponse
+	//	*CosmosResponse_RemoveResponse
+	//	*CosmosResponse_RemoveAccountCodeResponse
+	//	*CosmosResponse_RemoveStorageCellResponse
+	//	*CosmosResponse_RemoveStorageResponse
+	Res isCosmosResponse_Res `protobuf_oneof:"res"`
+}
+
+func (x *CosmosResponse) Reset() {
+	*x = CosmosResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[27]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *CosmosResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CosmosResponse) ProtoMessage() {}
+
+func (x *CosmosResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[27]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CosmosResponse.ProtoReflect.Descriptor instead.
+func (*CosmosResponse) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{27}
+}
+
+func (m *CosmosResponse) GetRes() isCosmosResponse_Res {
+	if m != nil {
+		return m.Res
+	}
+	return nil
+}
+
+func (x *CosmosResponse) GetGetAccountResponse() *QueryGetAccountResponse {
+	if x, ok := x.GetRes().(*CosmosResponse_GetAccountResponse); ok {
+		return x.GetAccountResponse
+	}
+	return nil
+}
+
+func (x *CosmosResponse) GetInsertAccountResponse() *QueryInsertAccountResponse {
+	if x, ok := x.GetRes().(*CosmosResponse_InsertAccountResponse); ok {
+		return x.InsertAccountResponse
+	}
+	return nil
+}
+
+func (x *CosmosResponse) GetContainsKeyResponse() *QueryContainsKeyResponse {
+	if x, ok := x.GetRes().(*CosmosResponse_ContainsKeyResponse); ok {
+		return x.ContainsKeyResponse
+	}
+	return nil
+}
+
+func (x *CosmosResponse) GetAccountCodeResponse() *QueryGetAccountCodeResponse {
+	if x, ok := x.GetRes().(*CosmosResponse_AccountCodeResponse); ok {
+		return x.AccountCodeResponse
+	}
+	return nil
+}
+
+func (x *CosmosResponse) GetStorageCellResponse() *QueryGetAccountStorageCellResponse {
+	if x, ok := x.GetRes().(*CosmosResponse_StorageCellResponse); ok {
+		return x.StorageCellResponse
+	}
+	return nil
+}
+
+func (x *CosmosResponse) GetInsertCodeResponse() *QueryInsertAccountCodeResponse {
+	if x, ok := x.GetRes().(*CosmosResponse_InsertCodeResponse); ok {
+		return x.InsertCodeResponse
+	}
+	return nil
+}
+
+func (x *CosmosResponse) GetInsertStorageCellResponse() *QueryInsertStorageCellResponse {
+	if x, ok := x.GetRes().(*CosmosResponse_InsertStorageCellResponse); ok {
+		return x.InsertStorageCellResponse
+	}
+	return nil
+}
+
+func (x *CosmosResponse) GetRemoveResponse() *QueryRemoveResponse {
+	if x, ok := x.GetRes().(*CosmosResponse_RemoveResponse); ok {
+		return x.RemoveResponse
+	}
+	return nil
+}
+
+func (x *CosmosResponse) GetRemoveAccountCodeResponse() *QueryRemoveAccountCode {
+	if x, ok := x.GetRes().(*CosmosResponse_RemoveAccountCodeResponse); ok {
+		return x.RemoveAccountCodeResponse
+	}
+	return nil
+}
+
+func (x *CosmosResponse) GetRemoveStorageCellResponse() *QueryRemoveStorageCellResponse {
+	if x, ok := x.GetRes().(*CosmosResponse_RemoveStorageCellResponse); ok {
+		return x.RemoveStorageCellResponse
+	}
+	return nil
+}
+
+func (x *CosmosResponse) GetRemoveStorageResponse() *QueryRemoveStorageResponse {
+	if x, ok := x.GetRes().(*CosmosResponse_RemoveStorageResponse); ok {
+		return x.RemoveStorageResponse
+	}
+	return nil
+}
+
+type isCosmosResponse_Res interface {
+	isCosmosResponse_Res()
+}
+
+type CosmosResponse_GetAccountResponse struct {
+	GetAccountResponse *QueryGetAccountResponse `protobuf:"bytes,1,opt,name=getAccountResponse,proto3,oneof"`
+}
+
+type CosmosResponse_InsertAccountResponse struct {
+	InsertAccountResponse *QueryInsertAccountResponse `protobuf:"bytes,2,opt,name=insertAccountResponse,proto3,oneof"`
+}
+
+type CosmosResponse_ContainsKeyResponse struct {
+	ContainsKeyResponse *QueryContainsKeyResponse `protobuf:"bytes,3,opt,name=containsKeyResponse,proto3,oneof"`
+}
+
+type CosmosResponse_AccountCodeResponse struct {
+	AccountCodeResponse *QueryGetAccountCodeResponse `protobuf:"bytes,4,opt,name=accountCodeResponse,proto3,oneof"`
+}
+
+type CosmosResponse_StorageCellResponse struct {
+	StorageCellResponse *QueryGetAccountStorageCellResponse `protobuf:"bytes,5,opt,name=storageCellResponse,proto3,oneof"`
+}
+
+type CosmosResponse_InsertCodeResponse struct {
+	InsertCodeResponse *QueryInsertAccountCodeResponse `protobuf:"bytes,6,opt,name=insertCodeResponse,proto3,oneof"`
+}
+
+type CosmosResponse_InsertStorageCellResponse struct {
+	InsertStorageCellResponse *QueryInsertStorageCellResponse `protobuf:"bytes,7,opt,name=insertStorageCellResponse,proto3,oneof"`
+}
+
+type CosmosResponse_RemoveResponse struct {
+	RemoveResponse *QueryRemoveResponse `protobuf:"bytes,8,opt,name=removeResponse,proto3,oneof"`
+}
+
+type CosmosResponse_RemoveAccountCodeResponse struct {
+	RemoveAccountCodeResponse *QueryRemoveAccountCode `protobuf:"bytes,9,opt,name=removeAccountCodeResponse,proto3,oneof"`
+}
+
+type CosmosResponse_RemoveStorageCellResponse struct {
+	RemoveStorageCellResponse *QueryRemoveStorageCellResponse `protobuf:"bytes,10,opt,name=removeStorageCellResponse,proto3,oneof"`
+}
+
+type CosmosResponse_RemoveStorageResponse struct {
+	RemoveStorageResponse *QueryRemoveStorageResponse `protobuf:"bytes,11,opt,name=removeStorageResponse,proto3,oneof"`
+}
+
+func (*CosmosResponse_GetAccountResponse) isCosmosResponse_Res() {}
+
+func (*CosmosResponse_InsertAccountResponse) isCosmosResponse_Res() {}
+
+func (*CosmosResponse_ContainsKeyResponse) isCosmosResponse_Res() {}
+
+func (*CosmosResponse_AccountCodeResponse) isCosmosResponse_Res() {}
+
+func (*CosmosResponse_StorageCellResponse) isCosmosResponse_Res() {}
+
+func (*CosmosResponse_InsertCodeResponse) isCosmosResponse_Res() {}
+
+func (*CosmosResponse_InsertStorageCellResponse) isCosmosResponse_Res() {}
+
+func (*CosmosResponse_RemoveResponse) isCosmosResponse_Res() {}
+
+func (*CosmosResponse_RemoveAccountCodeResponse) isCosmosResponse_Res() {}
+
+func (*CosmosResponse_RemoveStorageCellResponse) isCosmosResponse_Res() {}
+
+func (*CosmosResponse_RemoveStorageResponse) isCosmosResponse_Res() {}
+
 type FFIRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -428,7 +1777,7 @@ type FFIRequest struct {
 func (x *FFIRequest) Reset() {
 	*x = FFIRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_ffi_proto_msgTypes[6]
+		mi := &file_ffi_proto_msgTypes[28]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -441,7 +1790,7 @@ func (x *FFIRequest) String() string {
 func (*FFIRequest) ProtoMessage() {}
 
 func (x *FFIRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_ffi_proto_msgTypes[6]
+	mi := &file_ffi_proto_msgTypes[28]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -454,7 +1803,7 @@ func (x *FFIRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FFIRequest.ProtoReflect.Descriptor instead.
 func (*FFIRequest) Descriptor() ([]byte, []int) {
-	return file_ffi_proto_rawDescGZIP(), []int{6}
+	return file_ffi_proto_rawDescGZIP(), []int{28}
 }
 
 func (m *FFIRequest) GetReq() isFFIRequest_Req {
@@ -522,14 +1871,193 @@ var file_ffi_proto_rawDesc = []byte{
 	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x62, 0x61, 0x6c, 0x61, 0x6e, 0x63,
 	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x07, 0x62, 0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65,
 	0x12, 0x14, 0x0a, 0x05, 0x6e, 0x6f, 0x6e, 0x63, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52,
-	0x05, 0x6e, 0x6f, 0x6e, 0x63, 0x65, 0x22, 0x5d, 0x0a, 0x0a, 0x46, 0x46, 0x49, 0x52, 0x65, 0x71,
-	0x75, 0x65, 0x73, 0x74, 0x12, 0x48, 0x0a, 0x11, 0x68, 0x61, 0x6e, 0x64, 0x6c, 0x65, 0x54, 0x72,
-	0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32,
-	0x18, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61,
-	0x63, 0x74, 0x69, 0x6f, 0x6e, 0x44, 0x61, 0x74, 0x61, 0x48, 0x00, 0x52, 0x11, 0x68, 0x61, 0x6e,
-	0x64, 0x6c, 0x65, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0x05,
-	0x0a, 0x03, 0x72, 0x65, 0x71, 0x42, 0x04, 0x5a, 0x02, 0x2e, 0x2f, 0x62, 0x06, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x33,
+	0x05, 0x6e, 0x6f, 0x6e, 0x63, 0x65, 0x22, 0x5e, 0x0a, 0x12, 0x51, 0x75, 0x65, 0x72, 0x79, 0x49,
+	0x6e, 0x73, 0x65, 0x72, 0x74, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x18, 0x0a, 0x07,
+	0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x07, 0x61,
+	0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x18, 0x0a, 0x07, 0x62, 0x61, 0x6c, 0x61, 0x6e, 0x63,
+	0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x07, 0x62, 0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65,
+	0x12, 0x14, 0x0a, 0x05, 0x6e, 0x6f, 0x6e, 0x63, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0c, 0x52,
+	0x05, 0x6e, 0x6f, 0x6e, 0x63, 0x65, 0x22, 0x1c, 0x0a, 0x1a, 0x51, 0x75, 0x65, 0x72, 0x79, 0x49,
+	0x6e, 0x73, 0x65, 0x72, 0x74, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x24, 0x0a, 0x10, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x6f, 0x6e,
+	0x74, 0x61, 0x69, 0x6e, 0x73, 0x4b, 0x65, 0x79, 0x12, 0x10, 0x0a, 0x03, 0x6b, 0x65, 0x79, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x03, 0x6b, 0x65, 0x79, 0x22, 0x36, 0x0a, 0x18, 0x51, 0x75,
+	0x65, 0x72, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x73, 0x4b, 0x65, 0x79, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x63, 0x6f, 0x6e, 0x74, 0x61, 0x69,
+	0x6e, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x08, 0x63, 0x6f, 0x6e, 0x74, 0x61, 0x69,
+	0x6e, 0x73, 0x22, 0x4c, 0x0a, 0x1a, 0x51, 0x75, 0x65, 0x72, 0x79, 0x47, 0x65, 0x74, 0x41, 0x63,
+	0x63, 0x6f, 0x75, 0x6e, 0x74, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x43, 0x65, 0x6c, 0x6c,
+	0x12, 0x18, 0x0a, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x0c, 0x52, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x14, 0x0a, 0x05, 0x69, 0x6e,
+	0x64, 0x65, 0x78, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x05, 0x69, 0x6e, 0x64, 0x65, 0x78,
+	0x22, 0x3a, 0x0a, 0x22, 0x51, 0x75, 0x65, 0x72, 0x79, 0x47, 0x65, 0x74, 0x41, 0x63, 0x63, 0x6f,
+	0x75, 0x6e, 0x74, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x43, 0x65, 0x6c, 0x6c, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x2f, 0x0a, 0x13,
+	0x51, 0x75, 0x65, 0x72, 0x79, 0x47, 0x65, 0x74, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x43,
+	0x6f, 0x64, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x0c, 0x52, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x22, 0x31, 0x0a,
+	0x1b, 0x51, 0x75, 0x65, 0x72, 0x79, 0x47, 0x65, 0x74, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74,
+	0x43, 0x6f, 0x64, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x12, 0x0a, 0x04,
+	0x63, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65,
+	0x22, 0x46, 0x0a, 0x16, 0x51, 0x75, 0x65, 0x72, 0x79, 0x49, 0x6e, 0x73, 0x65, 0x72, 0x74, 0x41,
+	0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x43, 0x6f, 0x64, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x61, 0x64,
+	0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x07, 0x61, 0x64, 0x64,
+	0x72, 0x65, 0x73, 0x73, 0x12, 0x12, 0x0a, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x0c, 0x52, 0x04, 0x63, 0x6f, 0x64, 0x65, 0x22, 0x20, 0x0a, 0x1e, 0x51, 0x75, 0x65, 0x72,
+	0x79, 0x49, 0x6e, 0x73, 0x65, 0x72, 0x74, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x43, 0x6f,
+	0x64, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x5e, 0x0a, 0x16, 0x51, 0x75,
+	0x65, 0x72, 0x79, 0x49, 0x6e, 0x73, 0x65, 0x72, 0x74, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65,
+	0x43, 0x65, 0x6c, 0x6c, 0x12, 0x18, 0x0a, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x14,
+	0x0a, 0x05, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x05, 0x69,
+	0x6e, 0x64, 0x65, 0x78, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x03, 0x20,
+	0x01, 0x28, 0x0c, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x20, 0x0a, 0x1e, 0x51, 0x75,
+	0x65, 0x72, 0x79, 0x49, 0x6e, 0x73, 0x65, 0x72, 0x74, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65,
+	0x43, 0x65, 0x6c, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x27, 0x0a, 0x0b,
+	0x51, 0x75, 0x65, 0x72, 0x79, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x61,
+	0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x07, 0x61, 0x64,
+	0x64, 0x72, 0x65, 0x73, 0x73, 0x22, 0x15, 0x0a, 0x13, 0x51, 0x75, 0x65, 0x72, 0x79, 0x52, 0x65,
+	0x6d, 0x6f, 0x76, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x32, 0x0a, 0x16,
+	0x51, 0x75, 0x65, 0x72, 0x79, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x41, 0x63, 0x63, 0x6f, 0x75,
+	0x6e, 0x74, 0x43, 0x6f, 0x64, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73,
+	0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73,
+	0x22, 0x20, 0x0a, 0x1e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x41,
+	0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x43, 0x6f, 0x64, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x22, 0x48, 0x0a, 0x16, 0x51, 0x75, 0x65, 0x72, 0x79, 0x52, 0x65, 0x6d, 0x6f, 0x76,
+	0x65, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x43, 0x65, 0x6c, 0x6c, 0x12, 0x18, 0x0a, 0x07,
+	0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x07, 0x61,
+	0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x12, 0x14, 0x0a, 0x05, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x05, 0x69, 0x6e, 0x64, 0x65, 0x78, 0x22, 0x20, 0x0a, 0x1e,
+	0x51, 0x75, 0x65, 0x72, 0x79, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x53, 0x74, 0x6f, 0x72, 0x61,
+	0x67, 0x65, 0x43, 0x65, 0x6c, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x2e,
+	0x0a, 0x12, 0x51, 0x75, 0x65, 0x72, 0x79, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x53, 0x74, 0x6f,
+	0x72, 0x61, 0x67, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x07, 0x61, 0x64, 0x64, 0x72, 0x65, 0x73, 0x73, 0x22, 0x1c,
+	0x0a, 0x1a, 0x51, 0x75, 0x65, 0x72, 0x79, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x53, 0x74, 0x6f,
+	0x72, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x9a, 0x06, 0x0a,
+	0x0d, 0x43, 0x6f, 0x73, 0x6d, 0x6f, 0x73, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x3a,
+	0x0a, 0x0a, 0x67, 0x65, 0x74, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x18, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x51, 0x75, 0x65,
+	0x72, 0x79, 0x47, 0x65, 0x74, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x48, 0x00, 0x52, 0x0a,
+	0x67, 0x65, 0x74, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x12, 0x43, 0x0a, 0x0d, 0x69, 0x6e,
+	0x73, 0x65, 0x72, 0x74, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28,
+	0x0b, 0x32, 0x1b, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x51, 0x75, 0x65, 0x72,
+	0x79, 0x49, 0x6e, 0x73, 0x65, 0x72, 0x74, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x48, 0x00,
+	0x52, 0x0d, 0x69, 0x6e, 0x73, 0x65, 0x72, 0x74, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x12,
+	0x3d, 0x0a, 0x0b, 0x63, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x73, 0x4b, 0x65, 0x79, 0x18, 0x03,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x51,
+	0x75, 0x65, 0x72, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x73, 0x4b, 0x65, 0x79, 0x48,
+	0x00, 0x52, 0x0b, 0x63, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x73, 0x4b, 0x65, 0x79, 0x12, 0x40,
+	0x0a, 0x0b, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x43, 0x6f, 0x64, 0x65, 0x18, 0x04, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x51, 0x75,
+	0x65, 0x72, 0x79, 0x47, 0x65, 0x74, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x43, 0x6f, 0x64,
+	0x65, 0x48, 0x00, 0x52, 0x0b, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x43, 0x6f, 0x64, 0x65,
+	0x12, 0x47, 0x0a, 0x0b, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x43, 0x65, 0x6c, 0x6c, 0x18,
+	0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x23, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e,
+	0x51, 0x75, 0x65, 0x72, 0x79, 0x47, 0x65, 0x74, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x53,
+	0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x43, 0x65, 0x6c, 0x6c, 0x48, 0x00, 0x52, 0x0b, 0x73, 0x74,
+	0x6f, 0x72, 0x61, 0x67, 0x65, 0x43, 0x65, 0x6c, 0x6c, 0x12, 0x4f, 0x0a, 0x11, 0x69, 0x6e, 0x73,
+	0x65, 0x72, 0x74, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x43, 0x6f, 0x64, 0x65, 0x18, 0x06,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x51,
+	0x75, 0x65, 0x72, 0x79, 0x49, 0x6e, 0x73, 0x65, 0x72, 0x74, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e,
+	0x74, 0x43, 0x6f, 0x64, 0x65, 0x48, 0x00, 0x52, 0x11, 0x69, 0x6e, 0x73, 0x65, 0x72, 0x74, 0x41,
+	0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x43, 0x6f, 0x64, 0x65, 0x12, 0x4f, 0x0a, 0x11, 0x69, 0x6e,
+	0x73, 0x65, 0x72, 0x74, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x43, 0x65, 0x6c, 0x6c, 0x18,
+	0x07, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e,
+	0x51, 0x75, 0x65, 0x72, 0x79, 0x49, 0x6e, 0x73, 0x65, 0x72, 0x74, 0x53, 0x74, 0x6f, 0x72, 0x61,
+	0x67, 0x65, 0x43, 0x65, 0x6c, 0x6c, 0x48, 0x00, 0x52, 0x11, 0x69, 0x6e, 0x73, 0x65, 0x72, 0x74,
+	0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x43, 0x65, 0x6c, 0x6c, 0x12, 0x2e, 0x0a, 0x06, 0x72,
+	0x65, 0x6d, 0x6f, 0x76, 0x65, 0x18, 0x08, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x14, 0x2e, 0x66, 0x66,
+	0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x52, 0x65, 0x6d, 0x6f, 0x76,
+	0x65, 0x48, 0x00, 0x52, 0x06, 0x72, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x12, 0x4f, 0x0a, 0x11, 0x72,
+	0x65, 0x6d, 0x6f, 0x76, 0x65, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x43, 0x6f, 0x64, 0x65,
+	0x18, 0x09, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69,
+	0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x41, 0x63, 0x63, 0x6f,
+	0x75, 0x6e, 0x74, 0x43, 0x6f, 0x64, 0x65, 0x48, 0x00, 0x52, 0x11, 0x72, 0x65, 0x6d, 0x6f, 0x76,
+	0x65, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x43, 0x6f, 0x64, 0x65, 0x12, 0x4f, 0x0a, 0x11,
+	0x72, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x43, 0x65, 0x6c,
+	0x6c, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66,
+	0x69, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x53, 0x74, 0x6f,
+	0x72, 0x61, 0x67, 0x65, 0x43, 0x65, 0x6c, 0x6c, 0x48, 0x00, 0x52, 0x11, 0x72, 0x65, 0x6d, 0x6f,
+	0x76, 0x65, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x43, 0x65, 0x6c, 0x6c, 0x12, 0x43, 0x0a,
+	0x0d, 0x72, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x18, 0x0b,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x51,
+	0x75, 0x65, 0x72, 0x79, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67,
+	0x65, 0x48, 0x00, 0x52, 0x0d, 0x72, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x53, 0x74, 0x6f, 0x72, 0x61,
+	0x67, 0x65, 0x42, 0x05, 0x0a, 0x03, 0x72, 0x65, 0x71, 0x22, 0x8d, 0x08, 0x0a, 0x0e, 0x43, 0x6f,
+	0x73, 0x6d, 0x6f, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x52, 0x0a, 0x12,
+	0x67, 0x65, 0x74, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x20, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66,
+	0x66, 0x69, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x47, 0x65, 0x74, 0x41, 0x63, 0x63, 0x6f, 0x75,
+	0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x48, 0x00, 0x52, 0x12, 0x67, 0x65,
+	0x74, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x5b, 0x0a, 0x15, 0x69, 0x6e, 0x73, 0x65, 0x72, 0x74, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e,
+	0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x23, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x49,
+	0x6e, 0x73, 0x65, 0x72, 0x74, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x48, 0x00, 0x52, 0x15, 0x69, 0x6e, 0x73, 0x65, 0x72, 0x74, 0x41, 0x63,
+	0x63, 0x6f, 0x75, 0x6e, 0x74, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x55, 0x0a,
+	0x13, 0x63, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x73, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x66, 0x66, 0x69,
+	0x2e, 0x66, 0x66, 0x69, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x43, 0x6f, 0x6e, 0x74, 0x61, 0x69,
+	0x6e, 0x73, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x48, 0x00, 0x52,
+	0x13, 0x63, 0x6f, 0x6e, 0x74, 0x61, 0x69, 0x6e, 0x73, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x12, 0x58, 0x0a, 0x13, 0x61, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x43,
+	0x6f, 0x64, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28,
+	0x0b, 0x32, 0x24, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x51, 0x75, 0x65, 0x72,
+	0x79, 0x47, 0x65, 0x74, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x43, 0x6f, 0x64, 0x65, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x48, 0x00, 0x52, 0x13, 0x61, 0x63, 0x63, 0x6f, 0x75,
+	0x6e, 0x74, 0x43, 0x6f, 0x64, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x5f,
+	0x0a, 0x13, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x43, 0x65, 0x6c, 0x6c, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x2b, 0x2e, 0x66, 0x66,
+	0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x47, 0x65, 0x74, 0x41, 0x63,
+	0x63, 0x6f, 0x75, 0x6e, 0x74, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x43, 0x65, 0x6c, 0x6c,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x48, 0x00, 0x52, 0x13, 0x73, 0x74, 0x6f, 0x72,
+	0x61, 0x67, 0x65, 0x43, 0x65, 0x6c, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12,
+	0x59, 0x0a, 0x12, 0x69, 0x6e, 0x73, 0x65, 0x72, 0x74, 0x43, 0x6f, 0x64, 0x65, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x18, 0x06, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e, 0x66, 0x66,
+	0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x49, 0x6e, 0x73, 0x65, 0x72,
+	0x74, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x43, 0x6f, 0x64, 0x65, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x48, 0x00, 0x52, 0x12, 0x69, 0x6e, 0x73, 0x65, 0x72, 0x74, 0x43, 0x6f,
+	0x64, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x67, 0x0a, 0x19, 0x69, 0x6e,
+	0x73, 0x65, 0x72, 0x74, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x43, 0x65, 0x6c, 0x6c, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x18, 0x07, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x27, 0x2e,
+	0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x49, 0x6e, 0x73,
+	0x65, 0x72, 0x74, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x43, 0x65, 0x6c, 0x6c, 0x52, 0x65,
+	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x48, 0x00, 0x52, 0x19, 0x69, 0x6e, 0x73, 0x65, 0x72, 0x74,
+	0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x43, 0x65, 0x6c, 0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f,
+	0x6e, 0x73, 0x65, 0x12, 0x46, 0x0a, 0x0e, 0x72, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x18, 0x08, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1c, 0x2e, 0x66, 0x66,
+	0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x52, 0x65, 0x6d, 0x6f, 0x76,
+	0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x48, 0x00, 0x52, 0x0e, 0x72, 0x65, 0x6d,
+	0x6f, 0x76, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x5f, 0x0a, 0x19, 0x72,
+	0x65, 0x6d, 0x6f, 0x76, 0x65, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x43, 0x6f, 0x64, 0x65,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x18, 0x09, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f,
+	0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x52, 0x65,
+	0x6d, 0x6f, 0x76, 0x65, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x43, 0x6f, 0x64, 0x65, 0x48,
+	0x00, 0x52, 0x19, 0x72, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x41, 0x63, 0x63, 0x6f, 0x75, 0x6e, 0x74,
+	0x43, 0x6f, 0x64, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x67, 0x0a, 0x19,
+	0x72, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x43, 0x65, 0x6c,
+	0x6c, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x18, 0x0a, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x27, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x51, 0x75, 0x65, 0x72, 0x79, 0x52,
+	0x65, 0x6d, 0x6f, 0x76, 0x65, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x43, 0x65, 0x6c, 0x6c,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x48, 0x00, 0x52, 0x19, 0x72, 0x65, 0x6d, 0x6f,
+	0x76, 0x65, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x43, 0x65, 0x6c, 0x6c, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x5b, 0x0a, 0x15, 0x72, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x53,
+	0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x18, 0x0b,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x23, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x51,
+	0x75, 0x65, 0x72, 0x79, 0x52, 0x65, 0x6d, 0x6f, 0x76, 0x65, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67,
+	0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x48, 0x00, 0x52, 0x15, 0x72, 0x65, 0x6d,
+	0x6f, 0x76, 0x65, 0x53, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x42, 0x05, 0x0a, 0x03, 0x72, 0x65, 0x73, 0x22, 0x5d, 0x0a, 0x0a, 0x46, 0x46, 0x49,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x48, 0x0a, 0x11, 0x68, 0x61, 0x6e, 0x64, 0x6c,
+	0x65, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x18, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x54, 0x72, 0x61,
+	0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x44, 0x61, 0x74, 0x61, 0x48, 0x00, 0x52, 0x11,
+	0x68, 0x61, 0x6e, 0x64, 0x6c, 0x65, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f,
+	0x6e, 0x42, 0x05, 0x0a, 0x03, 0x72, 0x65, 0x71, 0x42, 0x04, 0x5a, 0x02, 0x2e, 0x2f, 0x62, 0x06,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -544,25 +2072,69 @@ func file_ffi_proto_rawDescGZIP() []byte {
 	return file_ffi_proto_rawDescData
 }
 
-var file_ffi_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_ffi_proto_msgTypes = make([]protoimpl.MessageInfo, 29)
 var file_ffi_proto_goTypes = []interface{}{
-	(*AccessListItem)(nil),            // 0: ffi.ffi.AccessListItem
-	(*TransactionData)(nil),           // 1: ffi.ffi.TransactionData
-	(*Log)(nil),                       // 2: ffi.ffi.Log
-	(*HandleTransactionResponse)(nil), // 3: ffi.ffi.HandleTransactionResponse
-	(*QueryGetAccount)(nil),           // 4: ffi.ffi.QueryGetAccount
-	(*QueryGetAccountResponse)(nil),   // 5: ffi.ffi.QueryGetAccountResponse
-	(*FFIRequest)(nil),                // 6: ffi.ffi.FFIRequest
+	(*AccessListItem)(nil),                     // 0: ffi.ffi.AccessListItem
+	(*TransactionData)(nil),                    // 1: ffi.ffi.TransactionData
+	(*Log)(nil),                                // 2: ffi.ffi.Log
+	(*HandleTransactionResponse)(nil),          // 3: ffi.ffi.HandleTransactionResponse
+	(*QueryGetAccount)(nil),                    // 4: ffi.ffi.QueryGetAccount
+	(*QueryGetAccountResponse)(nil),            // 5: ffi.ffi.QueryGetAccountResponse
+	(*QueryInsertAccount)(nil),                 // 6: ffi.ffi.QueryInsertAccount
+	(*QueryInsertAccountResponse)(nil),         // 7: ffi.ffi.QueryInsertAccountResponse
+	(*QueryContainsKey)(nil),                   // 8: ffi.ffi.QueryContainsKey
+	(*QueryContainsKeyResponse)(nil),           // 9: ffi.ffi.QueryContainsKeyResponse
+	(*QueryGetAccountStorageCell)(nil),         // 10: ffi.ffi.QueryGetAccountStorageCell
+	(*QueryGetAccountStorageCellResponse)(nil), // 11: ffi.ffi.QueryGetAccountStorageCellResponse
+	(*QueryGetAccountCode)(nil),                // 12: ffi.ffi.QueryGetAccountCode
+	(*QueryGetAccountCodeResponse)(nil),        // 13: ffi.ffi.QueryGetAccountCodeResponse
+	(*QueryInsertAccountCode)(nil),             // 14: ffi.ffi.QueryInsertAccountCode
+	(*QueryInsertAccountCodeResponse)(nil),     // 15: ffi.ffi.QueryInsertAccountCodeResponse
+	(*QueryInsertStorageCell)(nil),             // 16: ffi.ffi.QueryInsertStorageCell
+	(*QueryInsertStorageCellResponse)(nil),     // 17: ffi.ffi.QueryInsertStorageCellResponse
+	(*QueryRemove)(nil),                        // 18: ffi.ffi.QueryRemove
+	(*QueryRemoveResponse)(nil),                // 19: ffi.ffi.QueryRemoveResponse
+	(*QueryRemoveAccountCode)(nil),             // 20: ffi.ffi.QueryRemoveAccountCode
+	(*QueryRemoveAccountCodeResponse)(nil),     // 21: ffi.ffi.QueryRemoveAccountCodeResponse
+	(*QueryRemoveStorageCell)(nil),             // 22: ffi.ffi.QueryRemoveStorageCell
+	(*QueryRemoveStorageCellResponse)(nil),     // 23: ffi.ffi.QueryRemoveStorageCellResponse
+	(*QueryRemoveStorage)(nil),                 // 24: ffi.ffi.QueryRemoveStorage
+	(*QueryRemoveStorageResponse)(nil),         // 25: ffi.ffi.QueryRemoveStorageResponse
+	(*CosmosRequest)(nil),                      // 26: ffi.ffi.CosmosRequest
+	(*CosmosResponse)(nil),                     // 27: ffi.ffi.CosmosResponse
+	(*FFIRequest)(nil),                         // 28: ffi.ffi.FFIRequest
 }
 var file_ffi_proto_depIdxs = []int32{
-	0, // 0: ffi.ffi.TransactionData.accessList:type_name -> ffi.ffi.AccessListItem
-	2, // 1: ffi.ffi.HandleTransactionResponse.logs:type_name -> ffi.ffi.Log
-	1, // 2: ffi.ffi.FFIRequest.handleTransaction:type_name -> ffi.ffi.TransactionData
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	0,  // 0: ffi.ffi.TransactionData.accessList:type_name -> ffi.ffi.AccessListItem
+	2,  // 1: ffi.ffi.HandleTransactionResponse.logs:type_name -> ffi.ffi.Log
+	4,  // 2: ffi.ffi.CosmosRequest.getAccount:type_name -> ffi.ffi.QueryGetAccount
+	6,  // 3: ffi.ffi.CosmosRequest.insertAccount:type_name -> ffi.ffi.QueryInsertAccount
+	8,  // 4: ffi.ffi.CosmosRequest.containsKey:type_name -> ffi.ffi.QueryContainsKey
+	12, // 5: ffi.ffi.CosmosRequest.accountCode:type_name -> ffi.ffi.QueryGetAccountCode
+	10, // 6: ffi.ffi.CosmosRequest.storageCell:type_name -> ffi.ffi.QueryGetAccountStorageCell
+	14, // 7: ffi.ffi.CosmosRequest.insertAccountCode:type_name -> ffi.ffi.QueryInsertAccountCode
+	16, // 8: ffi.ffi.CosmosRequest.insertStorageCell:type_name -> ffi.ffi.QueryInsertStorageCell
+	18, // 9: ffi.ffi.CosmosRequest.remove:type_name -> ffi.ffi.QueryRemove
+	20, // 10: ffi.ffi.CosmosRequest.removeAccountCode:type_name -> ffi.ffi.QueryRemoveAccountCode
+	22, // 11: ffi.ffi.CosmosRequest.removeStorageCell:type_name -> ffi.ffi.QueryRemoveStorageCell
+	24, // 12: ffi.ffi.CosmosRequest.removeStorage:type_name -> ffi.ffi.QueryRemoveStorage
+	5,  // 13: ffi.ffi.CosmosResponse.getAccountResponse:type_name -> ffi.ffi.QueryGetAccountResponse
+	7,  // 14: ffi.ffi.CosmosResponse.insertAccountResponse:type_name -> ffi.ffi.QueryInsertAccountResponse
+	9,  // 15: ffi.ffi.CosmosResponse.containsKeyResponse:type_name -> ffi.ffi.QueryContainsKeyResponse
+	13, // 16: ffi.ffi.CosmosResponse.accountCodeResponse:type_name -> ffi.ffi.QueryGetAccountCodeResponse
+	11, // 17: ffi.ffi.CosmosResponse.storageCellResponse:type_name -> ffi.ffi.QueryGetAccountStorageCellResponse
+	15, // 18: ffi.ffi.CosmosResponse.insertCodeResponse:type_name -> ffi.ffi.QueryInsertAccountCodeResponse
+	17, // 19: ffi.ffi.CosmosResponse.insertStorageCellResponse:type_name -> ffi.ffi.QueryInsertStorageCellResponse
+	19, // 20: ffi.ffi.CosmosResponse.removeResponse:type_name -> ffi.ffi.QueryRemoveResponse
+	20, // 21: ffi.ffi.CosmosResponse.removeAccountCodeResponse:type_name -> ffi.ffi.QueryRemoveAccountCode
+	23, // 22: ffi.ffi.CosmosResponse.removeStorageCellResponse:type_name -> ffi.ffi.QueryRemoveStorageCellResponse
+	25, // 23: ffi.ffi.CosmosResponse.removeStorageResponse:type_name -> ffi.ffi.QueryRemoveStorageResponse
+	1,  // 24: ffi.ffi.FFIRequest.handleTransaction:type_name -> ffi.ffi.TransactionData
+	25, // [25:25] is the sub-list for method output_type
+	25, // [25:25] is the sub-list for method input_type
+	25, // [25:25] is the sub-list for extension type_name
+	25, // [25:25] is the sub-list for extension extendee
+	0,  // [0:25] is the sub-list for field type_name
 }
 
 func init() { file_ffi_proto_init() }
@@ -644,6 +2216,270 @@ func file_ffi_proto_init() {
 			}
 		}
 		file_ffi_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryInsertAccount); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryInsertAccountResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryContainsKey); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryContainsKeyResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryGetAccountStorageCell); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryGetAccountStorageCellResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryGetAccountCode); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryGetAccountCodeResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryInsertAccountCode); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryInsertAccountCodeResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryInsertStorageCell); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryInsertStorageCellResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryRemove); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryRemoveResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryRemoveAccountCode); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryRemoveAccountCodeResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryRemoveStorageCell); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryRemoveStorageCellResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryRemoveStorage); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*QueryRemoveStorageResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CosmosRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*CosmosResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*FFIRequest); i {
 			case 0:
 				return &v.state
@@ -656,7 +2492,33 @@ func file_ffi_proto_init() {
 			}
 		}
 	}
-	file_ffi_proto_msgTypes[6].OneofWrappers = []interface{}{
+	file_ffi_proto_msgTypes[26].OneofWrappers = []interface{}{
+		(*CosmosRequest_GetAccount)(nil),
+		(*CosmosRequest_InsertAccount)(nil),
+		(*CosmosRequest_ContainsKey)(nil),
+		(*CosmosRequest_AccountCode)(nil),
+		(*CosmosRequest_StorageCell)(nil),
+		(*CosmosRequest_InsertAccountCode)(nil),
+		(*CosmosRequest_InsertStorageCell)(nil),
+		(*CosmosRequest_Remove)(nil),
+		(*CosmosRequest_RemoveAccountCode)(nil),
+		(*CosmosRequest_RemoveStorageCell)(nil),
+		(*CosmosRequest_RemoveStorage)(nil),
+	}
+	file_ffi_proto_msgTypes[27].OneofWrappers = []interface{}{
+		(*CosmosResponse_GetAccountResponse)(nil),
+		(*CosmosResponse_InsertAccountResponse)(nil),
+		(*CosmosResponse_ContainsKeyResponse)(nil),
+		(*CosmosResponse_AccountCodeResponse)(nil),
+		(*CosmosResponse_StorageCellResponse)(nil),
+		(*CosmosResponse_InsertCodeResponse)(nil),
+		(*CosmosResponse_InsertStorageCellResponse)(nil),
+		(*CosmosResponse_RemoveResponse)(nil),
+		(*CosmosResponse_RemoveAccountCodeResponse)(nil),
+		(*CosmosResponse_RemoveStorageCellResponse)(nil),
+		(*CosmosResponse_RemoveStorageResponse)(nil),
+	}
+	file_ffi_proto_msgTypes[28].OneofWrappers = []interface{}{
 		(*FFIRequest_HandleTransaction)(nil),
 	}
 	type x struct{}
@@ -665,7 +2527,7 @@ func file_ffi_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_ffi_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   29,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
