@@ -25,8 +25,8 @@ type Querier = types.Querier
 // GasMeter is a read-only version of the sdk gas meter
 type GasMeter = api.GasMeter
 
-func HandleTx(from, to, data, value []byte, gasLimit uint64) (*ffi.HandleTransactionResponse, error) {
-	executionResult, err := api.HandleTx(from, to, data, value, gasLimit)
+func HandleTx(querier types.DataQuerier, from, to, data, value []byte, gasLimit uint64) (*ffi.HandleTransactionResponse, error) {
+	executionResult, err := api.HandleTx(querier, from, to, data, value, gasLimit)
 	if err != nil {
 		return &ffi.HandleTransactionResponse{}, err
 	}

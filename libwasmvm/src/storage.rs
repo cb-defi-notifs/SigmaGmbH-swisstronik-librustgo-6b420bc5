@@ -4,7 +4,12 @@ use std::collections::HashMap;
 // use cosmwasm_vm::{BackendError, BackendResult, GasInfo, Storage};
 
 use crate::db::Db;
+use crate::error::Error;
 use crate::iterator::GoIter;
+use crate::protobuf_generated::ffi;
+use crate::{UnmanagedVector, U8SliceView, GoError}; 
+use protobuf::Message;
+use sgx_evm::primitive_types::{U256, H160};
 
 pub struct GoStorage {
     db: Db,
@@ -167,3 +172,5 @@ impl GoStorage {
 //         (Ok(()), gas_info)
 //     }
 // }
+
+// this represents something passed in from the caller side of FFI

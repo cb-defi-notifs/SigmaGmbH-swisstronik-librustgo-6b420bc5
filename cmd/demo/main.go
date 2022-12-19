@@ -6,6 +6,10 @@ import (
 	"fmt"
 
 	wasmvm "github.com/SigmaGmbH/librustgo"
+	types "github.com/SigmaGmbH/librustgo/types"
+	"github.com/holiman/uint256"
+	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
+	"github.com/golang/protobuf/proto"
 )
 
 const (
@@ -14,6 +18,20 @@ const (
 	MEMORY_LIMIT       = 32  // MiB
 	CACHE_SIZE         = 100 // MiB
 )
+
+type MockedQueryHandler struct {}
+
+var _ types.DataQuerier = MockedQueryHandler{}
+
+func (MockedQueryHandler) Query(request []byte) ([]byte, error) {
+	balance := uint256.NewInt(155).Bytes32()
+	nonce := uint256.NewInt(133).Bytes32()
+
+	return proto.Marshal(&ffi.QueryGetAccountResponse{
+		Balance: balance[:],
+		Nonce: nonce[:],
+	})
+}
 
 // This is just a demo to ensure we can compile a static go binary
 func main() {
@@ -30,8 +48,9 @@ func main() {
 	value := make([]byte, binary.MaxVarintLen32)
 	gasLimit := uint64(10000000)
 	data := make([]byte, 0)
+	querier := &MockedQueryHandler{}
 
-	result, err := wasmvm.HandleTx(from, to, data, value, gasLimit)
+	result, err := wasmvm.HandleTx(querier, from, to, data, value, gasLimit)
 	//err := wasmvm.HelloWorld("Admin")
 	//file := os.Args[1]
 	//fmt.Printf("Running %s...\n", file)

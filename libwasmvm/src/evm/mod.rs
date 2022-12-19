@@ -3,19 +3,22 @@ use sgx_evm::ExecutionData;
 use common_types::ExecutionResult;
 use sgx_evm::primitive_types::{U256, H160, H256};
 use sgx_evm::ethereum::TransactionAction;
+
 use crate::protobuf_generated::ffi::TransactionData as ProtoTransactionData;
-use std::str::FromStr;
+use crate::querier::GoQuerier;
+
+mod storage;
 
 /// This function creates mocked backend and tries to handle incoming transaction
 /// It is stateless and is used just to test broadcasting transaction from devnet to Rust
 /// execution layer
-pub fn handle_transaction_mocked(data: ProtoTransactionData) -> ExecutionResult {
+pub fn handle_transaction(querier: GoQuerier, data: ProtoTransactionData) -> ExecutionResult {
     // Convert decoded protobuf data into TransactionData
     let tx = parse_protobuf_transaction_data(data);
-    // Create mocked storage
-    let mut mocked_storage = sgx_evm::storage::mocked_storage::MockedStorage::default();
+    // Create FFI storage
+    let mut storage = crate::evm::storage::FFIStorage::new_mocked(querier);
     // Handle already parsed transaction and return execution result
-    sgx_evm::handle_transaction_inner(tx, &mut mocked_storage)
+    sgx_evm::handle_transaction_inner(tx, &mut storage)
 }
 
 /// This function converts decoded protobuf transaction data into a regulat TransactionData struct

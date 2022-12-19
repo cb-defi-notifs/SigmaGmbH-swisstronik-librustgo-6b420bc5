@@ -12,7 +12,7 @@ import (
 	"syscall"
 
 	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
-	"github.com/SigmaGmbH/librustgo/types"
+	types "github.com/SigmaGmbH/librustgo/types"
 )
 
 // Value types
@@ -31,8 +31,13 @@ type (
 // Pointers
 type cu8_ptr = *C.uint8_t
 
+type Querier = types.Querier
+
 // Handles incoming ethereum transaction
-func HandleTx(from, to, data, value []byte, gasLimit uint64) (*ffi.HandleTransactionResponse, error) {
+func HandleTx(querier types.DataQuerier, from, to, data, value []byte, gasLimit uint64) (*ffi.HandleTransactionResponse, error) {
+	// Construct mocked querier
+	q := buildQuerier(querier)
+
 	// Create protobuf encoded request
 	req := ffi.FFIRequest{Req: &ffi.FFIRequest_HandleTransaction{HandleTransaction: &ffi.TransactionData{
 		From:     from,
@@ -51,7 +56,7 @@ func HandleTx(from, to, data, value []byte, gasLimit uint64) (*ffi.HandleTransac
 	defer runtime.KeepAlive(reqBytes)
 
 	errmsg := newUnmanagedVector(nil)
-	ptr, err := C.make_pb_request(d, &errmsg)
+	ptr, err := C.make_pb_request(q, d, &errmsg)
 	if err != nil {
 		return &ffi.HandleTransactionResponse{}, errorWithMessage(err, errmsg)
 	}

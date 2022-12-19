@@ -6,15 +6,25 @@ package api
 /*
 #include "bindings.h"
 
+// typedefs for _cgo functions (db)
+typedef GoError (*query_external_fn)(querier_t *ptr, U8SliceView request, UnmanagedVector *result, UnmanagedVector *errOut);
+GoError cQueryExternal_cgo(querier_t *ptr, U8SliceView request, UnmanagedVector *result, UnmanagedVector *errOut);
 
 */
 import "C"
 
 import (
-	dbm "github.com/tendermint/tm-db"
+	// "encoding/hex"
 	"log"
 	"reflect"
 	"runtime/debug"
+
+	// ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
+	// "github.com/golang/protobuf/proto"
+	dbm "github.com/tendermint/tm-db"
+	// "github.com/holiman/uint256"
+	"unsafe"
+	types "github.com/SigmaGmbH/librustgo/types"
 )
 
 // Note: we have to include all exports in the same file (at least since they both import bindings.h),
@@ -119,4 +129,46 @@ type (
 type GoAPI struct {
 	HumanAddress     HumanizeAddress
 	CanonicalAddress CanonicalizeAddress
+}
+
+/***** GoQuerier ******/
+
+var querier_vtable = C.Querier_vtable{
+	query_external: (C.query_external_fn)(C.cQueryExternal_cgo),
+}
+
+// contract: original pointer/struct referenced must live longer than C.GoQuerier struct
+// since this is only used internally, we can verify the code that this is the case
+func buildQuerier(q types.DataQuerier) C.GoQuerier {
+	return C.GoQuerier{
+		state:  (*C.querier_t)(unsafe.Pointer(&q)),
+		vtable: querier_vtable,
+	}
+}
+
+//export cQueryExternal
+func cQueryExternal(ptr *C.querier_t, request C.U8SliceView, result *C.UnmanagedVector, errOut *C.UnmanagedVector) (ret C.GoError) {
+	defer recoverPanic(&ret)
+
+	if result == nil || errOut == nil {
+		// we received an invalid pointer
+		return C.GoError_BadArgument
+	}
+	if !(*result).is_none || !(*errOut).is_none {
+		panic("Got a non-none UnmanagedVector we're about to override. This is a bug because someone has to drop the old one.")
+	}
+
+	req := copyU8Slice(request)
+	querier := *(*types.DataQuerier)(unsafe.Pointer(ptr))
+	response, err := querier.Query(req)
+
+	if err != nil {
+		*errOut = newUnmanagedVector([]byte(err.Error()))
+		return C.GoError_CannotSerialize
+	}
+	*result = newUnmanagedVector(response)
+
+	println("cQueryExternal called successfully")
+
+	return C.GoError_None
 }

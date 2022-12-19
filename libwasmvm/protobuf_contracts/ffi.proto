@@ -45,6 +45,19 @@ message HandleTransactionResponse {
   uint64 gas_used = 5;
 }
 
+// Request for account code (smart contract deployed behind provided address)
+message QueryGetAccount {
+  // 20 bytes of account address
+  bytes address = 1;
+}
+
+// Response for account code
+message QueryGetAccountResponse {
+  // Since both fields are 256-bit unsigned integer, we encode them as big-endian bytes
+  bytes balance = 1;
+  bytes nonce = 2;
+}
+
 message FFIRequest {
   oneof req {
     TransactionData handleTransaction = 1;
