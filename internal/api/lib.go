@@ -33,8 +33,11 @@ type cu8_ptr = *C.uint8_t
 
 type Querier = types.Querier
 
+// Our custom querier
+type DataQuerier = types.DataQuerier
+
 // Handles incoming ethereum transaction
-func HandleTx(querier types.DataQuerier, from, to, data, value []byte, gasLimit uint64) (*ffi.HandleTransactionResponse, error) {
+func HandleTx(querier DataQuerier, from, to, data, value []byte, gasLimit uint64) (*ffi.HandleTransactionResponse, error) {
 	// Construct mocked querier
 	q := buildQuerier(querier)
 
