@@ -23,7 +23,7 @@ type MockedQueryHandler struct {}
 
 var _ types.DataQuerier = MockedQueryHandler{}
 
-func (q MockedQueryHandler) Query(request []byte) ([]byte, error) {
+func (MockedQueryHandler) Query(request []byte) ([]byte, error) {
 	balance := uint256.NewInt(2341).Bytes32()
 	nonce := uint256.NewInt(122).Bytes32()
 
@@ -48,7 +48,7 @@ func main() {
 	value := make([]byte, binary.MaxVarintLen32)
 	gasLimit := uint64(10000000)
 	data := make([]byte, 0)
-	querier := MockedQueryHandler{}
+	querier := &MockedQueryHandler{}
 
 	result, err := wasmvm.HandleTx(querier, from, to, data, value, gasLimit)
 	//err := wasmvm.HelloWorld("Admin")

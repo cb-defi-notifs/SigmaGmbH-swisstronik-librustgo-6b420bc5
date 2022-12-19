@@ -139,9 +139,9 @@ var querier_vtable = C.Querier_vtable{
 
 // contract: original pointer/struct referenced must live longer than C.GoQuerier struct
 // since this is only used internally, we can verify the code that this is the case
-func buildQuerier(q *types.DataQuerier) C.GoQuerier {
+func buildQuerier(q types.DataQuerier) C.GoQuerier {
 	return C.GoQuerier{
-		state:  (*C.querier_t)(unsafe.Pointer(q)),
+		state:  (*C.querier_t)(unsafe.Pointer(&q)),
 		vtable: querier_vtable,
 	}
 }
