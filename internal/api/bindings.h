@@ -173,6 +173,10 @@ typedef struct UnmanagedVector {
   uintptr_t cap;
 } UnmanagedVector;
 
+typedef struct querier_t {
+  uint8_t _private[0];
+} querier_t;
+
 /**
  * A view into a `Option<&[u8]>`, created and maintained by Rust.
  *
@@ -192,6 +196,7 @@ typedef struct Querier_vtable {
 } Querier_vtable;
 
 typedef struct GoQuerier {
+  const struct querier_t *state;
   struct Querier_vtable vtable;
 } GoQuerier;
 
@@ -210,10 +215,6 @@ typedef struct ByteSliceView {
   const uint8_t *ptr;
   uintptr_t len;
 } ByteSliceView;
-
-typedef struct querier_t {
-  uint8_t _private[0];
-} querier_t;
 
 struct UnmanagedVector make_pb_request(struct GoQuerier querier,
                                        struct ByteSliceView request,

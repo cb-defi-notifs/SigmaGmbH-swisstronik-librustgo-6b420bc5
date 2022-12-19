@@ -41,7 +41,7 @@ pub fn to_cache(ptr: *mut cache_t) -> Option<&'static mut Cache> {
 
 #[no_mangle]
 pub extern "C" fn make_pb_request(
-    querier: GoQuerier, // TODO: Will be used soon
+    querier: GoQuerier,
     request: ByteSliceView,
     error_msg: Option<&mut UnmanagedVector>,
 ) -> UnmanagedVector {

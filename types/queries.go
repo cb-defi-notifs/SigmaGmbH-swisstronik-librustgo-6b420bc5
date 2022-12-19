@@ -4,6 +4,14 @@ import (
 	"encoding/json"
 )
 
+//-------- Custom Querier -------
+
+// Since we use different data types for queries + we use protobuf
+// we need to use our own implementation of querier
+type DataQuerier interface {
+	Query(request []byte) ([]byte, error)
+}
+
 //-------- Queries --------
 
 // QueryResponse is the Go counterpart of `ContractResult<Binary>`.

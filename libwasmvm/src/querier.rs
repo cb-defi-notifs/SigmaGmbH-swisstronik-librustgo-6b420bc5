@@ -7,7 +7,7 @@ use crate::protobuf_generated::ffi;
 #[repr(C)]
 #[derive(Clone)]
 pub struct GoQuerier {
-    // pub state: *const querier_t,
+    pub state: *const querier_t,
     pub vtable: Querier_vtable,
 }
 

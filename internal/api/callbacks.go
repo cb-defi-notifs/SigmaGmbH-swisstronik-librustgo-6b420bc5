@@ -23,8 +23,8 @@ import (
 	"github.com/golang/protobuf/proto"
 	dbm "github.com/tendermint/tm-db"
 	"github.com/holiman/uint256"
-	// "unsafe"
-	// "github.com/SigmaGmbH/librustgo/types"
+	"unsafe"
+	types "github.com/SigmaGmbH/librustgo/types"
 )
 
 // Note: we have to include all exports in the same file (at least since they both import bindings.h),
@@ -139,9 +139,9 @@ var querier_vtable = C.Querier_vtable{
 
 // contract: original pointer/struct referenced must live longer than C.GoQuerier struct
 // since this is only used internally, we can verify the code that this is the case
-func buildQuerier() C.GoQuerier {
+func buildQuerier(q *types.DataQuerier) C.GoQuerier {
 	return C.GoQuerier{
-		// state:  (*C.querier_t)(unsafe.Pointer(q)),
+		state:  (*C.querier_t)(unsafe.Pointer(q)),
 		vtable: querier_vtable,
 	}
 }
