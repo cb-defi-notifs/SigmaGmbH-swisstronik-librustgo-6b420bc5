@@ -1,4 +1,4 @@
-use sgx_evm::primitive_types::{H160, U256};
+use sgx_evm::primitive_types::{H160, U256, H256};
 use protobuf::Message;
 
 use crate::{UnmanagedVector, U8SliceView, GoError}; 
@@ -56,6 +56,63 @@ impl GoQuerier {
             Err(err) => {
                 println!("[Rust] query_account: got error: {:?}", err);
                 return(U256::default(), U256::default())
+            }
+        }
+    }
+
+    /// Checks if DB contains provided address
+    /// * account_address - 20-bytes ethereum account address
+    pub fn query_contains_key(&self, account_address: &H160) -> bool {
+        let mut request = ffi::QueryContainsKey::new();
+        request.set_key(account_address.as_bytes().to_vec());
+        let request_bytes = request.write_to_bytes().unwrap();
+
+        let query_result = self.query_raw(request_bytes);
+        match query_result {
+            Ok(raw_result) => {
+                match ffi::QueryContainsKeyResponse::parse_from_bytes(&raw_result) {
+                    Ok(result) => return result.contains,
+                    Err(err) => {
+                        println!("[Rust] query_contains_key: cannot decode protobuf: {:?}", err);
+                        return false;
+                    }
+                }
+            },
+            Err(err) => {
+                println!("[Rust] query_contains_key: got error: {:?}", err);
+                return false;
+            }
+        }
+    }
+
+    /// Queries value contained in specific storage cell
+    /// * account_address – 20-bytes ethereum account address
+    /// * index – 32-bytes index of a slot, where value is stored 
+    pub fn query_account_storage_cell(&self, account_address: &H160, index: &H256) -> Option<H256> {
+        let mut request = ffi::QueryGetAccountStorageCell::new();
+        request.set_address(account_address.as_bytes().to_vec());
+        request.set_index(index.as_bytes().to_vec());
+        let request_bytes = request.write_to_bytes().unwrap();
+
+        let query_result = self.query_raw(request_bytes);
+        match query_result {
+            Ok(raw_result) => {
+                match ffi::QueryGetAccountStorageCellResponse::parse_from_bytes(&raw_result) {
+                    Ok(result) => {
+                        match result.get_value().is_empty() {
+                            true => return None,
+                            false => return Some(H256::from_slice(result.get_value()))
+                        }
+                    },
+                    Err(err) => {
+                        println!("[Rust] query_account_storage_cell: cannot decode protobuf: {:?}", err);
+                        return None;
+                    }
+                }
+            },
+            Err(err) => {
+                println!("[Rust] query_account_storage_cell: got error: {:?}", err);
+                return None;
             }
         }
     }
