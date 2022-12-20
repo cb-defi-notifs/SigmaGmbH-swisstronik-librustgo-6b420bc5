@@ -41,6 +41,7 @@ impl GoQuerier {
     /// * account_address - 20-bytes ethereum account address
     pub fn query_account(&self, account_address: &H160) -> (U256, U256) {        
         let mut request = ffi::QueryGetAccount::new();
+        println!("[RUST] Query account bytes: {:?}", account_address.as_bytes().to_vec());
         request.set_address(account_address.as_bytes().to_vec());
         let request_bytes = request.write_to_bytes().unwrap();
 
