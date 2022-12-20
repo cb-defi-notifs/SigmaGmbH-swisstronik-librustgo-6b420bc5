@@ -45,7 +45,8 @@ func main() {
 		panic(decodingErr)
 	}
 
-	value := make([]byte, binary.MaxVarintLen32)
+	value := make([]byte, 8)
+	binary.BigEndian.PutUint64(value, uint64(1)) // sends 1 wei
 	gasLimit := uint64(10000000)
 	data := make([]byte, 0)
 	querier := &MockedQueryHandler{}
