@@ -152,7 +152,7 @@ impl GoQuerier {
         }
     }
 
-    pub fn insert_account(&self, account_address: &H160, data: Basic) {
+    pub fn insert_account(&self, account_address: H160, data: Basic) {
         let mut request = ffi::QueryInsertAccount::new();
         request.set_address(account_address.as_bytes().to_vec());
         request.set_balance(u256_to_vec(data.balance));
@@ -175,7 +175,135 @@ impl GoQuerier {
         }
     }
 
-    
+    pub fn insert_account_code(&self, account_address: H160, code: Vec<u8>) {
+        let mut request = ffi::QueryInsertAccountCode::new();
+        request.set_address(account_address.as_bytes().to_vec());
+        request.set_code(code);
+        let request_bytes = request.write_to_bytes().unwrap();
+
+        let query_result = self.query_raw(request_bytes);
+        match query_result {
+            Ok(raw_result) => {
+                match ffi::QueryInsertAccountCodeResponse::parse_from_bytes(&raw_result) {
+                    Err(err) => {
+                        println!("[Rust] insert_account_code: cannot decode protobuf: {:?}", err);
+                    },
+                    _ => {}
+                }
+            },
+            Err(err) => {
+                println!("[Rust] insert_account_code: got error: {:?}", err);
+            }
+        }
+    }
+
+    pub fn insert_storage_cell(&self, account_address: H160, index: H256, value: H256) {
+        let mut request = ffi::QueryInsertStorageCell::new();
+        request.set_address(account_address.as_bytes().to_vec());
+        request.set_index(index.as_bytes().to_vec());
+        request.set_value(value.as_bytes().to_vec());
+        let request_bytes = request.write_to_bytes().unwrap();
+
+        let query_result = self.query_raw(request_bytes);
+        match query_result {
+            Ok(raw_result) => {
+                match ffi::QueryInsertStorageCellResponse::parse_from_bytes(&raw_result) {
+                    Err(err) => {
+                        println!("[Rust] insert_storage_cell: cannot decode protobuf: {:?}", err);
+                    },
+                    _ => {}
+                }
+            },
+            Err(err) => {
+                println!("[Rust] insert_storage_cell: got error: {:?}", err);
+            }
+        }
+    }
+
+    pub fn remove(&self, account_address: &H160) {
+        let mut request = ffi::QueryRemove::new();
+        request.set_address(account_address.as_bytes().to_vec());
+        let request_bytes = request.write_to_bytes().unwrap();
+
+        let query_result = self.query_raw(request_bytes);
+        match query_result {
+            Ok(raw_result) => {
+                match ffi::QueryRemoveResponse::parse_from_bytes(&raw_result) {
+                    Err(err) => {
+                        println!("[Rust] remove: cannot decode protobuf: {:?}", err);
+                    },
+                    _ => {}
+                }
+            },
+            Err(err) => {
+                println!("[Rust] remove: got error: {:?}", err);
+            }
+        }
+    }
+
+    pub fn remove_account_code(&self, account_address: &H160) {
+        let mut request = ffi::QueryRemoveAccountCode::new();
+        request.set_address(account_address.as_bytes().to_vec());
+        let request_bytes = request.write_to_bytes().unwrap();
+
+        let query_result = self.query_raw(request_bytes);
+        match query_result {
+            Ok(raw_result) => {
+                match ffi::QueryRemoveAccountCodeResponse::parse_from_bytes(&raw_result) {
+                    Err(err) => {
+                        println!("[Rust] remove_account_code: cannot decode protobuf: {:?}", err);
+                    },
+                    _ => {}
+                }
+            },
+            Err(err) => {
+                println!("[Rust] remove_account_code: got error: {:?}", err);
+            }
+        }
+    }
+
+    pub fn remove_storage_cell(&self, account_address: &H160, index: &H256) {
+        let mut request = ffi::QueryRemoveStorageCell::new();
+        request.set_address(account_address.as_bytes().to_vec());
+        request.set_index(index.as_bytes().to_vec());
+        let request_bytes = request.write_to_bytes().unwrap();
+
+        let query_result = self.query_raw(request_bytes);
+        match query_result {
+            Ok(raw_result) => {
+                match ffi::QueryRemoveStorageCellResponse::parse_from_bytes(&raw_result) {
+                    Err(err) => {
+                        println!("[Rust] remove_storage_cell: cannot decode protobuf: {:?}", err);
+                    },
+                    _ => {}
+                }
+            },
+            Err(err) => {
+                println!("[Rust] remove_storage_cell: got error: {:?}", err);
+            }
+        }
+    }
+
+    pub fn remove_storage(&self, account_address: &H160) {
+        let mut request = ffi::QueryRemoveStorage::new();
+        request.set_address(account_address.as_bytes().to_vec());
+        let request_bytes = request.write_to_bytes().unwrap();
+
+        let query_result = self.query_raw(request_bytes);
+        match query_result {
+            Ok(raw_result) => {
+                match ffi::QueryRemoveStorageResponse::parse_from_bytes(&raw_result) {
+                    Err(err) => {
+                        println!("[Rust] remove_storage_cell: cannot decode protobuf: {:?}", err);
+                    },
+                    _ => {}
+                }
+            },
+            Err(err) => {
+                println!("[Rust] remove_storage_cell: got error: {:?}", err);
+            }
+        }
+    }
 
     fn query_raw(
         &self,
