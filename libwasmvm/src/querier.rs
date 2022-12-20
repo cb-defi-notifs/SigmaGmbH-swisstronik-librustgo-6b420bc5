@@ -1,3 +1,4 @@
+use sgx_evm::evm::backend::Basic;
 use sgx_evm::primitive_types::{H160, U256, H256};
 use protobuf::Message;
 
@@ -27,6 +28,12 @@ pub struct Querier_vtable {
         *mut UnmanagedVector, // result output
         *mut UnmanagedVector, // error message output
     ) -> i32,
+}
+
+fn u256_to_vec(value: U256) -> Vec<u8> {
+    let mut buffer = [0u8; 32];
+    value.to_big_endian(&mut buffer);
+    buffer.to_vec()
 }
 
 impl GoQuerier {
@@ -116,6 +123,59 @@ impl GoQuerier {
             }
         }
     }
+
+    pub fn query_account_code(&self, account_address: &H160) -> Option<Vec<u8>> {
+        let mut request = ffi::QueryGetAccountCode::new();
+        request.set_address(account_address.as_bytes().to_vec());
+        let request_bytes = request.write_to_bytes().unwrap();
+
+        let query_result = self.query_raw(request_bytes);
+        match query_result {
+            Ok(raw_result) => {
+                match ffi::QueryGetAccountCodeResponse::parse_from_bytes(&raw_result) {
+                    Ok(result) => {
+                        match result.get_code().is_empty() {
+                            true => return None,
+                            false => return Some(result.get_code().to_vec())
+                        }
+                    },
+                    Err(err) => {
+                        println!("[Rust] query_account_code: cannot decode protobuf: {:?}", err);
+                        return None;
+                    }
+                }
+            },
+            Err(err) => {
+                println!("[Rust] query_account_code: got error: {:?}", err);
+                return None;
+            }
+        }
+    }
+
+    pub fn insert_account(&self, account_address: &H160, data: Basic) {
+        let mut request = ffi::QueryInsertAccount::new();
+        request.set_address(account_address.as_bytes().to_vec());
+        request.set_balance(u256_to_vec(data.balance));
+        request.set_nonce(u256_to_vec(data.nonce));
+        let request_bytes = request.write_to_bytes().unwrap();
+
+        let query_result = self.query_raw(request_bytes);
+        match query_result {
+            Ok(raw_result) => {
+                match ffi::QueryInsertAccountResponse::parse_from_bytes(&raw_result) {
+                    Err(err) => {
+                        println!("[Rust] insert_account: cannot decode protobuf: {:?}", err);
+                    },
+                    _ => {}
+                }
+            },
+            Err(err) => {
+                println!("[Rust] insert_account: got error: {:?}", err);
+            }
+        }
+    }
+
+    
 
     fn query_raw(
         &self,
