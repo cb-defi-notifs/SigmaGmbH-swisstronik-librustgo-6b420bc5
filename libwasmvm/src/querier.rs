@@ -40,10 +40,12 @@ impl GoQuerier {
     /// Queries account balance and nonce from the network
     /// * account_address - 20-bytes ethereum account address
     pub fn query_account(&self, account_address: &H160) -> (U256, U256) {        
+        let mut cosmos_request = ffi::CosmosRequest::new();
         let mut request = ffi::QueryGetAccount::new();
         println!("[RUST] Query account bytes: {:?}", account_address.as_bytes().to_vec());
         request.set_address(account_address.as_bytes().to_vec());
-        let request_bytes = request.write_to_bytes().unwrap();
+        cosmos_request.set_getAccount(request);
+        let request_bytes = cosmos_request.write_to_bytes().unwrap();
 
         let query_result = self.query_raw(request_bytes);
         match query_result {
@@ -71,9 +73,11 @@ impl GoQuerier {
     /// Checks if DB contains provided address
     /// * account_address - 20-bytes ethereum account address
     pub fn query_contains_key(&self, account_address: &H160) -> bool {
+        let mut cosmos_request = ffi::CosmosRequest::new();
         let mut request = ffi::QueryContainsKey::new();
         request.set_key(account_address.as_bytes().to_vec());
-        let request_bytes = request.write_to_bytes().unwrap();
+        cosmos_request.set_containsKey(request);
+        let request_bytes = cosmos_request.write_to_bytes().unwrap();
 
         let query_result = self.query_raw(request_bytes);
         match query_result {
@@ -97,10 +101,12 @@ impl GoQuerier {
     /// * account_address – 20-bytes ethereum account address
     /// * index – 32-bytes index of a slot, where value is stored 
     pub fn query_account_storage_cell(&self, account_address: &H160, index: &H256) -> Option<H256> {
+        let mut cosmos_request = ffi::CosmosRequest::new();
         let mut request = ffi::QueryGetAccountStorageCell::new();
         request.set_address(account_address.as_bytes().to_vec());
         request.set_index(index.as_bytes().to_vec());
-        let request_bytes = request.write_to_bytes().unwrap();
+        cosmos_request.set_storageCell(request);
+        let request_bytes = cosmos_request.write_to_bytes().unwrap();
 
         let query_result = self.query_raw(request_bytes);
         match query_result {
@@ -126,9 +132,11 @@ impl GoQuerier {
     }
 
     pub fn query_account_code(&self, account_address: &H160) -> Option<Vec<u8>> {
+        let mut cosmos_request = ffi::CosmosRequest::new();
         let mut request = ffi::QueryGetAccountCode::new();
         request.set_address(account_address.as_bytes().to_vec());
-        let request_bytes = request.write_to_bytes().unwrap();
+        cosmos_request.set_accountCode(request);
+        let request_bytes = cosmos_request.write_to_bytes().unwrap();
 
         let query_result = self.query_raw(request_bytes);
         match query_result {
@@ -154,11 +162,13 @@ impl GoQuerier {
     }
 
     pub fn insert_account(&self, account_address: H160, data: Basic) {
+        let mut cosmos_request = ffi::CosmosRequest::new();
         let mut request = ffi::QueryInsertAccount::new();
         request.set_address(account_address.as_bytes().to_vec());
         request.set_balance(u256_to_vec(data.balance));
         request.set_nonce(u256_to_vec(data.nonce));
-        let request_bytes = request.write_to_bytes().unwrap();
+        cosmos_request.set_insertAccount(request);
+        let request_bytes = cosmos_request.write_to_bytes().unwrap();
 
         let query_result = self.query_raw(request_bytes);
         match query_result {
@@ -177,10 +187,12 @@ impl GoQuerier {
     }
 
     pub fn insert_account_code(&self, account_address: H160, code: Vec<u8>) {
+        let mut cosmos_request = ffi::CosmosRequest::new();
         let mut request = ffi::QueryInsertAccountCode::new();
         request.set_address(account_address.as_bytes().to_vec());
         request.set_code(code);
-        let request_bytes = request.write_to_bytes().unwrap();
+        cosmos_request.set_insertAccountCode(request);
+        let request_bytes = cosmos_request.write_to_bytes().unwrap();
 
         let query_result = self.query_raw(request_bytes);
         match query_result {
@@ -199,11 +211,13 @@ impl GoQuerier {
     }
 
     pub fn insert_storage_cell(&self, account_address: H160, index: H256, value: H256) {
+        let mut cosmos_request = ffi::CosmosRequest::new();
         let mut request = ffi::QueryInsertStorageCell::new();
         request.set_address(account_address.as_bytes().to_vec());
         request.set_index(index.as_bytes().to_vec());
         request.set_value(value.as_bytes().to_vec());
-        let request_bytes = request.write_to_bytes().unwrap();
+        cosmos_request.set_insertStorageCell(request);
+        let request_bytes = cosmos_request.write_to_bytes().unwrap();
 
         let query_result = self.query_raw(request_bytes);
         match query_result {
@@ -222,9 +236,11 @@ impl GoQuerier {
     }
 
     pub fn remove(&self, account_address: &H160) {
+        let mut cosmos_request = ffi::CosmosRequest::new();
         let mut request = ffi::QueryRemove::new();
         request.set_address(account_address.as_bytes().to_vec());
-        let request_bytes = request.write_to_bytes().unwrap();
+        cosmos_request.set_remove(request);
+        let request_bytes = cosmos_request.write_to_bytes().unwrap();
 
         let query_result = self.query_raw(request_bytes);
         match query_result {
@@ -243,9 +259,11 @@ impl GoQuerier {
     }
 
     pub fn remove_account_code(&self, account_address: &H160) {
+        let mut cosmos_request = ffi::CosmosRequest::new();
         let mut request = ffi::QueryRemoveAccountCode::new();
         request.set_address(account_address.as_bytes().to_vec());
-        let request_bytes = request.write_to_bytes().unwrap();
+        cosmos_request.set_removeAccountCode(request);
+        let request_bytes = cosmos_request.write_to_bytes().unwrap();
 
         let query_result = self.query_raw(request_bytes);
         match query_result {
@@ -264,10 +282,12 @@ impl GoQuerier {
     }
 
     pub fn remove_storage_cell(&self, account_address: &H160, index: &H256) {
+        let mut cosmos_request = ffi::CosmosRequest::new();
         let mut request = ffi::QueryRemoveStorageCell::new();
         request.set_address(account_address.as_bytes().to_vec());
         request.set_index(index.as_bytes().to_vec());
-        let request_bytes = request.write_to_bytes().unwrap();
+        cosmos_request.set_removeStorageCell(request);
+        let request_bytes = cosmos_request.write_to_bytes().unwrap();
 
         let query_result = self.query_raw(request_bytes);
         match query_result {
@@ -286,9 +306,11 @@ impl GoQuerier {
     }
 
     pub fn remove_storage(&self, account_address: &H160) {
+        let mut cosmos_request = ffi::CosmosRequest::new();
         let mut request = ffi::QueryRemoveStorage::new();
         request.set_address(account_address.as_bytes().to_vec());
-        let request_bytes = request.write_to_bytes().unwrap();
+        cosmos_request.set_removeStorage(request);
+        let request_bytes = cosmos_request.write_to_bytes().unwrap();
 
         let query_result = self.query_raw(request_bytes);
         match query_result {

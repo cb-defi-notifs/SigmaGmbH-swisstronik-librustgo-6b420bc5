@@ -6,7 +6,7 @@ import "C"
 
 import (
 	"fmt"
-	"github.com/golang/protobuf/proto"
+	"google.golang.org/protobuf/proto"                      
 	"log"
 	"runtime"
 	"syscall"

@@ -3,11 +3,11 @@ module github.com/SigmaGmbH/librustgo
 go 1.17
 
 require (
-	github.com/golang/protobuf v1.4.3
+	github.com/golang/protobuf v1.5.0
 	github.com/holiman/uint256 v1.2.1
 	github.com/stretchr/testify v1.7.1
 	github.com/tendermint/tm-db v0.6.7
-	google.golang.org/protobuf v1.25.0
+	google.golang.org/protobuf v1.28.1
 )
 
 require (

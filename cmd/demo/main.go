@@ -9,7 +9,7 @@ import (
 	types "github.com/SigmaGmbH/librustgo/types"
 	"github.com/holiman/uint256"
 	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
-	"github.com/golang/protobuf/proto"
+	"google.golang.org/protobuf/proto"
 )
 
 const (
