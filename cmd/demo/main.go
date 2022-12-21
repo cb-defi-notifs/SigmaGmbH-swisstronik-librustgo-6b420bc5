@@ -24,6 +24,8 @@ type MockedQueryHandler struct {}
 var _ types.DataQuerier = MockedQueryHandler{}
 
 func (MockedQueryHandler) Query(request []byte) ([]byte, error) {
+	// TODO: Extend mock implementation
+
 	// Decode protobuf
 	println("[Go:Query] Decoding protobuf")
 	decodedRequest := &ffi.CosmosRequest{}

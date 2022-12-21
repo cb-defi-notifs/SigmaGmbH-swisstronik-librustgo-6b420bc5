@@ -39,10 +39,10 @@ fn u256_to_vec(value: U256) -> Vec<u8> {
 impl GoQuerier {
     /// Queries account balance and nonce from the network
     /// * account_address - 20-bytes ethereum account address
-    pub fn query_account(&self, account_address: &H160) -> (U256, U256) {        
+    pub fn query_account(&self, account_address: &H160) -> (U256, U256) {
+        println!("[Rust] query account");        
         let mut cosmos_request = ffi::CosmosRequest::new();
         let mut request = ffi::QueryGetAccount::new();
-        println!("[RUST] Query account bytes: {:?}", account_address.as_bytes().to_vec());
         request.set_address(account_address.as_bytes().to_vec());
         cosmos_request.set_getAccount(request);
         let request_bytes = cosmos_request.write_to_bytes().unwrap();
@@ -73,6 +73,7 @@ impl GoQuerier {
     /// Checks if DB contains provided address
     /// * account_address - 20-bytes ethereum account address
     pub fn query_contains_key(&self, account_address: &H160) -> bool {
+        println!("[Rust] query contains key"); 
         let mut cosmos_request = ffi::CosmosRequest::new();
         let mut request = ffi::QueryContainsKey::new();
         request.set_key(account_address.as_bytes().to_vec());
@@ -101,6 +102,7 @@ impl GoQuerier {
     /// * account_address – 20-bytes ethereum account address
     /// * index – 32-bytes index of a slot, where value is stored 
     pub fn query_account_storage_cell(&self, account_address: &H160, index: &H256) -> Option<H256> {
+        println!("[Rust] query storage cell"); 
         let mut cosmos_request = ffi::CosmosRequest::new();
         let mut request = ffi::QueryGetAccountStorageCell::new();
         request.set_address(account_address.as_bytes().to_vec());
@@ -132,6 +134,7 @@ impl GoQuerier {
     }
 
     pub fn query_account_code(&self, account_address: &H160) -> Option<Vec<u8>> {
+        println!("[Rust] query account code"); 
         let mut cosmos_request = ffi::CosmosRequest::new();
         let mut request = ffi::QueryGetAccountCode::new();
         request.set_address(account_address.as_bytes().to_vec());
@@ -162,6 +165,7 @@ impl GoQuerier {
     }
 
     pub fn insert_account(&self, account_address: H160, data: Basic) {
+        println!("[Rust] query insert account"); 
         let mut cosmos_request = ffi::CosmosRequest::new();
         let mut request = ffi::QueryInsertAccount::new();
         request.set_address(account_address.as_bytes().to_vec());
@@ -187,6 +191,7 @@ impl GoQuerier {
     }
 
     pub fn insert_account_code(&self, account_address: H160, code: Vec<u8>) {
+        println!("[Rust] query insert account code"); 
         let mut cosmos_request = ffi::CosmosRequest::new();
         let mut request = ffi::QueryInsertAccountCode::new();
         request.set_address(account_address.as_bytes().to_vec());
@@ -211,6 +216,7 @@ impl GoQuerier {
     }
 
     pub fn insert_storage_cell(&self, account_address: H160, index: H256, value: H256) {
+        println!("[Rust] query insert storage cell"); 
         let mut cosmos_request = ffi::CosmosRequest::new();
         let mut request = ffi::QueryInsertStorageCell::new();
         request.set_address(account_address.as_bytes().to_vec());
@@ -236,6 +242,7 @@ impl GoQuerier {
     }
 
     pub fn remove(&self, account_address: &H160) {
+        println!("[Rust] query remove"); 
         let mut cosmos_request = ffi::CosmosRequest::new();
         let mut request = ffi::QueryRemove::new();
         request.set_address(account_address.as_bytes().to_vec());
@@ -259,6 +266,7 @@ impl GoQuerier {
     }
 
     pub fn remove_account_code(&self, account_address: &H160) {
+        println!("[Rust] query account code"); 
         let mut cosmos_request = ffi::CosmosRequest::new();
         let mut request = ffi::QueryRemoveAccountCode::new();
         request.set_address(account_address.as_bytes().to_vec());
@@ -282,6 +290,7 @@ impl GoQuerier {
     }
 
     pub fn remove_storage_cell(&self, account_address: &H160, index: &H256) {
+        println!("[Rust] query remove storage cell"); 
         let mut cosmos_request = ffi::CosmosRequest::new();
         let mut request = ffi::QueryRemoveStorageCell::new();
         request.set_address(account_address.as_bytes().to_vec());
@@ -306,6 +315,7 @@ impl GoQuerier {
     }
 
     pub fn remove_storage(&self, account_address: &H160) {
+        println!("[Rust] query remove storage"); 
         let mut cosmos_request = ffi::CosmosRequest::new();
         let mut request = ffi::QueryRemoveStorage::new();
         request.set_address(account_address.as_bytes().to_vec());
