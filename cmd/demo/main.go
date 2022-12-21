@@ -25,7 +25,7 @@ var _ types.DataQuerier = MockedQueryHandler{}
 
 func (MockedQueryHandler) Query(request []byte) ([]byte, error) {
 	// Decode protobuf
-	println("[Go] Decoding protobuf")
+	println("[Go:Query] Decoding protobuf")
 	decodedRequest := &ffi.CosmosRequest{}
 	if err := proto.Unmarshal(request, decodedRequest); err != nil {
 		return nil, err
@@ -33,7 +33,7 @@ func (MockedQueryHandler) Query(request []byte) ([]byte, error) {
 	switch request := decodedRequest.Req.(type) {
 	// Handle request for account data such as balance and nonce
 	case *ffi.CosmosRequest_GetAccount:
-		println("[Go] Requested data for address: ", request.GetAccount.Address)
+		println("[Go:Query] Requested data for address: ", request.GetAccount.Address)
 
 		balance := uint256.NewInt(155).Bytes32()
 		nonce := uint256.NewInt(133).Bytes32()
@@ -44,20 +44,21 @@ func (MockedQueryHandler) Query(request []byte) ([]byte, error) {
 		})
 	// Handles request for updating account data
 	case *ffi.CosmosRequest_InsertAccount:
-		println("[Go] Insert account")
+		println("[Go:Query] Insert account")
 		return proto.Marshal(&ffi.QueryInsertAccountResponse{})
 	// Handles request if such account exists
 	case *ffi.CosmosRequest_ContainsKey:
-		println("[Go] Contains key")
+		println("[Go:Query] Contains key")
 		keyExists := true
 		return proto.Marshal(&ffi.QueryContainsKeyResponse{Contains: keyExists})
 	// Handles request for removing account from the storage
 	case *ffi.CosmosRequest_Remove:
-		println("[Go] Remove account")
+		println("[Go:Query] Remove account")
 		return proto.Marshal(&ffi.QueryRemoveResponse{})
 	}
 
 	// Should be never called
+	println("[Go:Query] WRONG QUERY")
 	return proto.Marshal(&ffi.QueryRemoveResponse{})
 }
 
