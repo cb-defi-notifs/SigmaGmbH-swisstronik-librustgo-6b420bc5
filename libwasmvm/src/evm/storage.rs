@@ -7,8 +7,8 @@ use crate::querier::GoQuerier;
 
 /// This struct allows us to obtain state from keeper
 /// that is located outside of Rust code
-pub struct FFIStorage {
-    querier: GoQuerier,
+pub struct FFIStorage<'a> {
+    querier: &'a GoQuerier,
 }
 
 impl Storage for FFIStorage {
@@ -59,9 +59,7 @@ impl Storage for FFIStorage {
 }
 
 impl FFIStorage{
-    pub fn new(querier: GoQuerier) -> Self {
-        Self {
-            querier
-        }
+    pub fn new(querier: &GoQuerier) -> Self {
+        Self { querier }
     }
 }

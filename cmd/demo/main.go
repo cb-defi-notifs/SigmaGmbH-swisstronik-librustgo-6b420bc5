@@ -6,9 +6,9 @@ import (
 	"fmt"
 
 	wasmvm "github.com/SigmaGmbH/librustgo"
+	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
 	types "github.com/SigmaGmbH/librustgo/types"
 	"github.com/holiman/uint256"
-	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -19,7 +19,7 @@ const (
 	CACHE_SIZE         = 100 // MiB
 )
 
-type MockedQueryHandler struct {}
+type MockedQueryHandler struct{}
 
 var _ types.DataQuerier = MockedQueryHandler{}
 
@@ -34,15 +34,19 @@ func (MockedQueryHandler) Query(request []byte) ([]byte, error) {
 	}
 	switch request := decodedRequest.Req.(type) {
 	// Handle request for account data such as balance and nonce
+	case *ffi.CosmosRequest_BlockNumber:
+		println("[Go:Query] Block number")
+		number := uint256.NewInt(1).Bytes32()
+		return proto.Marshal(&ffi.QueryBlockNumberResponse{Number: number[:]})
 	case *ffi.CosmosRequest_GetAccount:
 		println("[Go:Query] Requested data for address: ", request.GetAccount.Address)
 
 		balance := uint256.NewInt(155).Bytes32()
 		nonce := uint256.NewInt(133).Bytes32()
-	
+
 		return proto.Marshal(&ffi.QueryGetAccountResponse{
 			Balance: balance[:],
-			Nonce: nonce[:],
+			Nonce:   nonce[:],
 		})
 	// Handles request for updating account data
 	case *ffi.CosmosRequest_InsertAccount:
