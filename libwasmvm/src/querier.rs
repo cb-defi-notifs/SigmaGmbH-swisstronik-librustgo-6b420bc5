@@ -74,17 +74,89 @@ impl GoQuerier {
     }
     pub fn query_block_number(&self) -> U256 {
         println!("[Rust] query block number");
-        U256::default()
+        let mut cosmos_request = ffi::CosmosRequest::new();
+        let mut request = ffi::QueryBlockNumber::new();
+        cosmos_request.set_blockNumber(request);
+        let request_bytes = cosmos_request.write_to_bytes().unwrap();
+
+        let query_result = self.query_raw(request_bytes);
+        match query_result {
+            Ok(raw_result) => {
+                match ffi::QueryBlockNumberResponse::parse_from_bytes(&raw_result) {
+                    Ok(result) => {
+                        let number = U256::from_big_endian(result.get_number());
+                        println!("[Rust] query_block_number: got number: {:?}", number);
+                        return number
+                    },
+                    Err(err) => {
+                        println!("[Rust] query_block_number: cannot decode protobuf: {:?}", err);
+                        return U256::default()
+                    }
+                }
+            },
+            Err(err) => {
+                println!("[Rust] query_block_number: got error: {:?}", err);
+                return U256::default()
+            }
+        }
     }
 
     pub fn query_block_timestamp(&self) -> U256 {
         println!("[Rust] query block timestamp");
-        U256::default()
+        let mut cosmos_request = ffi::CosmosRequest::new();
+        let mut request = ffi::QueryBlockTimestamp::new();
+        cosmos_request.set_blockTimestamp(request);
+        let request_bytes = cosmos_request.write_to_bytes().unwrap();
+
+        let query_result = self.query_raw(request_bytes);
+        match query_result {
+            Ok(raw_result) => {
+                match ffi::QueryBlockTimestampResponse::parse_from_bytes(&raw_result) {
+                    Ok(result) => {
+                        let timestamp = U256::from_big_endian(result.get_timestamp());
+                        println!("[Rust] query_block_timestamp: got timestamp: {:?}", timestamp);
+                        return timestamp
+                    },
+                    Err(err) => {
+                        println!("[Rust] query_block_timestamp: cannot decode protobuf: {:?}", err);
+                        return U256::default()
+                    }
+                }
+            },
+            Err(err) => {
+                println!("[Rust] query_block_timestamp: got error: {:?}", err);
+                return U256::default()
+            }
+        }
     }
 
     pub fn query_chain_id(&self) -> U256 {
         println!("[Rust] query chain id");
-        U256::default()
+        let mut cosmos_request = ffi::CosmosRequest::new();
+        let mut request = ffi::QueryChainId::new();
+        cosmos_request.set_chainId(request);
+        let request_bytes = cosmos_request.write_to_bytes().unwrap();
+
+        let query_result = self.query_raw(request_bytes);
+        match query_result {
+            Ok(raw_result) => {
+                match ffi::QueryChainIdResponse::parse_from_bytes(&raw_result) {
+                    Ok(result) => {
+                        let chain_id = U256::from_big_endian(result.get_chain_id());
+                        println!("[Rust] query_chain_id: got chain_id: {:?}", chain_id);
+                        return chain_id
+                    },
+                    Err(err) => {
+                        println!("[Rust] query_chain_id: cannot decode protobuf: {:?}", err);
+                        return U256::default()
+                    }
+                }
+            },
+            Err(err) => {
+                println!("[Rust] query_chain_id: got error: {:?}", err);
+                return U256::default()
+            }
+        }
     }
 
 
