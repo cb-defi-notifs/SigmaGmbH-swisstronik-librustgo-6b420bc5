@@ -13,8 +13,8 @@ mod precompiles;
 pub use evm;
 pub use primitive_types;
 pub use ethereum;
-
-use crate::backend::{Backend, Vicinity, GASOMETER_CONFIG};
+pub use crate::backend::Vicinity;
+use crate::backend::{Backend, GASOMETER_CONFIG};
 use crate::primitives::{raw_transaction::FullTransactionData, QueryData};
 use crate::storage::Storage;
 use crate::precompiles::EVMPrecompiles;

@@ -8,6 +8,7 @@ use crate::protobuf_generated::ffi::TransactionData as ProtoTransactionData;
 use crate::querier::GoQuerier;
 
 mod storage;
+mod backend;
 
 /// This function creates mocked backend and tries to handle incoming transaction
 /// It is stateless and is used just to test broadcasting transaction from devnet to Rust

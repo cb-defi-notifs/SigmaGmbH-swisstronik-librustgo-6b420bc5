@@ -1,7 +1,7 @@
 use evm::backend::{
-    Backend as EvmBackend, 
+    Backend as EvmBackend,
     ApplyBackend as EvmApplyBackend,
-    Apply, 
+    Apply,
     Basic,
     Log
 };
@@ -30,7 +30,7 @@ pub struct Backend<'state> {
 }
 
 /// Implementation of trait `Backend` provided by evm crate
-/// This trait declares readonly functions for the backend 
+/// This trait declares readonly functions for the backend
 impl<'state> EvmBackend for Backend<'state> {
     fn gas_price(&self) -> U256 {
         // TODO: Will obtain that data via ocall
@@ -130,14 +130,14 @@ impl<'state> EvmApplyBackend for Backend<'state> {
 					basic,
 					code,
 					storage,
-                    .. 
+                    ..
 				} => {
                     // Reset storage is ignored since storage cannot be efficiently reset as this
                     // would require iterating over all of the storage keys
 
                     // Update account balance and nonce
                     let previous_account_data = self.state.get_account(&address);
-                    
+
                     if basic.balance > previous_account_data.balance {
                         total_supply_add =
                             total_supply_add.checked_add(basic.balance - previous_account_data.balance).unwrap();
@@ -146,13 +146,13 @@ impl<'state> EvmApplyBackend for Backend<'state> {
                             total_supply_sub.checked_add(previous_account_data.balance - basic.balance).unwrap();
                     }
                     self.state.insert_account(address, basic);
-                    
+
                     // Handle contract updates
                     if let Some(code) = code {
                         self.state.insert_account_code(address, code);
                     }
 
-                    // Handle storage updates 
+                    // Handle storage updates
                     for (index, value) in storage {
                         if value == H256::default() {
                             self.state.remove_storage_cell(&address, &index);
