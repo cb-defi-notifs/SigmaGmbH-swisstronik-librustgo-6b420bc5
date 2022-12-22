@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/binary"
 	"encoding/hex"
+	"errors"
 	"fmt"
 
 	wasmvm "github.com/SigmaGmbH/librustgo"
@@ -12,20 +13,18 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-const (
-	SUPPORTED_FEATURES = "staking"
-	PRINT_DEBUG        = true
-	MEMORY_LIMIT       = 32  // MiB
-	CACHE_SIZE         = 100 // MiB
-)
+//const (
+//	SUPPORTED_FEATURES = "staking"
+//	PRINT_DEBUG        = true
+//	MEMORY_LIMIT       = 32  // MiB
+//	CACHE_SIZE         = 100 // MiB
+//)
 
 type MockedQueryHandler struct{}
 
 var _ types.DataQuerier = MockedQueryHandler{}
 
 func (MockedQueryHandler) Query(request []byte) ([]byte, error) {
-	// TODO: Extend mock implementation
-
 	// Decode protobuf
 	println("[Go:Query] Decoding protobuf")
 	decodedRequest := &ffi.CosmosRequest{}
@@ -55,17 +54,35 @@ func (MockedQueryHandler) Query(request []byte) ([]byte, error) {
 	// Handles request if such account exists
 	case *ffi.CosmosRequest_ContainsKey:
 		println("[Go:Query] Contains key")
-		keyExists := true
-		return proto.Marshal(&ffi.QueryContainsKeyResponse{Contains: keyExists})
+		return proto.Marshal(&ffi.QueryContainsKeyResponse{Contains: true})
+	case *ffi.CosmosRequest_AccountCode:
+		println("[Go:Query] Account code")
+		return proto.Marshal(&ffi.QueryGetAccountCodeResponse{Code: make([]byte, 0)})
+	case *ffi.CosmosRequest_StorageCell:
+		println("[Go:Query] Get storage cell")
+		return proto.Marshal(&ffi.QueryGetAccountStorageCellResponse{Value: make([]byte, 32)})
+	case *ffi.CosmosRequest_InsertAccountCode:
+		println("[Go:Query] Insert account code")
+		return proto.Marshal(&ffi.QueryInsertAccountCodeResponse{})
+	case *ffi.CosmosRequest_InsertStorageCell:
+		println("[Go:Query] Insert storage cell")
+		return proto.Marshal(&ffi.QueryInsertStorageCellResponse{})
 	// Handles request for removing account from the storage
 	case *ffi.CosmosRequest_Remove:
 		println("[Go:Query] Remove account")
 		return proto.Marshal(&ffi.QueryRemoveResponse{})
+	case *ffi.CosmosRequest_RemoveAccountCode:
+		println("[Go:Query] Remove account code")
+		return proto.Marshal(&ffi.QueryRemoveAccountCodeResponse{})
+	case *ffi.CosmosRequest_RemoveStorageCell:
+		println("[Go:Query] Remove storage cell")
+		return proto.Marshal(&ffi.QueryRemoveStorageCellResponse{})
+	case *ffi.CosmosRequest_RemoveStorage:
+		println("[Go:Query] Remove storage")
+		return proto.Marshal(&ffi.QueryRemoveStorageResponse{})
 	}
 
-	// Should be never called
-	println("[Go:Query] WRONG QUERY")
-	return proto.Marshal(&ffi.QueryRemoveResponse{})
+	return nil, errors.New("wrong query")
 }
 
 // This is just a demo to ensure we can compile a static go binary
