@@ -11,7 +11,7 @@ pub struct FFIStorage<'a> {
     querier: &'a GoQuerier,
 }
 
-impl Storage for FFIStorage {
+impl<'a> Storage for FFIStorage<'a> {
     fn contains_key(&self, key: &H160) -> bool {
         self.querier.query_contains_key(key)
     }
@@ -58,8 +58,8 @@ impl Storage for FFIStorage {
     }
 }
 
-impl FFIStorage{
-    pub fn new(querier: &GoQuerier) -> Self {
+impl<'a> FFIStorage<'a> {
+    pub fn new(querier: &'a GoQuerier) -> Self {
         Self { querier }
     }
 }
