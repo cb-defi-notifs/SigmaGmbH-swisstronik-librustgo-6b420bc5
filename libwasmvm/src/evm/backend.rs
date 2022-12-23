@@ -94,3 +94,9 @@ impl<'state> EvmBackend for FFIBackend<'state> {
         None
     }
 }
+
+impl<'state> FFIBackend<'state> {
+    pub fn new(querier: &'state GoQuerier, storage: &'state mut dyn Storage) -> Self {
+        Self { querier, vicinity: Default::default(), state: storage, logs: vec![] }
+    }
+}

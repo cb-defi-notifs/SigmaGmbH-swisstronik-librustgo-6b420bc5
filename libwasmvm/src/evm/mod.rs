@@ -3,6 +3,7 @@ use sgx_evm::ExecutionData;
 use common_types::ExecutionResult;
 use sgx_evm::primitive_types::{U256, H160, H256};
 use sgx_evm::ethereum::TransactionAction;
+use sgx_evm::evm::backend::Backend;
 
 use crate::protobuf_generated::ffi::TransactionData as ProtoTransactionData;
 use crate::querier::GoQuerier;
@@ -18,6 +19,9 @@ pub fn handle_transaction(querier: GoQuerier, data: ProtoTransactionData) -> Exe
     let tx = parse_protobuf_transaction_data(data);
     // Create FFI storage
     let mut storage = crate::evm::storage::FFIStorage::new(&querier);
+    let mut backend = backend::FFIBackend::new(&querier,&mut storage);
+    let block_number = backend.block_number();
+    println!("[RUST] Block number - {}",block_number);
     // Handle already parsed transaction and return execution result
     sgx_evm::handle_transaction_inner(tx, &mut storage)
 }
