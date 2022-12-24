@@ -67,15 +67,9 @@ func (MockedQueryHandler) Query(request []byte) ([]byte, error) {
 	case *ffi.CosmosRequest_Remove:
 		println("[Go:Query] Remove account")
 		return proto.Marshal(&ffi.QueryRemoveResponse{})
-	case *ffi.CosmosRequest_RemoveAccountCode:
-		println("[Go:Query] Remove account code")
-		return proto.Marshal(&ffi.QueryRemoveAccountCodeResponse{})
 	case *ffi.CosmosRequest_RemoveStorageCell:
 		println("[Go:Query] Remove storage cell")
 		return proto.Marshal(&ffi.QueryRemoveStorageCellResponse{})
-	case *ffi.CosmosRequest_RemoveStorage:
-		println("[Go:Query] Remove storage")
-		return proto.Marshal(&ffi.QueryRemoveStorageResponse{})
 	}
 
 	return nil, errors.New("wrong query")

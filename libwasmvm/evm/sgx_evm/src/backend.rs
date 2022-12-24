@@ -164,8 +164,6 @@ impl<'state> EvmApplyBackend for Backend<'state> {
                 // Used by SELFDESTRUCT opcode
 				Apply::Delete { address } => {
 					self.state.remove(&address);
-                    self.state.remove_account_code(&address);
-                    self.state.remove_storage(&address);
 				}
 			}
 		}

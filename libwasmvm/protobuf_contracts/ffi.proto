@@ -114,24 +114,12 @@ message QueryRemove {
 
 message QueryRemoveResponse {}
 
-message QueryRemoveAccountCode {
-  bytes address = 1;
-}
-
-message QueryRemoveAccountCodeResponse {}
-
 message QueryRemoveStorageCell {
   bytes address = 1;
   bytes index = 2;
 }
 
 message QueryRemoveStorageCellResponse {}
-
-message QueryRemoveStorage {
-  bytes address = 1;
-}
-
-message QueryRemoveStorageResponse {}
 
 message CosmosRequest {
   oneof req {
@@ -143,25 +131,7 @@ message CosmosRequest {
     QueryInsertAccountCode insertAccountCode = 6;
     QueryInsertStorageCell insertStorageCell = 7;
     QueryRemove remove = 8;
-    QueryRemoveAccountCode removeAccountCode = 9;
-    QueryRemoveStorageCell removeStorageCell = 10;
-    QueryRemoveStorage removeStorage = 11;
-  }
-}
-
-message CosmosResponse {
-  oneof res {
-    QueryGetAccountResponse getAccountResponse = 1;
-    QueryInsertAccountResponse insertAccountResponse = 2;
-    QueryContainsKeyResponse containsKeyResponse = 3;
-    QueryGetAccountCodeResponse accountCodeResponse = 4;
-    QueryGetAccountStorageCellResponse storageCellResponse = 5;
-    QueryInsertAccountCodeResponse insertCodeResponse = 6;
-    QueryInsertStorageCellResponse insertStorageCellResponse = 7;
-    QueryRemoveResponse removeResponse = 8;
-    QueryRemoveAccountCode removeAccountCodeResponse = 9;
-    QueryRemoveStorageCellResponse removeStorageCellResponse = 10;
-    QueryRemoveStorageResponse removeStorageResponse = 11;
+    QueryRemoveStorageCell removeStorageCell = 9;
   }
 }
 

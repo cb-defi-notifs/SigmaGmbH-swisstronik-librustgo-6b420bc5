@@ -265,30 +265,6 @@ impl GoQuerier {
         }
     }
 
-    pub fn remove_account_code(&self, account_address: &H160) {
-        println!("[Rust] query account code"); 
-        let mut cosmos_request = ffi::CosmosRequest::new();
-        let mut request = ffi::QueryRemoveAccountCode::new();
-        request.set_address(account_address.as_bytes().to_vec());
-        cosmos_request.set_removeAccountCode(request);
-        let request_bytes = cosmos_request.write_to_bytes().unwrap();
-
-        let query_result = self.query_raw(request_bytes);
-        match query_result {
-            Ok(raw_result) => {
-                match ffi::QueryRemoveAccountCodeResponse::parse_from_bytes(&raw_result) {
-                    Err(err) => {
-                        println!("[Rust] remove_account_code: cannot decode protobuf: {:?}", err);
-                    },
-                    _ => {}
-                }
-            },
-            Err(err) => {
-                println!("[Rust] remove_account_code: got error: {:?}", err);
-            }
-        }
-    }
-
     pub fn remove_storage_cell(&self, account_address: &H160, index: &H256) {
         println!("[Rust] query remove storage cell"); 
         let mut cosmos_request = ffi::CosmosRequest::new();
@@ -302,30 +278,6 @@ impl GoQuerier {
         match query_result {
             Ok(raw_result) => {
                 match ffi::QueryRemoveStorageCellResponse::parse_from_bytes(&raw_result) {
-                    Err(err) => {
-                        println!("[Rust] remove_storage_cell: cannot decode protobuf: {:?}", err);
-                    },
-                    _ => {}
-                }
-            },
-            Err(err) => {
-                println!("[Rust] remove_storage_cell: got error: {:?}", err);
-            }
-        }
-    }
-
-    pub fn remove_storage(&self, account_address: &H160) {
-        println!("[Rust] query remove storage"); 
-        let mut cosmos_request = ffi::CosmosRequest::new();
-        let mut request = ffi::QueryRemoveStorage::new();
-        request.set_address(account_address.as_bytes().to_vec());
-        cosmos_request.set_removeStorage(request);
-        let request_bytes = cosmos_request.write_to_bytes().unwrap();
-
-        let query_result = self.query_raw(request_bytes);
-        match query_result {
-            Ok(raw_result) => {
-                match ffi::QueryRemoveStorageResponse::parse_from_bytes(&raw_result) {
                     Err(err) => {
                         println!("[Rust] remove_storage_cell: cannot decode protobuf: {:?}", err);
                     },

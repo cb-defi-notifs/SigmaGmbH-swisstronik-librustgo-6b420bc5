@@ -29,7 +29,6 @@ type GasMeter = api.GasMeter
 type QueryGetAccount = ffi.QueryGetAccount
 type QueryGetAccountResponse = ffi.QueryGetAccountResponse
 type CosmosRequest = ffi.CosmosRequest
-type CosmosResponse = ffi.CosmosResponse
 type QueryInsertAccount = ffi.QueryInsertAccount
 type QueryInsertAccountResponse = ffi.QueryInsertAccountResponse
 type QueryContainsKey = ffi.QueryContainsKey
@@ -44,12 +43,8 @@ type QueryInsertStorageCell = ffi.QueryInsertStorageCell
 type QueryInsertStorageCellResponse = ffi.QueryInsertStorageCellResponse
 type QueryRemove = ffi.QueryRemove
 type QueryRemoveResponse = ffi.QueryRemoveResponse
-type QueryRemoveAccountCode = ffi.QueryRemoveAccountCode
-type QueryRemoveAccountCodeResponse = ffi.QueryRemoveAccountCodeResponse
 type QueryRemoveStorageCell = ffi.QueryRemoveStorageCell
 type QueryRemoveStorageCellResponse = ffi.QueryRemoveStorageCellResponse
-type QueryRemoveStorage = ffi.QueryRemoveStorage
-type QueryRemoveStorageResponse = ffi.QueryRemoveStorageResponse
 
 type CosmosRequest_GetAccount = ffi.CosmosRequest_GetAccount
 type CosmosRequest_InsertAccount = ffi.CosmosRequest_InsertAccount
@@ -59,9 +54,7 @@ type CosmosRequest_StorageCell = ffi.CosmosRequest_StorageCell
 type CosmosRequest_InsertAccountCode = ffi.CosmosRequest_InsertAccountCode
 type CosmosRequest_InsertStorageCell = ffi.CosmosRequest_InsertStorageCell
 type CosmosRequest_Remove = ffi.CosmosRequest_Remove
-type CosmosRequest_RemoveAccountCode = ffi.CosmosRequest_RemoveAccountCode
 type CosmosRequest_RemoveStorageCell = ffi.CosmosRequest_RemoveStorageCell
-type CosmosRequest_RemoveStorage = ffi.CosmosRequest_RemoveStorage
 
 func HandleTx(querier types.DataQuerier, from, to, data, value []byte, gasLimit uint64) (*ffi.HandleTransactionResponse, error) {
 	executionResult, err := api.HandleTx(querier, from, to, data, value, gasLimit)

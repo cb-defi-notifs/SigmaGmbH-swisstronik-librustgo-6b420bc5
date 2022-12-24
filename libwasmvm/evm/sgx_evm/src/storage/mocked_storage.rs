@@ -60,18 +60,12 @@ impl Storage for MockedStorage {
 
     fn remove(&mut self, key: &H160) {
         self.accounts.remove(key);
-    }
-
-    fn remove_account_code(&mut self, key: &H160) {
+        self.storage.remove(key);
         self.contracts.remove(key);
     }
 
     fn remove_storage_cell(&mut self, key: &H160, index: &H256) {
         self.storage.entry(*key).and_modify(|inner| { inner.remove(index); });
-    }
-
-    fn remove_storage(&mut self, key: &H160) {
-        self.storage.remove(key);
     }
 }
 

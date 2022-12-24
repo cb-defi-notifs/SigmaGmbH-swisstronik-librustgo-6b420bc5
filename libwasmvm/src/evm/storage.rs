@@ -45,16 +45,8 @@ impl Storage for FFIStorage {
         self.querier.remove(key);
     }
 
-    fn remove_account_code(&mut self, key: &H160) {
-        self.querier.remove_account_code(key);
-    }
-
     fn remove_storage_cell(&mut self, key: &H160, index: &H256) {
         self.querier.remove_storage_cell(key, index);
-    }
-
-    fn remove_storage(&mut self, key: &H160) {
-        self.querier.remove_storage(key);
     }
 }
 

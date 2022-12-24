@@ -27,15 +27,9 @@ pub trait Storage {
     /// Update storage cell value
     fn insert_storage_cell(&mut self, key: H160, index: H256, value: H256);
 
-    /// Remove account with provided address
+    /// Removes account (selfdestruct)
     fn remove(&mut self, key: &H160);
-
-    /// Removes contract bytecode from specified address
-    fn remove_account_code(&mut self, key: &H160);
 
     /// Removes storage cell value
     fn remove_storage_cell(&mut self, key: &H160, index: &H256);
-
-    /// Removes whole storage
-    fn remove_storage(&mut self, key: &H160);
 }
