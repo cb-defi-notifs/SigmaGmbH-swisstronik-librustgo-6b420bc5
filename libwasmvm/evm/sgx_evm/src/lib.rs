@@ -73,7 +73,7 @@ pub fn handle_query(body: &[u8], storage: &mut dyn Storage) -> Vec<u8> {
 /// * body – RLP-encoded transaction
 /// * storage – implementation of trait `Storage`
 /// Returns RLP-encoded execution result or an error
-pub fn handle_transaction(body: &[u8], backend: &mut dyn Storage) -> Vec<u8> { // TODO: Pass backend instead of storage
+pub fn handle_transaction(body: &[u8], storage: &mut dyn Storage) -> Vec<u8> { // TODO: Pass backend instead of storage
     // Recover transaction data
     let transaction_data = match FullTransactionData::decode_transaction(body) {
         Ok(data) => data,
