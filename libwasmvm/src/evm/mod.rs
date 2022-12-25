@@ -1,4 +1,4 @@
-use sgx_evm;
+use sgx_evm::{self, Vicinity};
 use sgx_evm::ExecutionData;
 use common_types::ExecutionResult;
 use sgx_evm::primitive_types::{U256, H160, H256};
@@ -18,8 +18,9 @@ pub fn handle_transaction(querier: GoQuerier, data: ProtoTransactionData) -> Exe
     // Convert decoded protobuf data into TransactionData
     let tx = parse_protobuf_transaction_data(data);
     // Create FFI storage & backend
+    let vicinity = Vicinity{ origin: tx.origin };
     let mut storage = crate::evm::storage::FFIStorage::new(&querier);
-    let mut backend = backend::FFIBackend::new(&querier, &mut storage);
+    let mut backend = backend::FFIBackend::new(&querier, &mut storage, vicinity);
 
     // Handle already parsed transaction and return execution result
     sgx_evm::handle_transaction_inner(tx, &mut storage)
