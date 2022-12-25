@@ -10,6 +10,7 @@ import (
 	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
 	types "github.com/SigmaGmbH/librustgo/types"
 	"google.golang.org/protobuf/proto"
+	"github.com/holiman/uint256"
 )
 
 //const (

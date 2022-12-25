@@ -17,11 +17,10 @@ mod backend;
 pub fn handle_transaction(querier: GoQuerier, data: ProtoTransactionData) -> ExecutionResult {
     // Convert decoded protobuf data into TransactionData
     let tx = parse_protobuf_transaction_data(data);
-    // Create FFI storage
+    // Create FFI storage & backend
     let mut storage = crate::evm::storage::FFIStorage::new(&querier);
-    let mut backend = backend::FFIBackend::new(&querier,&mut storage);
-    let block_number = backend.block_number();
-    println!("[RUST] Block number - {}",block_number);
+    let mut backend = backend::FFIBackend::new(&querier, &mut storage);
+
     // Handle already parsed transaction and return execution result
     sgx_evm::handle_transaction_inner(tx, &mut storage)
 }
