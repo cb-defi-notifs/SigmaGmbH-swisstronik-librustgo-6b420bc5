@@ -121,6 +121,35 @@ message QueryRemoveStorageCell {
 
 message QueryRemoveStorageCellResponse {}
 
+message QueryRemoveStorage {
+  bytes address = 1;
+}
+
+message QueryRemoveStorageResponse {}
+
+message QueryBlockHash {
+  bytes number = 1;
+}
+message QueryBlockHashResponse {
+  bytes hash = 1;
+}
+
+message QueryBlockNumber {}
+message QueryBlockNumberResponse {
+  bytes number = 1;
+}
+
+message QueryBlockTimestamp {}
+message QueryBlockTimestampResponse {
+  bytes timestamp = 1;
+}
+message QueryChainId {}
+message QueryChainIdResponse {
+  bytes chain_id = 1;
+}
+
+
+
 message CosmosRequest {
   oneof req {
     QueryGetAccount getAccount = 1;
@@ -132,8 +161,33 @@ message CosmosRequest {
     QueryInsertStorageCell insertStorageCell = 7;
     QueryRemove remove = 8;
     QueryRemoveStorageCell removeStorageCell = 9;
+    QueryRemoveStorage removeStorage = 10;
+    QueryBlockHash blockHash = 11;
+    QueryBlockNumber blockNumber = 12;
+    QueryBlockTimestamp blockTimestamp = 13;
+    QueryChainId chainId = 14;
   }
 }
+
+// message CosmosResponse {
+//   oneof res {
+//     QueryGetAccountResponse getAccountResponse = 1;
+//     QueryInsertAccountResponse insertAccountResponse = 2;
+//     QueryContainsKeyResponse containsKeyResponse = 3;
+//     QueryGetAccountCodeResponse accountCodeResponse = 4;
+//     QueryGetAccountStorageCellResponse storageCellResponse = 5;
+//     QueryInsertAccountCodeResponse insertCodeResponse = 6;
+//     QueryInsertStorageCellResponse insertStorageCellResponse = 7;
+//     QueryRemoveResponse removeResponse = 8;
+//     QueryRemoveAccountCode removeAccountCodeResponse = 9;
+//     QueryRemoveStorageCellResponse removeStorageCellResponse = 10;
+//     QueryRemoveStorageResponse removeStorageResponse = 11;
+//     QueryBlockHashResponse blockHashResponse = 12;
+//     QueryBlockNumberResponse blockNumberResponse = 13;
+//     QueryBlockTimestampResponse blockTimestampResponse = 14;
+//     QueryChainIdResponse chainIdResponse = 15;
+//   }
+// }
 
 message FFIRequest {
   oneof req {

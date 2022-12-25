@@ -4096,6 +4096,1424 @@ impl ::protobuf::reflect::ProtobufValue for QueryRemoveStorageCellResponse {
 }
 
 #[derive(PartialEq,Clone,Default)]
+pub struct QueryRemoveStorage {
+    // message fields
+    pub address: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryRemoveStorage {
+    fn default() -> &'a QueryRemoveStorage {
+        <QueryRemoveStorage as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryRemoveStorage {
+    pub fn new() -> QueryRemoveStorage {
+        ::std::default::Default::default()
+    }
+
+    // bytes address = 1;
+
+
+    pub fn get_address(&self) -> &[u8] {
+        &self.address
+    }
+    pub fn clear_address(&mut self) {
+        self.address.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_address(&mut self, v: ::std::vec::Vec<u8>) {
+        self.address = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_address(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.address
+    }
+
+    // Take field
+    pub fn take_address(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.address, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for QueryRemoveStorage {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.address)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.address.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.address);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.address.is_empty() {
+            os.write_bytes(1, &self.address)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryRemoveStorage {
+        QueryRemoveStorage::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "address",
+                |m: &QueryRemoveStorage| { &m.address },
+                |m: &mut QueryRemoveStorage| { &mut m.address },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryRemoveStorage>(
+                "QueryRemoveStorage",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryRemoveStorage {
+        static instance: ::protobuf::rt::LazyV2<QueryRemoveStorage> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryRemoveStorage::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryRemoveStorage {
+    fn clear(&mut self) {
+        self.address.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryRemoveStorage {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryRemoveStorage {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryRemoveStorageResponse {
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryRemoveStorageResponse {
+    fn default() -> &'a QueryRemoveStorageResponse {
+        <QueryRemoveStorageResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryRemoveStorageResponse {
+    pub fn new() -> QueryRemoveStorageResponse {
+        ::std::default::Default::default()
+    }
+}
+
+impl ::protobuf::Message for QueryRemoveStorageResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryRemoveStorageResponse {
+        QueryRemoveStorageResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let fields = ::std::vec::Vec::new();
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryRemoveStorageResponse>(
+                "QueryRemoveStorageResponse",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryRemoveStorageResponse {
+        static instance: ::protobuf::rt::LazyV2<QueryRemoveStorageResponse> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryRemoveStorageResponse::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryRemoveStorageResponse {
+    fn clear(&mut self) {
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryRemoveStorageResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryRemoveStorageResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryBlockHash {
+    // message fields
+    pub number: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryBlockHash {
+    fn default() -> &'a QueryBlockHash {
+        <QueryBlockHash as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryBlockHash {
+    pub fn new() -> QueryBlockHash {
+        ::std::default::Default::default()
+    }
+
+    // bytes number = 1;
+
+
+    pub fn get_number(&self) -> &[u8] {
+        &self.number
+    }
+    pub fn clear_number(&mut self) {
+        self.number.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_number(&mut self, v: ::std::vec::Vec<u8>) {
+        self.number = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_number(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.number
+    }
+
+    // Take field
+    pub fn take_number(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.number, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for QueryBlockHash {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.number)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.number.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.number);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.number.is_empty() {
+            os.write_bytes(1, &self.number)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryBlockHash {
+        QueryBlockHash::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "number",
+                |m: &QueryBlockHash| { &m.number },
+                |m: &mut QueryBlockHash| { &mut m.number },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryBlockHash>(
+                "QueryBlockHash",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryBlockHash {
+        static instance: ::protobuf::rt::LazyV2<QueryBlockHash> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryBlockHash::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryBlockHash {
+    fn clear(&mut self) {
+        self.number.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryBlockHash {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryBlockHash {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryBlockHashResponse {
+    // message fields
+    pub hash: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryBlockHashResponse {
+    fn default() -> &'a QueryBlockHashResponse {
+        <QueryBlockHashResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryBlockHashResponse {
+    pub fn new() -> QueryBlockHashResponse {
+        ::std::default::Default::default()
+    }
+
+    // bytes hash = 1;
+
+
+    pub fn get_hash(&self) -> &[u8] {
+        &self.hash
+    }
+    pub fn clear_hash(&mut self) {
+        self.hash.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_hash(&mut self, v: ::std::vec::Vec<u8>) {
+        self.hash = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_hash(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.hash
+    }
+
+    // Take field
+    pub fn take_hash(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.hash, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for QueryBlockHashResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.hash)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.hash.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.hash);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.hash.is_empty() {
+            os.write_bytes(1, &self.hash)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryBlockHashResponse {
+        QueryBlockHashResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "hash",
+                |m: &QueryBlockHashResponse| { &m.hash },
+                |m: &mut QueryBlockHashResponse| { &mut m.hash },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryBlockHashResponse>(
+                "QueryBlockHashResponse",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryBlockHashResponse {
+        static instance: ::protobuf::rt::LazyV2<QueryBlockHashResponse> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryBlockHashResponse::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryBlockHashResponse {
+    fn clear(&mut self) {
+        self.hash.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryBlockHashResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryBlockHashResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryBlockNumber {
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryBlockNumber {
+    fn default() -> &'a QueryBlockNumber {
+        <QueryBlockNumber as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryBlockNumber {
+    pub fn new() -> QueryBlockNumber {
+        ::std::default::Default::default()
+    }
+}
+
+impl ::protobuf::Message for QueryBlockNumber {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryBlockNumber {
+        QueryBlockNumber::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let fields = ::std::vec::Vec::new();
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryBlockNumber>(
+                "QueryBlockNumber",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryBlockNumber {
+        static instance: ::protobuf::rt::LazyV2<QueryBlockNumber> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryBlockNumber::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryBlockNumber {
+    fn clear(&mut self) {
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryBlockNumber {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryBlockNumber {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryBlockNumberResponse {
+    // message fields
+    pub number: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryBlockNumberResponse {
+    fn default() -> &'a QueryBlockNumberResponse {
+        <QueryBlockNumberResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryBlockNumberResponse {
+    pub fn new() -> QueryBlockNumberResponse {
+        ::std::default::Default::default()
+    }
+
+    // bytes number = 1;
+
+
+    pub fn get_number(&self) -> &[u8] {
+        &self.number
+    }
+    pub fn clear_number(&mut self) {
+        self.number.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_number(&mut self, v: ::std::vec::Vec<u8>) {
+        self.number = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_number(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.number
+    }
+
+    // Take field
+    pub fn take_number(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.number, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for QueryBlockNumberResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.number)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.number.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.number);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.number.is_empty() {
+            os.write_bytes(1, &self.number)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryBlockNumberResponse {
+        QueryBlockNumberResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "number",
+                |m: &QueryBlockNumberResponse| { &m.number },
+                |m: &mut QueryBlockNumberResponse| { &mut m.number },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryBlockNumberResponse>(
+                "QueryBlockNumberResponse",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryBlockNumberResponse {
+        static instance: ::protobuf::rt::LazyV2<QueryBlockNumberResponse> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryBlockNumberResponse::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryBlockNumberResponse {
+    fn clear(&mut self) {
+        self.number.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryBlockNumberResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryBlockNumberResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryBlockTimestamp {
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryBlockTimestamp {
+    fn default() -> &'a QueryBlockTimestamp {
+        <QueryBlockTimestamp as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryBlockTimestamp {
+    pub fn new() -> QueryBlockTimestamp {
+        ::std::default::Default::default()
+    }
+}
+
+impl ::protobuf::Message for QueryBlockTimestamp {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryBlockTimestamp {
+        QueryBlockTimestamp::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let fields = ::std::vec::Vec::new();
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryBlockTimestamp>(
+                "QueryBlockTimestamp",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryBlockTimestamp {
+        static instance: ::protobuf::rt::LazyV2<QueryBlockTimestamp> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryBlockTimestamp::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryBlockTimestamp {
+    fn clear(&mut self) {
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryBlockTimestamp {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryBlockTimestamp {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryBlockTimestampResponse {
+    // message fields
+    pub timestamp: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryBlockTimestampResponse {
+    fn default() -> &'a QueryBlockTimestampResponse {
+        <QueryBlockTimestampResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryBlockTimestampResponse {
+    pub fn new() -> QueryBlockTimestampResponse {
+        ::std::default::Default::default()
+    }
+
+    // bytes timestamp = 1;
+
+
+    pub fn get_timestamp(&self) -> &[u8] {
+        &self.timestamp
+    }
+    pub fn clear_timestamp(&mut self) {
+        self.timestamp.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_timestamp(&mut self, v: ::std::vec::Vec<u8>) {
+        self.timestamp = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_timestamp(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.timestamp
+    }
+
+    // Take field
+    pub fn take_timestamp(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.timestamp, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for QueryBlockTimestampResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.timestamp)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.timestamp.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.timestamp);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.timestamp.is_empty() {
+            os.write_bytes(1, &self.timestamp)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryBlockTimestampResponse {
+        QueryBlockTimestampResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "timestamp",
+                |m: &QueryBlockTimestampResponse| { &m.timestamp },
+                |m: &mut QueryBlockTimestampResponse| { &mut m.timestamp },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryBlockTimestampResponse>(
+                "QueryBlockTimestampResponse",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryBlockTimestampResponse {
+        static instance: ::protobuf::rt::LazyV2<QueryBlockTimestampResponse> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryBlockTimestampResponse::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryBlockTimestampResponse {
+    fn clear(&mut self) {
+        self.timestamp.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryBlockTimestampResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryBlockTimestampResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryChainId {
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryChainId {
+    fn default() -> &'a QueryChainId {
+        <QueryChainId as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryChainId {
+    pub fn new() -> QueryChainId {
+        ::std::default::Default::default()
+    }
+}
+
+impl ::protobuf::Message for QueryChainId {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryChainId {
+        QueryChainId::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let fields = ::std::vec::Vec::new();
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryChainId>(
+                "QueryChainId",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryChainId {
+        static instance: ::protobuf::rt::LazyV2<QueryChainId> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryChainId::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryChainId {
+    fn clear(&mut self) {
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryChainId {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryChainId {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct QueryChainIdResponse {
+    // message fields
+    pub chain_id: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a QueryChainIdResponse {
+    fn default() -> &'a QueryChainIdResponse {
+        <QueryChainIdResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl QueryChainIdResponse {
+    pub fn new() -> QueryChainIdResponse {
+        ::std::default::Default::default()
+    }
+
+    // bytes chain_id = 1;
+
+
+    pub fn get_chain_id(&self) -> &[u8] {
+        &self.chain_id
+    }
+    pub fn clear_chain_id(&mut self) {
+        self.chain_id.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_chain_id(&mut self, v: ::std::vec::Vec<u8>) {
+        self.chain_id = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_chain_id(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.chain_id
+    }
+
+    // Take field
+    pub fn take_chain_id(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.chain_id, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for QueryChainIdResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.chain_id)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.chain_id.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.chain_id);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.chain_id.is_empty() {
+            os.write_bytes(1, &self.chain_id)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> QueryChainIdResponse {
+        QueryChainIdResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "chain_id",
+                |m: &QueryChainIdResponse| { &m.chain_id },
+                |m: &mut QueryChainIdResponse| { &mut m.chain_id },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<QueryChainIdResponse>(
+                "QueryChainIdResponse",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static QueryChainIdResponse {
+        static instance: ::protobuf::rt::LazyV2<QueryChainIdResponse> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(QueryChainIdResponse::new)
+    }
+}
+
+impl ::protobuf::Clear for QueryChainIdResponse {
+    fn clear(&mut self) {
+        self.chain_id.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for QueryChainIdResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for QueryChainIdResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
 pub struct CosmosRequest {
     // message oneof groups
     pub req: ::std::option::Option<CosmosRequest_oneof_req>,
@@ -4121,6 +5539,11 @@ pub enum CosmosRequest_oneof_req {
     insertStorageCell(QueryInsertStorageCell),
     remove(QueryRemove),
     removeStorageCell(QueryRemoveStorageCell),
+    removeStorage(QueryRemoveStorage),
+    blockHash(QueryBlockHash),
+    blockNumber(QueryBlockNumber),
+    blockTimestamp(QueryBlockTimestamp),
+    chainId(QueryChainId),
 }
 
 impl CosmosRequest {
@@ -4568,6 +5991,251 @@ impl CosmosRequest {
             QueryRemoveStorageCell::new()
         }
     }
+
+    // .ffi.ffi.QueryRemoveStorage removeStorage = 10;
+
+
+    pub fn get_removeStorage(&self) -> &QueryRemoveStorage {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorage(ref v)) => v,
+            _ => <QueryRemoveStorage as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_removeStorage(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_removeStorage(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorage(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_removeStorage(&mut self, v: QueryRemoveStorage) {
+        self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorage(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_removeStorage(&mut self) -> &mut QueryRemoveStorage {
+        if let ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorage(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorage(QueryRemoveStorage::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorage(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_removeStorage(&mut self) -> QueryRemoveStorage {
+        if self.has_removeStorage() {
+            match self.req.take() {
+                ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorage(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryRemoveStorage::new()
+        }
+    }
+
+    // .ffi.ffi.QueryBlockHash blockHash = 11;
+
+
+    pub fn get_blockHash(&self) -> &QueryBlockHash {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::blockHash(ref v)) => v,
+            _ => <QueryBlockHash as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_blockHash(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_blockHash(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::blockHash(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_blockHash(&mut self, v: QueryBlockHash) {
+        self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::blockHash(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_blockHash(&mut self) -> &mut QueryBlockHash {
+        if let ::std::option::Option::Some(CosmosRequest_oneof_req::blockHash(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::blockHash(QueryBlockHash::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::blockHash(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_blockHash(&mut self) -> QueryBlockHash {
+        if self.has_blockHash() {
+            match self.req.take() {
+                ::std::option::Option::Some(CosmosRequest_oneof_req::blockHash(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryBlockHash::new()
+        }
+    }
+
+    // .ffi.ffi.QueryBlockNumber blockNumber = 12;
+
+
+    pub fn get_blockNumber(&self) -> &QueryBlockNumber {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::blockNumber(ref v)) => v,
+            _ => <QueryBlockNumber as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_blockNumber(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_blockNumber(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::blockNumber(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_blockNumber(&mut self, v: QueryBlockNumber) {
+        self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::blockNumber(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_blockNumber(&mut self) -> &mut QueryBlockNumber {
+        if let ::std::option::Option::Some(CosmosRequest_oneof_req::blockNumber(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::blockNumber(QueryBlockNumber::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::blockNumber(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_blockNumber(&mut self) -> QueryBlockNumber {
+        if self.has_blockNumber() {
+            match self.req.take() {
+                ::std::option::Option::Some(CosmosRequest_oneof_req::blockNumber(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryBlockNumber::new()
+        }
+    }
+
+    // .ffi.ffi.QueryBlockTimestamp blockTimestamp = 13;
+
+
+    pub fn get_blockTimestamp(&self) -> &QueryBlockTimestamp {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::blockTimestamp(ref v)) => v,
+            _ => <QueryBlockTimestamp as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_blockTimestamp(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_blockTimestamp(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::blockTimestamp(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_blockTimestamp(&mut self, v: QueryBlockTimestamp) {
+        self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::blockTimestamp(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_blockTimestamp(&mut self) -> &mut QueryBlockTimestamp {
+        if let ::std::option::Option::Some(CosmosRequest_oneof_req::blockTimestamp(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::blockTimestamp(QueryBlockTimestamp::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::blockTimestamp(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_blockTimestamp(&mut self) -> QueryBlockTimestamp {
+        if self.has_blockTimestamp() {
+            match self.req.take() {
+                ::std::option::Option::Some(CosmosRequest_oneof_req::blockTimestamp(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryBlockTimestamp::new()
+        }
+    }
+
+    // .ffi.ffi.QueryChainId chainId = 14;
+
+
+    pub fn get_chainId(&self) -> &QueryChainId {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::chainId(ref v)) => v,
+            _ => <QueryChainId as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_chainId(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_chainId(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::chainId(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_chainId(&mut self, v: QueryChainId) {
+        self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::chainId(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_chainId(&mut self) -> &mut QueryChainId {
+        if let ::std::option::Option::Some(CosmosRequest_oneof_req::chainId(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::chainId(QueryChainId::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(CosmosRequest_oneof_req::chainId(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_chainId(&mut self) -> QueryChainId {
+        if self.has_chainId() {
+            match self.req.take() {
+                ::std::option::Option::Some(CosmosRequest_oneof_req::chainId(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            QueryChainId::new()
+        }
+    }
 }
 
 impl ::protobuf::Message for CosmosRequest {
@@ -4613,6 +6281,31 @@ impl ::protobuf::Message for CosmosRequest {
             }
         }
         if let Some(CosmosRequest_oneof_req::removeStorageCell(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosRequest_oneof_req::removeStorage(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosRequest_oneof_req::blockHash(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosRequest_oneof_req::blockNumber(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosRequest_oneof_req::blockTimestamp(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(CosmosRequest_oneof_req::chainId(ref v)) = self.req {
             if !v.is_initialized() {
                 return false;
             }
@@ -4678,6 +6371,36 @@ impl ::protobuf::Message for CosmosRequest {
                     }
                     self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorageCell(is.read_message()?));
                 },
+                10 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::removeStorage(is.read_message()?));
+                },
+                11 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::blockHash(is.read_message()?));
+                },
+                12 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::blockNumber(is.read_message()?));
+                },
+                13 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::blockTimestamp(is.read_message()?));
+                },
+                14 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(CosmosRequest_oneof_req::chainId(is.read_message()?));
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -4725,6 +6448,26 @@ impl ::protobuf::Message for CosmosRequest {
                     my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
                 },
                 &CosmosRequest_oneof_req::removeStorageCell(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosRequest_oneof_req::removeStorage(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosRequest_oneof_req::blockHash(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosRequest_oneof_req::blockNumber(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosRequest_oneof_req::blockTimestamp(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &CosmosRequest_oneof_req::chainId(ref v) => {
                     let len = v.compute_size();
                     my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
                 },
@@ -4780,6 +6523,31 @@ impl ::protobuf::Message for CosmosRequest {
                 },
                 &CosmosRequest_oneof_req::removeStorageCell(ref v) => {
                     os.write_tag(9, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosRequest_oneof_req::removeStorage(ref v) => {
+                    os.write_tag(10, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosRequest_oneof_req::blockHash(ref v) => {
+                    os.write_tag(11, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosRequest_oneof_req::blockNumber(ref v) => {
+                    os.write_tag(12, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosRequest_oneof_req::blockTimestamp(ref v) => {
+                    os.write_tag(13, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &CosmosRequest_oneof_req::chainId(ref v) => {
+                    os.write_tag(14, ::protobuf::wire_format::WireTypeLengthDelimited)?;
                     os.write_raw_varint32(v.get_cached_size())?;
                     v.write_to_with_cached_sizes(os)?;
                 },
@@ -4868,6 +6636,31 @@ impl ::protobuf::Message for CosmosRequest {
                 CosmosRequest::has_removeStorageCell,
                 CosmosRequest::get_removeStorageCell,
             ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryRemoveStorage>(
+                "removeStorage",
+                CosmosRequest::has_removeStorage,
+                CosmosRequest::get_removeStorage,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryBlockHash>(
+                "blockHash",
+                CosmosRequest::has_blockHash,
+                CosmosRequest::get_blockHash,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryBlockNumber>(
+                "blockNumber",
+                CosmosRequest::has_blockNumber,
+                CosmosRequest::get_blockNumber,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryBlockTimestamp>(
+                "blockTimestamp",
+                CosmosRequest::has_blockTimestamp,
+                CosmosRequest::get_blockTimestamp,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, QueryChainId>(
+                "chainId",
+                CosmosRequest::has_chainId,
+                CosmosRequest::get_chainId,
+            ));
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<CosmosRequest>(
                 "CosmosRequest",
                 fields,
@@ -4884,6 +6677,11 @@ impl ::protobuf::Message for CosmosRequest {
 
 impl ::protobuf::Clear for CosmosRequest {
     fn clear(&mut self) {
+        self.req = ::std::option::Option::None;
+        self.req = ::std::option::Option::None;
+        self.req = ::std::option::Option::None;
+        self.req = ::std::option::Option::None;
+        self.req = ::std::option::Option::None;
         self.req = ::std::option::Option::None;
         self.req = ::std::option::Option::None;
         self.req = ::std::option::Option::None;
@@ -5152,22 +6950,37 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x0bQueryRemove\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\"\
     \x15\n\x13QueryRemoveResponse\"H\n\x16QueryRemoveStorageCell\x12\x18\n\
     \x07address\x18\x01\x20\x01(\x0cR\x07address\x12\x14\n\x05index\x18\x02\
-    \x20\x01(\x0cR\x05index\"\x20\n\x1eQueryRemoveStorageCellResponse\"\x84\
-    \x05\n\rCosmosRequest\x12:\n\ngetAccount\x18\x01\x20\x01(\x0b2\x18.ffi.f\
-    fi.QueryGetAccountH\0R\ngetAccount\x12C\n\rinsertAccount\x18\x02\x20\x01\
-    (\x0b2\x1b.ffi.ffi.QueryInsertAccountH\0R\rinsertAccount\x12=\n\x0bconta\
-    insKey\x18\x03\x20\x01(\x0b2\x19.ffi.ffi.QueryContainsKeyH\0R\x0bcontain\
-    sKey\x12@\n\x0baccountCode\x18\x04\x20\x01(\x0b2\x1c.ffi.ffi.QueryGetAcc\
-    ountCodeH\0R\x0baccountCode\x12G\n\x0bstorageCell\x18\x05\x20\x01(\x0b2#\
-    .ffi.ffi.QueryGetAccountStorageCellH\0R\x0bstorageCell\x12O\n\x11insertA\
-    ccountCode\x18\x06\x20\x01(\x0b2\x1f.ffi.ffi.QueryInsertAccountCodeH\0R\
-    \x11insertAccountCode\x12O\n\x11insertStorageCell\x18\x07\x20\x01(\x0b2\
-    \x1f.ffi.ffi.QueryInsertStorageCellH\0R\x11insertStorageCell\x12.\n\x06r\
-    emove\x18\x08\x20\x01(\x0b2\x14.ffi.ffi.QueryRemoveH\0R\x06remove\x12O\n\
-    \x11removeStorageCell\x18\t\x20\x01(\x0b2\x1f.ffi.ffi.QueryRemoveStorage\
-    CellH\0R\x11removeStorageCellB\x05\n\x03req\"]\n\nFFIRequest\x12H\n\x11h\
-    andleTransaction\x18\x01\x20\x01(\x0b2\x18.ffi.ffi.TransactionDataH\0R\
-    \x11handleTransactionB\x05\n\x03reqB\x04Z\x02./b\x06proto3\
+    \x20\x01(\x0cR\x05index\"\x20\n\x1eQueryRemoveStorageCellResponse\".\n\
+    \x12QueryRemoveStorage\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07add\
+    ress\"\x1c\n\x1aQueryRemoveStorageResponse\"(\n\x0eQueryBlockHash\x12\
+    \x16\n\x06number\x18\x01\x20\x01(\x0cR\x06number\",\n\x16QueryBlockHashR\
+    esponse\x12\x12\n\x04hash\x18\x01\x20\x01(\x0cR\x04hash\"\x12\n\x10Query\
+    BlockNumber\"2\n\x18QueryBlockNumberResponse\x12\x16\n\x06number\x18\x01\
+    \x20\x01(\x0cR\x06number\"\x15\n\x13QueryBlockTimestamp\";\n\x1bQueryBlo\
+    ckTimestampResponse\x12\x1c\n\ttimestamp\x18\x01\x20\x01(\x0cR\ttimestam\
+    p\"\x0e\n\x0cQueryChainId\"1\n\x14QueryChainIdResponse\x12\x19\n\x08chai\
+    n_id\x18\x01\x20\x01(\x0cR\x07chainId\"\xbc\x07\n\rCosmosRequest\x12:\n\
+    \ngetAccount\x18\x01\x20\x01(\x0b2\x18.ffi.ffi.QueryGetAccountH\0R\ngetA\
+    ccount\x12C\n\rinsertAccount\x18\x02\x20\x01(\x0b2\x1b.ffi.ffi.QueryInse\
+    rtAccountH\0R\rinsertAccount\x12=\n\x0bcontainsKey\x18\x03\x20\x01(\x0b2\
+    \x19.ffi.ffi.QueryContainsKeyH\0R\x0bcontainsKey\x12@\n\x0baccountCode\
+    \x18\x04\x20\x01(\x0b2\x1c.ffi.ffi.QueryGetAccountCodeH\0R\x0baccountCod\
+    e\x12G\n\x0bstorageCell\x18\x05\x20\x01(\x0b2#.ffi.ffi.QueryGetAccountSt\
+    orageCellH\0R\x0bstorageCell\x12O\n\x11insertAccountCode\x18\x06\x20\x01\
+    (\x0b2\x1f.ffi.ffi.QueryInsertAccountCodeH\0R\x11insertAccountCode\x12O\
+    \n\x11insertStorageCell\x18\x07\x20\x01(\x0b2\x1f.ffi.ffi.QueryInsertSto\
+    rageCellH\0R\x11insertStorageCell\x12.\n\x06remove\x18\x08\x20\x01(\x0b2\
+    \x14.ffi.ffi.QueryRemoveH\0R\x06remove\x12O\n\x11removeStorageCell\x18\t\
+    \x20\x01(\x0b2\x1f.ffi.ffi.QueryRemoveStorageCellH\0R\x11removeStorageCe\
+    ll\x12C\n\rremoveStorage\x18\n\x20\x01(\x0b2\x1b.ffi.ffi.QueryRemoveStor\
+    ageH\0R\rremoveStorage\x127\n\tblockHash\x18\x0b\x20\x01(\x0b2\x17.ffi.f\
+    fi.QueryBlockHashH\0R\tblockHash\x12=\n\x0bblockNumber\x18\x0c\x20\x01(\
+    \x0b2\x19.ffi.ffi.QueryBlockNumberH\0R\x0bblockNumber\x12F\n\x0eblockTim\
+    estamp\x18\r\x20\x01(\x0b2\x1c.ffi.ffi.QueryBlockTimestampH\0R\x0eblockT\
+    imestamp\x121\n\x07chainId\x18\x0e\x20\x01(\x0b2\x15.ffi.ffi.QueryChainI\
+    dH\0R\x07chainIdB\x05\n\x03req\"]\n\nFFIRequest\x12H\n\x11handleTransact\
+    ion\x18\x01\x20\x01(\x0b2\x18.ffi.ffi.TransactionDataH\0R\x11handleTrans\
+    actionB\x05\n\x03reqB\x04Z\x02./b\x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;

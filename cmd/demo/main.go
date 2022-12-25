@@ -9,7 +9,6 @@ import (
 	wasmvm "github.com/SigmaGmbH/librustgo"
 	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
 	types "github.com/SigmaGmbH/librustgo/types"
-	"github.com/holiman/uint256"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -33,6 +32,10 @@ func (MockedQueryHandler) Query(request []byte) ([]byte, error) {
 	}
 	switch request := decodedRequest.Req.(type) {
 	// Handle request for account data such as balance and nonce
+	case *ffi.CosmosRequest_BlockNumber:
+		println("[Go:Query] Block number")
+		number := uint256.NewInt(1).Bytes32()
+		return proto.Marshal(&ffi.QueryBlockNumberResponse{Number: number[:]})
 	case *ffi.CosmosRequest_GetAccount:
 		println("[Go:Query] Requested data for address: ", request.GetAccount.Address)
 
