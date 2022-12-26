@@ -46,6 +46,7 @@ type QueryRemoveResponse = ffi.QueryRemoveResponse
 type QueryRemoveStorageCell = ffi.QueryRemoveStorageCell
 type QueryRemoveStorageCellResponse = ffi.QueryRemoveStorageCellResponse
 
+// Storage requests
 type CosmosRequest_GetAccount = ffi.CosmosRequest_GetAccount
 type CosmosRequest_InsertAccount = ffi.CosmosRequest_InsertAccount
 type CosmosRequest_ContainsKey = ffi.CosmosRequest_ContainsKey
@@ -55,6 +56,11 @@ type CosmosRequest_InsertAccountCode = ffi.CosmosRequest_InsertAccountCode
 type CosmosRequest_InsertStorageCell = ffi.CosmosRequest_InsertStorageCell
 type CosmosRequest_Remove = ffi.CosmosRequest_Remove
 type CosmosRequest_RemoveStorageCell = ffi.CosmosRequest_RemoveStorageCell
+// Backend requests
+type CosmosRequest_BlockNumber = ffi.CosmosRequest_BlockNumber
+type CosmosRequest_BlockHash = ffi.CosmosRequest_BlockHash
+type CosmosRequest_BlockTimestamp = ffi.CosmosRequest_BlockTimestamp
+type CosmosRequest_ChainId = ffi.CosmosRequest_ChainId
 
 func HandleTx(querier types.DataQuerier, from, to, data, value []byte, gasLimit uint64) (*ffi.HandleTransactionResponse, error) {
 	executionResult, err := api.HandleTx(querier, from, to, data, value, gasLimit)
