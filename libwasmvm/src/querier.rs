@@ -300,11 +300,8 @@ impl GoQuerier {
         let query_result = self.query_raw(request_bytes);
         match query_result {
             Ok(raw_result) => {
-                match ffi::QueryInsertAccountResponse::parse_from_bytes(&raw_result) {
-                    Err(err) => {
-                        println!("[Rust] insert_account: cannot decode protobuf: {:?}", err);
-                    },
-                    _ => {}
+                if let Err(err) = ffi::QueryInsertAccountResponse::parse_from_bytes(&raw_result) {
+                    println!("[Rust] insert_account: cannot decode protobuf: {:?}", err);
                 }
             },
             Err(err) => {
@@ -325,11 +322,8 @@ impl GoQuerier {
         let query_result = self.query_raw(request_bytes);
         match query_result {
             Ok(raw_result) => {
-                match ffi::QueryInsertAccountCodeResponse::parse_from_bytes(&raw_result) {
-                    Err(err) => {
-                        println!("[Rust] insert_account_code: cannot decode protobuf: {:?}", err);
-                    },
-                    _ => {}
+                if let Err(err) = ffi::QueryInsertAccountCodeResponse::parse_from_bytes(&raw_result) {
+                    println!("[Rust] insert_account_code: cannot decode protobuf: {:?}", err);
                 }
             },
             Err(err) => {
@@ -375,11 +369,8 @@ impl GoQuerier {
         let query_result = self.query_raw(request_bytes);
         match query_result {
             Ok(raw_result) => {
-                match ffi::QueryRemoveResponse::parse_from_bytes(&raw_result) {
-                    Err(err) => {
-                        println!("[Rust] remove: cannot decode protobuf: {:?}", err);
-                    },
-                    _ => {}
+                if let Err(err) = ffi::QueryRemoveResponse::parse_from_bytes(&raw_result) {
+                    println!("[Rust] remove: cannot decode protobuf: {:?}", err);
                 }
             },
             Err(err) => {
@@ -400,11 +391,8 @@ impl GoQuerier {
         let query_result = self.query_raw(request_bytes);
         match query_result {
             Ok(raw_result) => {
-                match ffi::QueryRemoveStorageCellResponse::parse_from_bytes(&raw_result) {
-                    Err(err) => {
-                        println!("[Rust] remove_storage_cell: cannot decode protobuf: {:?}", err);
-                    },
-                    _ => {}
+                if let Err(err) = ffi::QueryRemoveStorageCellResponse::parse_from_bytes(&raw_result) {
+                    println!("[Rust] remove_storage_cell: cannot decode protobuf: {:?}", err);
                 }
             },
             Err(err) => {
