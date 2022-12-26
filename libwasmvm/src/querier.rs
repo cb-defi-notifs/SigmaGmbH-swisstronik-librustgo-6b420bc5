@@ -61,13 +61,13 @@ impl GoQuerier {
                     },
                     Err(err) => {
                         println!("[Rust] query_block_hash: cannot decode protobuf: {:?}", err);
-                        return H256::default()
+                        H256::default()
                     }
                 }
             },
             Err(err) => {
                 println!("[Rust] query_block_hash: got error: {:?}", err);
-                return H256::default()
+                H256::default()
             }
         }
 
@@ -75,7 +75,7 @@ impl GoQuerier {
     pub fn query_block_number(&self) -> U256 {
         println!("[Rust] query block number");
         let mut cosmos_request = ffi::CosmosRequest::new();
-        let mut request = ffi::QueryBlockNumber::new();
+        let request = ffi::QueryBlockNumber::new();
         cosmos_request.set_blockNumber(request);
         let request_bytes = cosmos_request.write_to_bytes().unwrap();
 
@@ -86,17 +86,17 @@ impl GoQuerier {
                     Ok(result) => {
                         let number = U256::from_big_endian(result.get_number());
                         println!("[Rust] query_block_number: got number: {:?}", number);
-                        return number
+                        number
                     },
                     Err(err) => {
                         println!("[Rust] query_block_number: cannot decode protobuf: {:?}", err);
-                        return U256::default()
+                        U256::default()
                     }
                 }
             },
             Err(err) => {
                 println!("[Rust] query_block_number: got error: {:?}", err);
-                return U256::default()
+                U256::default()
             }
         }
     }
@@ -104,7 +104,7 @@ impl GoQuerier {
     pub fn query_block_timestamp(&self) -> U256 {
         println!("[Rust] query block timestamp");
         let mut cosmos_request = ffi::CosmosRequest::new();
-        let mut request = ffi::QueryBlockTimestamp::new();
+        let request = ffi::QueryBlockTimestamp::new();
         cosmos_request.set_blockTimestamp(request);
         let request_bytes = cosmos_request.write_to_bytes().unwrap();
 
@@ -115,17 +115,17 @@ impl GoQuerier {
                     Ok(result) => {
                         let timestamp = U256::from_big_endian(result.get_timestamp());
                         println!("[Rust] query_block_timestamp: got timestamp: {:?}", timestamp);
-                        return timestamp
+                        timestamp
                     },
                     Err(err) => {
                         println!("[Rust] query_block_timestamp: cannot decode protobuf: {:?}", err);
-                        return U256::default()
+                        U256::default()
                     }
                 }
             },
             Err(err) => {
                 println!("[Rust] query_block_timestamp: got error: {:?}", err);
-                return U256::default()
+                U256::default()
             }
         }
     }
@@ -133,7 +133,7 @@ impl GoQuerier {
     pub fn query_chain_id(&self) -> U256 {
         println!("[Rust] query chain id");
         let mut cosmos_request = ffi::CosmosRequest::new();
-        let mut request = ffi::QueryChainId::new();
+        let request = ffi::QueryChainId::new();
         cosmos_request.set_chainId(request);
         let request_bytes = cosmos_request.write_to_bytes().unwrap();
 
@@ -144,17 +144,17 @@ impl GoQuerier {
                     Ok(result) => {
                         let chain_id = U256::from_big_endian(result.get_chain_id());
                         println!("[Rust] query_chain_id: got chain_id: {:?}", chain_id);
-                        return chain_id
+                        chain_id
                     },
                     Err(err) => {
                         println!("[Rust] query_chain_id: cannot decode protobuf: {:?}", err);
-                        return U256::default()
+                        U256::default()
                     }
                 }
             },
             Err(err) => {
                 println!("[Rust] query_chain_id: got error: {:?}", err);
-                return U256::default()
+                U256::default()
             }
         }
     }
@@ -178,17 +178,17 @@ impl GoQuerier {
                         let balance = U256::from_big_endian(result.get_balance());
                         let nonce = U256::from_big_endian(result.get_nonce());
                         println!("[Rust] query_account: got balance: {:?}, nonce: {:?}", balance, nonce);
-                        return (balance, nonce)
+                        (balance, nonce)
                     },
                     Err(err) => {
                         println!("[Rust] query_account: cannot decode protobuf: {:?}", err);
-                        return(U256::default(), U256::default());
+                        (U256::default(), U256::default())
                     }
                 }
             },
             Err(err) => {
                 println!("[Rust] query_account: got error: {:?}", err);
-                return(U256::default(), U256::default())
+                (U256::default(), U256::default())
             }
         }
     }
@@ -207,16 +207,16 @@ impl GoQuerier {
         match query_result {
             Ok(raw_result) => {
                 match ffi::QueryContainsKeyResponse::parse_from_bytes(&raw_result) {
-                    Ok(result) => return result.contains,
+                    Ok(result) => result.contains,
                     Err(err) => {
                         println!("[Rust] query_contains_key: cannot decode protobuf: {:?}", err);
-                        return false;
+                        false
                     }
                 }
             },
             Err(err) => {
                 println!("[Rust] query_contains_key: got error: {:?}", err);
-                return false;
+                false
             }
         }
     }
@@ -239,19 +239,19 @@ impl GoQuerier {
                 match ffi::QueryGetAccountStorageCellResponse::parse_from_bytes(&raw_result) {
                     Ok(result) => {
                         match result.get_value().is_empty() {
-                            true => return None,
+                            true => None,
                             false => return Some(H256::from_slice(result.get_value()))
                         }
                     },
                     Err(err) => {
                         println!("[Rust] query_account_storage_cell: cannot decode protobuf: {:?}", err);
-                        return None;
+                        None
                     }
                 }
             },
             Err(err) => {
                 println!("[Rust] query_account_storage_cell: got error: {:?}", err);
-                return None;
+                None
             }
         }
     }
@@ -270,19 +270,19 @@ impl GoQuerier {
                 match ffi::QueryGetAccountCodeResponse::parse_from_bytes(&raw_result) {
                     Ok(result) => {
                         match result.get_code().is_empty() {
-                            true => return None,
+                            true => None,
                             false => return Some(result.get_code().to_vec())
                         }
                     },
                     Err(err) => {
                         println!("[Rust] query_account_code: cannot decode protobuf: {:?}", err);
-                        return None;
+                        None
                     }
                 }
             },
             Err(err) => {
                 println!("[Rust] query_account_code: got error: {:?}", err);
-                return None;
+                None
             }
         }
     }

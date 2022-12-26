@@ -50,7 +50,7 @@ fn parse_protobuf_transaction_data(data: ProtoTransactionData) -> ExecutionData 
         origin: H160::from_slice(&data.from),
         action,
         input: data.data,
-        gas_limit: gas_limit,
+        gas_limit,
         value: U256::from_big_endian(&data.value),
         access_list,
     }

@@ -8,7 +8,7 @@ use protobuf::Message;
 
 use crate::evm;
 use crate::args::{PB_REQUEST_ARG};
-use crate::error::{ handle_c_error_default, handle_c_error_ptr, Error};
+use crate::error::{ handle_c_error_default, Error};
 use crate::memory::{ByteSliceView, UnmanagedVector};
 use crate::protobuf_generated::ffi::{FFIRequest, FFIRequest_oneof_req, HandleTransactionResponse, self};
 use crate::querier::GoQuerier;
@@ -74,7 +74,7 @@ pub extern "C" fn make_pb_request(
                                     let converted_topics: Vec<String> = log.topics.into_iter().map(|topic| topic.to_string()).collect();
                                     proto_log.set_topics(converted_topics.into());
 
-                                    return proto_log
+                                    proto_log
                                 }).collect();
 
                             response.set_logs(converted_logs);
@@ -87,15 +87,15 @@ pub extern "C" fn make_pb_request(
                                 }
                             };
 
-                            return Ok(response_bytes)
+                            Ok(response_bytes)
                         }
                     }
                 } else {
-                    return Err(Error::protobuf_decode("Request unwrapping failed"));
+                    Err(Error::protobuf_decode("Request unwrapping failed"))
                 }
             },
             Err(e) => {
-                return Err(Error::protobuf_decode(e.to_string()))
+                Err(Error::protobuf_decode(e.to_string()))
             }
         }
     }).unwrap_or_else(|_| Err(Error::panic()));
