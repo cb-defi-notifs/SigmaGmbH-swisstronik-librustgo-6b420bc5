@@ -11,6 +11,7 @@ pub mod storage;
 mod errors;
 mod precompiles;
 
+use backend::ExtendedBackend;
 pub use evm;
 pub use primitive_types;
 pub use ethereum;
@@ -74,7 +75,7 @@ pub fn handle_query(body: &[u8], storage: &mut dyn Storage) -> Vec<u8> {
 /// * body – RLP-encoded transaction
 /// * storage – implementation of trait `Storage`
 /// Returns RLP-encoded execution result or an error
-pub fn handle_transaction(body: &[u8], storage: &mut dyn Storage) -> Vec<u8> { // TODO: Pass backend instead of storage
+pub fn handle_transaction(body: &[u8], storage: &mut impl ExtendedBackend) -> Vec<u8> { // TODO: Pass backend instead of storage
     // Recover transaction data
     let transaction_data = match FullTransactionData::decode_transaction(body) {
         Ok(data) => data,
@@ -138,18 +139,18 @@ pub fn handle_query_inner(query: QueryData, storage: &mut dyn Storage) -> Execut
 }
 
 /// Handles EVM transaction
-pub fn handle_transaction_inner(transaction_data: ExecutionData, storage: &mut dyn Storage) -> ExecutionResult {
+pub fn handle_transaction_inner(transaction_data: ExecutionData, backend: &mut impl ExtendedBackend) -> ExecutionResult {
     // Prepare environment
-    let vicinity = Vicinity {
-        origin: transaction_data.origin,
-    };
-    let mut backend = Backend {
-        vicinity,
-        state: storage,
-        logs: Vec::default(),
-    };
+    // let vicinity = Vicinity {
+    //     origin: transaction_data.origin,
+    // };
+    // let mut backend = Backend {
+    //     vicinity,
+    //     state: storage,
+    //     logs: Vec::default(),
+    // };
     let metadata = StackSubstateMetadata::new(u64::MAX, &GASOMETER_CONFIG);
-    let state = MemoryStackState::new(metadata, &backend);
+    let state = MemoryStackState::new(metadata, backend);
 	let precompiles = EVMPrecompiles::<Backend>::new();
 
     let mut executor = StackExecutor::new_with_precompiles(state, &GASOMETER_CONFIG, &precompiles);
@@ -201,7 +202,7 @@ pub fn handle_transaction_inner(transaction_data: ExecutionData, storage: &mut d
     backend.apply(vals, logs, false);
 
     ExecutionResult {
-        logs: backend.logs.clone(),
+        logs: backend.get_logs(),
         data: exit_value,
         gas_used,
         vm_error: "".to_string(),

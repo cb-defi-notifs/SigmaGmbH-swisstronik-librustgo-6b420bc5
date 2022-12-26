@@ -19,10 +19,10 @@ pub fn handle_transaction(querier: GoQuerier, data: ProtoTransactionData) -> Exe
     // Create FFI storage & backend
     let vicinity = Vicinity{ origin: tx.origin };
     let mut storage = crate::evm::storage::FFIStorage::new(&querier);
-    let mut _backend = backend::FFIBackend::new(&querier, &mut storage, vicinity);
+    let mut backend = backend::FFIBackend::new(&querier, &mut storage, vicinity);
 
     // Handle already parsed transaction and return execution result
-    sgx_evm::handle_transaction_inner(tx, &mut storage)
+    sgx_evm::handle_transaction_inner(tx, &mut backend)
 }
 
 /// This function converts decoded protobuf transaction data into a regulat TransactionData struct
