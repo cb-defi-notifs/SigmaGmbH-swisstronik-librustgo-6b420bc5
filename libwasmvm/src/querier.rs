@@ -345,11 +345,8 @@ impl GoQuerier {
         let query_result = self.query_raw(request_bytes);
         match query_result {
             Ok(raw_result) => {
-                match ffi::QueryInsertStorageCellResponse::parse_from_bytes(&raw_result) {
-                    Err(err) => {
-                        println!("[Rust] insert_storage_cell: cannot decode protobuf: {:?}", err);
-                    },
-                    _ => {}
+                if let Err(err) = ffi::QueryInsertStorageCellResponse::parse_from_bytes(&raw_result) {
+                    println!("[Rust] insert_storage_cell: cannot decode protobuf: {:?}", err);
                 }
             },
             Err(err) => {
