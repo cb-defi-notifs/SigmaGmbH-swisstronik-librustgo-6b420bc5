@@ -1,7 +1,6 @@
 use sgx_evm::evm::backend::Basic;
-use sgx_evm::primitive_types::{H160, H256, U256};
+use sgx_evm::primitive_types::{H160, H256};
 use sgx_evm::storage::Storage;
-use std::{collections::BTreeMap, str::FromStr};
 
 use crate::querier::GoQuerier;
 

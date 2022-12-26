@@ -19,6 +19,11 @@ pub struct Vicinity {
     pub origin: H160,
 }
 
+/// Supertrait for our version of EVM Backend
+pub trait ExtendedBackend: EvmBackend + EvmApplyBackend {
+    fn get_logs(&self) -> Vec<Log>;
+}
+
 /// Backend for EVM that allows access to storage
 pub struct Backend<'state> {
 	// Contains gas price and original sender
@@ -27,6 +32,12 @@ pub struct Backend<'state> {
 	pub state: &'state mut dyn Storage,
     // Emitted events
     pub logs: Vec<Log>,
+}
+
+impl<'state> ExtendedBackend for Backend<'state> {
+    fn get_logs(&self) -> Vec<Log> {
+        self.logs.clone()
+    }
 }
 
 /// Implementation of trait `Backend` provided by evm crate

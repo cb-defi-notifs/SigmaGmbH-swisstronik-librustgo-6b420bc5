@@ -4,10 +4,11 @@
 #[macro_use]
 extern crate sgx_tstd as std;
 
-mod backend;
-mod errors;
+pub mod backend;
 pub mod primitives;
 pub mod storage;
+
+mod errors;
 mod precompiles;
 
 pub use evm;
