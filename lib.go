@@ -45,6 +45,14 @@ type QueryRemove = ffi.QueryRemove
 type QueryRemoveResponse = ffi.QueryRemoveResponse
 type QueryRemoveStorageCell = ffi.QueryRemoveStorageCell
 type QueryRemoveStorageCellResponse = ffi.QueryRemoveStorageCellResponse
+type QueryBlockHash = ffi.QueryBlockHash
+type QueryBlockHashResponse = ffi.QueryBlockHashResponse
+type QueryBlockTimestamp = ffi.QueryBlockTimestamp
+type QueryBlockTimestampResponse = ffi.QueryBlockTimestampResponse
+type QueryBlockNumber = ffi.QueryBlockNumber
+type QueryBlockNumberResponse = ffi.QueryBlockNumberResponse
+type QueryChainId = ffi.QueryChainId
+type QueryChainIdResponse = ffi.QueryChainIdResponse
 
 // Storage requests
 type CosmosRequest_GetAccount = ffi.CosmosRequest_GetAccount
