@@ -140,15 +140,6 @@ pub fn handle_query_inner(query: QueryData, storage: &mut dyn Storage) -> Execut
 
 /// Handles EVM transaction
 pub fn handle_transaction_inner(transaction_data: ExecutionData, backend: &mut impl ExtendedBackend) -> ExecutionResult {
-    // Prepare environment
-    // let vicinity = Vicinity {
-    //     origin: transaction_data.origin,
-    // };
-    // let mut backend = Backend {
-    //     vicinity,
-    //     state: storage,
-    //     logs: Vec::default(),
-    // };
     let metadata = StackSubstateMetadata::new(u64::MAX, &GASOMETER_CONFIG);
     let state = MemoryStackState::new(metadata, backend);
 	let precompiles = EVMPrecompiles::<Backend>::new();
