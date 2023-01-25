@@ -26,7 +26,7 @@ jobs:
           rustc --version; cargo --version; rustup --version
       - name: Create release build of librustgo
         run: |
-          RUSTC_WRAPPER="$HOME/sccache" make build-rust
+          make build-rust
       - name: Upload shared library
         uses: actions/upload-artifact@v2
         with:
