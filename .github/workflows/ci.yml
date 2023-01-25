@@ -18,9 +18,9 @@ jobs:
           key: ${{ runner.os }}-sccache
       - name: Download sccache
         run: |
-          wget https://github.com/mozilla/sccache/releases/download/v0.3.3/sccache-dist-v0.3.3-x86_64-unknown-linux-musl.tar.gz
+          wget https://github.com/mozilla/sccache/releases/download/0.2.13/sccache-0.2.13-x86_64-unknown-linux-musl.tar.gz
           tar xf ./sccache-*.tar.gz
-          mv ./sccache*/sccache-dist "$HOME/sccache"
+          mv ./sccache*/sccache "$HOME/sccache"
       - name: Show version information
         run: |
           rustc --version; cargo --version; rustup --version
