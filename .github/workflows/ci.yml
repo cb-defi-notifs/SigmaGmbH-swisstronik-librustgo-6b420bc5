@@ -2,7 +2,7 @@ name: CI
 on: [push]
 
 jobs:
-  build-shared-lib:
+  build-shared-lib-ubuntu:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
@@ -35,3 +35,26 @@ jobs:
         with:
           name: Shared library
           path: ./internal/api/libwasmvm.x86_64.so
+  build-shared-lib-macos:
+    runs-on: macOS-12
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cache cargo registry
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+      - name: Show version information
+        run: |
+          rustc --version; cargo --version; rustup --version
+      - name: Setup protoc
+        uses: arduino/setup-protoc@v1.1.2
+      - uses: Swatinem/rust-cache@v2
+      - name: Create release build of librustgo
+        run: |
+          make build-rust
+      - name: Upload shared library
+        uses: actions/upload-artifact@v2
+        with:
+          name: Shared library
+          path: ./internal/api/libwasmvm.dylib
