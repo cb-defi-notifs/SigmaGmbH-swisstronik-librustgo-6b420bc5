@@ -6,9 +6,6 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
-        with:
-          submodules: recursive
-        name: Pull git submodules
       - name: Cache cargo registry
         uses: actions/cache@v3
         with:
@@ -19,17 +16,14 @@ jobs:
         with:
           path: ~/.cache/sccache
           key: ${{ runner.os }}-sccache
-      - run: |
-          rustup component add rust-src clippy
       - name: Download sccache
         run: |
           wget https://github.com/mozilla/sccache/releases/download/0.3.3/sccache-0.3.3-x86_64-unknown-linux-musl.tar.gz
           tar xf ./sccache-*.tar.gz
           mv ./sccache*/sccache "$HOME/sccache"
       - name: Show version information
-      - run: |
+        run: |
           rustc --version; cargo --version; rustup --version
-
       - name: Create release build of librustgo
         run: |
           RUSTC_WRAPPER="$HOME/sccache" make build-rust
