@@ -126,3 +126,35 @@ jobs:
         with:
           name: librustgo.dylib
           path: ./internal/api/libwasmvm.dylib
+  test-go:
+    runs-on: ubuntu-22.04
+    needs: build-shared-lib-ubuntu-x86_64
+    steps:
+      - uses: actions/checkout@v3
+      - name: Show version information
+        run: |
+          go version
+      - name: Setup protoc
+        uses: arduino/setup-protoc@v1.1.2
+        with:
+          version: 3.x
+          include-pre-releases: false
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Download shared lib
+        uses: actions/download-artifact@v3
+        with:
+          name: librustgo_x86_64.so
+      - shell: bash
+        run: |
+          mv libwasmvm.x86_64.so ./internal/api/libwasmvm.x86_64.so
+      - name: Go integration tests
+        env:
+          GORACE: "halt_on_error=1"
+        run: |
+          make test
+      - name: Go tests with cgo and race condition safety checks
+        env:
+          GORACE: "halt_on_error=1"
+        run: |
+          make test-safety
+
