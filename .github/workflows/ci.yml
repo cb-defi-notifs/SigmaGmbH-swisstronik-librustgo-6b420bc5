@@ -16,6 +16,10 @@ jobs:
           rustc --version; cargo --version; rustup --version
       - name: Setup protoc
         uses: arduino/setup-protoc@v1.1.2
+        with:
+          version: 3.x
+          include-pre-releases: false
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: Swatinem/rust-cache@v2
       - name: Create release build of librustgo
         run: |
@@ -61,6 +65,10 @@ jobs:
           rustc --version; cargo --version; rustup --version
       - name: Setup protoc
         uses: arduino/setup-protoc@v1.1.2
+        with:
+          version: 3.x
+          include-pre-releases: false
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: Swatinem/rust-cache@v2
       - name: Create release build of librustgo
         run: |
@@ -85,6 +93,10 @@ jobs:
           rustc --version; cargo --version; rustup --version
       - name: Setup protoc
         uses: arduino/setup-protoc@v1.1.2
+        with:
+          version: 3.x
+          include-pre-releases: false
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: Swatinem/rust-cache@v2
       - name: Create release build of librustgo
         run: |
