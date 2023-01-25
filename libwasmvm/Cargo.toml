@@ -8,7 +8,7 @@ description = "Go bindings for Rust functionality"
 repository = "https://github.com/SigmaGmbH/librustgo"
 license = "Apache-2.0"
 readme = "README.md"
-exclude = [".circleci/*", ".gitignore"]
+exclude = [".circleci/*",".github/*", ".gitignore"]
 
 [lib]
 crate-type = ["cdylib"]

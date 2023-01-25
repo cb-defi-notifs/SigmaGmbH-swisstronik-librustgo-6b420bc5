@@ -1,0 +1,128 @@
+name: CI
+on: [push]
+
+jobs:
+  cargo-audit:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cache cargo registry
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+      - name: Show version information
+        run: |
+          rustc --version; cargo --version; rustup --version
+      - name: Setup protoc
+        uses: arduino/setup-protoc@v1.1.2
+        with:
+          version: 3.x
+          include-pre-releases: false
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: Swatinem/rust-cache@v2
+      - name: Install cargo-audit
+        run: |
+          cargo install --debug cargo-audit --version 0.17.4
+      - name: Run cargo-audit
+        run: |
+          cd libwasmvm; cargo audit
+
+  build-shared-lib-ubuntu-x86_64:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cache cargo registry
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+      - uses: Swatinem/rust-cache@v2
+      - name: Show version information
+        run: |
+          rustc --version; cargo --version; rustup --version
+      - name: Setup protoc
+        uses: arduino/setup-protoc@v1.1.2
+        with:
+          version: 3.x
+          include-pre-releases: false
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create release build of librustgo
+        run: |
+          make build-rust
+      - name: Upload shared library
+        uses: actions/upload-artifact@v3
+        with:
+          name: librustgo_x86_64.so
+          path: ./internal/api/libwasmvm.x86_64.so
+
+  build-shared-lib-ubuntu-aarch64:
+    # The host should always be Linux
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: uraimo/run-on-arch-action@v2
+        name: Run commands
+        id: runcmd
+        with:
+          arch: aarch64
+          distro: ubuntu22.04
+
+          # Not required, but speeds up builds by storing container images in
+          # a GitHub package registry.
+          githubToken: ${{ github.token }}
+
+          # Set an output parameter `uname` for use in subsequent steps
+          run: |
+            uname -a
+      - name: Cache cargo registry
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+      - uses: Swatinem/rust-cache@v2
+      - name: Show version information
+        run: |
+          rustc --version; cargo --version; rustup --version
+      - name: Setup protoc
+        uses: arduino/setup-protoc@v1.1.2
+        with:
+          version: 3.x
+          include-pre-releases: false
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create release build of librustgo
+        run: |
+          make build-rust
+      - name: Upload shared library
+        uses: actions/upload-artifact@v3
+        with:
+          name: librustgo_aarch64.so
+          path: ./internal/api/libwasmvm.aarch64.so
+
+  build-shared-lib-macos:
+    runs-on: macOS-12
+    steps:
+      - uses: actions/checkout@v3
+      - name: Cache cargo registry
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+      - uses: Swatinem/rust-cache@v2
+      - name: Show version information
+        run: |
+          rustc --version; cargo --version; rustup --version
+      - name: Setup protoc
+        uses: arduino/setup-protoc@v1.1.2
+        with:
+          version: 3.x
+          include-pre-releases: false
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create release build of librustgo
+        run: |
+          make build-rust
+      - name: Upload shared library
+        uses: actions/upload-artifact@v3
+        with:
+          name: librustgo.dylib
+          path: ./internal/api/libwasmvm.dylib
