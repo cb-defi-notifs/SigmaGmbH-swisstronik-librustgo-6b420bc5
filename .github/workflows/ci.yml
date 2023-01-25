@@ -26,8 +26,8 @@ jobs:
           rustc --version; cargo --version; rustup --version
       - name: Setup protoc
         uses: arduino/setup-protoc@v1.1.2
+      - uses: Swatinem/rust-cache@v2
       - name: Create release build of librustgo
-        uses: Swatinem/rust-cache@v2
         run: |
           make build-rust
       - name: Upload shared library
