@@ -28,7 +28,7 @@ jobs:
         uses: arduino/setup-protoc@v1.1.2
       - name: Create release build of librustgo
         run: |
-          make build-rust
+          RUSTC_WRAPPER="$HOME/sccache" make build-rust
       - name: Upload shared library
         uses: actions/upload-artifact@v2
         with:
