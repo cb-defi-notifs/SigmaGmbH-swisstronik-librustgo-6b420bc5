@@ -24,6 +24,8 @@ jobs:
       - name: Show version information
         run: |
           rustc --version; cargo --version; rustup --version
+      - name: Setup protoc
+        uses: arduino/setup-protoc@v1.1.2
       - name: Create release build of librustgo
         run: |
           make build-rust
