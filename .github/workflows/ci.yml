@@ -2,7 +2,7 @@ name: CI
 on: [push]
 
 jobs:
-  Build shared library:
+  build-shared-lib:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
