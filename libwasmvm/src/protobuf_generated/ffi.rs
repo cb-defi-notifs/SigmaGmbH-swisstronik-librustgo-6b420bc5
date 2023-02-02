@@ -593,10 +593,169 @@ impl ::protobuf::reflect::ProtobufValue for TransactionData {
 }
 
 #[derive(PartialEq,Clone,Default)]
+pub struct Topic {
+    // message fields
+    pub inner: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a Topic {
+    fn default() -> &'a Topic {
+        <Topic as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl Topic {
+    pub fn new() -> Topic {
+        ::std::default::Default::default()
+    }
+
+    // bytes inner = 1;
+
+
+    pub fn get_inner(&self) -> &[u8] {
+        &self.inner
+    }
+    pub fn clear_inner(&mut self) {
+        self.inner.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_inner(&mut self, v: ::std::vec::Vec<u8>) {
+        self.inner = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_inner(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.inner
+    }
+
+    // Take field
+    pub fn take_inner(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.inner, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for Topic {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.inner)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.inner.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.inner);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.inner.is_empty() {
+            os.write_bytes(1, &self.inner)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> Topic {
+        Topic::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "inner",
+                |m: &Topic| { &m.inner },
+                |m: &mut Topic| { &mut m.inner },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<Topic>(
+                "Topic",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static Topic {
+        static instance: ::protobuf::rt::LazyV2<Topic> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(Topic::new)
+    }
+}
+
+impl ::protobuf::Clear for Topic {
+    fn clear(&mut self) {
+        self.inner.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for Topic {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for Topic {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
 pub struct Log {
     // message fields
     pub address: ::std::vec::Vec<u8>,
-    pub topics: ::protobuf::RepeatedField<::std::string::String>,
+    pub topics: ::protobuf::RepeatedField<Topic>,
     pub data: ::std::vec::Vec<u8>,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
@@ -640,10 +799,10 @@ impl Log {
         ::std::mem::replace(&mut self.address, ::std::vec::Vec::new())
     }
 
-    // repeated string topics = 2;
+    // repeated .ffi.ffi.Topic topics = 2;
 
 
-    pub fn get_topics(&self) -> &[::std::string::String] {
+    pub fn get_topics(&self) -> &[Topic] {
         &self.topics
     }
     pub fn clear_topics(&mut self) {
@@ -651,17 +810,17 @@ impl Log {
     }
 
     // Param is passed by value, moved
-    pub fn set_topics(&mut self, v: ::protobuf::RepeatedField<::std::string::String>) {
+    pub fn set_topics(&mut self, v: ::protobuf::RepeatedField<Topic>) {
         self.topics = v;
     }
 
     // Mutable pointer to the field.
-    pub fn mut_topics(&mut self) -> &mut ::protobuf::RepeatedField<::std::string::String> {
+    pub fn mut_topics(&mut self) -> &mut ::protobuf::RepeatedField<Topic> {
         &mut self.topics
     }
 
     // Take field
-    pub fn take_topics(&mut self) -> ::protobuf::RepeatedField<::std::string::String> {
+    pub fn take_topics(&mut self) -> ::protobuf::RepeatedField<Topic> {
         ::std::mem::replace(&mut self.topics, ::protobuf::RepeatedField::new())
     }
 
@@ -694,6 +853,11 @@ impl Log {
 
 impl ::protobuf::Message for Log {
     fn is_initialized(&self) -> bool {
+        for v in &self.topics {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
         true
     }
 
@@ -705,7 +869,7 @@ impl ::protobuf::Message for Log {
                     ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.address)?;
                 },
                 2 => {
-                    ::protobuf::rt::read_repeated_string_into(wire_type, is, &mut self.topics)?;
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.topics)?;
                 },
                 3 => {
                     ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.data)?;
@@ -726,7 +890,8 @@ impl ::protobuf::Message for Log {
             my_size += ::protobuf::rt::bytes_size(1, &self.address);
         }
         for value in &self.topics {
-            my_size += ::protobuf::rt::string_size(2, &value);
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
         };
         if !self.data.is_empty() {
             my_size += ::protobuf::rt::bytes_size(3, &self.data);
@@ -741,7 +906,9 @@ impl ::protobuf::Message for Log {
             os.write_bytes(1, &self.address)?;
         }
         for v in &self.topics {
-            os.write_string(2, &v)?;
+            os.write_tag(2, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
         };
         if !self.data.is_empty() {
             os.write_bytes(3, &self.data)?;
@@ -789,7 +956,7 @@ impl ::protobuf::Message for Log {
                 |m: &Log| { &m.address },
                 |m: &mut Log| { &mut m.address },
             ));
-            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<Topic>>(
                 "topics",
                 |m: &Log| { &m.topics },
                 |m: &mut Log| { &mut m.topics },
@@ -6921,66 +7088,67 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x02to\x12\x12\n\x04data\x18\x03\x20\x01(\x0cR\x04data\x12\x1a\n\x08gasL\
     imit\x18\x04\x20\x01(\x04R\x08gasLimit\x12\x14\n\x05value\x18\x05\x20\
     \x01(\x0cR\x05value\x127\n\naccessList\x18\x06\x20\x03(\x0b2\x17.ffi.ffi\
-    .AccessListItemR\naccessList\"K\n\x03Log\x12\x18\n\x07address\x18\x01\
-    \x20\x01(\x0cR\x07address\x12\x16\n\x06topics\x18\x02\x20\x03(\tR\x06top\
-    ics\x12\x12\n\x04data\x18\x03\x20\x01(\x0cR\x04data\"\x85\x01\n\x19Handl\
-    eTransactionResponse\x12\x20\n\x04logs\x18\x02\x20\x03(\x0b2\x0c.ffi.ffi\
-    .LogR\x04logs\x12\x10\n\x03ret\x18\x03\x20\x01(\x0cR\x03ret\x12\x19\n\
-    \x08vm_error\x18\x04\x20\x01(\tR\x07vmError\x12\x19\n\x08gas_used\x18\
-    \x05\x20\x01(\x04R\x07gasUsed\"+\n\x0fQueryGetAccount\x12\x18\n\x07addre\
-    ss\x18\x01\x20\x01(\x0cR\x07address\"I\n\x17QueryGetAccountResponse\x12\
-    \x18\n\x07balance\x18\x01\x20\x01(\x0cR\x07balance\x12\x14\n\x05nonce\
-    \x18\x02\x20\x01(\x0cR\x05nonce\"^\n\x12QueryInsertAccount\x12\x18\n\x07\
-    address\x18\x01\x20\x01(\x0cR\x07address\x12\x18\n\x07balance\x18\x02\
-    \x20\x01(\x0cR\x07balance\x12\x14\n\x05nonce\x18\x03\x20\x01(\x0cR\x05no\
-    nce\"\x1c\n\x1aQueryInsertAccountResponse\"$\n\x10QueryContainsKey\x12\
-    \x10\n\x03key\x18\x01\x20\x01(\x0cR\x03key\"6\n\x18QueryContainsKeyRespo\
-    nse\x12\x1a\n\x08contains\x18\x01\x20\x01(\x08R\x08contains\"L\n\x1aQuer\
-    yGetAccountStorageCell\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07add\
-    ress\x12\x14\n\x05index\x18\x02\x20\x01(\x0cR\x05index\":\n\"QueryGetAcc\
-    ountStorageCellResponse\x12\x14\n\x05value\x18\x01\x20\x01(\x0cR\x05valu\
-    e\"/\n\x13QueryGetAccountCode\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\
-    \x07address\"1\n\x1bQueryGetAccountCodeResponse\x12\x12\n\x04code\x18\
-    \x01\x20\x01(\x0cR\x04code\"F\n\x16QueryInsertAccountCode\x12\x18\n\x07a\
-    ddress\x18\x01\x20\x01(\x0cR\x07address\x12\x12\n\x04code\x18\x02\x20\
-    \x01(\x0cR\x04code\"\x20\n\x1eQueryInsertAccountCodeResponse\"^\n\x16Que\
-    ryInsertStorageCell\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07addres\
-    s\x12\x14\n\x05index\x18\x02\x20\x01(\x0cR\x05index\x12\x14\n\x05value\
-    \x18\x03\x20\x01(\x0cR\x05value\"\x20\n\x1eQueryInsertStorageCellRespons\
-    e\"'\n\x0bQueryRemove\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07addr\
-    ess\"\x15\n\x13QueryRemoveResponse\"H\n\x16QueryRemoveStorageCell\x12\
-    \x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\x12\x14\n\x05index\
-    \x18\x02\x20\x01(\x0cR\x05index\"\x20\n\x1eQueryRemoveStorageCellRespons\
-    e\".\n\x12QueryRemoveStorage\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\
-    \x07address\"\x1c\n\x1aQueryRemoveStorageResponse\"(\n\x0eQueryBlockHash\
-    \x12\x16\n\x06number\x18\x01\x20\x01(\x0cR\x06number\",\n\x16QueryBlockH\
-    ashResponse\x12\x12\n\x04hash\x18\x01\x20\x01(\x0cR\x04hash\"\x12\n\x10Q\
-    ueryBlockNumber\"2\n\x18QueryBlockNumberResponse\x12\x16\n\x06number\x18\
-    \x01\x20\x01(\x0cR\x06number\"\x15\n\x13QueryBlockTimestamp\";\n\x1bQuer\
-    yBlockTimestampResponse\x12\x1c\n\ttimestamp\x18\x01\x20\x01(\x0cR\ttime\
-    stamp\"\x0e\n\x0cQueryChainId\"1\n\x14QueryChainIdResponse\x12\x19\n\x08\
-    chain_id\x18\x01\x20\x01(\x0cR\x07chainId\"\xbc\x07\n\rCosmosRequest\x12\
-    :\n\ngetAccount\x18\x01\x20\x01(\x0b2\x18.ffi.ffi.QueryGetAccountH\0R\ng\
-    etAccount\x12C\n\rinsertAccount\x18\x02\x20\x01(\x0b2\x1b.ffi.ffi.QueryI\
-    nsertAccountH\0R\rinsertAccount\x12=\n\x0bcontainsKey\x18\x03\x20\x01(\
-    \x0b2\x19.ffi.ffi.QueryContainsKeyH\0R\x0bcontainsKey\x12@\n\x0baccountC\
-    ode\x18\x04\x20\x01(\x0b2\x1c.ffi.ffi.QueryGetAccountCodeH\0R\x0baccount\
-    Code\x12G\n\x0bstorageCell\x18\x05\x20\x01(\x0b2#.ffi.ffi.QueryGetAccoun\
-    tStorageCellH\0R\x0bstorageCell\x12O\n\x11insertAccountCode\x18\x06\x20\
-    \x01(\x0b2\x1f.ffi.ffi.QueryInsertAccountCodeH\0R\x11insertAccountCode\
-    \x12O\n\x11insertStorageCell\x18\x07\x20\x01(\x0b2\x1f.ffi.ffi.QueryInse\
-    rtStorageCellH\0R\x11insertStorageCell\x12.\n\x06remove\x18\x08\x20\x01(\
-    \x0b2\x14.ffi.ffi.QueryRemoveH\0R\x06remove\x12O\n\x11removeStorageCell\
-    \x18\t\x20\x01(\x0b2\x1f.ffi.ffi.QueryRemoveStorageCellH\0R\x11removeSto\
-    rageCell\x12C\n\rremoveStorage\x18\n\x20\x01(\x0b2\x1b.ffi.ffi.QueryRemo\
-    veStorageH\0R\rremoveStorage\x127\n\tblockHash\x18\x0b\x20\x01(\x0b2\x17\
-    .ffi.ffi.QueryBlockHashH\0R\tblockHash\x12=\n\x0bblockNumber\x18\x0c\x20\
-    \x01(\x0b2\x19.ffi.ffi.QueryBlockNumberH\0R\x0bblockNumber\x12F\n\x0eblo\
-    ckTimestamp\x18\r\x20\x01(\x0b2\x1c.ffi.ffi.QueryBlockTimestampH\0R\x0eb\
-    lockTimestamp\x121\n\x07chainId\x18\x0e\x20\x01(\x0b2\x15.ffi.ffi.QueryC\
-    hainIdH\0R\x07chainIdB\x05\n\x03req\"]\n\nFFIRequest\x12H\n\x11handleTra\
-    nsaction\x18\x01\x20\x01(\x0b2\x18.ffi.ffi.TransactionDataH\0R\x11handle\
-    TransactionB\x05\n\x03reqB\x04Z\x02./b\x06proto3\
+    .AccessListItemR\naccessList\"\x1d\n\x05Topic\x12\x14\n\x05inner\x18\x01\
+    \x20\x01(\x0cR\x05inner\"[\n\x03Log\x12\x18\n\x07address\x18\x01\x20\x01\
+    (\x0cR\x07address\x12&\n\x06topics\x18\x02\x20\x03(\x0b2\x0e.ffi.ffi.Top\
+    icR\x06topics\x12\x12\n\x04data\x18\x03\x20\x01(\x0cR\x04data\"\x85\x01\
+    \n\x19HandleTransactionResponse\x12\x20\n\x04logs\x18\x02\x20\x03(\x0b2\
+    \x0c.ffi.ffi.LogR\x04logs\x12\x10\n\x03ret\x18\x03\x20\x01(\x0cR\x03ret\
+    \x12\x19\n\x08vm_error\x18\x04\x20\x01(\tR\x07vmError\x12\x19\n\x08gas_u\
+    sed\x18\x05\x20\x01(\x04R\x07gasUsed\"+\n\x0fQueryGetAccount\x12\x18\n\
+    \x07address\x18\x01\x20\x01(\x0cR\x07address\"I\n\x17QueryGetAccountResp\
+    onse\x12\x18\n\x07balance\x18\x01\x20\x01(\x0cR\x07balance\x12\x14\n\x05\
+    nonce\x18\x02\x20\x01(\x0cR\x05nonce\"^\n\x12QueryInsertAccount\x12\x18\
+    \n\x07address\x18\x01\x20\x01(\x0cR\x07address\x12\x18\n\x07balance\x18\
+    \x02\x20\x01(\x0cR\x07balance\x12\x14\n\x05nonce\x18\x03\x20\x01(\x0cR\
+    \x05nonce\"\x1c\n\x1aQueryInsertAccountResponse\"$\n\x10QueryContainsKey\
+    \x12\x10\n\x03key\x18\x01\x20\x01(\x0cR\x03key\"6\n\x18QueryContainsKeyR\
+    esponse\x12\x1a\n\x08contains\x18\x01\x20\x01(\x08R\x08contains\"L\n\x1a\
+    QueryGetAccountStorageCell\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\
+    \x07address\x12\x14\n\x05index\x18\x02\x20\x01(\x0cR\x05index\":\n\"Quer\
+    yGetAccountStorageCellResponse\x12\x14\n\x05value\x18\x01\x20\x01(\x0cR\
+    \x05value\"/\n\x13QueryGetAccountCode\x12\x18\n\x07address\x18\x01\x20\
+    \x01(\x0cR\x07address\"1\n\x1bQueryGetAccountCodeResponse\x12\x12\n\x04c\
+    ode\x18\x01\x20\x01(\x0cR\x04code\"F\n\x16QueryInsertAccountCode\x12\x18\
+    \n\x07address\x18\x01\x20\x01(\x0cR\x07address\x12\x12\n\x04code\x18\x02\
+    \x20\x01(\x0cR\x04code\"\x20\n\x1eQueryInsertAccountCodeResponse\"^\n\
+    \x16QueryInsertStorageCell\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\
+    \x07address\x12\x14\n\x05index\x18\x02\x20\x01(\x0cR\x05index\x12\x14\n\
+    \x05value\x18\x03\x20\x01(\x0cR\x05value\"\x20\n\x1eQueryInsertStorageCe\
+    llResponse\"'\n\x0bQueryRemove\x12\x18\n\x07address\x18\x01\x20\x01(\x0c\
+    R\x07address\"\x15\n\x13QueryRemoveResponse\"H\n\x16QueryRemoveStorageCe\
+    ll\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\x12\x14\n\x05in\
+    dex\x18\x02\x20\x01(\x0cR\x05index\"\x20\n\x1eQueryRemoveStorageCellResp\
+    onse\".\n\x12QueryRemoveStorage\x12\x18\n\x07address\x18\x01\x20\x01(\
+    \x0cR\x07address\"\x1c\n\x1aQueryRemoveStorageResponse\"(\n\x0eQueryBloc\
+    kHash\x12\x16\n\x06number\x18\x01\x20\x01(\x0cR\x06number\",\n\x16QueryB\
+    lockHashResponse\x12\x12\n\x04hash\x18\x01\x20\x01(\x0cR\x04hash\"\x12\n\
+    \x10QueryBlockNumber\"2\n\x18QueryBlockNumberResponse\x12\x16\n\x06numbe\
+    r\x18\x01\x20\x01(\x0cR\x06number\"\x15\n\x13QueryBlockTimestamp\";\n\
+    \x1bQueryBlockTimestampResponse\x12\x1c\n\ttimestamp\x18\x01\x20\x01(\
+    \x0cR\ttimestamp\"\x0e\n\x0cQueryChainId\"1\n\x14QueryChainIdResponse\
+    \x12\x19\n\x08chain_id\x18\x01\x20\x01(\x0cR\x07chainId\"\xbc\x07\n\rCos\
+    mosRequest\x12:\n\ngetAccount\x18\x01\x20\x01(\x0b2\x18.ffi.ffi.QueryGet\
+    AccountH\0R\ngetAccount\x12C\n\rinsertAccount\x18\x02\x20\x01(\x0b2\x1b.\
+    ffi.ffi.QueryInsertAccountH\0R\rinsertAccount\x12=\n\x0bcontainsKey\x18\
+    \x03\x20\x01(\x0b2\x19.ffi.ffi.QueryContainsKeyH\0R\x0bcontainsKey\x12@\
+    \n\x0baccountCode\x18\x04\x20\x01(\x0b2\x1c.ffi.ffi.QueryGetAccountCodeH\
+    \0R\x0baccountCode\x12G\n\x0bstorageCell\x18\x05\x20\x01(\x0b2#.ffi.ffi.\
+    QueryGetAccountStorageCellH\0R\x0bstorageCell\x12O\n\x11insertAccountCod\
+    e\x18\x06\x20\x01(\x0b2\x1f.ffi.ffi.QueryInsertAccountCodeH\0R\x11insert\
+    AccountCode\x12O\n\x11insertStorageCell\x18\x07\x20\x01(\x0b2\x1f.ffi.ff\
+    i.QueryInsertStorageCellH\0R\x11insertStorageCell\x12.\n\x06remove\x18\
+    \x08\x20\x01(\x0b2\x14.ffi.ffi.QueryRemoveH\0R\x06remove\x12O\n\x11remov\
+    eStorageCell\x18\t\x20\x01(\x0b2\x1f.ffi.ffi.QueryRemoveStorageCellH\0R\
+    \x11removeStorageCell\x12C\n\rremoveStorage\x18\n\x20\x01(\x0b2\x1b.ffi.\
+    ffi.QueryRemoveStorageH\0R\rremoveStorage\x127\n\tblockHash\x18\x0b\x20\
+    \x01(\x0b2\x17.ffi.ffi.QueryBlockHashH\0R\tblockHash\x12=\n\x0bblockNumb\
+    er\x18\x0c\x20\x01(\x0b2\x19.ffi.ffi.QueryBlockNumberH\0R\x0bblockNumber\
+    \x12F\n\x0eblockTimestamp\x18\r\x20\x01(\x0b2\x1c.ffi.ffi.QueryBlockTime\
+    stampH\0R\x0eblockTimestamp\x121\n\x07chainId\x18\x0e\x20\x01(\x0b2\x15.\
+    ffi.ffi.QueryChainIdH\0R\x07chainIdB\x05\n\x03req\"]\n\nFFIRequest\x12H\
+    \n\x11handleTransaction\x18\x01\x20\x01(\x0b2\x18.ffi.ffi.TransactionDat\
+    aH\0R\x11handleTransactionB\x05\n\x03reqB\x04Z\x02./b\x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;

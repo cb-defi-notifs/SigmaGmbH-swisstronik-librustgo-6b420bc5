@@ -5,12 +5,13 @@ use std::panic::{catch_unwind};
 // use cosmwasm_vm::{capabilities_from_csv, Cache, CacheOptions, Checksum, Size};
 
 use protobuf::Message;
+use sgx_evm::primitive_types::H256;
 
 use crate::evm;
 use crate::args::{PB_REQUEST_ARG};
 use crate::error::{ handle_c_error_default, Error};
 use crate::memory::{ByteSliceView, UnmanagedVector};
-use crate::protobuf_generated::ffi::{FFIRequest, FFIRequest_oneof_req, HandleTransactionResponse, self};
+use crate::protobuf_generated::ffi::{FFIRequest, FFIRequest_oneof_req, HandleTransactionResponse, Topic, Log};
 use crate::querier::GoQuerier;
 
 
@@ -67,11 +68,14 @@ pub extern "C" fn make_pb_request(
                             let converted_logs = execution_result.logs
                                 .into_iter()
                                 .map(|log| {
-                                    let mut proto_log = ffi::Log::new();
+                                    let mut proto_log = Log::new();
                                     proto_log.set_address(log.address.as_fixed_bytes().to_vec());
                                     proto_log.set_data(log.data);
 
-                                    let converted_topics: Vec<String> = log.topics.into_iter().map(|topic| topic.to_string()).collect();
+                                    let converted_topics: Vec<Topic> = log.topics
+                                        .into_iter()
+                                        .map(|topic| convert_topic_to_proto(topic))
+                                        .collect();
                                     proto_log.set_topics(converted_topics.into());
 
                                     proto_log
@@ -102,6 +106,13 @@ pub extern "C" fn make_pb_request(
 
     let data = handle_c_error_default(r, error_msg);
     UnmanagedVector::new(Some(data))
+}
+
+fn convert_topic_to_proto(topic: H256) -> Topic {
+    let mut protobuf_topic = Topic::new();
+    protobuf_topic.set_inner(topic.as_fixed_bytes().to_vec());
+
+    protobuf_topic
 }
 
 fn _set_to_csv(set: HashSet<String>) -> String {

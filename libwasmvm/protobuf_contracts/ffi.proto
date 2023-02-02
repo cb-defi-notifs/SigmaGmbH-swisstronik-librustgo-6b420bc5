@@ -20,6 +20,11 @@ message TransactionData {
   repeated AccessListItem accessList = 6;
 }
 
+// Topic represents 32-byte words that is used to describe what’s going on in an event
+message Topic {
+  bytes inner = 1;
+}
+
 // Log represents an protobuf compatible Ethereum Log that defines a contract
 // log event.
 // Copied from `devnet/proto``
@@ -27,7 +32,7 @@ message Log {
   // address of the contract that generated the event
   bytes address = 1;
   // list of topics provided by the contract.
-  repeated string topics = 2;
+  repeated Topic topics = 2;
   // supplied by the contract, usually ABI-encoded
   bytes data = 3;
 }
