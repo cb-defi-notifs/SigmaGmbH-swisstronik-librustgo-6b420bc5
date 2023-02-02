@@ -25,7 +25,7 @@ message TransactionData {
 // Copied from `devnet/proto``
 message Log {
   // address of the contract that generated the event
-  string address = 1;
+  bytes address = 1;
   // list of topics provided by the contract.
   repeated string topics = 2;
   // supplied by the contract, usually ABI-encoded

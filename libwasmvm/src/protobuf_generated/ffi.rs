@@ -595,7 +595,7 @@ impl ::protobuf::reflect::ProtobufValue for TransactionData {
 #[derive(PartialEq,Clone,Default)]
 pub struct Log {
     // message fields
-    pub address: ::std::string::String,
+    pub address: ::std::vec::Vec<u8>,
     pub topics: ::protobuf::RepeatedField<::std::string::String>,
     pub data: ::std::vec::Vec<u8>,
     // special fields
@@ -614,10 +614,10 @@ impl Log {
         ::std::default::Default::default()
     }
 
-    // string address = 1;
+    // bytes address = 1;
 
 
-    pub fn get_address(&self) -> &str {
+    pub fn get_address(&self) -> &[u8] {
         &self.address
     }
     pub fn clear_address(&mut self) {
@@ -625,19 +625,19 @@ impl Log {
     }
 
     // Param is passed by value, moved
-    pub fn set_address(&mut self, v: ::std::string::String) {
+    pub fn set_address(&mut self, v: ::std::vec::Vec<u8>) {
         self.address = v;
     }
 
     // Mutable pointer to the field.
     // If field is not initialized, it is initialized with default value first.
-    pub fn mut_address(&mut self) -> &mut ::std::string::String {
+    pub fn mut_address(&mut self) -> &mut ::std::vec::Vec<u8> {
         &mut self.address
     }
 
     // Take field
-    pub fn take_address(&mut self) -> ::std::string::String {
-        ::std::mem::replace(&mut self.address, ::std::string::String::new())
+    pub fn take_address(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.address, ::std::vec::Vec::new())
     }
 
     // repeated string topics = 2;
@@ -702,7 +702,7 @@ impl ::protobuf::Message for Log {
             let (field_number, wire_type) = is.read_tag_unpack()?;
             match field_number {
                 1 => {
-                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.address)?;
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.address)?;
                 },
                 2 => {
                     ::protobuf::rt::read_repeated_string_into(wire_type, is, &mut self.topics)?;
@@ -723,7 +723,7 @@ impl ::protobuf::Message for Log {
     fn compute_size(&self) -> u32 {
         let mut my_size = 0;
         if !self.address.is_empty() {
-            my_size += ::protobuf::rt::string_size(1, &self.address);
+            my_size += ::protobuf::rt::bytes_size(1, &self.address);
         }
         for value in &self.topics {
             my_size += ::protobuf::rt::string_size(2, &value);
@@ -738,7 +738,7 @@ impl ::protobuf::Message for Log {
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
         if !self.address.is_empty() {
-            os.write_string(1, &self.address)?;
+            os.write_bytes(1, &self.address)?;
         }
         for v in &self.topics {
             os.write_string(2, &v)?;
@@ -784,7 +784,7 @@ impl ::protobuf::Message for Log {
         static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
         descriptor.get(|| {
             let mut fields = ::std::vec::Vec::new();
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
                 "address",
                 |m: &Log| { &m.address },
                 |m: &mut Log| { &mut m.address },
@@ -6922,65 +6922,65 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     imit\x18\x04\x20\x01(\x04R\x08gasLimit\x12\x14\n\x05value\x18\x05\x20\
     \x01(\x0cR\x05value\x127\n\naccessList\x18\x06\x20\x03(\x0b2\x17.ffi.ffi\
     .AccessListItemR\naccessList\"K\n\x03Log\x12\x18\n\x07address\x18\x01\
-    \x20\x01(\tR\x07address\x12\x16\n\x06topics\x18\x02\x20\x03(\tR\x06topic\
-    s\x12\x12\n\x04data\x18\x03\x20\x01(\x0cR\x04data\"\x85\x01\n\x19HandleT\
-    ransactionResponse\x12\x20\n\x04logs\x18\x02\x20\x03(\x0b2\x0c.ffi.ffi.L\
-    ogR\x04logs\x12\x10\n\x03ret\x18\x03\x20\x01(\x0cR\x03ret\x12\x19\n\x08v\
-    m_error\x18\x04\x20\x01(\tR\x07vmError\x12\x19\n\x08gas_used\x18\x05\x20\
-    \x01(\x04R\x07gasUsed\"+\n\x0fQueryGetAccount\x12\x18\n\x07address\x18\
-    \x01\x20\x01(\x0cR\x07address\"I\n\x17QueryGetAccountResponse\x12\x18\n\
-    \x07balance\x18\x01\x20\x01(\x0cR\x07balance\x12\x14\n\x05nonce\x18\x02\
-    \x20\x01(\x0cR\x05nonce\"^\n\x12QueryInsertAccount\x12\x18\n\x07address\
-    \x18\x01\x20\x01(\x0cR\x07address\x12\x18\n\x07balance\x18\x02\x20\x01(\
-    \x0cR\x07balance\x12\x14\n\x05nonce\x18\x03\x20\x01(\x0cR\x05nonce\"\x1c\
-    \n\x1aQueryInsertAccountResponse\"$\n\x10QueryContainsKey\x12\x10\n\x03k\
-    ey\x18\x01\x20\x01(\x0cR\x03key\"6\n\x18QueryContainsKeyResponse\x12\x1a\
-    \n\x08contains\x18\x01\x20\x01(\x08R\x08contains\"L\n\x1aQueryGetAccount\
-    StorageCell\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\x12\
-    \x14\n\x05index\x18\x02\x20\x01(\x0cR\x05index\":\n\"QueryGetAccountStor\
-    ageCellResponse\x12\x14\n\x05value\x18\x01\x20\x01(\x0cR\x05value\"/\n\
-    \x13QueryGetAccountCode\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07ad\
-    dress\"1\n\x1bQueryGetAccountCodeResponse\x12\x12\n\x04code\x18\x01\x20\
-    \x01(\x0cR\x04code\"F\n\x16QueryInsertAccountCode\x12\x18\n\x07address\
-    \x18\x01\x20\x01(\x0cR\x07address\x12\x12\n\x04code\x18\x02\x20\x01(\x0c\
-    R\x04code\"\x20\n\x1eQueryInsertAccountCodeResponse\"^\n\x16QueryInsertS\
-    torageCell\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\x12\x14\
-    \n\x05index\x18\x02\x20\x01(\x0cR\x05index\x12\x14\n\x05value\x18\x03\
-    \x20\x01(\x0cR\x05value\"\x20\n\x1eQueryInsertStorageCellResponse\"'\n\
-    \x0bQueryRemove\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\"\
-    \x15\n\x13QueryRemoveResponse\"H\n\x16QueryRemoveStorageCell\x12\x18\n\
-    \x07address\x18\x01\x20\x01(\x0cR\x07address\x12\x14\n\x05index\x18\x02\
-    \x20\x01(\x0cR\x05index\"\x20\n\x1eQueryRemoveStorageCellResponse\".\n\
-    \x12QueryRemoveStorage\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07add\
-    ress\"\x1c\n\x1aQueryRemoveStorageResponse\"(\n\x0eQueryBlockHash\x12\
-    \x16\n\x06number\x18\x01\x20\x01(\x0cR\x06number\",\n\x16QueryBlockHashR\
-    esponse\x12\x12\n\x04hash\x18\x01\x20\x01(\x0cR\x04hash\"\x12\n\x10Query\
-    BlockNumber\"2\n\x18QueryBlockNumberResponse\x12\x16\n\x06number\x18\x01\
-    \x20\x01(\x0cR\x06number\"\x15\n\x13QueryBlockTimestamp\";\n\x1bQueryBlo\
-    ckTimestampResponse\x12\x1c\n\ttimestamp\x18\x01\x20\x01(\x0cR\ttimestam\
-    p\"\x0e\n\x0cQueryChainId\"1\n\x14QueryChainIdResponse\x12\x19\n\x08chai\
-    n_id\x18\x01\x20\x01(\x0cR\x07chainId\"\xbc\x07\n\rCosmosRequest\x12:\n\
-    \ngetAccount\x18\x01\x20\x01(\x0b2\x18.ffi.ffi.QueryGetAccountH\0R\ngetA\
-    ccount\x12C\n\rinsertAccount\x18\x02\x20\x01(\x0b2\x1b.ffi.ffi.QueryInse\
-    rtAccountH\0R\rinsertAccount\x12=\n\x0bcontainsKey\x18\x03\x20\x01(\x0b2\
-    \x19.ffi.ffi.QueryContainsKeyH\0R\x0bcontainsKey\x12@\n\x0baccountCode\
-    \x18\x04\x20\x01(\x0b2\x1c.ffi.ffi.QueryGetAccountCodeH\0R\x0baccountCod\
-    e\x12G\n\x0bstorageCell\x18\x05\x20\x01(\x0b2#.ffi.ffi.QueryGetAccountSt\
-    orageCellH\0R\x0bstorageCell\x12O\n\x11insertAccountCode\x18\x06\x20\x01\
-    (\x0b2\x1f.ffi.ffi.QueryInsertAccountCodeH\0R\x11insertAccountCode\x12O\
-    \n\x11insertStorageCell\x18\x07\x20\x01(\x0b2\x1f.ffi.ffi.QueryInsertSto\
-    rageCellH\0R\x11insertStorageCell\x12.\n\x06remove\x18\x08\x20\x01(\x0b2\
-    \x14.ffi.ffi.QueryRemoveH\0R\x06remove\x12O\n\x11removeStorageCell\x18\t\
-    \x20\x01(\x0b2\x1f.ffi.ffi.QueryRemoveStorageCellH\0R\x11removeStorageCe\
-    ll\x12C\n\rremoveStorage\x18\n\x20\x01(\x0b2\x1b.ffi.ffi.QueryRemoveStor\
-    ageH\0R\rremoveStorage\x127\n\tblockHash\x18\x0b\x20\x01(\x0b2\x17.ffi.f\
-    fi.QueryBlockHashH\0R\tblockHash\x12=\n\x0bblockNumber\x18\x0c\x20\x01(\
-    \x0b2\x19.ffi.ffi.QueryBlockNumberH\0R\x0bblockNumber\x12F\n\x0eblockTim\
-    estamp\x18\r\x20\x01(\x0b2\x1c.ffi.ffi.QueryBlockTimestampH\0R\x0eblockT\
-    imestamp\x121\n\x07chainId\x18\x0e\x20\x01(\x0b2\x15.ffi.ffi.QueryChainI\
-    dH\0R\x07chainIdB\x05\n\x03req\"]\n\nFFIRequest\x12H\n\x11handleTransact\
-    ion\x18\x01\x20\x01(\x0b2\x18.ffi.ffi.TransactionDataH\0R\x11handleTrans\
-    actionB\x05\n\x03reqB\x04Z\x02./b\x06proto3\
+    \x20\x01(\x0cR\x07address\x12\x16\n\x06topics\x18\x02\x20\x03(\tR\x06top\
+    ics\x12\x12\n\x04data\x18\x03\x20\x01(\x0cR\x04data\"\x85\x01\n\x19Handl\
+    eTransactionResponse\x12\x20\n\x04logs\x18\x02\x20\x03(\x0b2\x0c.ffi.ffi\
+    .LogR\x04logs\x12\x10\n\x03ret\x18\x03\x20\x01(\x0cR\x03ret\x12\x19\n\
+    \x08vm_error\x18\x04\x20\x01(\tR\x07vmError\x12\x19\n\x08gas_used\x18\
+    \x05\x20\x01(\x04R\x07gasUsed\"+\n\x0fQueryGetAccount\x12\x18\n\x07addre\
+    ss\x18\x01\x20\x01(\x0cR\x07address\"I\n\x17QueryGetAccountResponse\x12\
+    \x18\n\x07balance\x18\x01\x20\x01(\x0cR\x07balance\x12\x14\n\x05nonce\
+    \x18\x02\x20\x01(\x0cR\x05nonce\"^\n\x12QueryInsertAccount\x12\x18\n\x07\
+    address\x18\x01\x20\x01(\x0cR\x07address\x12\x18\n\x07balance\x18\x02\
+    \x20\x01(\x0cR\x07balance\x12\x14\n\x05nonce\x18\x03\x20\x01(\x0cR\x05no\
+    nce\"\x1c\n\x1aQueryInsertAccountResponse\"$\n\x10QueryContainsKey\x12\
+    \x10\n\x03key\x18\x01\x20\x01(\x0cR\x03key\"6\n\x18QueryContainsKeyRespo\
+    nse\x12\x1a\n\x08contains\x18\x01\x20\x01(\x08R\x08contains\"L\n\x1aQuer\
+    yGetAccountStorageCell\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07add\
+    ress\x12\x14\n\x05index\x18\x02\x20\x01(\x0cR\x05index\":\n\"QueryGetAcc\
+    ountStorageCellResponse\x12\x14\n\x05value\x18\x01\x20\x01(\x0cR\x05valu\
+    e\"/\n\x13QueryGetAccountCode\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\
+    \x07address\"1\n\x1bQueryGetAccountCodeResponse\x12\x12\n\x04code\x18\
+    \x01\x20\x01(\x0cR\x04code\"F\n\x16QueryInsertAccountCode\x12\x18\n\x07a\
+    ddress\x18\x01\x20\x01(\x0cR\x07address\x12\x12\n\x04code\x18\x02\x20\
+    \x01(\x0cR\x04code\"\x20\n\x1eQueryInsertAccountCodeResponse\"^\n\x16Que\
+    ryInsertStorageCell\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07addres\
+    s\x12\x14\n\x05index\x18\x02\x20\x01(\x0cR\x05index\x12\x14\n\x05value\
+    \x18\x03\x20\x01(\x0cR\x05value\"\x20\n\x1eQueryInsertStorageCellRespons\
+    e\"'\n\x0bQueryRemove\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07addr\
+    ess\"\x15\n\x13QueryRemoveResponse\"H\n\x16QueryRemoveStorageCell\x12\
+    \x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\x12\x14\n\x05index\
+    \x18\x02\x20\x01(\x0cR\x05index\"\x20\n\x1eQueryRemoveStorageCellRespons\
+    e\".\n\x12QueryRemoveStorage\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\
+    \x07address\"\x1c\n\x1aQueryRemoveStorageResponse\"(\n\x0eQueryBlockHash\
+    \x12\x16\n\x06number\x18\x01\x20\x01(\x0cR\x06number\",\n\x16QueryBlockH\
+    ashResponse\x12\x12\n\x04hash\x18\x01\x20\x01(\x0cR\x04hash\"\x12\n\x10Q\
+    ueryBlockNumber\"2\n\x18QueryBlockNumberResponse\x12\x16\n\x06number\x18\
+    \x01\x20\x01(\x0cR\x06number\"\x15\n\x13QueryBlockTimestamp\";\n\x1bQuer\
+    yBlockTimestampResponse\x12\x1c\n\ttimestamp\x18\x01\x20\x01(\x0cR\ttime\
+    stamp\"\x0e\n\x0cQueryChainId\"1\n\x14QueryChainIdResponse\x12\x19\n\x08\
+    chain_id\x18\x01\x20\x01(\x0cR\x07chainId\"\xbc\x07\n\rCosmosRequest\x12\
+    :\n\ngetAccount\x18\x01\x20\x01(\x0b2\x18.ffi.ffi.QueryGetAccountH\0R\ng\
+    etAccount\x12C\n\rinsertAccount\x18\x02\x20\x01(\x0b2\x1b.ffi.ffi.QueryI\
+    nsertAccountH\0R\rinsertAccount\x12=\n\x0bcontainsKey\x18\x03\x20\x01(\
+    \x0b2\x19.ffi.ffi.QueryContainsKeyH\0R\x0bcontainsKey\x12@\n\x0baccountC\
+    ode\x18\x04\x20\x01(\x0b2\x1c.ffi.ffi.QueryGetAccountCodeH\0R\x0baccount\
+    Code\x12G\n\x0bstorageCell\x18\x05\x20\x01(\x0b2#.ffi.ffi.QueryGetAccoun\
+    tStorageCellH\0R\x0bstorageCell\x12O\n\x11insertAccountCode\x18\x06\x20\
+    \x01(\x0b2\x1f.ffi.ffi.QueryInsertAccountCodeH\0R\x11insertAccountCode\
+    \x12O\n\x11insertStorageCell\x18\x07\x20\x01(\x0b2\x1f.ffi.ffi.QueryInse\
+    rtStorageCellH\0R\x11insertStorageCell\x12.\n\x06remove\x18\x08\x20\x01(\
+    \x0b2\x14.ffi.ffi.QueryRemoveH\0R\x06remove\x12O\n\x11removeStorageCell\
+    \x18\t\x20\x01(\x0b2\x1f.ffi.ffi.QueryRemoveStorageCellH\0R\x11removeSto\
+    rageCell\x12C\n\rremoveStorage\x18\n\x20\x01(\x0b2\x1b.ffi.ffi.QueryRemo\
+    veStorageH\0R\rremoveStorage\x127\n\tblockHash\x18\x0b\x20\x01(\x0b2\x17\
+    .ffi.ffi.QueryBlockHashH\0R\tblockHash\x12=\n\x0bblockNumber\x18\x0c\x20\
+    \x01(\x0b2\x19.ffi.ffi.QueryBlockNumberH\0R\x0bblockNumber\x12F\n\x0eblo\
+    ckTimestamp\x18\r\x20\x01(\x0b2\x1c.ffi.ffi.QueryBlockTimestampH\0R\x0eb\
+    lockTimestamp\x121\n\x07chainId\x18\x0e\x20\x01(\x0b2\x15.ffi.ffi.QueryC\
+    hainIdH\0R\x07chainIdB\x05\n\x03req\"]\n\nFFIRequest\x12H\n\x11handleTra\
+    nsaction\x18\x01\x20\x01(\x0b2\x18.ffi.ffi.TransactionDataH\0R\x11handle\
+    TransactionB\x05\n\x03reqB\x04Z\x02./b\x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;

@@ -68,7 +68,7 @@ pub extern "C" fn make_pb_request(
                                 .into_iter()
                                 .map(|log| {
                                     let mut proto_log = ffi::Log::new();
-                                    proto_log.set_address(log.address.to_string());
+                                    proto_log.set_address(log.address.as_fixed_bytes().to_vec());
                                     proto_log.set_data(log.data);
 
                                     let converted_topics: Vec<String> = log.topics.into_iter().map(|topic| topic.to_string()).collect();
