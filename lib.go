@@ -25,6 +25,9 @@ type Querier = types.Querier
 // GasMeter is a read-only version of the sdk gas meter
 type GasMeter = api.GasMeter
 
+// Logs returned by EVM
+type Log = ffi.Log
+
 // Export protobuf messages for FFI
 type QueryGetAccount = ffi.QueryGetAccount
 type QueryGetAccountResponse = ffi.QueryGetAccountResponse
