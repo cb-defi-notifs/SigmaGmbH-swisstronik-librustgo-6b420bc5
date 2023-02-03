@@ -4,7 +4,13 @@ use common_types::ExecutionResult;
 use sgx_evm::primitive_types::{U256, H160, H256};
 use sgx_evm::ethereum::TransactionAction;
 
-use crate::protobuf_generated::ffi::TransactionData as ProtoTransactionData;
+
+use crate::evm::backend::TxContext;
+use crate::protobuf_generated::ffi::{
+    TransactionData as ProtoTransactionData,
+    HandleTransactionRequest as ProtoRequest,
+    TransactionContext as ProtoTransactionContext,
+};
 use crate::querier::GoQuerier;
 
 mod storage;
@@ -13,27 +19,32 @@ mod backend;
 /// This function creates mocked backend and tries to handle incoming transaction
 /// It is stateless and is used just to test broadcasting transaction from devnet to Rust
 /// execution layer
-pub fn handle_transaction(querier: GoQuerier, data: ProtoTransactionData) -> ExecutionResult {
+pub fn handle_transaction(querier: GoQuerier, data: ProtoRequest) -> ExecutionResult {
     // Convert decoded protobuf data into TransactionData
-    let tx = parse_protobuf_transaction_data(data);
+    let (tx, tx_context) = parse_protobuf_transaction_data(data);
     // Create FFI storage & backend
     let vicinity = Vicinity{ origin: tx.origin };
     let mut storage = crate::evm::storage::FFIStorage::new(&querier);
-    let mut backend = backend::FFIBackend::new(&querier, &mut storage, vicinity);
+    let mut backend = backend::FFIBackend::new(&querier, &mut storage, vicinity, tx_context);
 
     // Handle already parsed transaction and return execution result
     sgx_evm::handle_transaction_inner(tx, &mut backend)
 }
 
-/// This function converts decoded protobuf transaction data into a regulat TransactionData struct
-fn parse_protobuf_transaction_data(data: ProtoTransactionData) -> ExecutionData {
-    let action = match data.to.is_empty() {
+/// This function takes protobuf-encoded request for transaction handling and extracts
+/// TransactionData and TxContext from it
+fn parse_protobuf_transaction_data(request: ProtoRequest) -> (ExecutionData, TxContext) {
+    // TODO: Prepare some error handling
+    let tx_data = request.tx_data.unwrap();
+    let tx_context = build_transaction_context(request.tx_context.unwrap());
+
+    let action = match tx_data.to.is_empty() {
         true => TransactionAction::Create,
-        false => TransactionAction::Call(H160::from_slice(&data.to))
+        false => TransactionAction::Call(H160::from_slice(&tx_data.to))
     };
 
     let mut access_list = Vec::default();
-    for access_list_item in data.accessList.to_vec() {
+    for access_list_item in tx_data.accessList.to_vec() {
         let address = H160::from_slice(&access_list_item.address);
         let slots = access_list_item.storageSlot
             .to_vec()
@@ -44,14 +55,29 @@ fn parse_protobuf_transaction_data(data: ProtoTransactionData) -> ExecutionData 
         access_list.push((address, slots));
     }
 
-    let gas_limit = U256::from(data.get_gasLimit());
+    let gas_limit = U256::from(tx_data.get_gasLimit());
 
-    ExecutionData {
-        origin: H160::from_slice(&data.from),
+    let execution_data = ExecutionData {
+        origin: H160::from_slice(&tx_data.from),
         action,
-        input: data.data,
+        input: tx_data.data,
         gas_limit,
-        value: U256::from_big_endian(&data.value),
+        value: U256::from_big_endian(&tx_data.value),
         access_list,
+    };
+
+    (execution_data, tx_context)
+}
+
+fn build_transaction_context(context: ProtoTransactionContext) -> TxContext {
+    TxContext { 
+        block_hash: H256::from_slice(&context.block_hash), 
+        chain_id: U256::from(context.chain_id),
+        gas_price: U256::from_big_endian(&context.gas_price), 
+        block_number: U256::from(context.block_number),
+        timestamp: U256::from(context.timestamp),
+        block_gas_limit: U256::from(context.block_gas_limit),
+        block_base_fee_per_gas: U256::from_big_endian(&context.block_base_fee_per_gas),
+        block_coinbase: H160::from_slice(&context.block_coinbase), 
     }
 }

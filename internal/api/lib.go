@@ -37,18 +37,31 @@ type Querier = types.Querier
 type DataQuerier = types.DataQuerier
 
 // Handles incoming ethereum transaction
-func HandleTx(querier DataQuerier, from, to, data, value []byte, gasLimit uint64) (*ffi.HandleTransactionResponse, error) {
+func HandleTx(
+	querier DataQuerier, 
+	from, to, data, value []byte, 
+	gasLimit uint64,
+	txContext *ffi.TransactionContext,
+) (*ffi.HandleTransactionResponse, error) {
 	// Construct mocked querier
 	q := buildQuerier(querier)
 
-	// Create protobuf encoded request
-	req := ffi.FFIRequest{Req: &ffi.FFIRequest_HandleTransaction{HandleTransaction: &ffi.TransactionData{
+	// Create protobuf-encoded transaction data
+	txData := &ffi.TransactionData{
 		From:     from,
 		To:       to,
 		Value:    value,
 		GasLimit: gasLimit,
 		Data: data,
-	}}}
+	}
+
+	// Create protobuf encoded request
+	req := ffi.FFIRequest{Req: &ffi.FFIRequest_HandleTransaction{
+		HandleTransaction: &ffi.HandleTransactionRequest{
+			TxData: txData,
+			TxContext: txContext,
+		},
+	}}
 	reqBytes, err := proto.Marshal(&req)
 	if err != nil {
 		log.Fatalln("Failed to encode req:", err)

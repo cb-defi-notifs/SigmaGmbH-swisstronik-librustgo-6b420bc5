@@ -29,6 +29,11 @@ type GasMeter = api.GasMeter
 type Log = ffi.Log
 type Topic = ffi.Topic
 
+// Transaction context contains information about block timestamp, coinbase address, block gas limit, etc.
+type TransactionContext = ffi.TransactionContext
+// Transaction data contains data which is necessary to handle the transaction
+type TransactionData = ffi.TransactionData
+
 // Export protobuf messages for FFI
 type QueryGetAccount = ffi.QueryGetAccount
 type QueryGetAccountResponse = ffi.QueryGetAccountResponse
@@ -74,8 +79,13 @@ type CosmosRequest_BlockHash = ffi.CosmosRequest_BlockHash
 type CosmosRequest_BlockTimestamp = ffi.CosmosRequest_BlockTimestamp
 type CosmosRequest_ChainId = ffi.CosmosRequest_ChainId
 
-func HandleTx(querier types.DataQuerier, from, to, data, value []byte, gasLimit uint64) (*ffi.HandleTransactionResponse, error) {
-	executionResult, err := api.HandleTx(querier, from, to, data, value, gasLimit)
+func HandleTx(
+	querier types.DataQuerier, 
+	from, to, data, value []byte, 
+	gasLimit uint64,
+	txContext *TransactionContext,
+) (*ffi.HandleTransactionResponse, error) {
+	executionResult, err := api.HandleTx(querier, from, to, data, value, gasLimit, txContext)
 	if err != nil {
 		return &ffi.HandleTransactionResponse{}, err
 	}

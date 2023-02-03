@@ -103,13 +103,25 @@ func main() {
 		panic(decodingErr)
 	}
 
+	// Construct transaction context
+	txContext := &wasmvm.TransactionContext{
+		BlockHash: make([]byte, 32),
+		ChainId: 1,
+		GasPrice: uint256.NewInt(1).Bytes(),
+		Timestamp: 1,
+		BlockGasLimit: 100,
+		BlockBaseFeePerGas: uint256.NewInt(1).Bytes(),
+		BlockCoinbase: make([]byte, 20),
+		BlockNumber: 1,
+	}
+
 	value := make([]byte, 8)
 	binary.BigEndian.PutUint64(value, uint64(1)) // sends 1 wei
 	gasLimit := uint64(10000000)
 	data := make([]byte, 0)
 	querier := &MockedQueryHandler{}
 
-	result, err := wasmvm.HandleTx(querier, from, to, data, value, gasLimit)
+	result, err := wasmvm.HandleTx(querier, from, to, data, value, gasLimit, txContext)
 	//err := wasmvm.HelloWorld("Admin")
 	//file := os.Args[1]
 	//fmt.Printf("Running %s...\n", file)

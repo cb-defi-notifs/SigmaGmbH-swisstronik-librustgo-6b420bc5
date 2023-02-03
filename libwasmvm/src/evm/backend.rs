@@ -7,6 +7,18 @@ use sgx_evm::primitive_types::{H160, H256, U256};
 use sgx_evm::storage::Storage;
 use sgx_evm::Vicinity;
 
+/// Contains context of the transaction such as gas price, block hash, block timestamp, etc.
+pub struct TxContext {
+    pub block_hash: H256,
+    pub chain_id: U256,
+    pub gas_price: U256,
+    pub block_number: U256,
+    pub timestamp: U256,
+    pub block_gas_limit: U256,
+    pub block_base_fee_per_gas: U256,
+    pub block_coinbase: H160
+}
+
 pub struct FFIBackend<'state> {
     /// This struct allows us to obtain state from keeper
     /// that is located outside of Rust code
@@ -17,6 +29,8 @@ pub struct FFIBackend<'state> {
     pub state: &'state mut dyn Storage,
     // Emitted events
     pub logs: Vec<Log>,
+    // Transaction context
+    pub tx_context: TxContext
 }
 
 impl<'state> ExtendedBackend for FFIBackend<'state> {
@@ -27,49 +41,49 @@ impl<'state> ExtendedBackend for FFIBackend<'state> {
 
 impl<'state> EvmBackend for FFIBackend<'state> {
     fn gas_price(&self) -> U256 {
-        // TODO: Will obtain that data via ocall
-        U256::zero()
+        self.tx_context.gas_price
     }
 
     fn origin(&self) -> H160 {
         self.vicinity.origin
     }
 
-    fn block_hash(&self, _number: U256) -> H256 {
-       self.querier.query_block_hash(_number)
+    fn block_hash(&self, number: U256) -> H256 {
+        if number.eq(&self.tx_context.block_number) {
+            // If EVM requests block hash of the last block,
+            // we already has it in tx context
+            return self.tx_context.block_hash
+        }
+        self.querier.query_block_hash(number)
     }
 
     fn block_number(&self) -> U256 {
-        self.querier.query_block_number()
+        self.tx_context.block_number
     }
 
     fn block_coinbase(&self) -> H160 {
-        H160::default()
+        self.tx_context.block_coinbase
     }
 
     fn block_timestamp(&self) -> U256 {
-        self.querier.query_block_timestamp()
+        self.tx_context.timestamp
     }
 
     fn block_difficulty(&self) -> U256 {
+        // Only applicable for PoW
         U256::zero()
     }
 
     fn block_gas_limit(&self) -> U256 {
-        // TODO: Will obtain that data via ocall to make it possible to
-        // change via in-built Cosmos SDK's voting
-        U256::max_value()
+        self.tx_context.block_gas_limit
     }
 
     fn block_base_fee_per_gas(&self) -> U256 {
-        // TODO: Will obtain that data via ocall to make it possible to
-        // change via in-built Cosmos SDK's voting
-        U256::zero()
+        self.tx_context.block_base_fee_per_gas
     }
 
     fn chain_id(&self) -> U256 {
-        // 1 (0x01) is Ethereum mainnet chain id
-        self.querier.query_chain_id()
+        self.tx_context.chain_id
     }
 
     fn exists(&self, address: H160) -> bool {
@@ -173,7 +187,12 @@ impl<'state> EvmApplyBackend for FFIBackend<'state> {
 }
 
 impl<'state> FFIBackend<'state> {
-    pub fn new(querier: &'state GoQuerier, storage: &'state mut dyn Storage, vicinity: Vicinity) -> Self {
-        Self { querier, vicinity, state: storage, logs: vec![] }
+    pub fn new(
+        querier: &'state GoQuerier, 
+        storage: &'state mut dyn Storage, 
+        vicinity: Vicinity,
+        tx_context: TxContext,
+    ) -> Self {
+        Self { querier, vicinity, state: storage, logs: vec![], tx_context }
     }
 }

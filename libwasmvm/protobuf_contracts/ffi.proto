@@ -20,6 +20,35 @@ message TransactionData {
   repeated AccessListItem accessList = 6;
 }
 
+message TransactionContext {
+  bytes block_hash = 1;
+  uint64 chain_id = 2;
+  bytes gas_price = 3;
+  uint64 timestamp = 4;
+  uint64 block_gas_limit = 5;
+  bytes block_base_fee_per_gas = 6;
+  bytes block_coinbase = 7;
+  uint64 block_number = 8; 
+}
+
+message HandleTransactionRequest {
+  TransactionData tx_data = 1;
+  TransactionContext tx_context = 2;
+}
+
+message HandleTransactionResponse {
+  // logs contains the transaction hash and the proto-compatible ethereum
+  // logs.
+  repeated Log logs = 2;
+  // returned data from evm function (result or data supplied with revert
+  // opcode)
+  bytes ret = 3;
+  // vm error is the error returned by vm execution
+  string vm_error = 4;
+  // gas consumed by the transaction
+  uint64 gas_used = 5;
+}
+
 // Topic represents 32-byte words that is used to describe what’s going on in an event
 message Topic {
   bytes inner = 1;
@@ -35,19 +64,6 @@ message Log {
   repeated Topic topics = 2;
   // supplied by the contract, usually ABI-encoded
   bytes data = 3;
-}
-
-message HandleTransactionResponse {
-  // logs contains the transaction hash and the proto-compatible ethereum
-  // logs.
-  repeated Log logs = 2;
-  // returned data from evm function (result or data supplied with revert
-  // opcode)
-  bytes ret = 3;
-  // vm error is the error returned by vm execution
-  string vm_error = 4;
-  // gas consumed by the transaction
-  uint64 gas_used = 5;
 }
 
 // Request for account code (smart contract deployed behind provided address)
@@ -196,6 +212,6 @@ message CosmosRequest {
 
 message FFIRequest {
   oneof req {
-    TransactionData handleTransaction = 1;
+    HandleTransactionRequest handleTransaction = 1;
   }
 }

@@ -593,6 +593,947 @@ impl ::protobuf::reflect::ProtobufValue for TransactionData {
 }
 
 #[derive(PartialEq,Clone,Default)]
+pub struct TransactionContext {
+    // message fields
+    pub block_hash: ::std::vec::Vec<u8>,
+    pub chain_id: u64,
+    pub gas_price: ::std::vec::Vec<u8>,
+    pub timestamp: u64,
+    pub block_gas_limit: u64,
+    pub block_base_fee_per_gas: ::std::vec::Vec<u8>,
+    pub block_coinbase: ::std::vec::Vec<u8>,
+    pub block_number: u64,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a TransactionContext {
+    fn default() -> &'a TransactionContext {
+        <TransactionContext as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl TransactionContext {
+    pub fn new() -> TransactionContext {
+        ::std::default::Default::default()
+    }
+
+    // bytes block_hash = 1;
+
+
+    pub fn get_block_hash(&self) -> &[u8] {
+        &self.block_hash
+    }
+    pub fn clear_block_hash(&mut self) {
+        self.block_hash.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_block_hash(&mut self, v: ::std::vec::Vec<u8>) {
+        self.block_hash = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_block_hash(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.block_hash
+    }
+
+    // Take field
+    pub fn take_block_hash(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.block_hash, ::std::vec::Vec::new())
+    }
+
+    // uint64 chain_id = 2;
+
+
+    pub fn get_chain_id(&self) -> u64 {
+        self.chain_id
+    }
+    pub fn clear_chain_id(&mut self) {
+        self.chain_id = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_chain_id(&mut self, v: u64) {
+        self.chain_id = v;
+    }
+
+    // bytes gas_price = 3;
+
+
+    pub fn get_gas_price(&self) -> &[u8] {
+        &self.gas_price
+    }
+    pub fn clear_gas_price(&mut self) {
+        self.gas_price.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_gas_price(&mut self, v: ::std::vec::Vec<u8>) {
+        self.gas_price = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_gas_price(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.gas_price
+    }
+
+    // Take field
+    pub fn take_gas_price(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.gas_price, ::std::vec::Vec::new())
+    }
+
+    // uint64 timestamp = 4;
+
+
+    pub fn get_timestamp(&self) -> u64 {
+        self.timestamp
+    }
+    pub fn clear_timestamp(&mut self) {
+        self.timestamp = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_timestamp(&mut self, v: u64) {
+        self.timestamp = v;
+    }
+
+    // uint64 block_gas_limit = 5;
+
+
+    pub fn get_block_gas_limit(&self) -> u64 {
+        self.block_gas_limit
+    }
+    pub fn clear_block_gas_limit(&mut self) {
+        self.block_gas_limit = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_block_gas_limit(&mut self, v: u64) {
+        self.block_gas_limit = v;
+    }
+
+    // bytes block_base_fee_per_gas = 6;
+
+
+    pub fn get_block_base_fee_per_gas(&self) -> &[u8] {
+        &self.block_base_fee_per_gas
+    }
+    pub fn clear_block_base_fee_per_gas(&mut self) {
+        self.block_base_fee_per_gas.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_block_base_fee_per_gas(&mut self, v: ::std::vec::Vec<u8>) {
+        self.block_base_fee_per_gas = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_block_base_fee_per_gas(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.block_base_fee_per_gas
+    }
+
+    // Take field
+    pub fn take_block_base_fee_per_gas(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.block_base_fee_per_gas, ::std::vec::Vec::new())
+    }
+
+    // bytes block_coinbase = 7;
+
+
+    pub fn get_block_coinbase(&self) -> &[u8] {
+        &self.block_coinbase
+    }
+    pub fn clear_block_coinbase(&mut self) {
+        self.block_coinbase.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_block_coinbase(&mut self, v: ::std::vec::Vec<u8>) {
+        self.block_coinbase = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_block_coinbase(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.block_coinbase
+    }
+
+    // Take field
+    pub fn take_block_coinbase(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.block_coinbase, ::std::vec::Vec::new())
+    }
+
+    // uint64 block_number = 8;
+
+
+    pub fn get_block_number(&self) -> u64 {
+        self.block_number
+    }
+    pub fn clear_block_number(&mut self) {
+        self.block_number = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_block_number(&mut self, v: u64) {
+        self.block_number = v;
+    }
+}
+
+impl ::protobuf::Message for TransactionContext {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.block_hash)?;
+                },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.chain_id = tmp;
+                },
+                3 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.gas_price)?;
+                },
+                4 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.timestamp = tmp;
+                },
+                5 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.block_gas_limit = tmp;
+                },
+                6 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.block_base_fee_per_gas)?;
+                },
+                7 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.block_coinbase)?;
+                },
+                8 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.block_number = tmp;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.block_hash.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.block_hash);
+        }
+        if self.chain_id != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.chain_id, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if !self.gas_price.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(3, &self.gas_price);
+        }
+        if self.timestamp != 0 {
+            my_size += ::protobuf::rt::value_size(4, self.timestamp, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if self.block_gas_limit != 0 {
+            my_size += ::protobuf::rt::value_size(5, self.block_gas_limit, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if !self.block_base_fee_per_gas.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(6, &self.block_base_fee_per_gas);
+        }
+        if !self.block_coinbase.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(7, &self.block_coinbase);
+        }
+        if self.block_number != 0 {
+            my_size += ::protobuf::rt::value_size(8, self.block_number, ::protobuf::wire_format::WireTypeVarint);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.block_hash.is_empty() {
+            os.write_bytes(1, &self.block_hash)?;
+        }
+        if self.chain_id != 0 {
+            os.write_uint64(2, self.chain_id)?;
+        }
+        if !self.gas_price.is_empty() {
+            os.write_bytes(3, &self.gas_price)?;
+        }
+        if self.timestamp != 0 {
+            os.write_uint64(4, self.timestamp)?;
+        }
+        if self.block_gas_limit != 0 {
+            os.write_uint64(5, self.block_gas_limit)?;
+        }
+        if !self.block_base_fee_per_gas.is_empty() {
+            os.write_bytes(6, &self.block_base_fee_per_gas)?;
+        }
+        if !self.block_coinbase.is_empty() {
+            os.write_bytes(7, &self.block_coinbase)?;
+        }
+        if self.block_number != 0 {
+            os.write_uint64(8, self.block_number)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> TransactionContext {
+        TransactionContext::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "block_hash",
+                |m: &TransactionContext| { &m.block_hash },
+                |m: &mut TransactionContext| { &mut m.block_hash },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                "chain_id",
+                |m: &TransactionContext| { &m.chain_id },
+                |m: &mut TransactionContext| { &mut m.chain_id },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "gas_price",
+                |m: &TransactionContext| { &m.gas_price },
+                |m: &mut TransactionContext| { &mut m.gas_price },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                "timestamp",
+                |m: &TransactionContext| { &m.timestamp },
+                |m: &mut TransactionContext| { &mut m.timestamp },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                "block_gas_limit",
+                |m: &TransactionContext| { &m.block_gas_limit },
+                |m: &mut TransactionContext| { &mut m.block_gas_limit },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "block_base_fee_per_gas",
+                |m: &TransactionContext| { &m.block_base_fee_per_gas },
+                |m: &mut TransactionContext| { &mut m.block_base_fee_per_gas },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "block_coinbase",
+                |m: &TransactionContext| { &m.block_coinbase },
+                |m: &mut TransactionContext| { &mut m.block_coinbase },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                "block_number",
+                |m: &TransactionContext| { &m.block_number },
+                |m: &mut TransactionContext| { &mut m.block_number },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<TransactionContext>(
+                "TransactionContext",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static TransactionContext {
+        static instance: ::protobuf::rt::LazyV2<TransactionContext> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(TransactionContext::new)
+    }
+}
+
+impl ::protobuf::Clear for TransactionContext {
+    fn clear(&mut self) {
+        self.block_hash.clear();
+        self.chain_id = 0;
+        self.gas_price.clear();
+        self.timestamp = 0;
+        self.block_gas_limit = 0;
+        self.block_base_fee_per_gas.clear();
+        self.block_coinbase.clear();
+        self.block_number = 0;
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for TransactionContext {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for TransactionContext {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct HandleTransactionRequest {
+    // message fields
+    pub tx_data: ::protobuf::SingularPtrField<TransactionData>,
+    pub tx_context: ::protobuf::SingularPtrField<TransactionContext>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a HandleTransactionRequest {
+    fn default() -> &'a HandleTransactionRequest {
+        <HandleTransactionRequest as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl HandleTransactionRequest {
+    pub fn new() -> HandleTransactionRequest {
+        ::std::default::Default::default()
+    }
+
+    // .ffi.ffi.TransactionData tx_data = 1;
+
+
+    pub fn get_tx_data(&self) -> &TransactionData {
+        self.tx_data.as_ref().unwrap_or_else(|| <TransactionData as ::protobuf::Message>::default_instance())
+    }
+    pub fn clear_tx_data(&mut self) {
+        self.tx_data.clear();
+    }
+
+    pub fn has_tx_data(&self) -> bool {
+        self.tx_data.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_tx_data(&mut self, v: TransactionData) {
+        self.tx_data = ::protobuf::SingularPtrField::some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_tx_data(&mut self) -> &mut TransactionData {
+        if self.tx_data.is_none() {
+            self.tx_data.set_default();
+        }
+        self.tx_data.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_tx_data(&mut self) -> TransactionData {
+        self.tx_data.take().unwrap_or_else(|| TransactionData::new())
+    }
+
+    // .ffi.ffi.TransactionContext tx_context = 2;
+
+
+    pub fn get_tx_context(&self) -> &TransactionContext {
+        self.tx_context.as_ref().unwrap_or_else(|| <TransactionContext as ::protobuf::Message>::default_instance())
+    }
+    pub fn clear_tx_context(&mut self) {
+        self.tx_context.clear();
+    }
+
+    pub fn has_tx_context(&self) -> bool {
+        self.tx_context.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_tx_context(&mut self, v: TransactionContext) {
+        self.tx_context = ::protobuf::SingularPtrField::some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_tx_context(&mut self) -> &mut TransactionContext {
+        if self.tx_context.is_none() {
+            self.tx_context.set_default();
+        }
+        self.tx_context.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_tx_context(&mut self) -> TransactionContext {
+        self.tx_context.take().unwrap_or_else(|| TransactionContext::new())
+    }
+}
+
+impl ::protobuf::Message for HandleTransactionRequest {
+    fn is_initialized(&self) -> bool {
+        for v in &self.tx_data {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        for v in &self.tx_context {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.tx_data)?;
+                },
+                2 => {
+                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.tx_context)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if let Some(ref v) = self.tx_data.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        }
+        if let Some(ref v) = self.tx_context.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if let Some(ref v) = self.tx_data.as_ref() {
+            os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        }
+        if let Some(ref v) = self.tx_context.as_ref() {
+            os.write_tag(2, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> HandleTransactionRequest {
+        HandleTransactionRequest::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<TransactionData>>(
+                "tx_data",
+                |m: &HandleTransactionRequest| { &m.tx_data },
+                |m: &mut HandleTransactionRequest| { &mut m.tx_data },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<TransactionContext>>(
+                "tx_context",
+                |m: &HandleTransactionRequest| { &m.tx_context },
+                |m: &mut HandleTransactionRequest| { &mut m.tx_context },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<HandleTransactionRequest>(
+                "HandleTransactionRequest",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static HandleTransactionRequest {
+        static instance: ::protobuf::rt::LazyV2<HandleTransactionRequest> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(HandleTransactionRequest::new)
+    }
+}
+
+impl ::protobuf::Clear for HandleTransactionRequest {
+    fn clear(&mut self) {
+        self.tx_data.clear();
+        self.tx_context.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for HandleTransactionRequest {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for HandleTransactionRequest {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct HandleTransactionResponse {
+    // message fields
+    pub logs: ::protobuf::RepeatedField<Log>,
+    pub ret: ::std::vec::Vec<u8>,
+    pub vm_error: ::std::string::String,
+    pub gas_used: u64,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a HandleTransactionResponse {
+    fn default() -> &'a HandleTransactionResponse {
+        <HandleTransactionResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl HandleTransactionResponse {
+    pub fn new() -> HandleTransactionResponse {
+        ::std::default::Default::default()
+    }
+
+    // repeated .ffi.ffi.Log logs = 2;
+
+
+    pub fn get_logs(&self) -> &[Log] {
+        &self.logs
+    }
+    pub fn clear_logs(&mut self) {
+        self.logs.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_logs(&mut self, v: ::protobuf::RepeatedField<Log>) {
+        self.logs = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_logs(&mut self) -> &mut ::protobuf::RepeatedField<Log> {
+        &mut self.logs
+    }
+
+    // Take field
+    pub fn take_logs(&mut self) -> ::protobuf::RepeatedField<Log> {
+        ::std::mem::replace(&mut self.logs, ::protobuf::RepeatedField::new())
+    }
+
+    // bytes ret = 3;
+
+
+    pub fn get_ret(&self) -> &[u8] {
+        &self.ret
+    }
+    pub fn clear_ret(&mut self) {
+        self.ret.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_ret(&mut self, v: ::std::vec::Vec<u8>) {
+        self.ret = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_ret(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.ret
+    }
+
+    // Take field
+    pub fn take_ret(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.ret, ::std::vec::Vec::new())
+    }
+
+    // string vm_error = 4;
+
+
+    pub fn get_vm_error(&self) -> &str {
+        &self.vm_error
+    }
+    pub fn clear_vm_error(&mut self) {
+        self.vm_error.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_vm_error(&mut self, v: ::std::string::String) {
+        self.vm_error = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_vm_error(&mut self) -> &mut ::std::string::String {
+        &mut self.vm_error
+    }
+
+    // Take field
+    pub fn take_vm_error(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.vm_error, ::std::string::String::new())
+    }
+
+    // uint64 gas_used = 5;
+
+
+    pub fn get_gas_used(&self) -> u64 {
+        self.gas_used
+    }
+    pub fn clear_gas_used(&mut self) {
+        self.gas_used = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_gas_used(&mut self, v: u64) {
+        self.gas_used = v;
+    }
+}
+
+impl ::protobuf::Message for HandleTransactionResponse {
+    fn is_initialized(&self) -> bool {
+        for v in &self.logs {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                2 => {
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.logs)?;
+                },
+                3 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.ret)?;
+                },
+                4 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.vm_error)?;
+                },
+                5 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.gas_used = tmp;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        for value in &self.logs {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        };
+        if !self.ret.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(3, &self.ret);
+        }
+        if !self.vm_error.is_empty() {
+            my_size += ::protobuf::rt::string_size(4, &self.vm_error);
+        }
+        if self.gas_used != 0 {
+            my_size += ::protobuf::rt::value_size(5, self.gas_used, ::protobuf::wire_format::WireTypeVarint);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        for v in &self.logs {
+            os.write_tag(2, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        };
+        if !self.ret.is_empty() {
+            os.write_bytes(3, &self.ret)?;
+        }
+        if !self.vm_error.is_empty() {
+            os.write_string(4, &self.vm_error)?;
+        }
+        if self.gas_used != 0 {
+            os.write_uint64(5, self.gas_used)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> HandleTransactionResponse {
+        HandleTransactionResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<Log>>(
+                "logs",
+                |m: &HandleTransactionResponse| { &m.logs },
+                |m: &mut HandleTransactionResponse| { &mut m.logs },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "ret",
+                |m: &HandleTransactionResponse| { &m.ret },
+                |m: &mut HandleTransactionResponse| { &mut m.ret },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
+                "vm_error",
+                |m: &HandleTransactionResponse| { &m.vm_error },
+                |m: &mut HandleTransactionResponse| { &mut m.vm_error },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                "gas_used",
+                |m: &HandleTransactionResponse| { &m.gas_used },
+                |m: &mut HandleTransactionResponse| { &mut m.gas_used },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<HandleTransactionResponse>(
+                "HandleTransactionResponse",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static HandleTransactionResponse {
+        static instance: ::protobuf::rt::LazyV2<HandleTransactionResponse> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(HandleTransactionResponse::new)
+    }
+}
+
+impl ::protobuf::Clear for HandleTransactionResponse {
+    fn clear(&mut self) {
+        self.logs.clear();
+        self.ret.clear();
+        self.vm_error.clear();
+        self.gas_used = 0;
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for HandleTransactionResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for HandleTransactionResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
 pub struct Topic {
     // message fields
     pub inner: ::std::vec::Vec<u8>,
@@ -996,291 +1937,6 @@ impl ::std::fmt::Debug for Log {
 }
 
 impl ::protobuf::reflect::ProtobufValue for Log {
-    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
-        ::protobuf::reflect::ReflectValueRef::Message(self)
-    }
-}
-
-#[derive(PartialEq,Clone,Default)]
-pub struct HandleTransactionResponse {
-    // message fields
-    pub logs: ::protobuf::RepeatedField<Log>,
-    pub ret: ::std::vec::Vec<u8>,
-    pub vm_error: ::std::string::String,
-    pub gas_used: u64,
-    // special fields
-    pub unknown_fields: ::protobuf::UnknownFields,
-    pub cached_size: ::protobuf::CachedSize,
-}
-
-impl<'a> ::std::default::Default for &'a HandleTransactionResponse {
-    fn default() -> &'a HandleTransactionResponse {
-        <HandleTransactionResponse as ::protobuf::Message>::default_instance()
-    }
-}
-
-impl HandleTransactionResponse {
-    pub fn new() -> HandleTransactionResponse {
-        ::std::default::Default::default()
-    }
-
-    // repeated .ffi.ffi.Log logs = 2;
-
-
-    pub fn get_logs(&self) -> &[Log] {
-        &self.logs
-    }
-    pub fn clear_logs(&mut self) {
-        self.logs.clear();
-    }
-
-    // Param is passed by value, moved
-    pub fn set_logs(&mut self, v: ::protobuf::RepeatedField<Log>) {
-        self.logs = v;
-    }
-
-    // Mutable pointer to the field.
-    pub fn mut_logs(&mut self) -> &mut ::protobuf::RepeatedField<Log> {
-        &mut self.logs
-    }
-
-    // Take field
-    pub fn take_logs(&mut self) -> ::protobuf::RepeatedField<Log> {
-        ::std::mem::replace(&mut self.logs, ::protobuf::RepeatedField::new())
-    }
-
-    // bytes ret = 3;
-
-
-    pub fn get_ret(&self) -> &[u8] {
-        &self.ret
-    }
-    pub fn clear_ret(&mut self) {
-        self.ret.clear();
-    }
-
-    // Param is passed by value, moved
-    pub fn set_ret(&mut self, v: ::std::vec::Vec<u8>) {
-        self.ret = v;
-    }
-
-    // Mutable pointer to the field.
-    // If field is not initialized, it is initialized with default value first.
-    pub fn mut_ret(&mut self) -> &mut ::std::vec::Vec<u8> {
-        &mut self.ret
-    }
-
-    // Take field
-    pub fn take_ret(&mut self) -> ::std::vec::Vec<u8> {
-        ::std::mem::replace(&mut self.ret, ::std::vec::Vec::new())
-    }
-
-    // string vm_error = 4;
-
-
-    pub fn get_vm_error(&self) -> &str {
-        &self.vm_error
-    }
-    pub fn clear_vm_error(&mut self) {
-        self.vm_error.clear();
-    }
-
-    // Param is passed by value, moved
-    pub fn set_vm_error(&mut self, v: ::std::string::String) {
-        self.vm_error = v;
-    }
-
-    // Mutable pointer to the field.
-    // If field is not initialized, it is initialized with default value first.
-    pub fn mut_vm_error(&mut self) -> &mut ::std::string::String {
-        &mut self.vm_error
-    }
-
-    // Take field
-    pub fn take_vm_error(&mut self) -> ::std::string::String {
-        ::std::mem::replace(&mut self.vm_error, ::std::string::String::new())
-    }
-
-    // uint64 gas_used = 5;
-
-
-    pub fn get_gas_used(&self) -> u64 {
-        self.gas_used
-    }
-    pub fn clear_gas_used(&mut self) {
-        self.gas_used = 0;
-    }
-
-    // Param is passed by value, moved
-    pub fn set_gas_used(&mut self, v: u64) {
-        self.gas_used = v;
-    }
-}
-
-impl ::protobuf::Message for HandleTransactionResponse {
-    fn is_initialized(&self) -> bool {
-        for v in &self.logs {
-            if !v.is_initialized() {
-                return false;
-            }
-        };
-        true
-    }
-
-    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        while !is.eof()? {
-            let (field_number, wire_type) = is.read_tag_unpack()?;
-            match field_number {
-                2 => {
-                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.logs)?;
-                },
-                3 => {
-                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.ret)?;
-                },
-                4 => {
-                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.vm_error)?;
-                },
-                5 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
-                    let tmp = is.read_uint64()?;
-                    self.gas_used = tmp;
-                },
-                _ => {
-                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
-                },
-            };
-        }
-        ::std::result::Result::Ok(())
-    }
-
-    // Compute sizes of nested messages
-    #[allow(unused_variables)]
-    fn compute_size(&self) -> u32 {
-        let mut my_size = 0;
-        for value in &self.logs {
-            let len = value.compute_size();
-            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
-        };
-        if !self.ret.is_empty() {
-            my_size += ::protobuf::rt::bytes_size(3, &self.ret);
-        }
-        if !self.vm_error.is_empty() {
-            my_size += ::protobuf::rt::string_size(4, &self.vm_error);
-        }
-        if self.gas_used != 0 {
-            my_size += ::protobuf::rt::value_size(5, self.gas_used, ::protobuf::wire_format::WireTypeVarint);
-        }
-        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
-        self.cached_size.set(my_size);
-        my_size
-    }
-
-    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        for v in &self.logs {
-            os.write_tag(2, ::protobuf::wire_format::WireTypeLengthDelimited)?;
-            os.write_raw_varint32(v.get_cached_size())?;
-            v.write_to_with_cached_sizes(os)?;
-        };
-        if !self.ret.is_empty() {
-            os.write_bytes(3, &self.ret)?;
-        }
-        if !self.vm_error.is_empty() {
-            os.write_string(4, &self.vm_error)?;
-        }
-        if self.gas_used != 0 {
-            os.write_uint64(5, self.gas_used)?;
-        }
-        os.write_unknown_fields(self.get_unknown_fields())?;
-        ::std::result::Result::Ok(())
-    }
-
-    fn get_cached_size(&self) -> u32 {
-        self.cached_size.get()
-    }
-
-    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
-        &self.unknown_fields
-    }
-
-    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
-        &mut self.unknown_fields
-    }
-
-    fn as_any(&self) -> &dyn (::std::any::Any) {
-        self as &dyn (::std::any::Any)
-    }
-    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
-        self as &mut dyn (::std::any::Any)
-    }
-    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
-        self
-    }
-
-    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
-        Self::descriptor_static()
-    }
-
-    fn new() -> HandleTransactionResponse {
-        HandleTransactionResponse::new()
-    }
-
-    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
-        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
-        descriptor.get(|| {
-            let mut fields = ::std::vec::Vec::new();
-            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<Log>>(
-                "logs",
-                |m: &HandleTransactionResponse| { &m.logs },
-                |m: &mut HandleTransactionResponse| { &mut m.logs },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
-                "ret",
-                |m: &HandleTransactionResponse| { &m.ret },
-                |m: &mut HandleTransactionResponse| { &mut m.ret },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
-                "vm_error",
-                |m: &HandleTransactionResponse| { &m.vm_error },
-                |m: &mut HandleTransactionResponse| { &mut m.vm_error },
-            ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
-                "gas_used",
-                |m: &HandleTransactionResponse| { &m.gas_used },
-                |m: &mut HandleTransactionResponse| { &mut m.gas_used },
-            ));
-            ::protobuf::reflect::MessageDescriptor::new_pb_name::<HandleTransactionResponse>(
-                "HandleTransactionResponse",
-                fields,
-                file_descriptor_proto()
-            )
-        })
-    }
-
-    fn default_instance() -> &'static HandleTransactionResponse {
-        static instance: ::protobuf::rt::LazyV2<HandleTransactionResponse> = ::protobuf::rt::LazyV2::INIT;
-        instance.get(HandleTransactionResponse::new)
-    }
-}
-
-impl ::protobuf::Clear for HandleTransactionResponse {
-    fn clear(&mut self) {
-        self.logs.clear();
-        self.ret.clear();
-        self.vm_error.clear();
-        self.gas_used = 0;
-        self.unknown_fields.clear();
-    }
-}
-
-impl ::std::fmt::Debug for HandleTransactionResponse {
-    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
-        ::protobuf::text_format::fmt(self, f)
-    }
-}
-
-impl ::protobuf::reflect::ProtobufValue for HandleTransactionResponse {
     fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
         ::protobuf::reflect::ReflectValueRef::Message(self)
     }
@@ -6891,7 +7547,7 @@ impl<'a> ::std::default::Default for &'a FFIRequest {
 
 #[derive(Clone,PartialEq,Debug)]
 pub enum FFIRequest_oneof_req {
-    handleTransaction(TransactionData),
+    handleTransaction(HandleTransactionRequest),
 }
 
 impl FFIRequest {
@@ -6899,13 +7555,13 @@ impl FFIRequest {
         ::std::default::Default::default()
     }
 
-    // .ffi.ffi.TransactionData handleTransaction = 1;
+    // .ffi.ffi.HandleTransactionRequest handleTransaction = 1;
 
 
-    pub fn get_handleTransaction(&self) -> &TransactionData {
+    pub fn get_handleTransaction(&self) -> &HandleTransactionRequest {
         match self.req {
             ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(ref v)) => v,
-            _ => <TransactionData as ::protobuf::Message>::default_instance(),
+            _ => <HandleTransactionRequest as ::protobuf::Message>::default_instance(),
         }
     }
     pub fn clear_handleTransaction(&mut self) {
@@ -6920,15 +7576,15 @@ impl FFIRequest {
     }
 
     // Param is passed by value, moved
-    pub fn set_handleTransaction(&mut self, v: TransactionData) {
+    pub fn set_handleTransaction(&mut self, v: HandleTransactionRequest) {
         self.req = ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(v))
     }
 
     // Mutable pointer to the field.
-    pub fn mut_handleTransaction(&mut self) -> &mut TransactionData {
+    pub fn mut_handleTransaction(&mut self) -> &mut HandleTransactionRequest {
         if let ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(_)) = self.req {
         } else {
-            self.req = ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(TransactionData::new()));
+            self.req = ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(HandleTransactionRequest::new()));
         }
         match self.req {
             ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(ref mut v)) => v,
@@ -6937,14 +7593,14 @@ impl FFIRequest {
     }
 
     // Take field
-    pub fn take_handleTransaction(&mut self) -> TransactionData {
+    pub fn take_handleTransaction(&mut self) -> HandleTransactionRequest {
         if self.has_handleTransaction() {
             match self.req.take() {
                 ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(v)) => v,
                 _ => panic!(),
             }
         } else {
-            TransactionData::new()
+            HandleTransactionRequest::new()
         }
     }
 }
@@ -7042,7 +7698,7 @@ impl ::protobuf::Message for FFIRequest {
         static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
         descriptor.get(|| {
             let mut fields = ::std::vec::Vec::new();
-            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, TransactionData>(
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, HandleTransactionRequest>(
                 "handleTransaction",
                 FFIRequest::has_handleTransaction,
                 FFIRequest::get_handleTransaction,
@@ -7088,67 +7744,78 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x02to\x12\x12\n\x04data\x18\x03\x20\x01(\x0cR\x04data\x12\x1a\n\x08gasL\
     imit\x18\x04\x20\x01(\x04R\x08gasLimit\x12\x14\n\x05value\x18\x05\x20\
     \x01(\x0cR\x05value\x127\n\naccessList\x18\x06\x20\x03(\x0b2\x17.ffi.ffi\
-    .AccessListItemR\naccessList\"\x1d\n\x05Topic\x12\x14\n\x05inner\x18\x01\
-    \x20\x01(\x0cR\x05inner\"[\n\x03Log\x12\x18\n\x07address\x18\x01\x20\x01\
-    (\x0cR\x07address\x12&\n\x06topics\x18\x02\x20\x03(\x0b2\x0e.ffi.ffi.Top\
-    icR\x06topics\x12\x12\n\x04data\x18\x03\x20\x01(\x0cR\x04data\"\x85\x01\
-    \n\x19HandleTransactionResponse\x12\x20\n\x04logs\x18\x02\x20\x03(\x0b2\
-    \x0c.ffi.ffi.LogR\x04logs\x12\x10\n\x03ret\x18\x03\x20\x01(\x0cR\x03ret\
-    \x12\x19\n\x08vm_error\x18\x04\x20\x01(\tR\x07vmError\x12\x19\n\x08gas_u\
-    sed\x18\x05\x20\x01(\x04R\x07gasUsed\"+\n\x0fQueryGetAccount\x12\x18\n\
-    \x07address\x18\x01\x20\x01(\x0cR\x07address\"I\n\x17QueryGetAccountResp\
-    onse\x12\x18\n\x07balance\x18\x01\x20\x01(\x0cR\x07balance\x12\x14\n\x05\
-    nonce\x18\x02\x20\x01(\x0cR\x05nonce\"^\n\x12QueryInsertAccount\x12\x18\
-    \n\x07address\x18\x01\x20\x01(\x0cR\x07address\x12\x18\n\x07balance\x18\
-    \x02\x20\x01(\x0cR\x07balance\x12\x14\n\x05nonce\x18\x03\x20\x01(\x0cR\
-    \x05nonce\"\x1c\n\x1aQueryInsertAccountResponse\"$\n\x10QueryContainsKey\
-    \x12\x10\n\x03key\x18\x01\x20\x01(\x0cR\x03key\"6\n\x18QueryContainsKeyR\
-    esponse\x12\x1a\n\x08contains\x18\x01\x20\x01(\x08R\x08contains\"L\n\x1a\
-    QueryGetAccountStorageCell\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\
-    \x07address\x12\x14\n\x05index\x18\x02\x20\x01(\x0cR\x05index\":\n\"Quer\
-    yGetAccountStorageCellResponse\x12\x14\n\x05value\x18\x01\x20\x01(\x0cR\
-    \x05value\"/\n\x13QueryGetAccountCode\x12\x18\n\x07address\x18\x01\x20\
-    \x01(\x0cR\x07address\"1\n\x1bQueryGetAccountCodeResponse\x12\x12\n\x04c\
-    ode\x18\x01\x20\x01(\x0cR\x04code\"F\n\x16QueryInsertAccountCode\x12\x18\
-    \n\x07address\x18\x01\x20\x01(\x0cR\x07address\x12\x12\n\x04code\x18\x02\
-    \x20\x01(\x0cR\x04code\"\x20\n\x1eQueryInsertAccountCodeResponse\"^\n\
-    \x16QueryInsertStorageCell\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\
-    \x07address\x12\x14\n\x05index\x18\x02\x20\x01(\x0cR\x05index\x12\x14\n\
-    \x05value\x18\x03\x20\x01(\x0cR\x05value\"\x20\n\x1eQueryInsertStorageCe\
-    llResponse\"'\n\x0bQueryRemove\x12\x18\n\x07address\x18\x01\x20\x01(\x0c\
-    R\x07address\"\x15\n\x13QueryRemoveResponse\"H\n\x16QueryRemoveStorageCe\
-    ll\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\x12\x14\n\x05in\
-    dex\x18\x02\x20\x01(\x0cR\x05index\"\x20\n\x1eQueryRemoveStorageCellResp\
-    onse\".\n\x12QueryRemoveStorage\x12\x18\n\x07address\x18\x01\x20\x01(\
-    \x0cR\x07address\"\x1c\n\x1aQueryRemoveStorageResponse\"(\n\x0eQueryBloc\
-    kHash\x12\x16\n\x06number\x18\x01\x20\x01(\x0cR\x06number\",\n\x16QueryB\
-    lockHashResponse\x12\x12\n\x04hash\x18\x01\x20\x01(\x0cR\x04hash\"\x12\n\
-    \x10QueryBlockNumber\"2\n\x18QueryBlockNumberResponse\x12\x16\n\x06numbe\
-    r\x18\x01\x20\x01(\x0cR\x06number\"\x15\n\x13QueryBlockTimestamp\";\n\
-    \x1bQueryBlockTimestampResponse\x12\x1c\n\ttimestamp\x18\x01\x20\x01(\
-    \x0cR\ttimestamp\"\x0e\n\x0cQueryChainId\"1\n\x14QueryChainIdResponse\
-    \x12\x19\n\x08chain_id\x18\x01\x20\x01(\x0cR\x07chainId\"\xbc\x07\n\rCos\
-    mosRequest\x12:\n\ngetAccount\x18\x01\x20\x01(\x0b2\x18.ffi.ffi.QueryGet\
-    AccountH\0R\ngetAccount\x12C\n\rinsertAccount\x18\x02\x20\x01(\x0b2\x1b.\
-    ffi.ffi.QueryInsertAccountH\0R\rinsertAccount\x12=\n\x0bcontainsKey\x18\
-    \x03\x20\x01(\x0b2\x19.ffi.ffi.QueryContainsKeyH\0R\x0bcontainsKey\x12@\
-    \n\x0baccountCode\x18\x04\x20\x01(\x0b2\x1c.ffi.ffi.QueryGetAccountCodeH\
-    \0R\x0baccountCode\x12G\n\x0bstorageCell\x18\x05\x20\x01(\x0b2#.ffi.ffi.\
-    QueryGetAccountStorageCellH\0R\x0bstorageCell\x12O\n\x11insertAccountCod\
-    e\x18\x06\x20\x01(\x0b2\x1f.ffi.ffi.QueryInsertAccountCodeH\0R\x11insert\
-    AccountCode\x12O\n\x11insertStorageCell\x18\x07\x20\x01(\x0b2\x1f.ffi.ff\
-    i.QueryInsertStorageCellH\0R\x11insertStorageCell\x12.\n\x06remove\x18\
-    \x08\x20\x01(\x0b2\x14.ffi.ffi.QueryRemoveH\0R\x06remove\x12O\n\x11remov\
-    eStorageCell\x18\t\x20\x01(\x0b2\x1f.ffi.ffi.QueryRemoveStorageCellH\0R\
-    \x11removeStorageCell\x12C\n\rremoveStorage\x18\n\x20\x01(\x0b2\x1b.ffi.\
-    ffi.QueryRemoveStorageH\0R\rremoveStorage\x127\n\tblockHash\x18\x0b\x20\
-    \x01(\x0b2\x17.ffi.ffi.QueryBlockHashH\0R\tblockHash\x12=\n\x0bblockNumb\
-    er\x18\x0c\x20\x01(\x0b2\x19.ffi.ffi.QueryBlockNumberH\0R\x0bblockNumber\
-    \x12F\n\x0eblockTimestamp\x18\r\x20\x01(\x0b2\x1c.ffi.ffi.QueryBlockTime\
-    stampH\0R\x0eblockTimestamp\x121\n\x07chainId\x18\x0e\x20\x01(\x0b2\x15.\
-    ffi.ffi.QueryChainIdH\0R\x07chainIdB\x05\n\x03req\"]\n\nFFIRequest\x12H\
-    \n\x11handleTransaction\x18\x01\x20\x01(\x0b2\x18.ffi.ffi.TransactionDat\
-    aH\0R\x11handleTransactionB\x05\n\x03reqB\x04Z\x02./b\x06proto3\
+    .AccessListItemR\naccessList\"\xaf\x02\n\x12TransactionContext\x12\x1d\n\
+    \nblock_hash\x18\x01\x20\x01(\x0cR\tblockHash\x12\x19\n\x08chain_id\x18\
+    \x02\x20\x01(\x04R\x07chainId\x12\x1b\n\tgas_price\x18\x03\x20\x01(\x0cR\
+    \x08gasPrice\x12\x1c\n\ttimestamp\x18\x04\x20\x01(\x04R\ttimestamp\x12&\
+    \n\x0fblock_gas_limit\x18\x05\x20\x01(\x04R\rblockGasLimit\x122\n\x16blo\
+    ck_base_fee_per_gas\x18\x06\x20\x01(\x0cR\x12blockBaseFeePerGas\x12%\n\
+    \x0eblock_coinbase\x18\x07\x20\x01(\x0cR\rblockCoinbase\x12!\n\x0cblock_\
+    number\x18\x08\x20\x01(\x04R\x0bblockNumber\"\x89\x01\n\x18HandleTransac\
+    tionRequest\x121\n\x07tx_data\x18\x01\x20\x01(\x0b2\x18.ffi.ffi.Transact\
+    ionDataR\x06txData\x12:\n\ntx_context\x18\x02\x20\x01(\x0b2\x1b.ffi.ffi.\
+    TransactionContextR\ttxContext\"\x85\x01\n\x19HandleTransactionResponse\
+    \x12\x20\n\x04logs\x18\x02\x20\x03(\x0b2\x0c.ffi.ffi.LogR\x04logs\x12\
+    \x10\n\x03ret\x18\x03\x20\x01(\x0cR\x03ret\x12\x19\n\x08vm_error\x18\x04\
+    \x20\x01(\tR\x07vmError\x12\x19\n\x08gas_used\x18\x05\x20\x01(\x04R\x07g\
+    asUsed\"\x1d\n\x05Topic\x12\x14\n\x05inner\x18\x01\x20\x01(\x0cR\x05inne\
+    r\"[\n\x03Log\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\x12&\
+    \n\x06topics\x18\x02\x20\x03(\x0b2\x0e.ffi.ffi.TopicR\x06topics\x12\x12\
+    \n\x04data\x18\x03\x20\x01(\x0cR\x04data\"+\n\x0fQueryGetAccount\x12\x18\
+    \n\x07address\x18\x01\x20\x01(\x0cR\x07address\"I\n\x17QueryGetAccountRe\
+    sponse\x12\x18\n\x07balance\x18\x01\x20\x01(\x0cR\x07balance\x12\x14\n\
+    \x05nonce\x18\x02\x20\x01(\x0cR\x05nonce\"^\n\x12QueryInsertAccount\x12\
+    \x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\x12\x18\n\x07balance\
+    \x18\x02\x20\x01(\x0cR\x07balance\x12\x14\n\x05nonce\x18\x03\x20\x01(\
+    \x0cR\x05nonce\"\x1c\n\x1aQueryInsertAccountResponse\"$\n\x10QueryContai\
+    nsKey\x12\x10\n\x03key\x18\x01\x20\x01(\x0cR\x03key\"6\n\x18QueryContain\
+    sKeyResponse\x12\x1a\n\x08contains\x18\x01\x20\x01(\x08R\x08contains\"L\
+    \n\x1aQueryGetAccountStorageCell\x12\x18\n\x07address\x18\x01\x20\x01(\
+    \x0cR\x07address\x12\x14\n\x05index\x18\x02\x20\x01(\x0cR\x05index\":\n\
+    \"QueryGetAccountStorageCellResponse\x12\x14\n\x05value\x18\x01\x20\x01(\
+    \x0cR\x05value\"/\n\x13QueryGetAccountCode\x12\x18\n\x07address\x18\x01\
+    \x20\x01(\x0cR\x07address\"1\n\x1bQueryGetAccountCodeResponse\x12\x12\n\
+    \x04code\x18\x01\x20\x01(\x0cR\x04code\"F\n\x16QueryInsertAccountCode\
+    \x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\x12\x12\n\x04code\
+    \x18\x02\x20\x01(\x0cR\x04code\"\x20\n\x1eQueryInsertAccountCodeResponse\
+    \"^\n\x16QueryInsertStorageCell\x12\x18\n\x07address\x18\x01\x20\x01(\
+    \x0cR\x07address\x12\x14\n\x05index\x18\x02\x20\x01(\x0cR\x05index\x12\
+    \x14\n\x05value\x18\x03\x20\x01(\x0cR\x05value\"\x20\n\x1eQueryInsertSto\
+    rageCellResponse\"'\n\x0bQueryRemove\x12\x18\n\x07address\x18\x01\x20\
+    \x01(\x0cR\x07address\"\x15\n\x13QueryRemoveResponse\"H\n\x16QueryRemove\
+    StorageCell\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\x12\
+    \x14\n\x05index\x18\x02\x20\x01(\x0cR\x05index\"\x20\n\x1eQueryRemoveSto\
+    rageCellResponse\".\n\x12QueryRemoveStorage\x12\x18\n\x07address\x18\x01\
+    \x20\x01(\x0cR\x07address\"\x1c\n\x1aQueryRemoveStorageResponse\"(\n\x0e\
+    QueryBlockHash\x12\x16\n\x06number\x18\x01\x20\x01(\x0cR\x06number\",\n\
+    \x16QueryBlockHashResponse\x12\x12\n\x04hash\x18\x01\x20\x01(\x0cR\x04ha\
+    sh\"\x12\n\x10QueryBlockNumber\"2\n\x18QueryBlockNumberResponse\x12\x16\
+    \n\x06number\x18\x01\x20\x01(\x0cR\x06number\"\x15\n\x13QueryBlockTimest\
+    amp\";\n\x1bQueryBlockTimestampResponse\x12\x1c\n\ttimestamp\x18\x01\x20\
+    \x01(\x0cR\ttimestamp\"\x0e\n\x0cQueryChainId\"1\n\x14QueryChainIdRespon\
+    se\x12\x19\n\x08chain_id\x18\x01\x20\x01(\x0cR\x07chainId\"\xbc\x07\n\rC\
+    osmosRequest\x12:\n\ngetAccount\x18\x01\x20\x01(\x0b2\x18.ffi.ffi.QueryG\
+    etAccountH\0R\ngetAccount\x12C\n\rinsertAccount\x18\x02\x20\x01(\x0b2\
+    \x1b.ffi.ffi.QueryInsertAccountH\0R\rinsertAccount\x12=\n\x0bcontainsKey\
+    \x18\x03\x20\x01(\x0b2\x19.ffi.ffi.QueryContainsKeyH\0R\x0bcontainsKey\
+    \x12@\n\x0baccountCode\x18\x04\x20\x01(\x0b2\x1c.ffi.ffi.QueryGetAccount\
+    CodeH\0R\x0baccountCode\x12G\n\x0bstorageCell\x18\x05\x20\x01(\x0b2#.ffi\
+    .ffi.QueryGetAccountStorageCellH\0R\x0bstorageCell\x12O\n\x11insertAccou\
+    ntCode\x18\x06\x20\x01(\x0b2\x1f.ffi.ffi.QueryInsertAccountCodeH\0R\x11i\
+    nsertAccountCode\x12O\n\x11insertStorageCell\x18\x07\x20\x01(\x0b2\x1f.f\
+    fi.ffi.QueryInsertStorageCellH\0R\x11insertStorageCell\x12.\n\x06remove\
+    \x18\x08\x20\x01(\x0b2\x14.ffi.ffi.QueryRemoveH\0R\x06remove\x12O\n\x11r\
+    emoveStorageCell\x18\t\x20\x01(\x0b2\x1f.ffi.ffi.QueryRemoveStorageCellH\
+    \0R\x11removeStorageCell\x12C\n\rremoveStorage\x18\n\x20\x01(\x0b2\x1b.f\
+    fi.ffi.QueryRemoveStorageH\0R\rremoveStorage\x127\n\tblockHash\x18\x0b\
+    \x20\x01(\x0b2\x17.ffi.ffi.QueryBlockHashH\0R\tblockHash\x12=\n\x0bblock\
+    Number\x18\x0c\x20\x01(\x0b2\x19.ffi.ffi.QueryBlockNumberH\0R\x0bblockNu\
+    mber\x12F\n\x0eblockTimestamp\x18\r\x20\x01(\x0b2\x1c.ffi.ffi.QueryBlock\
+    TimestampH\0R\x0eblockTimestamp\x121\n\x07chainId\x18\x0e\x20\x01(\x0b2\
+    \x15.ffi.ffi.QueryChainIdH\0R\x07chainIdB\x05\n\x03req\"f\n\nFFIRequest\
+    \x12Q\n\x11handleTransaction\x18\x01\x20\x01(\x0b2!.ffi.ffi.HandleTransa\
+    ctionRequestH\0R\x11handleTransactionB\x05\n\x03reqB\x04Z\x02./b\x06prot\
+    o3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;
