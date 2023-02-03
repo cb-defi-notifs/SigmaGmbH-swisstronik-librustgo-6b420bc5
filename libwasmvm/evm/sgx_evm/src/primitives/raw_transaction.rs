@@ -1,6 +1,6 @@
 use ethereum::{
     EIP1559TransactionMessage, EIP2930TransactionMessage, LegacyTransactionMessage,
-    TransactionAction, TransactionV2,
+    TransactionAction, TransactionV2, EnvelopedDecodable,
 };
 use k256::{elliptic_curve::IsHigh, PublicKey};
 use k256::ecdsa::recoverable::{Id, Signature as RecoverableSignature};
@@ -162,7 +162,7 @@ pub struct FullTransactionData {
 
 impl FullTransactionData {
     pub fn decode_transaction(body: &[u8]) -> Result<Self, EvmError> {
-        let transaction_v2 = match rlp::decode::<TransactionV2>(body) {
+        let transaction_v2 = match TransactionV2::decode(body) {
             Ok(tx) => tx,
             Err(e) => {
                 return Err(EvmError::RLPDecodeError(
