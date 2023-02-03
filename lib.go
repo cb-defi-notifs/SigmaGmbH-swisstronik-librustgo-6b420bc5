@@ -27,6 +27,7 @@ type GasMeter = api.GasMeter
 
 // Logs returned by EVM
 type Log = ffi.Log
+type Topic = ffi.Topic
 
 // Export protobuf messages for FFI
 type QueryGetAccount = ffi.QueryGetAccount
