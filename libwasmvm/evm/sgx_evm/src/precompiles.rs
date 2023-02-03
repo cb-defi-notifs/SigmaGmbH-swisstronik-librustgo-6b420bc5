@@ -1,12 +1,13 @@
-use primitive_types::H160;
 use core::marker::PhantomData;
-use precompile_std::{PrecompileResult, PrecompileHandle, PrecompileSet, Precompile};
 
-// use evm_precompile_curve25519::{Curve25519Add, Curve25519ScalarMul};
-use evm_precompile_simple::{Ripemd160, Identity, Sha256, ECRecover};
+use evm_precompile_blake2f::Blake2F;
 use evm_precompile_bn128::{Bn128Add, Bn128Mul, Bn128Pairing};
 use evm_precompile_modexp::Modexp;
-use evm_precompile_blake2f::Blake2F;
+// use evm_precompile_curve25519::{Curve25519Add, Curve25519ScalarMul};
+use evm_precompile_simple::{ECRecover, Identity, Ripemd160, Sha256};
+use precompile_std::{Precompile, PrecompileHandle, PrecompileResult, PrecompileSet};
+use primitive_types::H160;
+
 // use evm_precompile_sha3fips::{Sha3FIPS256, Sha3FIPS512};
 
 pub struct EVMPrecompiles<R>(PhantomData<R>);

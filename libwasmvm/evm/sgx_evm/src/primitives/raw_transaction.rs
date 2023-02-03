@@ -1,16 +1,18 @@
-use crate::errors::EvmError;
-use crate::primitives::address::public_key_to_address;
 use ethereum::{
     EIP1559TransactionMessage, EIP2930TransactionMessage, LegacyTransactionMessage,
     TransactionAction, TransactionV2,
 };
+use k256::{elliptic_curve::IsHigh, PublicKey};
 use k256::ecdsa::recoverable::{Id, Signature as RecoverableSignature};
 use k256::ecdsa::Signature;
 use k256::elliptic_curve::sec1::ToEncodedPoint;
-use k256::{elliptic_curve::IsHigh, PublicKey};
 use primitive_types::{H160, H256, U256};
-use std::vec::Vec;
+
 use std::string::ToString;
+use std::vec::Vec;
+
+use crate::errors::EvmError;
+use crate::primitives::address::public_key_to_address;
 
 // Recovers verifying key
 fn recover_public_key(

@@ -1,6 +1,7 @@
 use primitive_types::{H160, U256};
+use rlp::{Decodable, DecoderError, Rlp};
+
 use std::vec::Vec;
-use rlp::{Decodable, Rlp, DecoderError};
 
 pub mod address;
 pub mod raw_transaction;

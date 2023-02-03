@@ -1,12 +1,13 @@
 use evm::backend::{
-    Backend as EvmBackend,
-    ApplyBackend as EvmApplyBackend,
     Apply,
+    ApplyBackend as EvmApplyBackend,
+    Backend as EvmBackend,
     Basic,
     Log
 };
 use evm::Config;
 use primitive_types::{H160, H256, U256};
+
 use std::vec::Vec;
 
 use crate::storage::Storage;

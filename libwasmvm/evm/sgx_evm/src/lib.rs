@@ -4,31 +4,31 @@
 #[macro_use]
 extern crate sgx_tstd as std;
 
+use backend::ExtendedBackend;
+use common_types::ExecutionResult;
+pub use ethereum;
+use ethereum::TransactionAction;
+pub use evm;
+use evm::executor::stack::{MemoryStackState, StackExecutor, StackSubstateMetadata};
+use evm::ExitReason;
+pub use primitive_types;
+use primitive_types::{H160, H256, U256};
+use rlp::Encodable;
+
+use std::{collections::BTreeMap, string::String, string::ToString, vec::Vec};
+
+use crate::backend::{Backend, GASOMETER_CONFIG};
+pub use crate::backend::Vicinity;
+use crate::precompiles::EVMPrecompiles;
+use crate::primitives::{QueryData, raw_transaction::FullTransactionData};
+use crate::storage::Storage;
+
 pub mod backend;
 pub mod primitives;
 pub mod storage;
 
 mod errors;
 mod precompiles;
-
-use backend::ExtendedBackend;
-pub use evm;
-pub use primitive_types;
-pub use ethereum;
-pub use crate::backend::Vicinity;
-use crate::backend::{Backend, GASOMETER_CONFIG};
-use crate::primitives::{raw_transaction::FullTransactionData, QueryData};
-use crate::storage::Storage;
-use crate::precompiles::EVMPrecompiles;
-
-use primitive_types::{U256, H160, H256};
-use common_types::ExecutionResult;
-use ethereum::TransactionAction;
-use evm::backend::ApplyBackend;
-use evm::executor::stack::{MemoryStackState, StackExecutor, StackSubstateMetadata};
-use evm::ExitReason;
-use rlp::Encodable;
-use std::{collections::BTreeMap, string::String, string::ToString, vec::Vec};
 
 /// This struct contaisn all the data that need for execution
 pub struct ExecutionData {
@@ -264,11 +264,13 @@ fn handle_evm_result(exit_reason: ExitReason, data: Vec<u8>) -> Result<Vec<u8>, 
 #[cfg(test)]
 mod tests {
     use core::str::FromStr;
+
     use primitive_types::{H160, U256};
-    use crate::{handle_transaction_inner, handle_query_inner};
+
+    use crate::{handle_query_inner, handle_transaction_inner};
     use crate::primitives::QueryData;
-    use crate::storage::mocked_storage::MockedStorage;
     use crate::primitives::raw_transaction::FullTransactionData;
+    use crate::storage::mocked_storage::MockedStorage;
 
     const EXPECTED_ADDRESS: &str = "35600a78c4ad0deb35378a11c59cd2b4b2cfd4a1";
 

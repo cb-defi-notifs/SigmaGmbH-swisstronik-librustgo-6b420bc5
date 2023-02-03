@@ -1,9 +1,10 @@
 use evm::backend::Basic;
 use primitive_types::{H160, H256, U256};
+
 use std::{
     collections::BTreeMap,
-    vec::Vec,
     str::FromStr,
+    vec::Vec,
 };
 
 use super::Storage;
