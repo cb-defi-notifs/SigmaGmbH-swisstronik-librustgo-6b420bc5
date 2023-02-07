@@ -595,7 +595,6 @@ impl ::protobuf::reflect::ProtobufValue for TransactionData {
 #[derive(PartialEq,Clone,Default)]
 pub struct TransactionContext {
     // message fields
-    pub block_hash: ::std::vec::Vec<u8>,
     pub chain_id: u64,
     pub gas_price: ::std::vec::Vec<u8>,
     pub timestamp: u64,
@@ -619,33 +618,7 @@ impl TransactionContext {
         ::std::default::Default::default()
     }
 
-    // bytes block_hash = 1;
-
-
-    pub fn get_block_hash(&self) -> &[u8] {
-        &self.block_hash
-    }
-    pub fn clear_block_hash(&mut self) {
-        self.block_hash.clear();
-    }
-
-    // Param is passed by value, moved
-    pub fn set_block_hash(&mut self, v: ::std::vec::Vec<u8>) {
-        self.block_hash = v;
-    }
-
-    // Mutable pointer to the field.
-    // If field is not initialized, it is initialized with default value first.
-    pub fn mut_block_hash(&mut self) -> &mut ::std::vec::Vec<u8> {
-        &mut self.block_hash
-    }
-
-    // Take field
-    pub fn take_block_hash(&mut self) -> ::std::vec::Vec<u8> {
-        ::std::mem::replace(&mut self.block_hash, ::std::vec::Vec::new())
-    }
-
-    // uint64 chain_id = 2;
+    // uint64 chain_id = 1;
 
 
     pub fn get_chain_id(&self) -> u64 {
@@ -660,7 +633,7 @@ impl TransactionContext {
         self.chain_id = v;
     }
 
-    // bytes gas_price = 3;
+    // bytes gas_price = 2;
 
 
     pub fn get_gas_price(&self) -> &[u8] {
@@ -686,7 +659,7 @@ impl TransactionContext {
         ::std::mem::replace(&mut self.gas_price, ::std::vec::Vec::new())
     }
 
-    // uint64 timestamp = 4;
+    // uint64 timestamp = 3;
 
 
     pub fn get_timestamp(&self) -> u64 {
@@ -701,7 +674,7 @@ impl TransactionContext {
         self.timestamp = v;
     }
 
-    // uint64 block_gas_limit = 5;
+    // uint64 block_gas_limit = 4;
 
 
     pub fn get_block_gas_limit(&self) -> u64 {
@@ -716,7 +689,7 @@ impl TransactionContext {
         self.block_gas_limit = v;
     }
 
-    // bytes block_base_fee_per_gas = 6;
+    // bytes block_base_fee_per_gas = 5;
 
 
     pub fn get_block_base_fee_per_gas(&self) -> &[u8] {
@@ -742,7 +715,7 @@ impl TransactionContext {
         ::std::mem::replace(&mut self.block_base_fee_per_gas, ::std::vec::Vec::new())
     }
 
-    // bytes block_coinbase = 7;
+    // bytes block_coinbase = 6;
 
 
     pub fn get_block_coinbase(&self) -> &[u8] {
@@ -768,7 +741,7 @@ impl TransactionContext {
         ::std::mem::replace(&mut self.block_coinbase, ::std::vec::Vec::new())
     }
 
-    // uint64 block_number = 8;
+    // uint64 block_number = 7;
 
 
     pub fn get_block_number(&self) -> u64 {
@@ -794,39 +767,36 @@ impl ::protobuf::Message for TransactionContext {
             let (field_number, wire_type) = is.read_tag_unpack()?;
             match field_number {
                 1 => {
-                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.block_hash)?;
-                },
-                2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint64()?;
                     self.chain_id = tmp;
                 },
-                3 => {
+                2 => {
                     ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.gas_price)?;
                 },
-                4 => {
+                3 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint64()?;
                     self.timestamp = tmp;
                 },
-                5 => {
+                4 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     let tmp = is.read_uint64()?;
                     self.block_gas_limit = tmp;
                 },
-                6 => {
+                5 => {
                     ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.block_base_fee_per_gas)?;
                 },
-                7 => {
+                6 => {
                     ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.block_coinbase)?;
                 },
-                8 => {
+                7 => {
                     if wire_type != ::protobuf::wire_format::WireTypeVarint {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
@@ -845,29 +815,26 @@ impl ::protobuf::Message for TransactionContext {
     #[allow(unused_variables)]
     fn compute_size(&self) -> u32 {
         let mut my_size = 0;
-        if !self.block_hash.is_empty() {
-            my_size += ::protobuf::rt::bytes_size(1, &self.block_hash);
-        }
         if self.chain_id != 0 {
-            my_size += ::protobuf::rt::value_size(2, self.chain_id, ::protobuf::wire_format::WireTypeVarint);
+            my_size += ::protobuf::rt::value_size(1, self.chain_id, ::protobuf::wire_format::WireTypeVarint);
         }
         if !self.gas_price.is_empty() {
-            my_size += ::protobuf::rt::bytes_size(3, &self.gas_price);
+            my_size += ::protobuf::rt::bytes_size(2, &self.gas_price);
         }
         if self.timestamp != 0 {
-            my_size += ::protobuf::rt::value_size(4, self.timestamp, ::protobuf::wire_format::WireTypeVarint);
+            my_size += ::protobuf::rt::value_size(3, self.timestamp, ::protobuf::wire_format::WireTypeVarint);
         }
         if self.block_gas_limit != 0 {
-            my_size += ::protobuf::rt::value_size(5, self.block_gas_limit, ::protobuf::wire_format::WireTypeVarint);
+            my_size += ::protobuf::rt::value_size(4, self.block_gas_limit, ::protobuf::wire_format::WireTypeVarint);
         }
         if !self.block_base_fee_per_gas.is_empty() {
-            my_size += ::protobuf::rt::bytes_size(6, &self.block_base_fee_per_gas);
+            my_size += ::protobuf::rt::bytes_size(5, &self.block_base_fee_per_gas);
         }
         if !self.block_coinbase.is_empty() {
-            my_size += ::protobuf::rt::bytes_size(7, &self.block_coinbase);
+            my_size += ::protobuf::rt::bytes_size(6, &self.block_coinbase);
         }
         if self.block_number != 0 {
-            my_size += ::protobuf::rt::value_size(8, self.block_number, ::protobuf::wire_format::WireTypeVarint);
+            my_size += ::protobuf::rt::value_size(7, self.block_number, ::protobuf::wire_format::WireTypeVarint);
         }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
@@ -875,29 +842,26 @@ impl ::protobuf::Message for TransactionContext {
     }
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
-        if !self.block_hash.is_empty() {
-            os.write_bytes(1, &self.block_hash)?;
-        }
         if self.chain_id != 0 {
-            os.write_uint64(2, self.chain_id)?;
+            os.write_uint64(1, self.chain_id)?;
         }
         if !self.gas_price.is_empty() {
-            os.write_bytes(3, &self.gas_price)?;
+            os.write_bytes(2, &self.gas_price)?;
         }
         if self.timestamp != 0 {
-            os.write_uint64(4, self.timestamp)?;
+            os.write_uint64(3, self.timestamp)?;
         }
         if self.block_gas_limit != 0 {
-            os.write_uint64(5, self.block_gas_limit)?;
+            os.write_uint64(4, self.block_gas_limit)?;
         }
         if !self.block_base_fee_per_gas.is_empty() {
-            os.write_bytes(6, &self.block_base_fee_per_gas)?;
+            os.write_bytes(5, &self.block_base_fee_per_gas)?;
         }
         if !self.block_coinbase.is_empty() {
-            os.write_bytes(7, &self.block_coinbase)?;
+            os.write_bytes(6, &self.block_coinbase)?;
         }
         if self.block_number != 0 {
-            os.write_uint64(8, self.block_number)?;
+            os.write_uint64(7, self.block_number)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -937,11 +901,6 @@ impl ::protobuf::Message for TransactionContext {
         static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
         descriptor.get(|| {
             let mut fields = ::std::vec::Vec::new();
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
-                "block_hash",
-                |m: &TransactionContext| { &m.block_hash },
-                |m: &mut TransactionContext| { &mut m.block_hash },
-            ));
             fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
                 "chain_id",
                 |m: &TransactionContext| { &m.chain_id },
@@ -993,7 +952,6 @@ impl ::protobuf::Message for TransactionContext {
 
 impl ::protobuf::Clear for TransactionContext {
     fn clear(&mut self) {
-        self.block_hash.clear();
         self.chain_id = 0;
         self.gas_price.clear();
         self.timestamp = 0;
@@ -6691,69 +6649,68 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x02to\x12\x12\n\x04data\x18\x03\x20\x01(\x0cR\x04data\x12\x1a\n\x08gasL\
     imit\x18\x04\x20\x01(\x04R\x08gasLimit\x12\x14\n\x05value\x18\x05\x20\
     \x01(\x0cR\x05value\x127\n\naccessList\x18\x06\x20\x03(\x0b2\x17.ffi.ffi\
-    .AccessListItemR\naccessList\"\xaf\x02\n\x12TransactionContext\x12\x1d\n\
-    \nblock_hash\x18\x01\x20\x01(\x0cR\tblockHash\x12\x19\n\x08chain_id\x18\
-    \x02\x20\x01(\x04R\x07chainId\x12\x1b\n\tgas_price\x18\x03\x20\x01(\x0cR\
-    \x08gasPrice\x12\x1c\n\ttimestamp\x18\x04\x20\x01(\x04R\ttimestamp\x12&\
-    \n\x0fblock_gas_limit\x18\x05\x20\x01(\x04R\rblockGasLimit\x122\n\x16blo\
-    ck_base_fee_per_gas\x18\x06\x20\x01(\x0cR\x12blockBaseFeePerGas\x12%\n\
-    \x0eblock_coinbase\x18\x07\x20\x01(\x0cR\rblockCoinbase\x12!\n\x0cblock_\
-    number\x18\x08\x20\x01(\x04R\x0bblockNumber\"\x89\x01\n\x18HandleTransac\
-    tionRequest\x121\n\x07tx_data\x18\x01\x20\x01(\x0b2\x18.ffi.ffi.Transact\
-    ionDataR\x06txData\x12:\n\ntx_context\x18\x02\x20\x01(\x0b2\x1b.ffi.ffi.\
-    TransactionContextR\ttxContext\"\x85\x01\n\x19HandleTransactionResponse\
-    \x12\x20\n\x04logs\x18\x02\x20\x03(\x0b2\x0c.ffi.ffi.LogR\x04logs\x12\
-    \x10\n\x03ret\x18\x03\x20\x01(\x0cR\x03ret\x12\x19\n\x08vm_error\x18\x04\
-    \x20\x01(\tR\x07vmError\x12\x19\n\x08gas_used\x18\x05\x20\x01(\x04R\x07g\
-    asUsed\"\x1d\n\x05Topic\x12\x14\n\x05inner\x18\x01\x20\x01(\x0cR\x05inne\
-    r\"[\n\x03Log\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\x12&\
-    \n\x06topics\x18\x02\x20\x03(\x0b2\x0e.ffi.ffi.TopicR\x06topics\x12\x12\
-    \n\x04data\x18\x03\x20\x01(\x0cR\x04data\"+\n\x0fQueryGetAccount\x12\x18\
-    \n\x07address\x18\x01\x20\x01(\x0cR\x07address\"I\n\x17QueryGetAccountRe\
-    sponse\x12\x18\n\x07balance\x18\x01\x20\x01(\x0cR\x07balance\x12\x14\n\
-    \x05nonce\x18\x02\x20\x01(\x0cR\x05nonce\"^\n\x12QueryInsertAccount\x12\
-    \x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\x12\x18\n\x07balance\
-    \x18\x02\x20\x01(\x0cR\x07balance\x12\x14\n\x05nonce\x18\x03\x20\x01(\
-    \x0cR\x05nonce\"\x1c\n\x1aQueryInsertAccountResponse\"$\n\x10QueryContai\
-    nsKey\x12\x10\n\x03key\x18\x01\x20\x01(\x0cR\x03key\"6\n\x18QueryContain\
-    sKeyResponse\x12\x1a\n\x08contains\x18\x01\x20\x01(\x08R\x08contains\"L\
-    \n\x1aQueryGetAccountStorageCell\x12\x18\n\x07address\x18\x01\x20\x01(\
-    \x0cR\x07address\x12\x14\n\x05index\x18\x02\x20\x01(\x0cR\x05index\":\n\
-    \"QueryGetAccountStorageCellResponse\x12\x14\n\x05value\x18\x01\x20\x01(\
-    \x0cR\x05value\"/\n\x13QueryGetAccountCode\x12\x18\n\x07address\x18\x01\
-    \x20\x01(\x0cR\x07address\"1\n\x1bQueryGetAccountCodeResponse\x12\x12\n\
-    \x04code\x18\x01\x20\x01(\x0cR\x04code\"F\n\x16QueryInsertAccountCode\
-    \x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\x12\x12\n\x04code\
-    \x18\x02\x20\x01(\x0cR\x04code\"\x20\n\x1eQueryInsertAccountCodeResponse\
-    \"^\n\x16QueryInsertStorageCell\x12\x18\n\x07address\x18\x01\x20\x01(\
-    \x0cR\x07address\x12\x14\n\x05index\x18\x02\x20\x01(\x0cR\x05index\x12\
-    \x14\n\x05value\x18\x03\x20\x01(\x0cR\x05value\"\x20\n\x1eQueryInsertSto\
-    rageCellResponse\"'\n\x0bQueryRemove\x12\x18\n\x07address\x18\x01\x20\
-    \x01(\x0cR\x07address\"\x15\n\x13QueryRemoveResponse\"H\n\x16QueryRemove\
-    StorageCell\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\x12\
-    \x14\n\x05index\x18\x02\x20\x01(\x0cR\x05index\"\x20\n\x1eQueryRemoveSto\
-    rageCellResponse\".\n\x12QueryRemoveStorage\x12\x18\n\x07address\x18\x01\
-    \x20\x01(\x0cR\x07address\"\x1c\n\x1aQueryRemoveStorageResponse\"(\n\x0e\
-    QueryBlockHash\x12\x16\n\x06number\x18\x01\x20\x01(\x0cR\x06number\",\n\
-    \x16QueryBlockHashResponse\x12\x12\n\x04hash\x18\x01\x20\x01(\x0cR\x04ha\
-    sh\"\x82\x06\n\rCosmosRequest\x12:\n\ngetAccount\x18\x01\x20\x01(\x0b2\
-    \x18.ffi.ffi.QueryGetAccountH\0R\ngetAccount\x12C\n\rinsertAccount\x18\
-    \x02\x20\x01(\x0b2\x1b.ffi.ffi.QueryInsertAccountH\0R\rinsertAccount\x12\
-    =\n\x0bcontainsKey\x18\x03\x20\x01(\x0b2\x19.ffi.ffi.QueryContainsKeyH\0\
-    R\x0bcontainsKey\x12@\n\x0baccountCode\x18\x04\x20\x01(\x0b2\x1c.ffi.ffi\
-    .QueryGetAccountCodeH\0R\x0baccountCode\x12G\n\x0bstorageCell\x18\x05\
-    \x20\x01(\x0b2#.ffi.ffi.QueryGetAccountStorageCellH\0R\x0bstorageCell\
-    \x12O\n\x11insertAccountCode\x18\x06\x20\x01(\x0b2\x1f.ffi.ffi.QueryInse\
-    rtAccountCodeH\0R\x11insertAccountCode\x12O\n\x11insertStorageCell\x18\
-    \x07\x20\x01(\x0b2\x1f.ffi.ffi.QueryInsertStorageCellH\0R\x11insertStora\
-    geCell\x12.\n\x06remove\x18\x08\x20\x01(\x0b2\x14.ffi.ffi.QueryRemoveH\0\
-    R\x06remove\x12O\n\x11removeStorageCell\x18\t\x20\x01(\x0b2\x1f.ffi.ffi.\
-    QueryRemoveStorageCellH\0R\x11removeStorageCell\x12C\n\rremoveStorage\
-    \x18\n\x20\x01(\x0b2\x1b.ffi.ffi.QueryRemoveStorageH\0R\rremoveStorage\
-    \x127\n\tblockHash\x18\x0b\x20\x01(\x0b2\x17.ffi.ffi.QueryBlockHashH\0R\
-    \tblockHashB\x05\n\x03req\"f\n\nFFIRequest\x12Q\n\x11handleTransaction\
-    \x18\x01\x20\x01(\x0b2!.ffi.ffi.HandleTransactionRequestH\0R\x11handleTr\
-    ansactionB\x05\n\x03reqB\x04Z\x02./b\x06proto3\
+    .AccessListItemR\naccessList\"\x90\x02\n\x12TransactionContext\x12\x19\n\
+    \x08chain_id\x18\x01\x20\x01(\x04R\x07chainId\x12\x1b\n\tgas_price\x18\
+    \x02\x20\x01(\x0cR\x08gasPrice\x12\x1c\n\ttimestamp\x18\x03\x20\x01(\x04\
+    R\ttimestamp\x12&\n\x0fblock_gas_limit\x18\x04\x20\x01(\x04R\rblockGasLi\
+    mit\x122\n\x16block_base_fee_per_gas\x18\x05\x20\x01(\x0cR\x12blockBaseF\
+    eePerGas\x12%\n\x0eblock_coinbase\x18\x06\x20\x01(\x0cR\rblockCoinbase\
+    \x12!\n\x0cblock_number\x18\x07\x20\x01(\x04R\x0bblockNumber\"\x89\x01\n\
+    \x18HandleTransactionRequest\x121\n\x07tx_data\x18\x01\x20\x01(\x0b2\x18\
+    .ffi.ffi.TransactionDataR\x06txData\x12:\n\ntx_context\x18\x02\x20\x01(\
+    \x0b2\x1b.ffi.ffi.TransactionContextR\ttxContext\"\x85\x01\n\x19HandleTr\
+    ansactionResponse\x12\x20\n\x04logs\x18\x02\x20\x03(\x0b2\x0c.ffi.ffi.Lo\
+    gR\x04logs\x12\x10\n\x03ret\x18\x03\x20\x01(\x0cR\x03ret\x12\x19\n\x08vm\
+    _error\x18\x04\x20\x01(\tR\x07vmError\x12\x19\n\x08gas_used\x18\x05\x20\
+    \x01(\x04R\x07gasUsed\"\x1d\n\x05Topic\x12\x14\n\x05inner\x18\x01\x20\
+    \x01(\x0cR\x05inner\"[\n\x03Log\x12\x18\n\x07address\x18\x01\x20\x01(\
+    \x0cR\x07address\x12&\n\x06topics\x18\x02\x20\x03(\x0b2\x0e.ffi.ffi.Topi\
+    cR\x06topics\x12\x12\n\x04data\x18\x03\x20\x01(\x0cR\x04data\"+\n\x0fQue\
+    ryGetAccount\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\"I\n\
+    \x17QueryGetAccountResponse\x12\x18\n\x07balance\x18\x01\x20\x01(\x0cR\
+    \x07balance\x12\x14\n\x05nonce\x18\x02\x20\x01(\x0cR\x05nonce\"^\n\x12Qu\
+    eryInsertAccount\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\
+    \x12\x18\n\x07balance\x18\x02\x20\x01(\x0cR\x07balance\x12\x14\n\x05nonc\
+    e\x18\x03\x20\x01(\x0cR\x05nonce\"\x1c\n\x1aQueryInsertAccountResponse\"\
+    $\n\x10QueryContainsKey\x12\x10\n\x03key\x18\x01\x20\x01(\x0cR\x03key\"6\
+    \n\x18QueryContainsKeyResponse\x12\x1a\n\x08contains\x18\x01\x20\x01(\
+    \x08R\x08contains\"L\n\x1aQueryGetAccountStorageCell\x12\x18\n\x07addres\
+    s\x18\x01\x20\x01(\x0cR\x07address\x12\x14\n\x05index\x18\x02\x20\x01(\
+    \x0cR\x05index\":\n\"QueryGetAccountStorageCellResponse\x12\x14\n\x05val\
+    ue\x18\x01\x20\x01(\x0cR\x05value\"/\n\x13QueryGetAccountCode\x12\x18\n\
+    \x07address\x18\x01\x20\x01(\x0cR\x07address\"1\n\x1bQueryGetAccountCode\
+    Response\x12\x12\n\x04code\x18\x01\x20\x01(\x0cR\x04code\"F\n\x16QueryIn\
+    sertAccountCode\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\
+    \x12\x12\n\x04code\x18\x02\x20\x01(\x0cR\x04code\"\x20\n\x1eQueryInsertA\
+    ccountCodeResponse\"^\n\x16QueryInsertStorageCell\x12\x18\n\x07address\
+    \x18\x01\x20\x01(\x0cR\x07address\x12\x14\n\x05index\x18\x02\x20\x01(\
+    \x0cR\x05index\x12\x14\n\x05value\x18\x03\x20\x01(\x0cR\x05value\"\x20\n\
+    \x1eQueryInsertStorageCellResponse\"'\n\x0bQueryRemove\x12\x18\n\x07addr\
+    ess\x18\x01\x20\x01(\x0cR\x07address\"\x15\n\x13QueryRemoveResponse\"H\n\
+    \x16QueryRemoveStorageCell\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\
+    \x07address\x12\x14\n\x05index\x18\x02\x20\x01(\x0cR\x05index\"\x20\n\
+    \x1eQueryRemoveStorageCellResponse\".\n\x12QueryRemoveStorage\x12\x18\n\
+    \x07address\x18\x01\x20\x01(\x0cR\x07address\"\x1c\n\x1aQueryRemoveStora\
+    geResponse\"(\n\x0eQueryBlockHash\x12\x16\n\x06number\x18\x01\x20\x01(\
+    \x0cR\x06number\",\n\x16QueryBlockHashResponse\x12\x12\n\x04hash\x18\x01\
+    \x20\x01(\x0cR\x04hash\"\x82\x06\n\rCosmosRequest\x12:\n\ngetAccount\x18\
+    \x01\x20\x01(\x0b2\x18.ffi.ffi.QueryGetAccountH\0R\ngetAccount\x12C\n\ri\
+    nsertAccount\x18\x02\x20\x01(\x0b2\x1b.ffi.ffi.QueryInsertAccountH\0R\ri\
+    nsertAccount\x12=\n\x0bcontainsKey\x18\x03\x20\x01(\x0b2\x19.ffi.ffi.Que\
+    ryContainsKeyH\0R\x0bcontainsKey\x12@\n\x0baccountCode\x18\x04\x20\x01(\
+    \x0b2\x1c.ffi.ffi.QueryGetAccountCodeH\0R\x0baccountCode\x12G\n\x0bstora\
+    geCell\x18\x05\x20\x01(\x0b2#.ffi.ffi.QueryGetAccountStorageCellH\0R\x0b\
+    storageCell\x12O\n\x11insertAccountCode\x18\x06\x20\x01(\x0b2\x1f.ffi.ff\
+    i.QueryInsertAccountCodeH\0R\x11insertAccountCode\x12O\n\x11insertStorag\
+    eCell\x18\x07\x20\x01(\x0b2\x1f.ffi.ffi.QueryInsertStorageCellH\0R\x11in\
+    sertStorageCell\x12.\n\x06remove\x18\x08\x20\x01(\x0b2\x14.ffi.ffi.Query\
+    RemoveH\0R\x06remove\x12O\n\x11removeStorageCell\x18\t\x20\x01(\x0b2\x1f\
+    .ffi.ffi.QueryRemoveStorageCellH\0R\x11removeStorageCell\x12C\n\rremoveS\
+    torage\x18\n\x20\x01(\x0b2\x1b.ffi.ffi.QueryRemoveStorageH\0R\rremoveSto\
+    rage\x127\n\tblockHash\x18\x0b\x20\x01(\x0b2\x17.ffi.ffi.QueryBlockHashH\
+    \0R\tblockHashB\x05\n\x03req\"f\n\nFFIRequest\x12Q\n\x11handleTransactio\
+    n\x18\x01\x20\x01(\x0b2!.ffi.ffi.HandleTransactionRequestH\0R\x11handleT\
+    ransactionB\x05\n\x03reqB\x04Z\x02./b\x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;

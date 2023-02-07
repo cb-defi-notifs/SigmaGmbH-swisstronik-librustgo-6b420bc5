@@ -71,7 +71,6 @@ fn parse_protobuf_transaction_data(request: ProtoRequest) -> (ExecutionData, TxC
 
 fn build_transaction_context(context: ProtoTransactionContext) -> TxContext {
     TxContext { 
-        block_hash: H256::from_slice(&context.block_hash), 
         chain_id: U256::from(context.chain_id),
         gas_price: U256::from_big_endian(&context.gas_price), 
         block_number: U256::from(context.block_number),

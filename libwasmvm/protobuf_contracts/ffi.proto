@@ -21,14 +21,13 @@ message TransactionData {
 }
 
 message TransactionContext {
-  bytes block_hash = 1;
-  uint64 chain_id = 2;
-  bytes gas_price = 3;
-  uint64 timestamp = 4;
-  uint64 block_gas_limit = 5;
-  bytes block_base_fee_per_gas = 6;
-  bytes block_coinbase = 7;
-  uint64 block_number = 8; 
+  uint64 chain_id = 1;
+  bytes gas_price = 2;
+  uint64 timestamp = 3;
+  uint64 block_gas_limit = 4;
+  bytes block_base_fee_per_gas = 5;
+  bytes block_coinbase = 6;
+  uint64 block_number = 7; 
 }
 
 message HandleTransactionRequest {

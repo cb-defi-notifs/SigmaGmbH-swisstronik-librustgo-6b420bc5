@@ -93,7 +93,6 @@ func main() {
 
 	// Construct transaction context
 	txContext := &wasmvm.TransactionContext{
-		BlockHash: make([]byte, 32),
 		ChainId: 1,
 		GasPrice: uint256.NewInt(1).Bytes(),
 		Timestamp: 1,

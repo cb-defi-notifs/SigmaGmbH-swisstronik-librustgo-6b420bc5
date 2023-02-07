@@ -9,7 +9,6 @@ use sgx_evm::Vicinity;
 
 /// Contains context of the transaction such as gas price, block hash, block timestamp, etc.
 pub struct TxContext {
-    pub block_hash: H256,
     pub chain_id: U256,
     pub gas_price: U256,
     pub block_number: U256,
@@ -49,11 +48,6 @@ impl<'state> EvmBackend for FFIBackend<'state> {
     }
 
     fn block_hash(&self, number: U256) -> H256 {
-        if number.eq(&self.tx_context.block_number) {
-            // If EVM requests block hash of the last block,
-            // we already has it in tx context
-            return self.tx_context.block_hash
-        }
         self.querier.query_block_hash(number)
     }
 
