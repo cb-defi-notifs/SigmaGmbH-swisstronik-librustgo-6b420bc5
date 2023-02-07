@@ -56,12 +56,6 @@ type QueryRemoveStorageCell = ffi.QueryRemoveStorageCell
 type QueryRemoveStorageCellResponse = ffi.QueryRemoveStorageCellResponse
 type QueryBlockHash = ffi.QueryBlockHash
 type QueryBlockHashResponse = ffi.QueryBlockHashResponse
-type QueryBlockTimestamp = ffi.QueryBlockTimestamp
-type QueryBlockTimestampResponse = ffi.QueryBlockTimestampResponse
-type QueryBlockNumber = ffi.QueryBlockNumber
-type QueryBlockNumberResponse = ffi.QueryBlockNumberResponse
-type QueryChainId = ffi.QueryChainId
-type QueryChainIdResponse = ffi.QueryChainIdResponse
 
 // Storage requests
 type CosmosRequest_GetAccount = ffi.CosmosRequest_GetAccount
@@ -74,10 +68,7 @@ type CosmosRequest_InsertStorageCell = ffi.CosmosRequest_InsertStorageCell
 type CosmosRequest_Remove = ffi.CosmosRequest_Remove
 type CosmosRequest_RemoveStorageCell = ffi.CosmosRequest_RemoveStorageCell
 // Backend requests
-type CosmosRequest_BlockNumber = ffi.CosmosRequest_BlockNumber
 type CosmosRequest_BlockHash = ffi.CosmosRequest_BlockHash
-type CosmosRequest_BlockTimestamp = ffi.CosmosRequest_BlockTimestamp
-type CosmosRequest_ChainId = ffi.CosmosRequest_ChainId
 
 func HandleTx(
 	querier types.DataQuerier, 

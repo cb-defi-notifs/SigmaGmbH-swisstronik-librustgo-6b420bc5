@@ -32,18 +32,6 @@ func (MockedQueryHandler) Query(request []byte) ([]byte, error) {
 		return nil, err
 	}
 	switch request := decodedRequest.Req.(type) {
-	case *ffi.CosmosRequest_BlockNumber:
-		println("[Go:Query] Block number")
-		number := uint256.NewInt(1).Bytes32()
-		return proto.Marshal(&ffi.QueryBlockNumberResponse{Number: number[:]})
-	case *ffi.CosmosRequest_BlockTimestamp:
-		println("[Go:Query] Block timestamp")
-		timestamp := uint256.NewInt(2).Bytes32()
-		return proto.Marshal(&ffi.QueryBlockTimestampResponse{Timestamp: timestamp[:]})	
-	case *ffi.CosmosRequest_ChainId:
-		println("[Go:Query] Chain id")
-		chainId := uint256.NewInt(3).Bytes32()
-		return proto.Marshal(&ffi.QueryChainIdResponse{ChainId: chainId[:]})	
 	case *ffi.CosmosRequest_BlockHash:
 		println("[Go:Query] Block hash")
 		blockHash := uint256.NewInt(4).Bytes32()
