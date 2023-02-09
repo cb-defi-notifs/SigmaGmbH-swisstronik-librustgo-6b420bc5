@@ -169,7 +169,7 @@ func cQueryExternal(ptr *C.querier_t, request C.U8SliceView, result *C.Unmanaged
 	}
 	*result = newUnmanagedVector(response)
 
-	println("[Go:cQueryExternal] called successfully")
+	// println("[Go:cQueryExternal] called successfully")
 
 	return C.GoError_None
 }
