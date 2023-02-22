@@ -84,6 +84,36 @@ func HandleTx(
 	return executionResult, nil
 }
 
+func Call(
+	querier types.DataQuerier, 
+	from, to, data, value []byte, 
+	gasLimit uint64,
+	txContext *TransactionContext,
+	commit bool,
+) (*ffi.HandleTransactionResponse, error) {
+	executionResult, err := api.Call(querier, from, to, data, value, gasLimit, txContext, commit)
+	if err != nil {
+		return &ffi.HandleTransactionResponse{}, err
+	}
+
+	return executionResult, nil
+}
+
+func Create(
+	querier types.DataQuerier, 
+	from, data, value []byte, 
+	gasLimit uint64,
+	txContext *TransactionContext,
+	commit bool,
+) (*ffi.HandleTransactionResponse, error) {
+	executionResult, err := api.Create(querier, from, data, value, gasLimit, txContext, commit)
+	if err != nil {
+		return &ffi.HandleTransactionResponse{}, err
+	}
+
+	return executionResult, nil
+}
+
 // LibwasmvmVersion returns the version of the loaded library
 // at runtime. This can be used for debugging to verify the loaded version
 // matches the expected version.

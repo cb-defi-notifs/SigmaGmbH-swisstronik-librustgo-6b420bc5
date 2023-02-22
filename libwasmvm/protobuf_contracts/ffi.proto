@@ -203,13 +203,6 @@ message SGXVMCreateRequest {
   TransactionContext context = 2;
 }
 
-// Common response for all SGXVM* requests
-message SGXVMResponse {
-    bytes result = 1;
-    uint64 gasLeft = 2;
-    string error = 3; 
-}
-
 message FFIRequest {
   oneof req {
     HandleTransactionRequest handleTransaction = 1;

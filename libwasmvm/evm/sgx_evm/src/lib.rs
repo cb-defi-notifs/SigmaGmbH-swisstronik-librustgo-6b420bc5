@@ -342,7 +342,7 @@ mod tests {
 
     use primitive_types::{H160, U256};
 
-    use crate::{handle_query_inner, handle_transaction_inner};
+    use crate::{handle_query_inner, handle_transaction_inner, handle_sgxvm_create};
     use crate::primitives::QueryData;
     use crate::primitives::raw_transaction::FullTransactionData;
     use crate::storage::mocked_storage::MockedStorage;
