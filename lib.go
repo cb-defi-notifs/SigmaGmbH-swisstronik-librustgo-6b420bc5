@@ -70,6 +70,8 @@ type CosmosRequest_RemoveStorageCell = ffi.CosmosRequest_RemoveStorageCell
 // Backend requests
 type CosmosRequest_BlockHash = ffi.CosmosRequest_BlockHash
 
+type HandleTransactionResponse = ffi.HandleTransactionResponse
+
 func HandleTx(
 	querier types.DataQuerier, 
 	from, to, data, value []byte, 
