@@ -1,19 +1,20 @@
 use std::collections::HashSet;
 use std::marker::PhantomData;
-use std::panic::{catch_unwind};
+use std::panic::catch_unwind;
 
 // use cosmwasm_vm::{capabilities_from_csv, Cache, CacheOptions, Checksum, Size};
 
-use protobuf::Message;
+use protobuf::{Message, RepeatedField};
 use sgx_evm::primitive_types::H256;
 
+use crate::args::PB_REQUEST_ARG;
+use crate::error::{handle_c_error_default, Error};
 use crate::evm;
-use crate::args::{PB_REQUEST_ARG};
-use crate::error::{ handle_c_error_default, Error};
 use crate::memory::{ByteSliceView, UnmanagedVector};
-use crate::protobuf_generated::ffi::{FFIRequest, FFIRequest_oneof_req, HandleTransactionResponse, Topic, Log};
+use crate::protobuf_generated::ffi::{
+    FFIRequest, FFIRequest_oneof_req, HandleTransactionResponse, Log, Topic,
+};
 use crate::querier::GoQuerier;
-
 
 #[repr(C)]
 pub struct cache_t {}
@@ -54,6 +55,88 @@ pub extern "C" fn make_pb_request(
             Ok(request) => {
                 if let Some(req) = request.req {
                     match req {
+                        FFIRequest_oneof_req::callRequest(req) => {
+                            let execution_result = evm::handle_sgxvm_call(querier, req);
+
+                            // Create protobuf-encoded response
+                            let mut response = HandleTransactionResponse::new();
+                            response.set_gas_used(execution_result.gas_used);
+                            response.set_vm_error(execution_result.vm_error);
+                            response.set_ret(execution_result.data);
+
+                            // Convert logs into proper format
+                            let converted_logs = execution_result
+                                .logs
+                                .into_iter()
+                                .map(|log| {
+                                    let mut proto_log = Log::new();
+                                    proto_log.set_address(log.address.as_fixed_bytes().to_vec());
+                                    proto_log.set_data(log.data);
+
+                                    let converted_topics: Vec<Topic> = log
+                                        .topics
+                                        .into_iter()
+                                        .map(|topic| convert_topic_to_proto(topic))
+                                        .collect();
+                                    proto_log.set_topics(converted_topics.into());
+
+                                    proto_log
+                                })
+                                .collect();
+
+                            response.set_logs(converted_logs);
+
+                            // Convert to bytes and return it
+                            let response_bytes = match response.write_to_bytes() {
+                                Ok(res) => res,
+                                Err(_) => {
+                                    return Err(Error::protobuf_decode("Response encoding failed"));
+                                }
+                            };
+
+                            Ok(response_bytes)
+                        },
+                        FFIRequest_oneof_req::createRequest(req) => {
+                            let execution_result = evm::handle_sgxvm_create(querier, req);
+
+                            // Create protobuf-encoded response
+                            let mut response = HandleTransactionResponse::new();
+                            response.set_gas_used(execution_result.gas_used);
+                            response.set_vm_error(execution_result.vm_error);
+                            response.set_ret(execution_result.data);
+
+                            // Convert logs into proper format
+                            let converted_logs = execution_result
+                                .logs
+                                .into_iter()
+                                .map(|log| {
+                                    let mut proto_log = Log::new();
+                                    proto_log.set_address(log.address.as_fixed_bytes().to_vec());
+                                    proto_log.set_data(log.data);
+
+                                    let converted_topics: Vec<Topic> = log
+                                        .topics
+                                        .into_iter()
+                                        .map(|topic| convert_topic_to_proto(topic))
+                                        .collect();
+                                    proto_log.set_topics(converted_topics.into());
+
+                                    proto_log
+                                })
+                                .collect();
+
+                            response.set_logs(converted_logs);
+
+                            // Convert to bytes and return it
+                            let response_bytes = match response.write_to_bytes() {
+                                Ok(res) => res,
+                                Err(_) => {
+                                    return Err(Error::protobuf_decode("Response encoding failed"));
+                                }
+                            };
+
+                            Ok(response_bytes)
+                        },
                         FFIRequest_oneof_req::handleTransaction(tx) => {
                             // Execute provided transaction
                             let execution_result = evm::handle_transaction(querier, tx);
@@ -65,21 +148,24 @@ pub extern "C" fn make_pb_request(
                             response.set_ret(execution_result.data);
 
                             // Convert logs into proper format
-                            let converted_logs = execution_result.logs
+                            let converted_logs = execution_result
+                                .logs
                                 .into_iter()
                                 .map(|log| {
                                     let mut proto_log = Log::new();
                                     proto_log.set_address(log.address.as_fixed_bytes().to_vec());
                                     proto_log.set_data(log.data);
 
-                                    let converted_topics: Vec<Topic> = log.topics
+                                    let converted_topics: Vec<Topic> = log
+                                        .topics
                                         .into_iter()
                                         .map(|topic| convert_topic_to_proto(topic))
                                         .collect();
                                     proto_log.set_topics(converted_topics.into());
 
                                     proto_log
-                                }).collect();
+                                })
+                                .collect();
 
                             response.set_logs(converted_logs);
 
@@ -97,12 +183,11 @@ pub extern "C" fn make_pb_request(
                 } else {
                     Err(Error::protobuf_decode("Request unwrapping failed"))
                 }
-            },
-            Err(e) => {
-                Err(Error::protobuf_decode(e.to_string()))
             }
+            Err(e) => Err(Error::protobuf_decode(e.to_string())),
         }
-    }).unwrap_or_else(|_| Err(Error::panic()));
+    })
+    .unwrap_or_else(|_| Err(Error::panic()));
 
     let data = handle_c_error_default(r, error_msg);
     UnmanagedVector::new(Some(data))

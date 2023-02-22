@@ -1,3 +1,4 @@
+use protobuf::RepeatedField;
 use sgx_evm::{self, Vicinity};
 use sgx_evm::ExecutionData;
 use common_types::ExecutionResult;
@@ -7,14 +8,64 @@ use sgx_evm::ethereum::TransactionAction;
 
 use crate::evm::backend::TxContext;
 use crate::protobuf_generated::ffi::{
+    SGXVMCallRequest,
     TransactionData as ProtoTransactionData,
     HandleTransactionRequest as ProtoRequest,
-    TransactionContext as ProtoTransactionContext,
+    TransactionContext as ProtoTransactionContext, AccessListItem, SGXVMCreateRequest,
 };
 use crate::querier::GoQuerier;
 
 mod storage;
 mod backend;
+
+pub fn handle_sgxvm_call(querier: GoQuerier, data: SGXVMCallRequest) -> ExecutionResult {
+    let params = data.params.unwrap();
+    let context = data.context.unwrap();
+
+    let vicinity = Vicinity { origin: H160::from_slice(&params.from) };
+    let mut storage = crate::evm::storage::FFIStorage::new(&querier);
+    let mut backend = backend::FFIBackend::new(
+        &querier, 
+        &mut storage, 
+        vicinity,
+        build_transaction_context(context)
+    );
+
+    sgx_evm::handle_sgxvm_call(
+        &mut backend,
+        params.gasLimit,
+        H160::from_slice(&params.from),
+        H160::from_slice(&params.to),
+        U256::from_big_endian(&params.value),
+        params.data,
+        parse_access_list(params.accessList),
+        params.commit,
+    )
+}
+
+pub fn handle_sgxvm_create(querier: GoQuerier, data: SGXVMCreateRequest) -> ExecutionResult {
+    let params = data.params.unwrap();
+    let context = data.context.unwrap();
+
+    let vicinity = Vicinity { origin: H160::from_slice(&params.from) };
+    let mut storage = crate::evm::storage::FFIStorage::new(&querier);
+    let mut backend = backend::FFIBackend::new(
+        &querier, 
+        &mut storage, 
+        vicinity,
+        build_transaction_context(context)
+    );
+
+    sgx_evm::handle_sgxvm_create(
+        &mut backend,
+        params.gasLimit,
+        H160::from_slice(&params.from),
+        U256::from_big_endian(&params.value),
+        params.data,
+        parse_access_list(params.accessList),
+        params.commit,
+    )
+}
 
 /// This function creates mocked backend and tries to handle incoming transaction
 /// It is stateless and is used just to test broadcasting transaction from devnet to Rust
@@ -29,6 +80,22 @@ pub fn handle_transaction(querier: GoQuerier, data: ProtoRequest) -> ExecutionRe
 
     // Handle already parsed transaction and return execution result
     sgx_evm::handle_transaction_inner(tx, &mut backend)
+}
+
+fn parse_access_list(data: RepeatedField<AccessListItem>) -> Vec<(H160, Vec<H256>)> {
+    let mut access_list = Vec::default();
+    for access_list_item in data.to_vec() {
+        let address = H160::from_slice(&access_list_item.address);
+        let slots = access_list_item.storageSlot
+            .to_vec()
+            .into_iter()
+            .map(|item| { H256::from_slice(&item) })
+            .collect();
+
+        access_list.push((address, slots));
+    }
+
+    access_list
 }
 
 /// This function takes protobuf-encoded request for transaction handling and extracts

@@ -1763,6 +1763,366 @@ func (*CosmosRequest_RemoveStorage) isCosmosRequest_Req() {}
 
 func (*CosmosRequest_BlockHash) isCosmosRequest_Req() {}
 
+// Message with data required to execute `call` operation
+type SGXVMCallParams struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	From       []byte            `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`
+	To         []byte            `protobuf:"bytes,2,opt,name=to,proto3" json:"to,omitempty"`
+	Data       []byte            `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+	GasLimit   uint64            `protobuf:"varint,4,opt,name=gasLimit,proto3" json:"gasLimit,omitempty"`
+	Value      []byte            `protobuf:"bytes,5,opt,name=value,proto3" json:"value,omitempty"`
+	AccessList []*AccessListItem `protobuf:"bytes,6,rep,name=accessList,proto3" json:"accessList,omitempty"`
+	Commit     bool              `protobuf:"varint,7,opt,name=commit,proto3" json:"commit,omitempty"`
+}
+
+func (x *SGXVMCallParams) Reset() {
+	*x = SGXVMCallParams{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[30]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SGXVMCallParams) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SGXVMCallParams) ProtoMessage() {}
+
+func (x *SGXVMCallParams) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[30]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SGXVMCallParams.ProtoReflect.Descriptor instead.
+func (*SGXVMCallParams) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{30}
+}
+
+func (x *SGXVMCallParams) GetFrom() []byte {
+	if x != nil {
+		return x.From
+	}
+	return nil
+}
+
+func (x *SGXVMCallParams) GetTo() []byte {
+	if x != nil {
+		return x.To
+	}
+	return nil
+}
+
+func (x *SGXVMCallParams) GetData() []byte {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+func (x *SGXVMCallParams) GetGasLimit() uint64 {
+	if x != nil {
+		return x.GasLimit
+	}
+	return 0
+}
+
+func (x *SGXVMCallParams) GetValue() []byte {
+	if x != nil {
+		return x.Value
+	}
+	return nil
+}
+
+func (x *SGXVMCallParams) GetAccessList() []*AccessListItem {
+	if x != nil {
+		return x.AccessList
+	}
+	return nil
+}
+
+func (x *SGXVMCallParams) GetCommit() bool {
+	if x != nil {
+		return x.Commit
+	}
+	return false
+}
+
+// Message with data required to execute `create` operation
+type SGXVMCreateParams struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	From       []byte            `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`
+	Data       []byte            `protobuf:"bytes,2,opt,name=data,proto3" json:"data,omitempty"`
+	GasLimit   uint64            `protobuf:"varint,3,opt,name=gasLimit,proto3" json:"gasLimit,omitempty"`
+	Value      []byte            `protobuf:"bytes,4,opt,name=value,proto3" json:"value,omitempty"`
+	AccessList []*AccessListItem `protobuf:"bytes,5,rep,name=accessList,proto3" json:"accessList,omitempty"`
+	Commit     bool              `protobuf:"varint,6,opt,name=commit,proto3" json:"commit,omitempty"`
+}
+
+func (x *SGXVMCreateParams) Reset() {
+	*x = SGXVMCreateParams{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[31]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SGXVMCreateParams) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SGXVMCreateParams) ProtoMessage() {}
+
+func (x *SGXVMCreateParams) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[31]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SGXVMCreateParams.ProtoReflect.Descriptor instead.
+func (*SGXVMCreateParams) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{31}
+}
+
+func (x *SGXVMCreateParams) GetFrom() []byte {
+	if x != nil {
+		return x.From
+	}
+	return nil
+}
+
+func (x *SGXVMCreateParams) GetData() []byte {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
+func (x *SGXVMCreateParams) GetGasLimit() uint64 {
+	if x != nil {
+		return x.GasLimit
+	}
+	return 0
+}
+
+func (x *SGXVMCreateParams) GetValue() []byte {
+	if x != nil {
+		return x.Value
+	}
+	return nil
+}
+
+func (x *SGXVMCreateParams) GetAccessList() []*AccessListItem {
+	if x != nil {
+		return x.AccessList
+	}
+	return nil
+}
+
+func (x *SGXVMCreateParams) GetCommit() bool {
+	if x != nil {
+		return x.Commit
+	}
+	return false
+}
+
+// Request to execute `call` operation
+type SGXVMCallRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Params  *SGXVMCallParams    `protobuf:"bytes,1,opt,name=params,proto3" json:"params,omitempty"`
+	Context *TransactionContext `protobuf:"bytes,2,opt,name=context,proto3" json:"context,omitempty"`
+}
+
+func (x *SGXVMCallRequest) Reset() {
+	*x = SGXVMCallRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[32]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SGXVMCallRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SGXVMCallRequest) ProtoMessage() {}
+
+func (x *SGXVMCallRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[32]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SGXVMCallRequest.ProtoReflect.Descriptor instead.
+func (*SGXVMCallRequest) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *SGXVMCallRequest) GetParams() *SGXVMCallParams {
+	if x != nil {
+		return x.Params
+	}
+	return nil
+}
+
+func (x *SGXVMCallRequest) GetContext() *TransactionContext {
+	if x != nil {
+		return x.Context
+	}
+	return nil
+}
+
+// Request to execute `create` operation
+type SGXVMCreateRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Params  *SGXVMCreateParams  `protobuf:"bytes,1,opt,name=params,proto3" json:"params,omitempty"`
+	Context *TransactionContext `protobuf:"bytes,2,opt,name=context,proto3" json:"context,omitempty"`
+}
+
+func (x *SGXVMCreateRequest) Reset() {
+	*x = SGXVMCreateRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[33]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SGXVMCreateRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SGXVMCreateRequest) ProtoMessage() {}
+
+func (x *SGXVMCreateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[33]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SGXVMCreateRequest.ProtoReflect.Descriptor instead.
+func (*SGXVMCreateRequest) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{33}
+}
+
+func (x *SGXVMCreateRequest) GetParams() *SGXVMCreateParams {
+	if x != nil {
+		return x.Params
+	}
+	return nil
+}
+
+func (x *SGXVMCreateRequest) GetContext() *TransactionContext {
+	if x != nil {
+		return x.Context
+	}
+	return nil
+}
+
+// Common response for all SGXVM* requests
+type SGXVMResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Result  []byte `protobuf:"bytes,1,opt,name=result,proto3" json:"result,omitempty"`
+	GasLeft uint64 `protobuf:"varint,2,opt,name=gasLeft,proto3" json:"gasLeft,omitempty"`
+	Error   string `protobuf:"bytes,3,opt,name=error,proto3" json:"error,omitempty"`
+}
+
+func (x *SGXVMResponse) Reset() {
+	*x = SGXVMResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[34]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SGXVMResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SGXVMResponse) ProtoMessage() {}
+
+func (x *SGXVMResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[34]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SGXVMResponse.ProtoReflect.Descriptor instead.
+func (*SGXVMResponse) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{34}
+}
+
+func (x *SGXVMResponse) GetResult() []byte {
+	if x != nil {
+		return x.Result
+	}
+	return nil
+}
+
+func (x *SGXVMResponse) GetGasLeft() uint64 {
+	if x != nil {
+		return x.GasLeft
+	}
+	return 0
+}
+
+func (x *SGXVMResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
 type FFIRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1771,13 +2131,15 @@ type FFIRequest struct {
 	// Types that are assignable to Req:
 	//
 	//	*FFIRequest_HandleTransaction
+	//	*FFIRequest_CallRequest
+	//	*FFIRequest_CreateRequest
 	Req isFFIRequest_Req `protobuf_oneof:"req"`
 }
 
 func (x *FFIRequest) Reset() {
 	*x = FFIRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_ffi_proto_msgTypes[30]
+		mi := &file_ffi_proto_msgTypes[35]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1790,7 +2152,7 @@ func (x *FFIRequest) String() string {
 func (*FFIRequest) ProtoMessage() {}
 
 func (x *FFIRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_ffi_proto_msgTypes[30]
+	mi := &file_ffi_proto_msgTypes[35]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1803,7 +2165,7 @@ func (x *FFIRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FFIRequest.ProtoReflect.Descriptor instead.
 func (*FFIRequest) Descriptor() ([]byte, []int) {
-	return file_ffi_proto_rawDescGZIP(), []int{30}
+	return file_ffi_proto_rawDescGZIP(), []int{35}
 }
 
 func (m *FFIRequest) GetReq() isFFIRequest_Req {
@@ -1820,6 +2182,20 @@ func (x *FFIRequest) GetHandleTransaction() *HandleTransactionRequest {
 	return nil
 }
 
+func (x *FFIRequest) GetCallRequest() *SGXVMCallRequest {
+	if x, ok := x.GetReq().(*FFIRequest_CallRequest); ok {
+		return x.CallRequest
+	}
+	return nil
+}
+
+func (x *FFIRequest) GetCreateRequest() *SGXVMCreateRequest {
+	if x, ok := x.GetReq().(*FFIRequest_CreateRequest); ok {
+		return x.CreateRequest
+	}
+	return nil
+}
+
 type isFFIRequest_Req interface {
 	isFFIRequest_Req()
 }
@@ -1828,7 +2204,19 @@ type FFIRequest_HandleTransaction struct {
 	HandleTransaction *HandleTransactionRequest `protobuf:"bytes,1,opt,name=handleTransaction,proto3,oneof"`
 }
 
+type FFIRequest_CallRequest struct {
+	CallRequest *SGXVMCallRequest `protobuf:"bytes,2,opt,name=callRequest,proto3,oneof"`
+}
+
+type FFIRequest_CreateRequest struct {
+	CreateRequest *SGXVMCreateRequest `protobuf:"bytes,3,opt,name=createRequest,proto3,oneof"`
+}
+
 func (*FFIRequest_HandleTransaction) isFFIRequest_Req() {}
+
+func (*FFIRequest_CallRequest) isFFIRequest_Req() {}
+
+func (*FFIRequest_CreateRequest) isFFIRequest_Req() {}
 
 var File_ffi_proto protoreflect.FileDescriptor
 
@@ -2013,14 +2401,69 @@ var file_ffi_proto_rawDesc = []byte{
 	0x20, 0x01, 0x28, 0x0b, 0x32, 0x17, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x51,
 	0x75, 0x65, 0x72, 0x79, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x48, 0x61, 0x73, 0x68, 0x48, 0x00, 0x52,
 	0x09, 0x62, 0x6c, 0x6f, 0x63, 0x6b, 0x48, 0x61, 0x73, 0x68, 0x42, 0x05, 0x0a, 0x03, 0x72, 0x65,
-	0x71, 0x22, 0x66, 0x0a, 0x0a, 0x46, 0x46, 0x49, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12,
-	0x51, 0x0a, 0x11, 0x68, 0x61, 0x6e, 0x64, 0x6c, 0x65, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63,
-	0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x66, 0x66, 0x69,
-	0x2e, 0x66, 0x66, 0x69, 0x2e, 0x48, 0x61, 0x6e, 0x64, 0x6c, 0x65, 0x54, 0x72, 0x61, 0x6e, 0x73,
-	0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x48, 0x00, 0x52,
-	0x11, 0x68, 0x61, 0x6e, 0x64, 0x6c, 0x65, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69,
-	0x6f, 0x6e, 0x42, 0x05, 0x0a, 0x03, 0x72, 0x65, 0x71, 0x42, 0x04, 0x5a, 0x02, 0x2e, 0x2f, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x71, 0x22, 0xcc, 0x01, 0x0a, 0x0f, 0x53, 0x47, 0x58, 0x56, 0x4d, 0x43, 0x61, 0x6c, 0x6c, 0x50,
+	0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x12, 0x0a, 0x04, 0x66, 0x72, 0x6f, 0x6d, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x0c, 0x52, 0x04, 0x66, 0x72, 0x6f, 0x6d, 0x12, 0x0e, 0x0a, 0x02, 0x74, 0x6f, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x02, 0x74, 0x6f, 0x12, 0x12, 0x0a, 0x04, 0x64, 0x61, 0x74,
+	0x61, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x12, 0x1a, 0x0a,
+	0x08, 0x67, 0x61, 0x73, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x18, 0x04, 0x20, 0x01, 0x28, 0x04, 0x52,
+	0x08, 0x67, 0x61, 0x73, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c,
+	0x75, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x12,
+	0x37, 0x0a, 0x0a, 0x61, 0x63, 0x63, 0x65, 0x73, 0x73, 0x4c, 0x69, 0x73, 0x74, 0x18, 0x06, 0x20,
+	0x03, 0x28, 0x0b, 0x32, 0x17, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x41, 0x63,
+	0x63, 0x65, 0x73, 0x73, 0x4c, 0x69, 0x73, 0x74, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x0a, 0x61, 0x63,
+	0x63, 0x65, 0x73, 0x73, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x63, 0x6f, 0x6d, 0x6d,
+	0x69, 0x74, 0x18, 0x07, 0x20, 0x01, 0x28, 0x08, 0x52, 0x06, 0x63, 0x6f, 0x6d, 0x6d, 0x69, 0x74,
+	0x22, 0xbe, 0x01, 0x0a, 0x11, 0x53, 0x47, 0x58, 0x56, 0x4d, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65,
+	0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x12, 0x0a, 0x04, 0x66, 0x72, 0x6f, 0x6d, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x0c, 0x52, 0x04, 0x66, 0x72, 0x6f, 0x6d, 0x12, 0x12, 0x0a, 0x04, 0x64, 0x61,
+	0x74, 0x61, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x12, 0x1a,
+	0x0a, 0x08, 0x67, 0x61, 0x73, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x04,
+	0x52, 0x08, 0x67, 0x61, 0x73, 0x4c, 0x69, 0x6d, 0x69, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61,
+	0x6c, 0x75, 0x65, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65,
+	0x12, 0x37, 0x0a, 0x0a, 0x61, 0x63, 0x63, 0x65, 0x73, 0x73, 0x4c, 0x69, 0x73, 0x74, 0x18, 0x05,
+	0x20, 0x03, 0x28, 0x0b, 0x32, 0x17, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x41,
+	0x63, 0x63, 0x65, 0x73, 0x73, 0x4c, 0x69, 0x73, 0x74, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x0a, 0x61,
+	0x63, 0x63, 0x65, 0x73, 0x73, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x63, 0x6f, 0x6d,
+	0x6d, 0x69, 0x74, 0x18, 0x06, 0x20, 0x01, 0x28, 0x08, 0x52, 0x06, 0x63, 0x6f, 0x6d, 0x6d, 0x69,
+	0x74, 0x22, 0x7b, 0x0a, 0x10, 0x53, 0x47, 0x58, 0x56, 0x4d, 0x43, 0x61, 0x6c, 0x6c, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x30, 0x0a, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x18, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e,
+	0x53, 0x47, 0x58, 0x56, 0x4d, 0x43, 0x61, 0x6c, 0x6c, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52,
+	0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x35, 0x0a, 0x07, 0x63, 0x6f, 0x6e, 0x74, 0x65,
+	0x78, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66,
+	0x66, 0x69, 0x2e, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x43, 0x6f,
+	0x6e, 0x74, 0x65, 0x78, 0x74, 0x52, 0x07, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x78, 0x74, 0x22, 0x7f,
+	0x0a, 0x12, 0x53, 0x47, 0x58, 0x56, 0x4d, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x12, 0x32, 0x0a, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x53,
+	0x47, 0x58, 0x56, 0x4d, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73,
+	0x52, 0x06, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x12, 0x35, 0x0a, 0x07, 0x63, 0x6f, 0x6e, 0x74,
+	0x65, 0x78, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x66, 0x66, 0x69, 0x2e,
+	0x66, 0x66, 0x69, 0x2e, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x43,
+	0x6f, 0x6e, 0x74, 0x65, 0x78, 0x74, 0x52, 0x07, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x78, 0x74, 0x22,
+	0x57, 0x0a, 0x0d, 0x53, 0x47, 0x58, 0x56, 0x4d, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x16, 0x0a, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c,
+	0x52, 0x06, 0x72, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x12, 0x18, 0x0a, 0x07, 0x67, 0x61, 0x73, 0x4c,
+	0x65, 0x66, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x04, 0x52, 0x07, 0x67, 0x61, 0x73, 0x4c, 0x65,
+	0x66, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x18, 0x03, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x05, 0x65, 0x72, 0x72, 0x6f, 0x72, 0x22, 0xea, 0x01, 0x0a, 0x0a, 0x46, 0x46, 0x49,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x51, 0x0a, 0x11, 0x68, 0x61, 0x6e, 0x64, 0x6c,
+	0x65, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x21, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x48, 0x61, 0x6e,
+	0x64, 0x6c, 0x65, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x48, 0x00, 0x52, 0x11, 0x68, 0x61, 0x6e, 0x64, 0x6c, 0x65, 0x54,
+	0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x3d, 0x0a, 0x0b, 0x63, 0x61,
+	0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32,
+	0x19, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x53, 0x47, 0x58, 0x56, 0x4d, 0x43,
+	0x61, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x48, 0x00, 0x52, 0x0b, 0x63, 0x61,
+	0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x43, 0x0a, 0x0d, 0x63, 0x72, 0x65,
+	0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b,
+	0x32, 0x1b, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x53, 0x47, 0x58, 0x56, 0x4d,
+	0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x48, 0x00, 0x52,
+	0x0d, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x42, 0x05,
+	0x0a, 0x03, 0x72, 0x65, 0x71, 0x42, 0x04, 0x5a, 0x02, 0x2e, 0x2f, 0x62, 0x06, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x33,
 }
 
 var (
@@ -2035,7 +2478,7 @@ func file_ffi_proto_rawDescGZIP() []byte {
 	return file_ffi_proto_rawDescData
 }
 
-var file_ffi_proto_msgTypes = make([]protoimpl.MessageInfo, 31)
+var file_ffi_proto_msgTypes = make([]protoimpl.MessageInfo, 36)
 var file_ffi_proto_goTypes = []interface{}{
 	(*AccessListItem)(nil),                     // 0: ffi.ffi.AccessListItem
 	(*TransactionData)(nil),                    // 1: ffi.ffi.TransactionData
@@ -2067,7 +2510,12 @@ var file_ffi_proto_goTypes = []interface{}{
 	(*QueryBlockHash)(nil),                     // 27: ffi.ffi.QueryBlockHash
 	(*QueryBlockHashResponse)(nil),             // 28: ffi.ffi.QueryBlockHashResponse
 	(*CosmosRequest)(nil),                      // 29: ffi.ffi.CosmosRequest
-	(*FFIRequest)(nil),                         // 30: ffi.ffi.FFIRequest
+	(*SGXVMCallParams)(nil),                    // 30: ffi.ffi.SGXVMCallParams
+	(*SGXVMCreateParams)(nil),                  // 31: ffi.ffi.SGXVMCreateParams
+	(*SGXVMCallRequest)(nil),                   // 32: ffi.ffi.SGXVMCallRequest
+	(*SGXVMCreateRequest)(nil),                 // 33: ffi.ffi.SGXVMCreateRequest
+	(*SGXVMResponse)(nil),                      // 34: ffi.ffi.SGXVMResponse
+	(*FFIRequest)(nil),                         // 35: ffi.ffi.FFIRequest
 }
 var file_ffi_proto_depIdxs = []int32{
 	0,  // 0: ffi.ffi.TransactionData.accessList:type_name -> ffi.ffi.AccessListItem
@@ -2086,12 +2534,20 @@ var file_ffi_proto_depIdxs = []int32{
 	23, // 13: ffi.ffi.CosmosRequest.removeStorageCell:type_name -> ffi.ffi.QueryRemoveStorageCell
 	25, // 14: ffi.ffi.CosmosRequest.removeStorage:type_name -> ffi.ffi.QueryRemoveStorage
 	27, // 15: ffi.ffi.CosmosRequest.blockHash:type_name -> ffi.ffi.QueryBlockHash
-	3,  // 16: ffi.ffi.FFIRequest.handleTransaction:type_name -> ffi.ffi.HandleTransactionRequest
-	17, // [17:17] is the sub-list for method output_type
-	17, // [17:17] is the sub-list for method input_type
-	17, // [17:17] is the sub-list for extension type_name
-	17, // [17:17] is the sub-list for extension extendee
-	0,  // [0:17] is the sub-list for field type_name
+	0,  // 16: ffi.ffi.SGXVMCallParams.accessList:type_name -> ffi.ffi.AccessListItem
+	0,  // 17: ffi.ffi.SGXVMCreateParams.accessList:type_name -> ffi.ffi.AccessListItem
+	30, // 18: ffi.ffi.SGXVMCallRequest.params:type_name -> ffi.ffi.SGXVMCallParams
+	2,  // 19: ffi.ffi.SGXVMCallRequest.context:type_name -> ffi.ffi.TransactionContext
+	31, // 20: ffi.ffi.SGXVMCreateRequest.params:type_name -> ffi.ffi.SGXVMCreateParams
+	2,  // 21: ffi.ffi.SGXVMCreateRequest.context:type_name -> ffi.ffi.TransactionContext
+	3,  // 22: ffi.ffi.FFIRequest.handleTransaction:type_name -> ffi.ffi.HandleTransactionRequest
+	32, // 23: ffi.ffi.FFIRequest.callRequest:type_name -> ffi.ffi.SGXVMCallRequest
+	33, // 24: ffi.ffi.FFIRequest.createRequest:type_name -> ffi.ffi.SGXVMCreateRequest
+	25, // [25:25] is the sub-list for method output_type
+	25, // [25:25] is the sub-list for method input_type
+	25, // [25:25] is the sub-list for extension type_name
+	25, // [25:25] is the sub-list for extension extendee
+	0,  // [0:25] is the sub-list for field type_name
 }
 
 func init() { file_ffi_proto_init() }
@@ -2461,6 +2917,66 @@ func file_ffi_proto_init() {
 			}
 		}
 		file_ffi_proto_msgTypes[30].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SGXVMCallParams); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[31].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SGXVMCreateParams); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[32].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SGXVMCallRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[33].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SGXVMCreateRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[34].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SGXVMResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[35].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*FFIRequest); i {
 			case 0:
 				return &v.state
@@ -2486,8 +3002,10 @@ func file_ffi_proto_init() {
 		(*CosmosRequest_RemoveStorage)(nil),
 		(*CosmosRequest_BlockHash)(nil),
 	}
-	file_ffi_proto_msgTypes[30].OneofWrappers = []interface{}{
+	file_ffi_proto_msgTypes[35].OneofWrappers = []interface{}{
 		(*FFIRequest_HandleTransaction)(nil),
+		(*FFIRequest_CallRequest)(nil),
+		(*FFIRequest_CreateRequest)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -2495,7 +3013,7 @@ func file_ffi_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_ffi_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   31,
+			NumMessages:   36,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

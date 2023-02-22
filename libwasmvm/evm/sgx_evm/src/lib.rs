@@ -138,6 +138,81 @@ pub fn handle_query_inner(query: QueryData, storage: &mut dyn Storage) -> Execut
     }
 }
 
+pub fn handle_sgxvm_call(
+    backend: &mut impl ExtendedBackend,
+    gas_limit: u64,
+    from: H160,
+    to: H160,
+    value: U256,
+    data: Vec<u8>,
+    access_list: Vec<(H160, Vec<H256>)>,
+    commit: bool,
+) -> ExecutionResult {
+    let metadata = StackSubstateMetadata::new(gas_limit, &GASOMETER_CONFIG);
+    let state = MemoryStackState::new(metadata, backend);
+    let precompiles = EVMPrecompiles::<Backend>::new();
+
+    let mut executor = StackExecutor::new_with_precompiles(state, &GASOMETER_CONFIG, &precompiles);
+    let (exit_reason, ret) = executor.transact_call(from, to, value, data, gas_limit, access_list);
+
+    let gas_used = executor.used_gas();
+    let exit_value = match handle_evm_result(exit_reason, ret) {
+        Ok(data) => data,
+        Err(err) => {
+            return ExecutionResult::from_error(err, Some(gas_used))
+        }
+    };
+
+    if commit {
+        let (vals, logs) = executor.into_state().deconstruct();
+        backend.apply(vals, logs, false); 
+    }
+
+    ExecutionResult {
+        logs: backend.get_logs(),
+        data: exit_value,
+        gas_used,
+        vm_error: "".to_string(),
+    }
+}
+
+pub fn handle_sgxvm_create(
+    backend: &mut impl ExtendedBackend,
+    gas_limit: u64,
+    from: H160,
+    value: U256,
+    data: Vec<u8>,
+    access_list: Vec<(H160, Vec<H256>)>,
+    commit: bool,
+) -> ExecutionResult {
+    let metadata = StackSubstateMetadata::new(gas_limit, &GASOMETER_CONFIG);
+    let state = MemoryStackState::new(metadata, backend);
+    let precompiles = EVMPrecompiles::<Backend>::new();
+
+    let mut executor = StackExecutor::new_with_precompiles(state, &GASOMETER_CONFIG, &precompiles);
+    let (exit_reason, ret) = executor.transact_create(from, value, data, gas_limit, access_list);
+
+    let gas_used = executor.used_gas();
+    let exit_value = match handle_evm_result(exit_reason, ret) {
+        Ok(data) => data,
+        Err(err) => {
+            return ExecutionResult::from_error(err, Some(gas_used))
+        }
+    };
+
+    if commit {
+        let (vals, logs) = executor.into_state().deconstruct();
+        backend.apply(vals, logs, false); 
+    }
+
+    ExecutionResult {
+        logs: backend.get_logs(),
+        data: exit_value,
+        gas_used,
+        vm_error: "".to_string(),
+    }
+}
+
 /// Handles EVM transaction
 pub fn handle_transaction_inner(transaction_data: ExecutionData, backend: &mut impl ExtendedBackend) -> ExecutionResult {
     let metadata = StackSubstateMetadata::new(u64::MAX, &GASOMETER_CONFIG);

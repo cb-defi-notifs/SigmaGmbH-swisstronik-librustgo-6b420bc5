@@ -170,8 +170,50 @@ message CosmosRequest {
   }
 }
 
+// Message with data required to execute `call` operation
+message SGXVMCallParams {
+  bytes from = 1;
+  bytes to = 2;
+  bytes data = 3;
+  uint64 gasLimit = 4;
+  bytes value = 5;
+  repeated AccessListItem accessList = 6;
+  bool commit = 7;
+}
+
+// Message with data required to execute `create` operation
+message SGXVMCreateParams {
+  bytes from = 1;
+  bytes data = 2;
+  uint64 gasLimit = 3;
+  bytes value = 4;
+  repeated AccessListItem accessList = 5;
+  bool commit = 6;
+}
+
+// Request to execute `call` operation
+message SGXVMCallRequest {
+  SGXVMCallParams params = 1;
+  TransactionContext context = 2;
+}
+
+// Request to execute `create` operation
+message SGXVMCreateRequest {
+  SGXVMCreateParams params = 1;
+  TransactionContext context = 2;
+}
+
+// Common response for all SGXVM* requests
+message SGXVMResponse {
+    bytes result = 1;
+    uint64 gasLeft = 2;
+    string error = 3; 
+}
+
 message FFIRequest {
   oneof req {
     HandleTransactionRequest handleTransaction = 1;
+    SGXVMCallRequest callRequest = 2;
+    SGXVMCreateRequest createRequest = 3;
   }
 }

@@ -6436,6 +6436,1470 @@ impl ::protobuf::reflect::ProtobufValue for CosmosRequest {
 }
 
 #[derive(PartialEq,Clone,Default)]
+pub struct SGXVMCallParams {
+    // message fields
+    pub from: ::std::vec::Vec<u8>,
+    pub to: ::std::vec::Vec<u8>,
+    pub data: ::std::vec::Vec<u8>,
+    pub gasLimit: u64,
+    pub value: ::std::vec::Vec<u8>,
+    pub accessList: ::protobuf::RepeatedField<AccessListItem>,
+    pub commit: bool,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a SGXVMCallParams {
+    fn default() -> &'a SGXVMCallParams {
+        <SGXVMCallParams as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl SGXVMCallParams {
+    pub fn new() -> SGXVMCallParams {
+        ::std::default::Default::default()
+    }
+
+    // bytes from = 1;
+
+
+    pub fn get_from(&self) -> &[u8] {
+        &self.from
+    }
+    pub fn clear_from(&mut self) {
+        self.from.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_from(&mut self, v: ::std::vec::Vec<u8>) {
+        self.from = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_from(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.from
+    }
+
+    // Take field
+    pub fn take_from(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.from, ::std::vec::Vec::new())
+    }
+
+    // bytes to = 2;
+
+
+    pub fn get_to(&self) -> &[u8] {
+        &self.to
+    }
+    pub fn clear_to(&mut self) {
+        self.to.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_to(&mut self, v: ::std::vec::Vec<u8>) {
+        self.to = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_to(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.to
+    }
+
+    // Take field
+    pub fn take_to(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.to, ::std::vec::Vec::new())
+    }
+
+    // bytes data = 3;
+
+
+    pub fn get_data(&self) -> &[u8] {
+        &self.data
+    }
+    pub fn clear_data(&mut self) {
+        self.data.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_data(&mut self, v: ::std::vec::Vec<u8>) {
+        self.data = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_data(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.data
+    }
+
+    // Take field
+    pub fn take_data(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.data, ::std::vec::Vec::new())
+    }
+
+    // uint64 gasLimit = 4;
+
+
+    pub fn get_gasLimit(&self) -> u64 {
+        self.gasLimit
+    }
+    pub fn clear_gasLimit(&mut self) {
+        self.gasLimit = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_gasLimit(&mut self, v: u64) {
+        self.gasLimit = v;
+    }
+
+    // bytes value = 5;
+
+
+    pub fn get_value(&self) -> &[u8] {
+        &self.value
+    }
+    pub fn clear_value(&mut self) {
+        self.value.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_value(&mut self, v: ::std::vec::Vec<u8>) {
+        self.value = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_value(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.value
+    }
+
+    // Take field
+    pub fn take_value(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.value, ::std::vec::Vec::new())
+    }
+
+    // repeated .ffi.ffi.AccessListItem accessList = 6;
+
+
+    pub fn get_accessList(&self) -> &[AccessListItem] {
+        &self.accessList
+    }
+    pub fn clear_accessList(&mut self) {
+        self.accessList.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_accessList(&mut self, v: ::protobuf::RepeatedField<AccessListItem>) {
+        self.accessList = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_accessList(&mut self) -> &mut ::protobuf::RepeatedField<AccessListItem> {
+        &mut self.accessList
+    }
+
+    // Take field
+    pub fn take_accessList(&mut self) -> ::protobuf::RepeatedField<AccessListItem> {
+        ::std::mem::replace(&mut self.accessList, ::protobuf::RepeatedField::new())
+    }
+
+    // bool commit = 7;
+
+
+    pub fn get_commit(&self) -> bool {
+        self.commit
+    }
+    pub fn clear_commit(&mut self) {
+        self.commit = false;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_commit(&mut self, v: bool) {
+        self.commit = v;
+    }
+}
+
+impl ::protobuf::Message for SGXVMCallParams {
+    fn is_initialized(&self) -> bool {
+        for v in &self.accessList {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.from)?;
+                },
+                2 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.to)?;
+                },
+                3 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.data)?;
+                },
+                4 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.gasLimit = tmp;
+                },
+                5 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.value)?;
+                },
+                6 => {
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.accessList)?;
+                },
+                7 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_bool()?;
+                    self.commit = tmp;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.from.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.from);
+        }
+        if !self.to.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(2, &self.to);
+        }
+        if !self.data.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(3, &self.data);
+        }
+        if self.gasLimit != 0 {
+            my_size += ::protobuf::rt::value_size(4, self.gasLimit, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if !self.value.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(5, &self.value);
+        }
+        for value in &self.accessList {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        };
+        if self.commit != false {
+            my_size += 2;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.from.is_empty() {
+            os.write_bytes(1, &self.from)?;
+        }
+        if !self.to.is_empty() {
+            os.write_bytes(2, &self.to)?;
+        }
+        if !self.data.is_empty() {
+            os.write_bytes(3, &self.data)?;
+        }
+        if self.gasLimit != 0 {
+            os.write_uint64(4, self.gasLimit)?;
+        }
+        if !self.value.is_empty() {
+            os.write_bytes(5, &self.value)?;
+        }
+        for v in &self.accessList {
+            os.write_tag(6, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        };
+        if self.commit != false {
+            os.write_bool(7, self.commit)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> SGXVMCallParams {
+        SGXVMCallParams::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "from",
+                |m: &SGXVMCallParams| { &m.from },
+                |m: &mut SGXVMCallParams| { &mut m.from },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "to",
+                |m: &SGXVMCallParams| { &m.to },
+                |m: &mut SGXVMCallParams| { &mut m.to },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "data",
+                |m: &SGXVMCallParams| { &m.data },
+                |m: &mut SGXVMCallParams| { &mut m.data },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                "gasLimit",
+                |m: &SGXVMCallParams| { &m.gasLimit },
+                |m: &mut SGXVMCallParams| { &mut m.gasLimit },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "value",
+                |m: &SGXVMCallParams| { &m.value },
+                |m: &mut SGXVMCallParams| { &mut m.value },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<AccessListItem>>(
+                "accessList",
+                |m: &SGXVMCallParams| { &m.accessList },
+                |m: &mut SGXVMCallParams| { &mut m.accessList },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
+                "commit",
+                |m: &SGXVMCallParams| { &m.commit },
+                |m: &mut SGXVMCallParams| { &mut m.commit },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<SGXVMCallParams>(
+                "SGXVMCallParams",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static SGXVMCallParams {
+        static instance: ::protobuf::rt::LazyV2<SGXVMCallParams> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(SGXVMCallParams::new)
+    }
+}
+
+impl ::protobuf::Clear for SGXVMCallParams {
+    fn clear(&mut self) {
+        self.from.clear();
+        self.to.clear();
+        self.data.clear();
+        self.gasLimit = 0;
+        self.value.clear();
+        self.accessList.clear();
+        self.commit = false;
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for SGXVMCallParams {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for SGXVMCallParams {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct SGXVMCreateParams {
+    // message fields
+    pub from: ::std::vec::Vec<u8>,
+    pub data: ::std::vec::Vec<u8>,
+    pub gasLimit: u64,
+    pub value: ::std::vec::Vec<u8>,
+    pub accessList: ::protobuf::RepeatedField<AccessListItem>,
+    pub commit: bool,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a SGXVMCreateParams {
+    fn default() -> &'a SGXVMCreateParams {
+        <SGXVMCreateParams as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl SGXVMCreateParams {
+    pub fn new() -> SGXVMCreateParams {
+        ::std::default::Default::default()
+    }
+
+    // bytes from = 1;
+
+
+    pub fn get_from(&self) -> &[u8] {
+        &self.from
+    }
+    pub fn clear_from(&mut self) {
+        self.from.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_from(&mut self, v: ::std::vec::Vec<u8>) {
+        self.from = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_from(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.from
+    }
+
+    // Take field
+    pub fn take_from(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.from, ::std::vec::Vec::new())
+    }
+
+    // bytes data = 2;
+
+
+    pub fn get_data(&self) -> &[u8] {
+        &self.data
+    }
+    pub fn clear_data(&mut self) {
+        self.data.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_data(&mut self, v: ::std::vec::Vec<u8>) {
+        self.data = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_data(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.data
+    }
+
+    // Take field
+    pub fn take_data(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.data, ::std::vec::Vec::new())
+    }
+
+    // uint64 gasLimit = 3;
+
+
+    pub fn get_gasLimit(&self) -> u64 {
+        self.gasLimit
+    }
+    pub fn clear_gasLimit(&mut self) {
+        self.gasLimit = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_gasLimit(&mut self, v: u64) {
+        self.gasLimit = v;
+    }
+
+    // bytes value = 4;
+
+
+    pub fn get_value(&self) -> &[u8] {
+        &self.value
+    }
+    pub fn clear_value(&mut self) {
+        self.value.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_value(&mut self, v: ::std::vec::Vec<u8>) {
+        self.value = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_value(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.value
+    }
+
+    // Take field
+    pub fn take_value(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.value, ::std::vec::Vec::new())
+    }
+
+    // repeated .ffi.ffi.AccessListItem accessList = 5;
+
+
+    pub fn get_accessList(&self) -> &[AccessListItem] {
+        &self.accessList
+    }
+    pub fn clear_accessList(&mut self) {
+        self.accessList.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_accessList(&mut self, v: ::protobuf::RepeatedField<AccessListItem>) {
+        self.accessList = v;
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_accessList(&mut self) -> &mut ::protobuf::RepeatedField<AccessListItem> {
+        &mut self.accessList
+    }
+
+    // Take field
+    pub fn take_accessList(&mut self) -> ::protobuf::RepeatedField<AccessListItem> {
+        ::std::mem::replace(&mut self.accessList, ::protobuf::RepeatedField::new())
+    }
+
+    // bool commit = 6;
+
+
+    pub fn get_commit(&self) -> bool {
+        self.commit
+    }
+    pub fn clear_commit(&mut self) {
+        self.commit = false;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_commit(&mut self, v: bool) {
+        self.commit = v;
+    }
+}
+
+impl ::protobuf::Message for SGXVMCreateParams {
+    fn is_initialized(&self) -> bool {
+        for v in &self.accessList {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.from)?;
+                },
+                2 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.data)?;
+                },
+                3 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.gasLimit = tmp;
+                },
+                4 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.value)?;
+                },
+                5 => {
+                    ::protobuf::rt::read_repeated_message_into(wire_type, is, &mut self.accessList)?;
+                },
+                6 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_bool()?;
+                    self.commit = tmp;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.from.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.from);
+        }
+        if !self.data.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(2, &self.data);
+        }
+        if self.gasLimit != 0 {
+            my_size += ::protobuf::rt::value_size(3, self.gasLimit, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if !self.value.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(4, &self.value);
+        }
+        for value in &self.accessList {
+            let len = value.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        };
+        if self.commit != false {
+            my_size += 2;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.from.is_empty() {
+            os.write_bytes(1, &self.from)?;
+        }
+        if !self.data.is_empty() {
+            os.write_bytes(2, &self.data)?;
+        }
+        if self.gasLimit != 0 {
+            os.write_uint64(3, self.gasLimit)?;
+        }
+        if !self.value.is_empty() {
+            os.write_bytes(4, &self.value)?;
+        }
+        for v in &self.accessList {
+            os.write_tag(5, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        };
+        if self.commit != false {
+            os.write_bool(6, self.commit)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> SGXVMCreateParams {
+        SGXVMCreateParams::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "from",
+                |m: &SGXVMCreateParams| { &m.from },
+                |m: &mut SGXVMCreateParams| { &mut m.from },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "data",
+                |m: &SGXVMCreateParams| { &m.data },
+                |m: &mut SGXVMCreateParams| { &mut m.data },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                "gasLimit",
+                |m: &SGXVMCreateParams| { &m.gasLimit },
+                |m: &mut SGXVMCreateParams| { &mut m.gasLimit },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "value",
+                |m: &SGXVMCreateParams| { &m.value },
+                |m: &mut SGXVMCreateParams| { &mut m.value },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_repeated_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<AccessListItem>>(
+                "accessList",
+                |m: &SGXVMCreateParams| { &m.accessList },
+                |m: &mut SGXVMCreateParams| { &mut m.accessList },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
+                "commit",
+                |m: &SGXVMCreateParams| { &m.commit },
+                |m: &mut SGXVMCreateParams| { &mut m.commit },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<SGXVMCreateParams>(
+                "SGXVMCreateParams",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static SGXVMCreateParams {
+        static instance: ::protobuf::rt::LazyV2<SGXVMCreateParams> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(SGXVMCreateParams::new)
+    }
+}
+
+impl ::protobuf::Clear for SGXVMCreateParams {
+    fn clear(&mut self) {
+        self.from.clear();
+        self.data.clear();
+        self.gasLimit = 0;
+        self.value.clear();
+        self.accessList.clear();
+        self.commit = false;
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for SGXVMCreateParams {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for SGXVMCreateParams {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct SGXVMCallRequest {
+    // message fields
+    pub params: ::protobuf::SingularPtrField<SGXVMCallParams>,
+    pub context: ::protobuf::SingularPtrField<TransactionContext>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a SGXVMCallRequest {
+    fn default() -> &'a SGXVMCallRequest {
+        <SGXVMCallRequest as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl SGXVMCallRequest {
+    pub fn new() -> SGXVMCallRequest {
+        ::std::default::Default::default()
+    }
+
+    // .ffi.ffi.SGXVMCallParams params = 1;
+
+
+    pub fn get_params(&self) -> &SGXVMCallParams {
+        self.params.as_ref().unwrap_or_else(|| <SGXVMCallParams as ::protobuf::Message>::default_instance())
+    }
+    pub fn clear_params(&mut self) {
+        self.params.clear();
+    }
+
+    pub fn has_params(&self) -> bool {
+        self.params.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_params(&mut self, v: SGXVMCallParams) {
+        self.params = ::protobuf::SingularPtrField::some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_params(&mut self) -> &mut SGXVMCallParams {
+        if self.params.is_none() {
+            self.params.set_default();
+        }
+        self.params.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_params(&mut self) -> SGXVMCallParams {
+        self.params.take().unwrap_or_else(|| SGXVMCallParams::new())
+    }
+
+    // .ffi.ffi.TransactionContext context = 2;
+
+
+    pub fn get_context(&self) -> &TransactionContext {
+        self.context.as_ref().unwrap_or_else(|| <TransactionContext as ::protobuf::Message>::default_instance())
+    }
+    pub fn clear_context(&mut self) {
+        self.context.clear();
+    }
+
+    pub fn has_context(&self) -> bool {
+        self.context.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_context(&mut self, v: TransactionContext) {
+        self.context = ::protobuf::SingularPtrField::some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_context(&mut self) -> &mut TransactionContext {
+        if self.context.is_none() {
+            self.context.set_default();
+        }
+        self.context.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_context(&mut self) -> TransactionContext {
+        self.context.take().unwrap_or_else(|| TransactionContext::new())
+    }
+}
+
+impl ::protobuf::Message for SGXVMCallRequest {
+    fn is_initialized(&self) -> bool {
+        for v in &self.params {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        for v in &self.context {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.params)?;
+                },
+                2 => {
+                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.context)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if let Some(ref v) = self.params.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        }
+        if let Some(ref v) = self.context.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if let Some(ref v) = self.params.as_ref() {
+            os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        }
+        if let Some(ref v) = self.context.as_ref() {
+            os.write_tag(2, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> SGXVMCallRequest {
+        SGXVMCallRequest::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<SGXVMCallParams>>(
+                "params",
+                |m: &SGXVMCallRequest| { &m.params },
+                |m: &mut SGXVMCallRequest| { &mut m.params },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<TransactionContext>>(
+                "context",
+                |m: &SGXVMCallRequest| { &m.context },
+                |m: &mut SGXVMCallRequest| { &mut m.context },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<SGXVMCallRequest>(
+                "SGXVMCallRequest",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static SGXVMCallRequest {
+        static instance: ::protobuf::rt::LazyV2<SGXVMCallRequest> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(SGXVMCallRequest::new)
+    }
+}
+
+impl ::protobuf::Clear for SGXVMCallRequest {
+    fn clear(&mut self) {
+        self.params.clear();
+        self.context.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for SGXVMCallRequest {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for SGXVMCallRequest {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct SGXVMCreateRequest {
+    // message fields
+    pub params: ::protobuf::SingularPtrField<SGXVMCreateParams>,
+    pub context: ::protobuf::SingularPtrField<TransactionContext>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a SGXVMCreateRequest {
+    fn default() -> &'a SGXVMCreateRequest {
+        <SGXVMCreateRequest as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl SGXVMCreateRequest {
+    pub fn new() -> SGXVMCreateRequest {
+        ::std::default::Default::default()
+    }
+
+    // .ffi.ffi.SGXVMCreateParams params = 1;
+
+
+    pub fn get_params(&self) -> &SGXVMCreateParams {
+        self.params.as_ref().unwrap_or_else(|| <SGXVMCreateParams as ::protobuf::Message>::default_instance())
+    }
+    pub fn clear_params(&mut self) {
+        self.params.clear();
+    }
+
+    pub fn has_params(&self) -> bool {
+        self.params.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_params(&mut self, v: SGXVMCreateParams) {
+        self.params = ::protobuf::SingularPtrField::some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_params(&mut self) -> &mut SGXVMCreateParams {
+        if self.params.is_none() {
+            self.params.set_default();
+        }
+        self.params.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_params(&mut self) -> SGXVMCreateParams {
+        self.params.take().unwrap_or_else(|| SGXVMCreateParams::new())
+    }
+
+    // .ffi.ffi.TransactionContext context = 2;
+
+
+    pub fn get_context(&self) -> &TransactionContext {
+        self.context.as_ref().unwrap_or_else(|| <TransactionContext as ::protobuf::Message>::default_instance())
+    }
+    pub fn clear_context(&mut self) {
+        self.context.clear();
+    }
+
+    pub fn has_context(&self) -> bool {
+        self.context.is_some()
+    }
+
+    // Param is passed by value, moved
+    pub fn set_context(&mut self, v: TransactionContext) {
+        self.context = ::protobuf::SingularPtrField::some(v);
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_context(&mut self) -> &mut TransactionContext {
+        if self.context.is_none() {
+            self.context.set_default();
+        }
+        self.context.as_mut().unwrap()
+    }
+
+    // Take field
+    pub fn take_context(&mut self) -> TransactionContext {
+        self.context.take().unwrap_or_else(|| TransactionContext::new())
+    }
+}
+
+impl ::protobuf::Message for SGXVMCreateRequest {
+    fn is_initialized(&self) -> bool {
+        for v in &self.params {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        for v in &self.context {
+            if !v.is_initialized() {
+                return false;
+            }
+        };
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.params)?;
+                },
+                2 => {
+                    ::protobuf::rt::read_singular_message_into(wire_type, is, &mut self.context)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if let Some(ref v) = self.params.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        }
+        if let Some(ref v) = self.context.as_ref() {
+            let len = v.compute_size();
+            my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if let Some(ref v) = self.params.as_ref() {
+            os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        }
+        if let Some(ref v) = self.context.as_ref() {
+            os.write_tag(2, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+            os.write_raw_varint32(v.get_cached_size())?;
+            v.write_to_with_cached_sizes(os)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> SGXVMCreateRequest {
+        SGXVMCreateRequest::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<SGXVMCreateParams>>(
+                "params",
+                |m: &SGXVMCreateRequest| { &m.params },
+                |m: &mut SGXVMCreateRequest| { &mut m.params },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_ptr_field_accessor::<_, ::protobuf::types::ProtobufTypeMessage<TransactionContext>>(
+                "context",
+                |m: &SGXVMCreateRequest| { &m.context },
+                |m: &mut SGXVMCreateRequest| { &mut m.context },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<SGXVMCreateRequest>(
+                "SGXVMCreateRequest",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static SGXVMCreateRequest {
+        static instance: ::protobuf::rt::LazyV2<SGXVMCreateRequest> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(SGXVMCreateRequest::new)
+    }
+}
+
+impl ::protobuf::Clear for SGXVMCreateRequest {
+    fn clear(&mut self) {
+        self.params.clear();
+        self.context.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for SGXVMCreateRequest {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for SGXVMCreateRequest {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct SGXVMResponse {
+    // message fields
+    pub result: ::std::vec::Vec<u8>,
+    pub gasLeft: u64,
+    pub error: ::std::string::String,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a SGXVMResponse {
+    fn default() -> &'a SGXVMResponse {
+        <SGXVMResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl SGXVMResponse {
+    pub fn new() -> SGXVMResponse {
+        ::std::default::Default::default()
+    }
+
+    // bytes result = 1;
+
+
+    pub fn get_result(&self) -> &[u8] {
+        &self.result
+    }
+    pub fn clear_result(&mut self) {
+        self.result.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_result(&mut self, v: ::std::vec::Vec<u8>) {
+        self.result = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_result(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.result
+    }
+
+    // Take field
+    pub fn take_result(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.result, ::std::vec::Vec::new())
+    }
+
+    // uint64 gasLeft = 2;
+
+
+    pub fn get_gasLeft(&self) -> u64 {
+        self.gasLeft
+    }
+    pub fn clear_gasLeft(&mut self) {
+        self.gasLeft = 0;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_gasLeft(&mut self, v: u64) {
+        self.gasLeft = v;
+    }
+
+    // string error = 3;
+
+
+    pub fn get_error(&self) -> &str {
+        &self.error
+    }
+    pub fn clear_error(&mut self) {
+        self.error.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_error(&mut self, v: ::std::string::String) {
+        self.error = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_error(&mut self) -> &mut ::std::string::String {
+        &mut self.error
+    }
+
+    // Take field
+    pub fn take_error(&mut self) -> ::std::string::String {
+        ::std::mem::replace(&mut self.error, ::std::string::String::new())
+    }
+}
+
+impl ::protobuf::Message for SGXVMResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.result)?;
+                },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.gasLeft = tmp;
+                },
+                3 => {
+                    ::protobuf::rt::read_singular_proto3_string_into(wire_type, is, &mut self.error)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.result.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.result);
+        }
+        if self.gasLeft != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.gasLeft, ::protobuf::wire_format::WireTypeVarint);
+        }
+        if !self.error.is_empty() {
+            my_size += ::protobuf::rt::string_size(3, &self.error);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.result.is_empty() {
+            os.write_bytes(1, &self.result)?;
+        }
+        if self.gasLeft != 0 {
+            os.write_uint64(2, self.gasLeft)?;
+        }
+        if !self.error.is_empty() {
+            os.write_string(3, &self.error)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: ::std::boxed::Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> SGXVMResponse {
+        SGXVMResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
+        descriptor.get(|| {
+            let mut fields = ::std::vec::Vec::new();
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                "result",
+                |m: &SGXVMResponse| { &m.result },
+                |m: &mut SGXVMResponse| { &mut m.result },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
+                "gasLeft",
+                |m: &SGXVMResponse| { &m.gasLeft },
+                |m: &mut SGXVMResponse| { &mut m.gasLeft },
+            ));
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeString>(
+                "error",
+                |m: &SGXVMResponse| { &m.error },
+                |m: &mut SGXVMResponse| { &mut m.error },
+            ));
+            ::protobuf::reflect::MessageDescriptor::new_pb_name::<SGXVMResponse>(
+                "SGXVMResponse",
+                fields,
+                file_descriptor_proto()
+            )
+        })
+    }
+
+    fn default_instance() -> &'static SGXVMResponse {
+        static instance: ::protobuf::rt::LazyV2<SGXVMResponse> = ::protobuf::rt::LazyV2::INIT;
+        instance.get(SGXVMResponse::new)
+    }
+}
+
+impl ::protobuf::Clear for SGXVMResponse {
+    fn clear(&mut self) {
+        self.result.clear();
+        self.gasLeft = 0;
+        self.error.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for SGXVMResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for SGXVMResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ReflectValueRef {
+        ::protobuf::reflect::ReflectValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
 pub struct FFIRequest {
     // message oneof groups
     pub req: ::std::option::Option<FFIRequest_oneof_req>,
@@ -6453,6 +7917,8 @@ impl<'a> ::std::default::Default for &'a FFIRequest {
 #[derive(Clone,PartialEq,Debug)]
 pub enum FFIRequest_oneof_req {
     handleTransaction(HandleTransactionRequest),
+    callRequest(SGXVMCallRequest),
+    createRequest(SGXVMCreateRequest),
 }
 
 impl FFIRequest {
@@ -6508,11 +7974,119 @@ impl FFIRequest {
             HandleTransactionRequest::new()
         }
     }
+
+    // .ffi.ffi.SGXVMCallRequest callRequest = 2;
+
+
+    pub fn get_callRequest(&self) -> &SGXVMCallRequest {
+        match self.req {
+            ::std::option::Option::Some(FFIRequest_oneof_req::callRequest(ref v)) => v,
+            _ => <SGXVMCallRequest as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_callRequest(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_callRequest(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(FFIRequest_oneof_req::callRequest(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_callRequest(&mut self, v: SGXVMCallRequest) {
+        self.req = ::std::option::Option::Some(FFIRequest_oneof_req::callRequest(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_callRequest(&mut self) -> &mut SGXVMCallRequest {
+        if let ::std::option::Option::Some(FFIRequest_oneof_req::callRequest(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(FFIRequest_oneof_req::callRequest(SGXVMCallRequest::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(FFIRequest_oneof_req::callRequest(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_callRequest(&mut self) -> SGXVMCallRequest {
+        if self.has_callRequest() {
+            match self.req.take() {
+                ::std::option::Option::Some(FFIRequest_oneof_req::callRequest(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            SGXVMCallRequest::new()
+        }
+    }
+
+    // .ffi.ffi.SGXVMCreateRequest createRequest = 3;
+
+
+    pub fn get_createRequest(&self) -> &SGXVMCreateRequest {
+        match self.req {
+            ::std::option::Option::Some(FFIRequest_oneof_req::createRequest(ref v)) => v,
+            _ => <SGXVMCreateRequest as ::protobuf::Message>::default_instance(),
+        }
+    }
+    pub fn clear_createRequest(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_createRequest(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(FFIRequest_oneof_req::createRequest(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_createRequest(&mut self, v: SGXVMCreateRequest) {
+        self.req = ::std::option::Option::Some(FFIRequest_oneof_req::createRequest(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_createRequest(&mut self) -> &mut SGXVMCreateRequest {
+        if let ::std::option::Option::Some(FFIRequest_oneof_req::createRequest(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(FFIRequest_oneof_req::createRequest(SGXVMCreateRequest::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(FFIRequest_oneof_req::createRequest(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_createRequest(&mut self) -> SGXVMCreateRequest {
+        if self.has_createRequest() {
+            match self.req.take() {
+                ::std::option::Option::Some(FFIRequest_oneof_req::createRequest(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            SGXVMCreateRequest::new()
+        }
+    }
 }
 
 impl ::protobuf::Message for FFIRequest {
     fn is_initialized(&self) -> bool {
         if let Some(FFIRequest_oneof_req::handleTransaction(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(FFIRequest_oneof_req::callRequest(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(FFIRequest_oneof_req::createRequest(ref v)) = self.req {
             if !v.is_initialized() {
                 return false;
             }
@@ -6529,6 +8103,18 @@ impl ::protobuf::Message for FFIRequest {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
                     self.req = ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(is.read_message()?));
+                },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(FFIRequest_oneof_req::callRequest(is.read_message()?));
+                },
+                3 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(FFIRequest_oneof_req::createRequest(is.read_message()?));
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -6548,6 +8134,14 @@ impl ::protobuf::Message for FFIRequest {
                     let len = v.compute_size();
                     my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
                 },
+                &FFIRequest_oneof_req::callRequest(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &FFIRequest_oneof_req::createRequest(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
             };
         }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
@@ -6560,6 +8154,16 @@ impl ::protobuf::Message for FFIRequest {
             match v {
                 &FFIRequest_oneof_req::handleTransaction(ref v) => {
                     os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &FFIRequest_oneof_req::callRequest(ref v) => {
+                    os.write_tag(2, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &FFIRequest_oneof_req::createRequest(ref v) => {
+                    os.write_tag(3, ::protobuf::wire_format::WireTypeLengthDelimited)?;
                     os.write_raw_varint32(v.get_cached_size())?;
                     v.write_to_with_cached_sizes(os)?;
                 },
@@ -6608,6 +8212,16 @@ impl ::protobuf::Message for FFIRequest {
                 FFIRequest::has_handleTransaction,
                 FFIRequest::get_handleTransaction,
             ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, SGXVMCallRequest>(
+                "callRequest",
+                FFIRequest::has_callRequest,
+                FFIRequest::get_callRequest,
+            ));
+            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, SGXVMCreateRequest>(
+                "createRequest",
+                FFIRequest::has_createRequest,
+                FFIRequest::get_createRequest,
+            ));
             ::protobuf::reflect::MessageDescriptor::new_pb_name::<FFIRequest>(
                 "FFIRequest",
                 fields,
@@ -6624,6 +8238,8 @@ impl ::protobuf::Message for FFIRequest {
 
 impl ::protobuf::Clear for FFIRequest {
     fn clear(&mut self) {
+        self.req = ::std::option::Option::None;
+        self.req = ::std::option::Option::None;
         self.req = ::std::option::Option::None;
         self.unknown_fields.clear();
     }
@@ -6708,9 +8324,31 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     .ffi.ffi.QueryRemoveStorageCellH\0R\x11removeStorageCell\x12C\n\rremoveS\
     torage\x18\n\x20\x01(\x0b2\x1b.ffi.ffi.QueryRemoveStorageH\0R\rremoveSto\
     rage\x127\n\tblockHash\x18\x0b\x20\x01(\x0b2\x17.ffi.ffi.QueryBlockHashH\
-    \0R\tblockHashB\x05\n\x03req\"f\n\nFFIRequest\x12Q\n\x11handleTransactio\
-    n\x18\x01\x20\x01(\x0b2!.ffi.ffi.HandleTransactionRequestH\0R\x11handleT\
-    ransactionB\x05\n\x03reqB\x04Z\x02./b\x06proto3\
+    \0R\tblockHashB\x05\n\x03req\"\xcc\x01\n\x0fSGXVMCallParams\x12\x12\n\
+    \x04from\x18\x01\x20\x01(\x0cR\x04from\x12\x0e\n\x02to\x18\x02\x20\x01(\
+    \x0cR\x02to\x12\x12\n\x04data\x18\x03\x20\x01(\x0cR\x04data\x12\x1a\n\
+    \x08gasLimit\x18\x04\x20\x01(\x04R\x08gasLimit\x12\x14\n\x05value\x18\
+    \x05\x20\x01(\x0cR\x05value\x127\n\naccessList\x18\x06\x20\x03(\x0b2\x17\
+    .ffi.ffi.AccessListItemR\naccessList\x12\x16\n\x06commit\x18\x07\x20\x01\
+    (\x08R\x06commit\"\xbe\x01\n\x11SGXVMCreateParams\x12\x12\n\x04from\x18\
+    \x01\x20\x01(\x0cR\x04from\x12\x12\n\x04data\x18\x02\x20\x01(\x0cR\x04da\
+    ta\x12\x1a\n\x08gasLimit\x18\x03\x20\x01(\x04R\x08gasLimit\x12\x14\n\x05\
+    value\x18\x04\x20\x01(\x0cR\x05value\x127\n\naccessList\x18\x05\x20\x03(\
+    \x0b2\x17.ffi.ffi.AccessListItemR\naccessList\x12\x16\n\x06commit\x18\
+    \x06\x20\x01(\x08R\x06commit\"{\n\x10SGXVMCallRequest\x120\n\x06params\
+    \x18\x01\x20\x01(\x0b2\x18.ffi.ffi.SGXVMCallParamsR\x06params\x125\n\x07\
+    context\x18\x02\x20\x01(\x0b2\x1b.ffi.ffi.TransactionContextR\x07context\
+    \"\x7f\n\x12SGXVMCreateRequest\x122\n\x06params\x18\x01\x20\x01(\x0b2\
+    \x1a.ffi.ffi.SGXVMCreateParamsR\x06params\x125\n\x07context\x18\x02\x20\
+    \x01(\x0b2\x1b.ffi.ffi.TransactionContextR\x07context\"W\n\rSGXVMRespons\
+    e\x12\x16\n\x06result\x18\x01\x20\x01(\x0cR\x06result\x12\x18\n\x07gasLe\
+    ft\x18\x02\x20\x01(\x04R\x07gasLeft\x12\x14\n\x05error\x18\x03\x20\x01(\
+    \tR\x05error\"\xea\x01\n\nFFIRequest\x12Q\n\x11handleTransaction\x18\x01\
+    \x20\x01(\x0b2!.ffi.ffi.HandleTransactionRequestH\0R\x11handleTransactio\
+    n\x12=\n\x0bcallRequest\x18\x02\x20\x01(\x0b2\x19.ffi.ffi.SGXVMCallReque\
+    stH\0R\x0bcallRequest\x12C\n\rcreateRequest\x18\x03\x20\x01(\x0b2\x1b.ff\
+    i.ffi.SGXVMCreateRequestH\0R\rcreateRequestB\x05\n\x03reqB\x04Z\x02./b\
+    \x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;
