@@ -1,3 +1,4 @@
+use alloc::string::ToString;
 use sgx_evm::evm::backend::Basic;
 use sgx_evm::primitive_types::{H160, U256, H256};
 use protobuf::Message;
@@ -207,6 +208,7 @@ impl GoQuerier {
         request.set_address(account_address.as_bytes().to_vec());
         request.set_balance(u256_to_vec(data.balance));
         request.set_nonce(u256_to_vec(data.nonce));
+        println!("[Rust] Set nonce: {:?} for account: {:?}", data.nonce.as_u64(), account_address.to_string());
         cosmos_request.set_insertAccount(request);
         let request_bytes = cosmos_request.write_to_bytes().unwrap();
 
