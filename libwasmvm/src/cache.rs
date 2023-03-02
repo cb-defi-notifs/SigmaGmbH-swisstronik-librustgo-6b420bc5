@@ -4,7 +4,7 @@ use std::panic::catch_unwind;
 
 // use cosmwasm_vm::{capabilities_from_csv, Cache, CacheOptions, Checksum, Size};
 
-use protobuf::{Message, RepeatedField};
+use protobuf::Message;
 use sgx_evm::primitive_types::H256;
 
 use crate::error::{handle_c_error_default, Error};
@@ -19,8 +19,10 @@ use crate::querier::GoQuerier;
 pub const PB_REQUEST_ARG: &str = "pb_request";
 
 #[repr(C)]
+#[allow(dead_code)]
 pub struct cache_t {}
 
+#[allow(dead_code)]
 pub struct Cache {
     querier: PhantomData<GoQuerier>,
 }

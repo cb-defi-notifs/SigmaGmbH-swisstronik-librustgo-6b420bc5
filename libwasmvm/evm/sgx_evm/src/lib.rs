@@ -15,16 +15,13 @@ pub use primitive_types;
 use primitive_types::{H160, H256, U256};
 use rlp::Encodable;
 
-use std::{collections::BTreeMap, string::String, string::ToString, vec::Vec};
+use std::{string::String, string::ToString, vec::Vec};
 
 use crate::backend::{Backend, GASOMETER_CONFIG};
 pub use crate::backend::Vicinity;
 use crate::precompiles::EVMPrecompiles;
-use crate::primitives::{QueryData, raw_transaction::FullTransactionData};
-use crate::storage::Storage;
 
 pub mod backend;
-pub mod primitives;
 pub mod storage;
 
 mod errors;
@@ -38,19 +35,6 @@ pub struct ExecutionData {
     pub gas_limit: U256,
     pub value: U256,
     pub access_list: Vec<(H160, Vec<H256>)>,
-}
-
-impl From<FullTransactionData> for ExecutionData {
-    fn from(data: FullTransactionData) -> Self {
-        ExecutionData {
-            origin: data.origin,
-            action: data.action,
-            input: data.input,
-            gas_limit: data.gas_limit,
-            value: data.value,
-            access_list: data.access_list,
-        }
-    }
 }
 
 /// Handles incoming request for calling some contract / funds transfer

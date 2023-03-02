@@ -1,16 +1,10 @@
 use protobuf::RepeatedField;
 use sgx_evm::{self, Vicinity};
-use sgx_evm::ExecutionData;
 use common_types::ExecutionResult;
 use sgx_evm::primitive_types::{U256, H160, H256};
-use sgx_evm::ethereum::TransactionAction;
-
-
 use crate::evm::backend::TxContext;
 use crate::protobuf_generated::ffi::{
     SGXVMCallRequest,
-    TransactionData as ProtoTransactionData,
-    HandleTransactionRequest as ProtoRequest,
     TransactionContext as ProtoTransactionContext, AccessListItem, SGXVMCreateRequest,
 };
 use crate::querier::GoQuerier;
@@ -81,44 +75,6 @@ fn parse_access_list(data: RepeatedField<AccessListItem>) -> Vec<(H160, Vec<H256
     }
 
     access_list
-}
-
-/// This function takes protobuf-encoded request for transaction handling and extracts
-/// TransactionData and TxContext from it
-fn parse_protobuf_transaction_data(request: ProtoRequest) -> (ExecutionData, TxContext) {
-    // TODO: Prepare some error handling
-    let tx_data = request.tx_data.unwrap();
-    let tx_context = build_transaction_context(request.tx_context.unwrap());
-
-    let action = match tx_data.to.is_empty() {
-        true => TransactionAction::Create,
-        false => TransactionAction::Call(H160::from_slice(&tx_data.to))
-    };
-
-    let mut access_list = Vec::default();
-    for access_list_item in tx_data.accessList.to_vec() {
-        let address = H160::from_slice(&access_list_item.address);
-        let slots = access_list_item.storageSlot
-            .to_vec()
-            .into_iter()
-            .map(|item| { H256::from_slice(&item) })
-            .collect();
-
-        access_list.push((address, slots));
-    }
-
-    let gas_limit = U256::from(tx_data.get_gasLimit());
-
-    let execution_data = ExecutionData {
-        origin: H160::from_slice(&tx_data.from),
-        action,
-        input: tx_data.data,
-        gas_limit,
-        value: U256::from_big_endian(&tx_data.value),
-        access_list,
-    };
-
-    (execution_data, tx_context)
 }
 
 fn build_transaction_context(context: ProtoTransactionContext) -> TxContext {
