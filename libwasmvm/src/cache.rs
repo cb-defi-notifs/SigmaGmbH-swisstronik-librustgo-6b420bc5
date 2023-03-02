@@ -34,15 +34,6 @@ pub fn to_cache(ptr: *mut cache_t) -> Option<&'static mut Cache> {
     }
 }
 
-// pub fn to_cache(ptr: *mut cache_t) -> Option<&'static mut Cache<GoApi, GoStorage, GoQuerier>> {
-//     if ptr.is_null() {
-//         None
-//     } else {
-//         let c = unsafe { &mut *(ptr as *mut Cache<GoApi, GoStorage, GoQuerier>) };
-//         Some(c)
-//     }
-// }
-
 #[no_mangle]
 pub extern "C" fn make_pb_request(
     querier: GoQuerier,
