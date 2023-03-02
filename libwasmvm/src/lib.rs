@@ -6,12 +6,10 @@ extern crate alloc;
 mod api;
 mod args;
 mod cache;
-mod db;
 mod error;
 mod gas_meter;
 mod iterator;
 mod memory;
-mod storage;
 mod test_utils;
 mod tests;
 mod protobuf_generated;
@@ -22,10 +20,8 @@ mod querier;
 // exports. There are no guarantees those exports are stable.
 // We keep them here such that we can access them in the docs (`cargo doc`).
 pub use api::GoApi;
-pub use db::{db_t, Db};
 pub use error::GoError;
 pub use memory::{
     destroy_unmanaged_vector, new_unmanaged_vector, ByteSliceView, U8SliceView, UnmanagedVector,
 };
-pub use storage::{GoStorage};
 
