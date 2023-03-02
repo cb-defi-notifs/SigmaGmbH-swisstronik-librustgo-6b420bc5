@@ -20,10 +20,10 @@ pub struct ExecutionResult {
 
 impl ExecutionResult {
     /// Creates execution result that only contains error reason and possible amount of used gas
-    pub fn from_error(reason: String, gas_used: Option<u64>) -> Self {
+    pub fn from_error(reason: String, data: Vec<u8>, gas_used: Option<u64>) -> Self {
         Self {
             logs: Vec::default(),
-            data: Vec::default(),
+            data: data,
             gas_used: gas_used.unwrap_or(21000), // This is minimum gas fee to apply the transaction
             vm_error: reason
         }

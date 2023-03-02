@@ -60,7 +60,7 @@ pub fn handle_query(body: &[u8], storage: &mut dyn Storage) -> Vec<u8> {
     let query = match rlp::decode::<QueryData>(body) {
         Ok(query) => query,
         Err(e) => {
-            return ExecutionResult::from_error(format!("Cannot decode query data: {:?}", e), None)
+            return ExecutionResult::from_error(format!("Cannot decode query data: {:?}", e), Vec::default(), None)
                 .rlp_bytes()
                 .to_vec();
         }
@@ -82,6 +82,7 @@ pub fn handle_transaction(body: &[u8], storage: &mut impl ExtendedBackend) -> Ve
         Err(e) => {
             return ExecutionResult::from_error(
                 format!("Cannot decode transaction: {:?}", e),
+                Vec::default(),
                 None,
             )
             .rlp_bytes()
@@ -125,8 +126,8 @@ pub fn handle_query_inner(query: QueryData, storage: &mut dyn Storage) -> Execut
     let used_gas = executor.used_gas();
     let exit_value = match handle_evm_result(exit_reason, data) {
         Ok(data) => data,
-        Err(err) => {
-            return ExecutionResult::from_error(err, Some(used_gas));
+        Err((err, data)) => {
+            return ExecutionResult::from_error(err, data, Some(used_gas));
         }
     };
 
@@ -158,8 +159,8 @@ pub fn handle_sgxvm_call(
     let gas_used = executor.used_gas();
     let exit_value = match handle_evm_result(exit_reason, ret) {
         Ok(data) => data,
-        Err(err) => {
-            return ExecutionResult::from_error(err, Some(gas_used))
+        Err((err, data)) => {
+            return ExecutionResult::from_error(err, data, Some(gas_used))
         }
     };
 
@@ -195,8 +196,8 @@ pub fn handle_sgxvm_create(
     let gas_used = executor.used_gas();
     let exit_value = match handle_evm_result(exit_reason, ret) {
         Ok(data) => data,
-        Err(err) => {
-            return ExecutionResult::from_error(err, Some(gas_used))
+        Err((err, data)) => {
+            return ExecutionResult::from_error(err, data, Some(gas_used))
         }
     };
 
@@ -258,8 +259,8 @@ pub fn handle_transaction_inner(transaction_data: ExecutionData, backend: &mut i
     let gas_used = executor.used_gas();
     let exit_value = match handle_evm_result(exit_reason, data) {
         Ok(data) => data,
-        Err(err) => {
-            return ExecutionResult::from_error(err, Some(gas_used))
+        Err((err, data)) => {
+            return ExecutionResult::from_error(err, data, Some(gas_used))
         }
     };
 
@@ -276,63 +277,12 @@ pub fn handle_transaction_inner(transaction_data: ExecutionData, backend: &mut i
 }
 
 /// Handles an EVM result to return either a successful result or a (readable) error reason.
-fn handle_evm_result(exit_reason: ExitReason, data: Vec<u8>) -> Result<Vec<u8>, String> {
+fn handle_evm_result(exit_reason: ExitReason, data: Vec<u8>) -> Result<Vec<u8>, (String, Vec<u8>)> {
     match exit_reason {
         ExitReason::Succeed(_) => Ok(data),
-        ExitReason::Revert(_) => {
-            if data.is_empty() {
-                return Err("no revert reason".to_string());
-            }
-
-            // Decode revert reason, format is as follows:
-            //
-            // 08c379a0                                                         <- Function selector
-            // 0000000000000000000000000000000000000000000000000000000000000020 <- Offset of string return value
-            // 0000000000000000000000000000000000000000000000000000000000000047 <- Length of string return value (the revert reason)
-            // 6d7946756e6374696f6e206f6e6c79206163636570747320617267756d656e74 <- First 32 bytes of the revert reason
-            // 7320776869636820617265206772656174686572207468616e206f7220657175 <- Next 32 bytes of the revert reason
-            // 616c20746f203500000000000000000000000000000000000000000000000000 <- Last 7 bytes of the revert reason
-            //
-            const ERROR_STRING_SELECTOR: &[u8] = &[0x08, 0xc3, 0x79, 0xa0]; // Keccak256("Error(string)")
-            const FIELD_OFFSET_START: usize = 4;
-            const FIELD_LENGTH_START: usize = FIELD_OFFSET_START + 32;
-            const FIELD_REASON_START: usize = FIELD_LENGTH_START + 32;
-            const MIN_SIZE: usize = FIELD_REASON_START;
-            const MAX_REASON_SIZE: usize = 1024;
-
-            let max_raw_len = if data.len() > MAX_REASON_SIZE {
-                MAX_REASON_SIZE
-            } else {
-                data.len()
-            };
-            if data.len() < MIN_SIZE || !data.starts_with(ERROR_STRING_SELECTOR) {
-                return Err(format!(
-                    "invalid reason prefix: '{}'",
-                    hex::encode(&data[..max_raw_len])
-                ));
-            }
-            // Decode and validate length.
-            let mut length =
-                primitive_types::U256::from(&data[FIELD_LENGTH_START..FIELD_LENGTH_START + 32])
-                    .low_u32() as usize;
-            if FIELD_REASON_START + length > data.len() {
-                return Err(format!(
-                    "invalid reason length: '{}'",
-                    hex::encode(&data[..max_raw_len])
-                ));
-            }
-            // Make sure that this doesn't ever return huge reason values as this is at least
-            // somewhat contract-controlled.
-            if length > MAX_REASON_SIZE {
-                length = MAX_REASON_SIZE;
-            }
-            let reason = std::string::String::from_utf8_lossy(
-                &data[FIELD_REASON_START..FIELD_REASON_START + length],
-            );
-            Err(reason.to_string())
-        }
-        ExitReason::Error(err) => Err(format!("evm error: {:?}", err)),
-        ExitReason::Fatal(err) => Err(format!("fatal evm error: {:?}", err)),
+        ExitReason::Revert(err) => Err((format!("execution reverted: {:?}", err), data)),
+        ExitReason::Error(err) => Err((format!("evm error: {:?}", err), data)),
+        ExitReason::Fatal(err) => Err((format!("fatal evm error: {:?}", err), data)),
     }
 }
 
