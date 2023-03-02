@@ -7,7 +7,6 @@ use std::panic::catch_unwind;
 use protobuf::{Message, RepeatedField};
 use sgx_evm::primitive_types::H256;
 
-use crate::args::PB_REQUEST_ARG;
 use crate::error::{handle_c_error_default, Error};
 use crate::evm;
 use crate::memory::{ByteSliceView, UnmanagedVector};
@@ -15,6 +14,9 @@ use crate::protobuf_generated::ffi::{
     FFIRequest, FFIRequest_oneof_req, HandleTransactionResponse, Log, Topic,
 };
 use crate::querier::GoQuerier;
+
+// store some common string for argument names
+pub const PB_REQUEST_ARG: &str = "pb_request";
 
 #[repr(C)]
 pub struct cache_t {}

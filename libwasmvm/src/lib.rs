@@ -4,7 +4,6 @@
 extern crate alloc;
 
 mod api;
-mod args;
 mod cache;
 mod error;
 mod memory;
