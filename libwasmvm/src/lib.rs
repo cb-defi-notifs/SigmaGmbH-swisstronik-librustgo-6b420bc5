@@ -14,7 +14,6 @@ mod memory;
 mod storage;
 mod test_utils;
 mod tests;
-mod version;
 mod protobuf_generated;
 mod evm;
 mod querier;
