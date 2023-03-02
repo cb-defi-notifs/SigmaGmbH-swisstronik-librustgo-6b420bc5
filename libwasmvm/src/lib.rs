@@ -10,7 +10,6 @@ mod error;
 mod gas_meter;
 mod iterator;
 mod memory;
-mod tests;
 mod protobuf_generated;
 mod evm;
 mod querier;
