@@ -72,20 +72,6 @@ type CosmosRequest_BlockHash = ffi.CosmosRequest_BlockHash
 
 type HandleTransactionResponse = ffi.HandleTransactionResponse
 
-func HandleTx(
-	querier types.DataQuerier, 
-	from, to, data, value []byte, 
-	gasLimit uint64,
-	txContext *TransactionContext,
-) (*ffi.HandleTransactionResponse, error) {
-	executionResult, err := api.HandleTx(querier, from, to, data, value, gasLimit, txContext)
-	if err != nil {
-		return &ffi.HandleTransactionResponse{}, err
-	}
-
-	return executionResult, nil
-}
-
 func Call(
 	querier types.DataQuerier, 
 	from, to, data, value []byte, 

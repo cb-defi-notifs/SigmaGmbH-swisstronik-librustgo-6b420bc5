@@ -7680,7 +7680,6 @@ impl<'a> ::std::default::Default for &'a FFIRequest {
 
 #[derive(Clone,PartialEq,Debug)]
 pub enum FFIRequest_oneof_req {
-    handleTransaction(HandleTransactionRequest),
     callRequest(SGXVMCallRequest),
     createRequest(SGXVMCreateRequest),
 }
@@ -7690,56 +7689,7 @@ impl FFIRequest {
         ::std::default::Default::default()
     }
 
-    // .ffi.ffi.HandleTransactionRequest handleTransaction = 1;
-
-
-    pub fn get_handleTransaction(&self) -> &HandleTransactionRequest {
-        match self.req {
-            ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(ref v)) => v,
-            _ => <HandleTransactionRequest as ::protobuf::Message>::default_instance(),
-        }
-    }
-    pub fn clear_handleTransaction(&mut self) {
-        self.req = ::std::option::Option::None;
-    }
-
-    pub fn has_handleTransaction(&self) -> bool {
-        match self.req {
-            ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(..)) => true,
-            _ => false,
-        }
-    }
-
-    // Param is passed by value, moved
-    pub fn set_handleTransaction(&mut self, v: HandleTransactionRequest) {
-        self.req = ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(v))
-    }
-
-    // Mutable pointer to the field.
-    pub fn mut_handleTransaction(&mut self) -> &mut HandleTransactionRequest {
-        if let ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(_)) = self.req {
-        } else {
-            self.req = ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(HandleTransactionRequest::new()));
-        }
-        match self.req {
-            ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(ref mut v)) => v,
-            _ => panic!(),
-        }
-    }
-
-    // Take field
-    pub fn take_handleTransaction(&mut self) -> HandleTransactionRequest {
-        if self.has_handleTransaction() {
-            match self.req.take() {
-                ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(v)) => v,
-                _ => panic!(),
-            }
-        } else {
-            HandleTransactionRequest::new()
-        }
-    }
-
-    // .ffi.ffi.SGXVMCallRequest callRequest = 2;
+    // .ffi.ffi.SGXVMCallRequest callRequest = 1;
 
 
     pub fn get_callRequest(&self) -> &SGXVMCallRequest {
@@ -7788,7 +7738,7 @@ impl FFIRequest {
         }
     }
 
-    // .ffi.ffi.SGXVMCreateRequest createRequest = 3;
+    // .ffi.ffi.SGXVMCreateRequest createRequest = 2;
 
 
     pub fn get_createRequest(&self) -> &SGXVMCreateRequest {
@@ -7840,11 +7790,6 @@ impl FFIRequest {
 
 impl ::protobuf::Message for FFIRequest {
     fn is_initialized(&self) -> bool {
-        if let Some(FFIRequest_oneof_req::handleTransaction(ref v)) = self.req {
-            if !v.is_initialized() {
-                return false;
-            }
-        }
         if let Some(FFIRequest_oneof_req::callRequest(ref v)) = self.req {
             if !v.is_initialized() {
                 return false;
@@ -7866,15 +7811,9 @@ impl ::protobuf::Message for FFIRequest {
                     if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
-                    self.req = ::std::option::Option::Some(FFIRequest_oneof_req::handleTransaction(is.read_message()?));
-                },
-                2 => {
-                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
-                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
-                    }
                     self.req = ::std::option::Option::Some(FFIRequest_oneof_req::callRequest(is.read_message()?));
                 },
-                3 => {
+                2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
@@ -7894,10 +7833,6 @@ impl ::protobuf::Message for FFIRequest {
         let mut my_size = 0;
         if let ::std::option::Option::Some(ref v) = self.req {
             match v {
-                &FFIRequest_oneof_req::handleTransaction(ref v) => {
-                    let len = v.compute_size();
-                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
-                },
                 &FFIRequest_oneof_req::callRequest(ref v) => {
                     let len = v.compute_size();
                     my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
@@ -7916,18 +7851,13 @@ impl ::protobuf::Message for FFIRequest {
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
         if let ::std::option::Option::Some(ref v) = self.req {
             match v {
-                &FFIRequest_oneof_req::handleTransaction(ref v) => {
+                &FFIRequest_oneof_req::callRequest(ref v) => {
                     os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
                     os.write_raw_varint32(v.get_cached_size())?;
                     v.write_to_with_cached_sizes(os)?;
                 },
-                &FFIRequest_oneof_req::callRequest(ref v) => {
-                    os.write_tag(2, ::protobuf::wire_format::WireTypeLengthDelimited)?;
-                    os.write_raw_varint32(v.get_cached_size())?;
-                    v.write_to_with_cached_sizes(os)?;
-                },
                 &FFIRequest_oneof_req::createRequest(ref v) => {
-                    os.write_tag(3, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_tag(2, ::protobuf::wire_format::WireTypeLengthDelimited)?;
                     os.write_raw_varint32(v.get_cached_size())?;
                     v.write_to_with_cached_sizes(os)?;
                 },
@@ -7971,11 +7901,6 @@ impl ::protobuf::Message for FFIRequest {
         static descriptor: ::protobuf::rt::LazyV2<::protobuf::reflect::MessageDescriptor> = ::protobuf::rt::LazyV2::INIT;
         descriptor.get(|| {
             let mut fields = ::std::vec::Vec::new();
-            fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, HandleTransactionRequest>(
-                "handleTransaction",
-                FFIRequest::has_handleTransaction,
-                FFIRequest::get_handleTransaction,
-            ));
             fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, SGXVMCallRequest>(
                 "callRequest",
                 FFIRequest::has_callRequest,
@@ -8002,7 +7927,6 @@ impl ::protobuf::Message for FFIRequest {
 
 impl ::protobuf::Clear for FFIRequest {
     fn clear(&mut self) {
-        self.req = ::std::option::Option::None;
         self.req = ::std::option::Option::None;
         self.req = ::std::option::Option::None;
         self.unknown_fields.clear();
@@ -8104,12 +8028,11 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     context\x18\x02\x20\x01(\x0b2\x1b.ffi.ffi.TransactionContextR\x07context\
     \"\x7f\n\x12SGXVMCreateRequest\x122\n\x06params\x18\x01\x20\x01(\x0b2\
     \x1a.ffi.ffi.SGXVMCreateParamsR\x06params\x125\n\x07context\x18\x02\x20\
-    \x01(\x0b2\x1b.ffi.ffi.TransactionContextR\x07context\"\xea\x01\n\nFFIRe\
-    quest\x12Q\n\x11handleTransaction\x18\x01\x20\x01(\x0b2!.ffi.ffi.HandleT\
-    ransactionRequestH\0R\x11handleTransaction\x12=\n\x0bcallRequest\x18\x02\
-    \x20\x01(\x0b2\x19.ffi.ffi.SGXVMCallRequestH\0R\x0bcallRequest\x12C\n\rc\
-    reateRequest\x18\x03\x20\x01(\x0b2\x1b.ffi.ffi.SGXVMCreateRequestH\0R\rc\
-    reateRequestB\x05\n\x03reqB\x04Z\x02./b\x06proto3\
+    \x01(\x0b2\x1b.ffi.ffi.TransactionContextR\x07context\"\x97\x01\n\nFFIRe\
+    quest\x12=\n\x0bcallRequest\x18\x01\x20\x01(\x0b2\x19.ffi.ffi.SGXVMCallR\
+    equestH\0R\x0bcallRequest\x12C\n\rcreateRequest\x18\x02\x20\x01(\x0b2\
+    \x1b.ffi.ffi.SGXVMCreateRequestH\0R\rcreateRequestB\x05\n\x03reqB\x04Z\
+    \x02./b\x06proto3\
 ";
 
 static file_descriptor_proto_lazy: ::protobuf::rt::LazyV2<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::rt::LazyV2::INIT;

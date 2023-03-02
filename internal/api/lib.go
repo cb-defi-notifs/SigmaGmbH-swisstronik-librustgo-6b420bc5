@@ -37,57 +37,6 @@ type Querier = types.Querier
 type DataQuerier = types.DataQuerier
 
 // Handles incoming ethereum transaction
-func HandleTx(
-	querier DataQuerier, 
-	from, to, data, value []byte, 
-	gasLimit uint64,
-	txContext *ffi.TransactionContext,
-) (*ffi.HandleTransactionResponse, error) {
-	// Construct mocked querier
-	q := buildQuerier(querier)
-
-	// Create protobuf-encoded transaction data
-	txData := &ffi.TransactionData{
-		From:     from,
-		To:       to,
-		Value:    value,
-		GasLimit: gasLimit,
-		Data: data,
-	}
-
-	// Create protobuf encoded request
-	req := ffi.FFIRequest{Req: &ffi.FFIRequest_HandleTransaction{
-		HandleTransaction: &ffi.HandleTransactionRequest{
-			TxData: txData,
-			TxContext: txContext,
-		},
-	}}
-	reqBytes, err := proto.Marshal(&req)
-	if err != nil {
-		log.Fatalln("Failed to encode req:", err)
-	}
-
-	// Pass request to Rust
-	d := makeView(reqBytes)
-	defer runtime.KeepAlive(reqBytes)
-
-	errmsg := newUnmanagedVector(nil)
-	ptr, err := C.make_pb_request(q, d, &errmsg)
-	if err != nil {
-		return &ffi.HandleTransactionResponse{}, errorWithMessage(err, errmsg)
-	}
-
-	// Recover returned value
-	executionResult := copyAndDestroyUnmanagedVector(ptr)
-	response := ffi.HandleTransactionResponse{}
-	if err := proto.Unmarshal(executionResult, &response); err != nil {
-		log.Fatalln("Failed to decode execution result:", err)
-	}
-
-	return &response, nil
-}
-
-// Handles incoming ethereum transaction
 func Call(
 	querier DataQuerier, 
 	from, to, data, value []byte, 

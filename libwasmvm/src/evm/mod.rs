@@ -67,21 +67,6 @@ pub fn handle_sgxvm_create(querier: GoQuerier, data: SGXVMCreateRequest) -> Exec
     )
 }
 
-/// This function creates mocked backend and tries to handle incoming transaction
-/// It is stateless and is used just to test broadcasting transaction from devnet to Rust
-/// execution layer
-pub fn handle_transaction(querier: GoQuerier, data: ProtoRequest) -> ExecutionResult {
-    // Convert decoded protobuf data into TransactionData
-    let (tx, tx_context) = parse_protobuf_transaction_data(data);
-    // Create FFI storage & backend
-    let vicinity = Vicinity{ origin: tx.origin };
-    let mut storage = crate::evm::storage::FFIStorage::new(&querier);
-    let mut backend = backend::FFIBackend::new(&querier, &mut storage, vicinity, tx_context);
-
-    // Handle already parsed transaction and return execution result
-    sgx_evm::handle_transaction_inner(tx, &mut backend)
-}
-
 fn parse_access_list(data: RepeatedField<AccessListItem>) -> Vec<(H160, Vec<H256>)> {
     let mut access_list = Vec::default();
     for access_list_item in data.to_vec() {

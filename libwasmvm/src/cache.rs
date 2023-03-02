@@ -137,48 +137,6 @@ pub extern "C" fn make_pb_request(
 
                             Ok(response_bytes)
                         },
-                        FFIRequest_oneof_req::handleTransaction(tx) => {
-                            // Execute provided transaction
-                            let execution_result = evm::handle_transaction(querier, tx);
-
-                            // Create protobuf-encoded response
-                            let mut response = HandleTransactionResponse::new();
-                            response.set_gas_used(execution_result.gas_used);
-                            response.set_vm_error(execution_result.vm_error);
-                            response.set_ret(execution_result.data);
-
-                            // Convert logs into proper format
-                            let converted_logs = execution_result
-                                .logs
-                                .into_iter()
-                                .map(|log| {
-                                    let mut proto_log = Log::new();
-                                    proto_log.set_address(log.address.as_fixed_bytes().to_vec());
-                                    proto_log.set_data(log.data);
-
-                                    let converted_topics: Vec<Topic> = log
-                                        .topics
-                                        .into_iter()
-                                        .map(|topic| convert_topic_to_proto(topic))
-                                        .collect();
-                                    proto_log.set_topics(converted_topics.into());
-
-                                    proto_log
-                                })
-                                .collect();
-
-                            response.set_logs(converted_logs);
-
-                            // Convert to bytes and return it
-                            let response_bytes = match response.write_to_bytes() {
-                                Ok(res) => res,
-                                Err(_) => {
-                                    return Err(Error::protobuf_decode("Response encoding failed"));
-                                }
-                            };
-
-                            Ok(response_bytes)
-                        }
                     }
                 } else {
                     Err(Error::protobuf_decode("Request unwrapping failed"))

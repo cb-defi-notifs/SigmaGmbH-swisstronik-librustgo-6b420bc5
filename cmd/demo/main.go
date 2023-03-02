@@ -1,24 +1,12 @@
 package main
 
 import (
-	"encoding/binary"
-	"encoding/hex"
 	"errors"
-	"fmt"
-
-	wasmvm "github.com/SigmaGmbH/librustgo"
 	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
 	types "github.com/SigmaGmbH/librustgo/types"
 	"google.golang.org/protobuf/proto"
 	"github.com/holiman/uint256"
 )
-
-//const (
-//	SUPPORTED_FEATURES = "staking"
-//	PRINT_DEBUG        = true
-//	MEMORY_LIMIT       = 32  // MiB
-//	CACHE_SIZE         = 100 // MiB
-//)
 
 type MockedQueryHandler struct{}
 
@@ -81,57 +69,5 @@ func (MockedQueryHandler) Query(request []byte) ([]byte, error) {
 
 // This is just a demo to ensure we can compile a static go binary
 func main() {
-	// Create sample execution data
-	from, decodingErr := hex.DecodeString("91e1f4Bb1C1895F6c65cD8379DE1323A8bF3Cf7c")
-	if decodingErr != nil {
-		panic(decodingErr)
-	}
-	to, decodingErr := hex.DecodeString("91b126ff9AF242408090A223829Eb88A61724AA5")
-	if decodingErr != nil {
-		panic(decodingErr)
-	}
-
-	// Construct transaction context
-	txContext := &wasmvm.TransactionContext{
-		ChainId: 1,
-		GasPrice: uint256.NewInt(1).Bytes(),
-		Timestamp: 1,
-		BlockGasLimit: 100,
-		BlockBaseFeePerGas: uint256.NewInt(1).Bytes(),
-		BlockCoinbase: make([]byte, 20),
-		BlockNumber: 1,
-	}
-
-	value := make([]byte, 8)
-	binary.BigEndian.PutUint64(value, uint64(1)) // sends 1 wei
-	gasLimit := uint64(10000000)
-	data := make([]byte, 0)
-	querier := &MockedQueryHandler{}
-
-	result, err := wasmvm.HandleTx(querier, from, to, data, value, gasLimit, txContext)
-	//err := wasmvm.HelloWorld("Admin")
-	//file := os.Args[1]
-	//fmt.Printf("Running %s...\n", file)
-	//bz, err := ioutil.ReadFile(file)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println("GO: execution result: ", result)
-	//fmt.Println("Loaded!")
-	//
-	//os.MkdirAll("tmp", 0o755)
-	//
-	//vm, err := wasmvm.NewVM("tmp", SUPPORTED_FEATURES, MEMORY_LIMIT, PRINT_DEBUG, CACHE_SIZE)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//
-	//checksum, err := vm.Create(bz)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//fmt.Printf("Stored code with checksum: %X\n", checksum)
-	//
-	//vm.Cleanup()
-	//fmt.Println("finished")
+	// TODO: Create new demo with usage of `call` and `create` methods
 }

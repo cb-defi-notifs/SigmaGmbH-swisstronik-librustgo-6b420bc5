@@ -205,8 +205,7 @@ message SGXVMCreateRequest {
 
 message FFIRequest {
   oneof req {
-    HandleTransactionRequest handleTransaction = 1;
-    SGXVMCallRequest callRequest = 2;
-    SGXVMCreateRequest createRequest = 3;
+    SGXVMCallRequest callRequest = 1;
+    SGXVMCreateRequest createRequest = 2;
   }
 }
