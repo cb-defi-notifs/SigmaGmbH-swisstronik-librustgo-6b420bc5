@@ -8,7 +8,6 @@ mod args;
 mod cache;
 mod error;
 mod gas_meter;
-mod iterator;
 mod memory;
 mod protobuf_generated;
 mod evm;
