@@ -7,7 +7,6 @@ mod api;
 mod args;
 mod cache;
 mod error;
-mod gas_meter;
 mod memory;
 mod protobuf_generated;
 mod evm;
