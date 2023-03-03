@@ -71,7 +71,7 @@ pub extern "C" fn make_pb_request(
                                     let converted_topics: Vec<Topic> = log
                                         .topics
                                         .into_iter()
-                                        .map(|topic| convert_topic_to_proto(topic))
+                                        .map(convert_topic_to_proto)
                                         .collect();
                                     proto_log.set_topics(converted_topics.into());
 
@@ -112,7 +112,7 @@ pub extern "C" fn make_pb_request(
                                     let converted_topics: Vec<Topic> = log
                                         .topics
                                         .into_iter()
-                                        .map(|topic| convert_topic_to_proto(topic))
+                                        .map(convert_topic_to_proto)
                                         .collect();
                                     proto_log.set_topics(converted_topics.into());
 
