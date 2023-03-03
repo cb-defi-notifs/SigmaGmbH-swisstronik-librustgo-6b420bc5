@@ -9,7 +9,6 @@ mod memory;
 mod protobuf_generated;
 mod evm;
 mod querier;
-mod debug;
 mod version;
 
 // We only interact with this crate via `extern "C"` interfaces, not those public

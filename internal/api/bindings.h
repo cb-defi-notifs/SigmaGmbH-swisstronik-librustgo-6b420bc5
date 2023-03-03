@@ -220,19 +220,6 @@ typedef struct ByteSliceView {
   uintptr_t len;
 } ByteSliceView;
 
-typedef struct debug_t {
-  uint8_t _private[0];
-} debug_t;
-
-typedef struct Debug_vtable {
-  int32_t (*debug)(const struct debug_t*, struct UnmanagedVector*, struct UnmanagedVector*);
-} Debug_vtable;
-
-typedef struct DebugQuerier {
-  const struct debug_t *state;
-  struct Debug_vtable vtable;
-} DebugQuerier;
-
 struct UnmanagedVector make_pb_request(struct GoQuerier querier,
                                        struct ByteSliceView request,
                                        struct UnmanagedVector *error_msg);
@@ -240,13 +227,6 @@ struct UnmanagedVector make_pb_request(struct GoQuerier querier,
 struct UnmanagedVector new_unmanaged_vector(bool nil, const uint8_t *ptr, uintptr_t length);
 
 void destroy_unmanaged_vector(struct UnmanagedVector v);
-
-/**
- * Calls go code via vtable and trying to decode an error
- */
-void debug(struct DebugQuerier self);
-
-void debug_error_vtable(struct DebugQuerier dq);
 
 /**
  * Returns a version number of this library as a C string.
