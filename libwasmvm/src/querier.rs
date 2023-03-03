@@ -54,7 +54,6 @@ impl GoQuerier {
                     Ok(result) => {
                         return match result.get_hash().is_empty() {
                             true => {
-                                println!("[Rust] query_block_hash: hash is empty");
                                H256::default()
                             }
                             false => H256::from_slice(result.get_hash())
@@ -91,7 +90,6 @@ impl GoQuerier {
                     Ok(result) => {
                         let balance = U256::from_big_endian(result.get_balance());
                         let nonce = U256::from_big_endian(result.get_nonce());
-                        // println!("[Rust] query_account: got balance: {:?}, nonce: {:?}", balance, nonce);
                         (balance, nonce)
                     },
                     Err(err) => {
@@ -208,7 +206,6 @@ impl GoQuerier {
         request.set_address(account_address.as_bytes().to_vec());
         request.set_balance(u256_to_vec(data.balance));
         request.set_nonce(u256_to_vec(data.nonce));
-        println!("[Rust] Set nonce: {:?} for account: {:?}", data.nonce.as_u64(), account_address.to_string());
         cosmos_request.set_insertAccount(request);
         let request_bytes = cosmos_request.write_to_bytes().unwrap();
 

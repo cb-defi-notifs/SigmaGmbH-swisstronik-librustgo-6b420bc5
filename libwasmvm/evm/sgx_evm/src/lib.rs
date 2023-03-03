@@ -7,13 +7,11 @@ extern crate sgx_tstd as std;
 use backend::ExtendedBackend;
 use common_types::ExecutionResult;
 pub use ethereum;
-use ethereum::TransactionAction;
 pub use evm;
 use evm::executor::stack::{MemoryStackState, StackExecutor, StackSubstateMetadata};
 use evm::ExitReason;
 pub use primitive_types;
 use primitive_types::{H160, H256, U256};
-use rlp::Encodable;
 
 use std::{string::String, string::ToString, vec::Vec};
 
@@ -26,16 +24,6 @@ pub mod storage;
 
 mod errors;
 mod precompiles;
-
-/// This struct contaisn all the data that need for execution
-pub struct ExecutionData {
-    pub origin: H160,
-    pub action: TransactionAction,
-    pub input: Vec<u8>,
-    pub gas_limit: U256,
-    pub value: U256,
-    pub access_list: Vec<(H160, Vec<H256>)>,
-}
 
 /// Handles incoming request for calling some contract / funds transfer
 pub fn handle_sgxvm_call(
