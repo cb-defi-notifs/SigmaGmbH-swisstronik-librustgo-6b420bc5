@@ -5,6 +5,7 @@ import (
 	"github.com/SigmaGmbH/librustgo/types"
 
 	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
+	ethtypes "github.com/ethereum/go-ethereum/core/types"
 )
 
 // Checksum represents a hash of the Wasm bytecode that serves as an ID. Must be generated from this library.
@@ -31,6 +32,7 @@ type Topic = ffi.Topic
 
 // Transaction context contains information about block timestamp, coinbase address, block gas limit, etc.
 type TransactionContext = ffi.TransactionContext
+
 // Transaction data contains data which is necessary to handle the transaction
 type TransactionData = ffi.TransactionData
 
@@ -67,19 +69,22 @@ type CosmosRequest_InsertAccountCode = ffi.CosmosRequest_InsertAccountCode
 type CosmosRequest_InsertStorageCell = ffi.CosmosRequest_InsertStorageCell
 type CosmosRequest_Remove = ffi.CosmosRequest_Remove
 type CosmosRequest_RemoveStorageCell = ffi.CosmosRequest_RemoveStorageCell
+
 // Backend requests
 type CosmosRequest_BlockHash = ffi.CosmosRequest_BlockHash
 
 type HandleTransactionResponse = ffi.HandleTransactionResponse
 
+// Call handles incoming call to a smart contract or transfer of value
 func Call(
-	querier types.DataQuerier, 
-	from, to, data, value []byte, 
+	querier types.DataQuerier,
+	from, to, data, value []byte,
+	accessList ethtypes.AccessList,
 	gasLimit uint64,
 	txContext *TransactionContext,
 	commit bool,
 ) (*ffi.HandleTransactionResponse, error) {
-	executionResult, err := api.Call(querier, from, to, data, value, gasLimit, txContext, commit)
+	executionResult, err := api.Call(querier, from, to, data, value, accessList, gasLimit, txContext, commit)
 	if err != nil {
 		return &ffi.HandleTransactionResponse{}, err
 	}
@@ -87,14 +92,16 @@ func Call(
 	return executionResult, nil
 }
 
+// Create handles incoming request for creation of a new contract
 func Create(
-	querier types.DataQuerier, 
-	from, data, value []byte, 
+	querier types.DataQuerier,
+	from, data, value []byte,
+	accessList ethtypes.AccessList,
 	gasLimit uint64,
 	txContext *TransactionContext,
 	commit bool,
 ) (*ffi.HandleTransactionResponse, error) {
-	executionResult, err := api.Create(querier, from, data, value, gasLimit, txContext, commit)
+	executionResult, err := api.Create(querier, from, data, value, accessList, gasLimit, txContext, commit)
 	if err != nil {
 		return &ffi.HandleTransactionResponse{}, err
 	}

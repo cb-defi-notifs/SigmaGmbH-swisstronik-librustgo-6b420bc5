@@ -6,13 +6,15 @@ import "C"
 
 import (
 	"fmt"
+	ethcommon "github.com/ethereum/go-ethereum/common"
 	"google.golang.org/protobuf/proto"
 	"log"
 	"runtime"
 	"syscall"
 
 	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
-	types "github.com/SigmaGmbH/librustgo/types"
+	"github.com/SigmaGmbH/librustgo/types"
+	ethtypes "github.com/ethereum/go-ethereum/core/types"
 )
 
 // Value types
@@ -36,11 +38,11 @@ type Querier = types.Querier
 // Our custom querier
 type DataQuerier = types.DataQuerier
 
-// Handles incoming ethereum transaction
+// Call handles incoming call to a smart contract or transfer of value
 func Call(
 	querier DataQuerier,
 	from, to, data, value []byte,
-	accessList []*ffi.AccessListItem,
+	accessList ethtypes.AccessList,
 	gasLimit uint64,
 	txContext *ffi.TransactionContext,
 	commit bool,
@@ -55,7 +57,7 @@ func Call(
 		Data:       data,
 		GasLimit:   gasLimit,
 		Value:      value,
-		AccessList: accessList,
+		AccessList: convertAccessList(accessList),
 		Commit:     commit,
 	}
 
@@ -91,11 +93,11 @@ func Call(
 	return &response, nil
 }
 
-// Handles incoming ethereum transaction
+// Create handles incoming request for creation of a new contract
 func Create(
 	querier DataQuerier,
 	from, data, value []byte,
-	accessList []*ffi.AccessListItem,
+	accessList ethtypes.AccessList,
 	gasLimit uint64,
 	txContext *ffi.TransactionContext,
 	commit bool,
@@ -109,7 +111,7 @@ func Create(
 		Data:       data,
 		GasLimit:   gasLimit,
 		Value:      value,
-		AccessList: accessList,
+		AccessList: convertAccessList(accessList),
 		Commit:     commit,
 	}
 
@@ -143,6 +145,29 @@ func Create(
 	}
 
 	return &response, nil
+}
+
+// Converts AccessList type from ethtypes to protobuf-compatible type
+func convertAccessList(accessList ethtypes.AccessList) []*ffi.AccessListItem {
+	var converted []*ffi.AccessListItem
+	for _, item := range accessList {
+		accessListItem := &ffi.AccessListItem{
+			StorageSlot: convertAccessListStorageSlots(item.StorageKeys),
+			Address:     item.Address.Bytes(),
+		}
+
+		converted = append(converted, accessListItem)
+	}
+	return converted
+}
+
+// Converts storage slots of access list in [][]byte format
+func convertAccessListStorageSlots(slots []ethcommon.Hash) [][]byte {
+	var converted [][]byte
+	for _, slot := range slots {
+		converted = append(converted, slot.Bytes())
+	}
+	return converted
 }
 
 /**** To error module ***/

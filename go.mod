@@ -7,6 +7,7 @@ require (
 	github.com/stretchr/testify v1.7.1
 	github.com/tendermint/tm-db v0.6.7
 	google.golang.org/protobuf v1.28.1
+	github.com/ethereum/go-ethereum v1.10.26
 )
 
 require (
