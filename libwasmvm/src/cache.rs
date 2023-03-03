@@ -2,8 +2,6 @@ use std::collections::HashSet;
 use std::marker::PhantomData;
 use std::panic::catch_unwind;
 
-// use cosmwasm_vm::{capabilities_from_csv, Cache, CacheOptions, Checksum, Size};
-
 use protobuf::Message;
 use sgx_evm::primitive_types::H256;
 
