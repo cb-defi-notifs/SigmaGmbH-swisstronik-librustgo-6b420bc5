@@ -47,6 +47,10 @@ enum GoError {
    */
   GoError_User = 5,
   /**
+   * An error happend during interacting with DataQuerier (failed to apply some changes / failed to create contract / etc. )
+   */
+  GoError_QuerierError = 6,
+  /**
    * An error type that should never be created by us. It only serves as a fallback for the i32 to GoError conversion.
    */
   GoError_Other = -1,

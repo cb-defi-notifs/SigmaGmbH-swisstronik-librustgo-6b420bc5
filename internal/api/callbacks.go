@@ -165,11 +165,9 @@ func cQueryExternal(ptr *C.querier_t, request C.U8SliceView, result *C.Unmanaged
 	if err != nil {
 		println("[Go:cQueryExternal] Got error: ", err.Error())
 		*errOut = newUnmanagedVector([]byte(err.Error()))
-		return C.GoError_CannotSerialize
+		return C.GoError_QuerierError
 	}
 	*result = newUnmanagedVector(response)
-
-	// println("[Go:cQueryExternal] called successfully")
 
 	return C.GoError_None
 }
