@@ -47,6 +47,10 @@ enum GoError {
    */
   GoError_User = 5,
   /**
+   * An error happend during interacting with DataQuerier (failed to apply some changes / failed to create contract / etc. )
+   */
+  GoError_QuerierError = 6,
+  /**
    * An error type that should never be created by us. It only serves as a fallback for the i32 to GoError conversion.
    */
   GoError_Other = -1,
@@ -223,3 +227,10 @@ struct UnmanagedVector make_pb_request(struct GoQuerier querier,
 struct UnmanagedVector new_unmanaged_vector(bool nil, const uint8_t *ptr, uintptr_t length);
 
 void destroy_unmanaged_vector(struct UnmanagedVector v);
+
+/**
+ * Returns a version number of this library as a C string.
+ *
+ * The string is owned by libwasmvm and must not be mutated or destroyed by the caller.
+ */
+const char *version_str(void);

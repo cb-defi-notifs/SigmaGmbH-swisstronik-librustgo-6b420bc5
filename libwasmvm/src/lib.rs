@@ -9,6 +9,7 @@ mod memory;
 mod protobuf_generated;
 mod evm;
 mod querier;
+mod version;
 
 // We only interact with this crate via `extern "C"` interfaces, not those public
 // exports. There are no guarantees those exports are stable.
