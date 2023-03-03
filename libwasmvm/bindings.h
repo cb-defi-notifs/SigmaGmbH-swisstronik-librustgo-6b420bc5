@@ -57,6 +57,24 @@ enum GoError {
 };
 typedef int32_t GoError;
 
+typedef struct querier_t {
+  uint8_t _private[0];
+} querier_t;
+
+/**
+ * A view into a `Option<&[u8]>`, created and maintained by Rust.
+ *
+ * This can be copied into a []byte in Go.
+ */
+typedef struct U8SliceView {
+  /**
+   * True if and only if this is None. If this is true, the other fields must be ignored.
+   */
+  bool is_none;
+  const uint8_t *ptr;
+  uintptr_t len;
+} U8SliceView;
+
 /**
  * An optional Vector type that requires explicit creation and destruction
  * and can be sent via FFI.
@@ -177,24 +195,6 @@ typedef struct UnmanagedVector {
   uintptr_t cap;
 } UnmanagedVector;
 
-typedef struct querier_t {
-  uint8_t _private[0];
-} querier_t;
-
-/**
- * A view into a `Option<&[u8]>`, created and maintained by Rust.
- *
- * This can be copied into a []byte in Go.
- */
-typedef struct U8SliceView {
-  /**
-   * True if and only if this is None. If this is true, the other fields must be ignored.
-   */
-  bool is_none;
-  const uint8_t *ptr;
-  uintptr_t len;
-} U8SliceView;
-
 typedef struct Querier_vtable {
   int32_t (*query_external)(const struct querier_t*, struct U8SliceView, struct UnmanagedVector*, struct UnmanagedVector*);
 } Querier_vtable;
@@ -219,6 +219,8 @@ typedef struct ByteSliceView {
   const uint8_t *ptr;
   uintptr_t len;
 } ByteSliceView;
+
+void debug(struct GoQuerier querier);
 
 struct UnmanagedVector make_pb_request(struct GoQuerier querier,
                                        struct ByteSliceView request,

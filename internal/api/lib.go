@@ -6,7 +6,7 @@ import "C"
 
 import (
 	"fmt"
-	"google.golang.org/protobuf/proto"                      
+	"google.golang.org/protobuf/proto"
 	"log"
 	"runtime"
 	"syscall"
@@ -38,8 +38,8 @@ type DataQuerier = types.DataQuerier
 
 // Handles incoming ethereum transaction
 func Call(
-	querier DataQuerier, 
-	from, to, data, value []byte, 
+	querier DataQuerier,
+	from, to, data, value []byte,
 	gasLimit uint64,
 	txContext *ffi.TransactionContext,
 	commit bool,
@@ -53,14 +53,14 @@ func Call(
 		To:       to,
 		Value:    value,
 		GasLimit: gasLimit,
-		Data: data,
-		Commit: commit,
+		Data:     data,
+		Commit:   commit,
 	}
 
 	// Create protobuf encoded request
 	req := ffi.FFIRequest{Req: &ffi.FFIRequest_CallRequest{
 		CallRequest: &ffi.SGXVMCallRequest{
-			Params: params,
+			Params:  params,
 			Context: txContext,
 		},
 	}}
@@ -91,8 +91,8 @@ func Call(
 
 // Handles incoming ethereum transaction
 func Create(
-	querier DataQuerier, 
-	from, data, value []byte, 
+	querier DataQuerier,
+	from, data, value []byte,
 	gasLimit uint64,
 	txContext *ffi.TransactionContext,
 	commit bool,
@@ -105,14 +105,14 @@ func Create(
 		From:     from,
 		Value:    value,
 		GasLimit: gasLimit,
-		Data: data,
-		Commit: commit,
+		Data:     data,
+		Commit:   commit,
 	}
 
 	// Create protobuf encoded request
 	req := ffi.FFIRequest{Req: &ffi.FFIRequest_CreateRequest{
 		CreateRequest: &ffi.SGXVMCreateRequest{
-			Params: params,
+			Params:  params,
 			Context: txContext,
 		},
 	}}
@@ -139,6 +139,12 @@ func Create(
 	}
 
 	return &response, nil
+}
+
+// TODO: Remove this function
+func Debug(querier DataQuerier) {
+	q := buildQuerier(querier)
+	C.debug(q)
 }
 
 /**** To error module ***/

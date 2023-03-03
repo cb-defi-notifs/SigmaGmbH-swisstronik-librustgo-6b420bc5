@@ -19,3 +19,28 @@ pub use memory::{
     destroy_unmanaged_vector, new_unmanaged_vector, ByteSliceView, U8SliceView, UnmanagedVector,
 };
 
+// TODO: Remove after debugging
+// we have a problem with returning error from go
+// output is returned correctly, but error is always empty
+use crate::querier::GoQuerier;
+
+#[no_mangle]
+pub extern "C" fn debug(querier: GoQuerier) {
+    let mut output = UnmanagedVector::default();
+    let mut error_msg = UnmanagedVector::default();
+
+    let go_result: GoError = (querier.vtable.query_external)(
+        querier.state,
+        U8SliceView::new(None),
+        &mut output as *mut UnmanagedVector,
+        &mut error_msg as *mut UnmanagedVector,
+    )
+    .into();
+
+    let output = output.consume();
+    let error_msg = error_msg.consume();
+
+    println!("Output: {:?}", output);
+    println!("Error: {:?}", error_msg)
+}
+
