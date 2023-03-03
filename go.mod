@@ -3,7 +3,6 @@ module github.com/SigmaGmbH/librustgo
 go 1.17
 
 require (
-	github.com/golang/protobuf v1.5.0
 	github.com/holiman/uint256 v1.2.1
 	github.com/stretchr/testify v1.7.1
 	github.com/tendermint/tm-db v0.6.7
@@ -19,6 +18,7 @@ require (
 	github.com/dgraph-io/ristretto v0.0.3-0.20200630154024-f66de99634de // indirect
 	github.com/dgryski/go-farm v0.0.0-20190423205320-6a90982ecee2 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
+	github.com/golang/protobuf v1.5.0 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/google/btree v1.0.0 // indirect
 	github.com/jmhodges/levigo v1.0.0 // indirect

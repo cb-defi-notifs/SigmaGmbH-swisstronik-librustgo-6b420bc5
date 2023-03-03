@@ -6,7 +6,7 @@ import "C"
 
 import (
 	"fmt"
-	"google.golang.org/protobuf/proto"                      
+	"google.golang.org/protobuf/proto"
 	"log"
 	"runtime"
 	"syscall"
@@ -38,8 +38,9 @@ type DataQuerier = types.DataQuerier
 
 // Handles incoming ethereum transaction
 func Call(
-	querier DataQuerier, 
-	from, to, data, value []byte, 
+	querier DataQuerier,
+	from, to, data, value []byte,
+	accessList []*ffi.AccessListItem,
 	gasLimit uint64,
 	txContext *ffi.TransactionContext,
 	commit bool,
@@ -49,18 +50,19 @@ func Call(
 
 	// Create protobuf-encoded transaction data
 	params := &ffi.SGXVMCallParams{
-		From:     from,
-		To:       to,
-		Value:    value,
-		GasLimit: gasLimit,
-		Data: data,
-		Commit: commit,
+		From:       from,
+		To:         to,
+		Data:       data,
+		GasLimit:   gasLimit,
+		Value:      value,
+		AccessList: accessList,
+		Commit:     commit,
 	}
 
 	// Create protobuf encoded request
 	req := ffi.FFIRequest{Req: &ffi.FFIRequest_CallRequest{
 		CallRequest: &ffi.SGXVMCallRequest{
-			Params: params,
+			Params:  params,
 			Context: txContext,
 		},
 	}}
@@ -91,8 +93,9 @@ func Call(
 
 // Handles incoming ethereum transaction
 func Create(
-	querier DataQuerier, 
-	from, data, value []byte, 
+	querier DataQuerier,
+	from, data, value []byte,
+	accessList []*ffi.AccessListItem,
 	gasLimit uint64,
 	txContext *ffi.TransactionContext,
 	commit bool,
@@ -102,17 +105,18 @@ func Create(
 
 	// Create protobuf-encoded transaction data
 	params := &ffi.SGXVMCreateParams{
-		From:     from,
-		Value:    value,
-		GasLimit: gasLimit,
-		Data: data,
-		Commit: commit,
+		From:       from,
+		Data:       data,
+		GasLimit:   gasLimit,
+		Value:      value,
+		AccessList: accessList,
+		Commit:     commit,
 	}
 
 	// Create protobuf encoded request
 	req := ffi.FFIRequest{Req: &ffi.FFIRequest_CreateRequest{
 		CreateRequest: &ffi.SGXVMCreateRequest{
-			Params: params,
+			Params:  params,
 			Context: txContext,
 		},
 	}}
