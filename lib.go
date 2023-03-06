@@ -29,10 +29,10 @@ import (
 type Log = ffi.Log
 type Topic = ffi.Topic
 
-// Transaction context contains information about block timestamp, coinbase address, block gas limit, etc.
+// TransactionContext contains information about block timestamp, coinbase address, block gas limit, etc.
 type TransactionContext = ffi.TransactionContext
 
-// Transaction data contains data which is necessary to handle the transaction
+// TransactionData contains data which is necessary to handle the transaction
 type TransactionData = ffi.TransactionData
 
 // Export protobuf messages for FFI
