@@ -139,6 +139,7 @@ func Create(
 
 // TODO: Remove this function
 func Debug(conn Connector) {
+	println("lib.go::Debug called")
 	c := buildConnector(conn)
 	C.debug(c)
 }

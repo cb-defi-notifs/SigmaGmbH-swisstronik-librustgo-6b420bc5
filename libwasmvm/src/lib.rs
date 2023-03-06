@@ -26,6 +26,8 @@ use crate::querier::GoQuerier;
 
 #[no_mangle]
 pub extern "C" fn debug(querier: GoQuerier) {
+    // This function is
+    println!("lib.rs::debug: Prepare unmanaged vectors for result and error");
     let mut output = UnmanagedVector::default();
     let mut error_msg = UnmanagedVector::default();
 
@@ -34,13 +36,25 @@ pub extern "C" fn debug(querier: GoQuerier) {
         U8SliceView::new(None),
         &mut output as *mut UnmanagedVector,
         &mut error_msg as *mut UnmanagedVector,
-    )
-    .into();
+    ).into();
 
     let output = output.consume();
     let error_msg = error_msg.consume();
 
-    println!("Output: {:?}", output);
-    println!("Error: {:?}", error_msg)
+    println!("lib.rs::debug: Output len: {:?},\nError len: {:?}", output, error_msg);
+
+    match go_result {
+        GoError::None => {
+            println!("lib.rs::debug. Request succeed, got output: {:?}", output.unwrap_or_default());
+        },
+        _ => {
+            let err_msg = error_msg.unwrap_or_default();
+            println!(
+                "lib.rs::debug: Request failed: {:?} with message: {:?}",
+                go_result,
+                String::from_utf8_lossy(&err_msg)
+            );
+        }
+    }
 }
 
