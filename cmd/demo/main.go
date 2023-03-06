@@ -6,16 +6,16 @@ import (
 	types "github.com/SigmaGmbH/librustgo/types"
 )
 
-type MockedQueryHandler struct{}
+type MockedConnector struct{}
 
-var _ types.DataQuerier = MockedQueryHandler{}
+var _ types.Connector = MockedConnector{}
 
-func (MockedQueryHandler) Query([]byte) ([]byte, error) {
+func (MockedConnector) Query([]byte) ([]byte, error) {
 	return nil, errors.New("expected error")
 }
 
 // This is just a demo to ensure we can compile a static go binary
 func main() {
-	querier := MockedQueryHandler{}
-	api.Debug(querier)
+	connector := MockedConnector{}
+	api.Debug(connector)
 }

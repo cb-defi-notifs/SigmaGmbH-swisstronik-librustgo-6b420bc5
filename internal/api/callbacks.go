@@ -19,12 +19,12 @@ import (
 	"reflect"
 	"runtime/debug"
 
+	types "github.com/SigmaGmbH/librustgo/types"
 	// ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
 	// "github.com/golang/protobuf/proto"
 	dbm "github.com/tendermint/tm-db"
 	// "github.com/holiman/uint256"
 	"unsafe"
-	types "github.com/SigmaGmbH/librustgo/types"
 )
 
 // Note: we have to include all exports in the same file (at least since they both import bindings.h),
@@ -139,7 +139,7 @@ var querier_vtable = C.Querier_vtable{
 
 // contract: original pointer/struct referenced must live longer than C.GoQuerier struct
 // since this is only used internally, we can verify the code that this is the case
-func buildQuerier(q types.DataQuerier) C.GoQuerier {
+func buildConnector(q types.Connector) C.GoQuerier {
 	return C.GoQuerier{
 		state:  (*C.querier_t)(unsafe.Pointer(&q)),
 		vtable: querier_vtable,
@@ -159,7 +159,7 @@ func cQueryExternal(ptr *C.querier_t, request C.U8SliceView, result *C.Unmanaged
 	}
 
 	req := copyU8Slice(request)
-	querier := *(*types.DataQuerier)(unsafe.Pointer(ptr))
+	querier := *(*types.Connector)(unsafe.Pointer(ptr))
 	response, err := querier.Query(req)
 
 	if err != nil {

@@ -31,21 +31,19 @@ type (
 // Pointers
 type cu8_ptr = *C.uint8_t
 
-type Querier = types.Querier
+// Connector is our custom connector
+type Connector = types.Connector
 
-// Our custom querier
-type DataQuerier = types.DataQuerier
-
-// Handles incoming ethereum transaction
+// Call handles incoming call to contract or transfer of value
 func Call(
-	querier DataQuerier,
+	connector Connector,
 	from, to, data, value []byte,
 	gasLimit uint64,
 	txContext *ffi.TransactionContext,
 	commit bool,
 ) (*ffi.HandleTransactionResponse, error) {
 	// Construct mocked querier
-	q := buildQuerier(querier)
+	c := buildConnector(connector)
 
 	// Create protobuf-encoded transaction data
 	params := &ffi.SGXVMCallParams{
@@ -74,7 +72,7 @@ func Call(
 	defer runtime.KeepAlive(reqBytes)
 
 	errmsg := newUnmanagedVector(nil)
-	ptr, err := C.make_pb_request(q, d, &errmsg)
+	ptr, err := C.make_pb_request(c, d, &errmsg)
 	if err != nil {
 		return &ffi.HandleTransactionResponse{}, errorWithMessage(err, errmsg)
 	}
@@ -89,16 +87,16 @@ func Call(
 	return &response, nil
 }
 
-// Handles incoming ethereum transaction
+// Create handles incoming request for creation of new contract
 func Create(
-	querier DataQuerier,
+	connector Connector,
 	from, data, value []byte,
 	gasLimit uint64,
 	txContext *ffi.TransactionContext,
 	commit bool,
 ) (*ffi.HandleTransactionResponse, error) {
 	// Construct mocked querier
-	q := buildQuerier(querier)
+	c := buildConnector(connector)
 
 	// Create protobuf-encoded transaction data
 	params := &ffi.SGXVMCreateParams{
@@ -126,7 +124,7 @@ func Create(
 	defer runtime.KeepAlive(reqBytes)
 
 	errmsg := newUnmanagedVector(nil)
-	ptr, err := C.make_pb_request(q, d, &errmsg)
+	ptr, err := C.make_pb_request(c, d, &errmsg)
 	if err != nil {
 		return &ffi.HandleTransactionResponse{}, errorWithMessage(err, errmsg)
 	}
@@ -142,9 +140,9 @@ func Create(
 }
 
 // TODO: Remove this function
-func Debug(querier DataQuerier) {
-	q := buildQuerier(querier)
-	C.debug(q)
+func Debug(conn Connector) {
+	c := buildConnector(conn)
+	C.debug(c)
 }
 
 /**** To error module ***/
