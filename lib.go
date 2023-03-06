@@ -7,23 +7,23 @@ import (
 	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
 )
 
-// Checksum represents a hash of the Wasm bytecode that serves as an ID. Must be generated from this library.
-type Checksum []byte
+//// Checksum represents a hash of the Wasm bytecode that serves as an ID. Must be generated from this library.
+//type Checksum []byte
+//
+//// WasmCode is an alias for raw bytes of the wasm compiled code
+//type WasmCode []byte
 
-// WasmCode is an alias for raw bytes of the wasm compiled code
-type WasmCode []byte
-
-// KVStore is a reference to some sub-kvstore that is valid for one instance of a code
-type KVStore = api.KVStore
-
-// GoAPI is a reference to some "precompiles", go callbacks
-type GoAPI = api.GoAPI
-
-// Querier lets us make read-only queries on other modules
-type Querier = types.Querier
-
-// GasMeter is a read-only version of the sdk gas meter
-type GasMeter = api.GasMeter
+//// KVStore is a reference to some sub-kvstore that is valid for one instance of a code
+//type KVStore = api.KVStore
+//
+//// GoAPI is a reference to some "precompiles", go callbacks
+//type GoAPI = api.GoAPI
+//
+//// Querier lets us make read-only queries on other modules
+//type Querier = types.Querier
+//
+//// GasMeter is a read-only version of the sdk gas meter
+//type GasMeter = api.GasMeter
 
 // Logs returned by EVM
 type Log = ffi.Log
@@ -31,6 +31,7 @@ type Topic = ffi.Topic
 
 // Transaction context contains information about block timestamp, coinbase address, block gas limit, etc.
 type TransactionContext = ffi.TransactionContext
+
 // Transaction data contains data which is necessary to handle the transaction
 type TransactionData = ffi.TransactionData
 
@@ -67,14 +68,16 @@ type CosmosRequest_InsertAccountCode = ffi.CosmosRequest_InsertAccountCode
 type CosmosRequest_InsertStorageCell = ffi.CosmosRequest_InsertStorageCell
 type CosmosRequest_Remove = ffi.CosmosRequest_Remove
 type CosmosRequest_RemoveStorageCell = ffi.CosmosRequest_RemoveStorageCell
+
 // Backend requests
 type CosmosRequest_BlockHash = ffi.CosmosRequest_BlockHash
 
 type HandleTransactionResponse = ffi.HandleTransactionResponse
 
+// Call handles incoming transaction data to transfer value or call some contract
 func Call(
-	querier types.DataQuerier, 
-	from, to, data, value []byte, 
+	querier types.Connector,
+	from, to, data, value []byte,
 	gasLimit uint64,
 	txContext *TransactionContext,
 	commit bool,
@@ -87,9 +90,10 @@ func Call(
 	return executionResult, nil
 }
 
+// Create handles incoming transaction data and creates a new smart contract
 func Create(
-	querier types.DataQuerier, 
-	from, data, value []byte, 
+	querier types.Connector,
+	from, data, value []byte,
 	gasLimit uint64,
 	txContext *TransactionContext,
 	commit bool,

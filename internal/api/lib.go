@@ -137,13 +137,6 @@ func Create(
 	return &response, nil
 }
 
-// TODO: Remove this function
-func Debug(conn Connector) {
-	println("lib.go::Debug called")
-	c := buildConnector(conn)
-	C.debug(c)
-}
-
 /**** To error module ***/
 
 func errorWithMessage(err error, b C.UnmanagedVector) error {

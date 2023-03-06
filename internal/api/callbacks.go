@@ -138,7 +138,6 @@ var querier_vtable = C.Querier_vtable{
 // contract: original pointer/struct referenced must live longer than C.GoQuerier struct
 // since this is only used internally, we can verify the code that this is the case
 func buildConnector(q types.Connector) C.GoQuerier {
-	println("callbacks.go::buildConnector called")
 	return C.GoQuerier{
 		state:  (*C.querier_t)(unsafe.Pointer(&q)),
 		vtable: querier_vtable,
@@ -147,7 +146,6 @@ func buildConnector(q types.Connector) C.GoQuerier {
 
 //export cQueryExternal
 func cQueryExternal(ptr *C.querier_t, request C.U8SliceView, result *C.UnmanagedVector, errOut *C.UnmanagedVector) (ret C.GoError) {
-	println("callbacks.go::cQueryExternal called")
 	defer recoverPanic(&ret)
 
 	if result == nil || errOut == nil {
@@ -163,8 +161,6 @@ func cQueryExternal(ptr *C.querier_t, request C.U8SliceView, result *C.Unmanaged
 	response, err := querier.Query(req)
 
 	if err != nil {
-		println("callbacks.go::cQueryExternal, got error: ", err.Error())
-		println("callbacks.go::cQueryExternal, error len: ", len([]byte(err.Error())))
 		*errOut = newUnmanagedVector([]byte(err.Error()))
 		return C.GoError_QuerierError
 	}
