@@ -19,12 +19,10 @@ import (
 	"reflect"
 	"runtime/debug"
 
-	// ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
-	// "github.com/golang/protobuf/proto"
-	dbm "github.com/tendermint/tm-db"
+	types "github.com/SigmaGmbH/librustgo/types"
+
 	// "github.com/holiman/uint256"
 	"unsafe"
-	types "github.com/SigmaGmbH/librustgo/types"
 )
 
 // Note: we have to include all exports in the same file (at least since they both import bindings.h),
@@ -71,65 +69,65 @@ func recoverPanic(ret *C.GoError) {
 	}
 }
 
-type Gas = uint64
-
-// GasMeter is a copy of an interface declaration from cosmos-sdk
-// https://github.com/cosmos/cosmos-sdk/blob/18890a225b46260a9adc587be6fa1cc2aff101cd/store/types/gas.go#L34
-type GasMeter interface {
-	GasConsumed() Gas
-}
-
-/****** DB ********/
-
-// KVStore copies a subset of types from cosmos-sdk
-// We may wish to make this more generic sometime in the future, but not now
-// https://github.com/cosmos/cosmos-sdk/blob/bef3689245bab591d7d169abd6bea52db97a70c7/store/types/store.go#L170
-type KVStore interface {
-	Get(key []byte) []byte
-	Set(key, value []byte)
-	Delete(key []byte)
-
-	// Iterator over a domain of keys in ascending order. End is exclusive.
-	// Start must be less than end, or the Iterator is invalid.
-	// Iterator must be closed by caller.
-	// To iterate over entire domain, use store.Iterator(nil, nil)
-	Iterator(start, end []byte) dbm.Iterator
-
-	// Iterator over a domain of keys in descending order. End is exclusive.
-	// Start must be less than end, or the Iterator is invalid.
-	// Iterator must be closed by caller.
-	ReverseIterator(start, end []byte) dbm.Iterator
-}
-
-type DBState struct {
-	Store KVStore
-	// CallID is used to lookup the proper frame for iterators associated with this contract call (iterator.go)
-	CallID uint64
-}
-
-// use this to create C.Db in two steps, so the pointer lives as long as the calling stack
+//type Gas = uint64
 //
-//	state := buildDBState(kv, callID)
-//	db := buildDB(&state, &gasMeter)
-//	// then pass db into some FFI function
-func buildDBState(kv KVStore, callID uint64) DBState {
-	return DBState{
-		Store:  kv,
-		CallID: callID,
-	}
-}
+//// GasMeter is a copy of an interface declaration from cosmos-sdk
+//// https://github.com/cosmos/cosmos-sdk/blob/18890a225b46260a9adc587be6fa1cc2aff101cd/store/types/gas.go#L34
+//type GasMeter interface {
+//	GasConsumed() Gas
+//}
+//
+///****** DB ********/
+//
+//// KVStore copies a subset of types from cosmos-sdk
+//// We may wish to make this more generic sometime in the future, but not now
+//// https://github.com/cosmos/cosmos-sdk/blob/bef3689245bab591d7d169abd6bea52db97a70c7/store/types/store.go#L170
+//type KVStore interface {
+//	Get(key []byte) []byte
+//	Set(key, value []byte)
+//	Delete(key []byte)
+//
+//	// Iterator over a domain of keys in ascending order. End is exclusive.
+//	// Start must be less than end, or the Iterator is invalid.
+//	// Iterator must be closed by caller.
+//	// To iterate over entire domain, use store.Iterator(nil, nil)
+//	Iterator(start, end []byte) dbm.Iterator
+//
+//	// Iterator over a domain of keys in descending order. End is exclusive.
+//	// Start must be less than end, or the Iterator is invalid.
+//	// Iterator must be closed by caller.
+//	ReverseIterator(start, end []byte) dbm.Iterator
+//}
+//
+//type DBState struct {
+//	Store KVStore
+//	// CallID is used to lookup the proper frame for iterators associated with this contract call (iterator.go)
+//	CallID uint64
+//}
+//
+//// use this to create C.Db in two steps, so the pointer lives as long as the calling stack
+////
+////	state := buildDBState(kv, callID)
+////	db := buildDB(&state, &gasMeter)
+////	// then pass db into some FFI function
+//func buildDBState(kv KVStore, callID uint64) DBState {
+//	return DBState{
+//		Store:  kv,
+//		CallID: callID,
+//	}
+//}
 
 /***** GoAPI *******/
 
-type (
-	HumanizeAddress     func([]byte) (string, uint64, error)
-	CanonicalizeAddress func(string) ([]byte, uint64, error)
-)
-
-type GoAPI struct {
-	HumanAddress     HumanizeAddress
-	CanonicalAddress CanonicalizeAddress
-}
+//type (
+//	HumanizeAddress     func([]byte) (string, uint64, error)
+//	CanonicalizeAddress func(string) ([]byte, uint64, error)
+//)
+//
+//type GoAPI struct {
+//	HumanAddress     HumanizeAddress
+//	CanonicalAddress CanonicalizeAddress
+//}
 
 /***** GoQuerier ******/
 
@@ -139,7 +137,7 @@ var querier_vtable = C.Querier_vtable{
 
 // contract: original pointer/struct referenced must live longer than C.GoQuerier struct
 // since this is only used internally, we can verify the code that this is the case
-func buildQuerier(q types.DataQuerier) C.GoQuerier {
+func buildConnector(q types.Connector) C.GoQuerier {
 	return C.GoQuerier{
 		state:  (*C.querier_t)(unsafe.Pointer(&q)),
 		vtable: querier_vtable,
@@ -159,11 +157,10 @@ func cQueryExternal(ptr *C.querier_t, request C.U8SliceView, result *C.Unmanaged
 	}
 
 	req := copyU8Slice(request)
-	querier := *(*types.DataQuerier)(unsafe.Pointer(ptr))
+	querier := *(*types.Connector)(unsafe.Pointer(ptr))
 	response, err := querier.Query(req)
 
 	if err != nil {
-		println("[Go:cQueryExternal] Got error: ", err.Error())
 		*errOut = newUnmanagedVector([]byte(err.Error()))
 		return C.GoError_QuerierError
 	}

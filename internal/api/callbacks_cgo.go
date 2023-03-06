@@ -5,11 +5,11 @@ package api
 #include <stdio.h>
 
 // imports (querier)
-GoError cQueryExternal(querier_t *ptr, uint64_t gas_limit, uint64_t *used_gas, U8SliceView request, UnmanagedVector *result, UnmanagedVector *errOut);
+GoError cQueryExternal(querier_t *ptr, U8SliceView request, UnmanagedVector *result, UnmanagedVector *errOut);
 
 // Gateway functions (querier)
-GoError cQueryExternal_cgo(querier_t *ptr, uint64_t gas_limit, uint64_t *used_gas, U8SliceView request, UnmanagedVector *result, UnmanagedVector *errOut) {
-    return cQueryExternal(ptr, gas_limit, used_gas, request, result, errOut);
+GoError cQueryExternal_cgo(querier_t *ptr, U8SliceView request, UnmanagedVector *result, UnmanagedVector *errOut) {
+    return cQueryExternal(ptr, request, result, errOut);
 }
 
 */

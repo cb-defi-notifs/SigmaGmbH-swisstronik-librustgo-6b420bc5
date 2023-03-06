@@ -10,7 +10,6 @@ import (
 	"google.golang.org/protobuf/proto"
 	"log"
 	"runtime"
-	"syscall"
 
 	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
 	"github.com/SigmaGmbH/librustgo/types"
@@ -33,14 +32,12 @@ type (
 // Pointers
 type cu8_ptr = *C.uint8_t
 
-type Querier = types.Querier
+// Connector is our custom connector
+type Connector = types.Connector
 
-// Our custom querier
-type DataQuerier = types.DataQuerier
-
-// Call handles incoming call to a smart contract or transfer of value
+// Call handles incoming call to contract or transfer of value
 func Call(
-	querier DataQuerier,
+	connector Connector,
 	from, to, data, value []byte,
 	accessList ethtypes.AccessList,
 	gasLimit uint64,
@@ -48,7 +45,7 @@ func Call(
 	commit bool,
 ) (*ffi.HandleTransactionResponse, error) {
 	// Construct mocked querier
-	q := buildQuerier(querier)
+	c := buildConnector(connector)
 
 	// Create protobuf-encoded transaction data
 	params := &ffi.SGXVMCallParams{
@@ -78,7 +75,7 @@ func Call(
 	defer runtime.KeepAlive(reqBytes)
 
 	errmsg := newUnmanagedVector(nil)
-	ptr, err := C.make_pb_request(q, d, &errmsg)
+	ptr, err := C.make_pb_request(c, d, &errmsg)
 	if err != nil {
 		return &ffi.HandleTransactionResponse{}, errorWithMessage(err, errmsg)
 	}
@@ -93,9 +90,9 @@ func Call(
 	return &response, nil
 }
 
-// Create handles incoming request for creation of a new contract
+// Create handles incoming request for creation of new contract
 func Create(
-	querier DataQuerier,
+	connector Connector,
 	from, data, value []byte,
 	accessList ethtypes.AccessList,
 	gasLimit uint64,
@@ -103,7 +100,7 @@ func Create(
 	commit bool,
 ) (*ffi.HandleTransactionResponse, error) {
 	// Construct mocked querier
-	q := buildQuerier(querier)
+	c := buildConnector(connector)
 
 	// Create protobuf-encoded transaction data
 	params := &ffi.SGXVMCreateParams{
@@ -132,7 +129,7 @@ func Create(
 	defer runtime.KeepAlive(reqBytes)
 
 	errmsg := newUnmanagedVector(nil)
-	ptr, err := C.make_pb_request(q, d, &errmsg)
+	ptr, err := C.make_pb_request(c, d, &errmsg)
 	if err != nil {
 		return &ffi.HandleTransactionResponse{}, errorWithMessage(err, errmsg)
 	}
@@ -173,10 +170,6 @@ func convertAccessListStorageSlots(slots []ethcommon.Hash) [][]byte {
 /**** To error module ***/
 
 func errorWithMessage(err error, b C.UnmanagedVector) error {
-	// this checks for out of gas as a special case
-	if errno, ok := err.(syscall.Errno); ok && int(errno) == 2 {
-		return types.OutOfGasError{}
-	}
 	msg := copyAndDestroyUnmanagedVector(b)
 	if msg == nil {
 		return err
