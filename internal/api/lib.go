@@ -6,13 +6,11 @@ import "C"
 
 import (
 	"fmt"
-	"google.golang.org/protobuf/proto"                      
-	"log"
-	"runtime"
-	"syscall"
-
 	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
 	types "github.com/SigmaGmbH/librustgo/types"
+	"google.golang.org/protobuf/proto"
+	"log"
+	"runtime"
 )
 
 // Value types
@@ -31,21 +29,19 @@ type (
 // Pointers
 type cu8_ptr = *C.uint8_t
 
-type Querier = types.Querier
+// Connector is our custom connector
+type Connector = types.Connector
 
-// Our custom querier
-type DataQuerier = types.DataQuerier
-
-// Handles incoming ethereum transaction
+// Call handles incoming call to contract or transfer of value
 func Call(
-	querier DataQuerier, 
-	from, to, data, value []byte, 
+	connector Connector,
+	from, to, data, value []byte,
 	gasLimit uint64,
 	txContext *ffi.TransactionContext,
 	commit bool,
 ) (*ffi.HandleTransactionResponse, error) {
 	// Construct mocked querier
-	q := buildQuerier(querier)
+	c := buildConnector(connector)
 
 	// Create protobuf-encoded transaction data
 	params := &ffi.SGXVMCallParams{
@@ -53,14 +49,14 @@ func Call(
 		To:       to,
 		Value:    value,
 		GasLimit: gasLimit,
-		Data: data,
-		Commit: commit,
+		Data:     data,
+		Commit:   commit,
 	}
 
 	// Create protobuf encoded request
 	req := ffi.FFIRequest{Req: &ffi.FFIRequest_CallRequest{
 		CallRequest: &ffi.SGXVMCallRequest{
-			Params: params,
+			Params:  params,
 			Context: txContext,
 		},
 	}}
@@ -74,7 +70,7 @@ func Call(
 	defer runtime.KeepAlive(reqBytes)
 
 	errmsg := newUnmanagedVector(nil)
-	ptr, err := C.make_pb_request(q, d, &errmsg)
+	ptr, err := C.make_pb_request(c, d, &errmsg)
 	if err != nil {
 		return &ffi.HandleTransactionResponse{}, errorWithMessage(err, errmsg)
 	}
@@ -89,30 +85,30 @@ func Call(
 	return &response, nil
 }
 
-// Handles incoming ethereum transaction
+// Create handles incoming request for creation of new contract
 func Create(
-	querier DataQuerier, 
-	from, data, value []byte, 
+	connector Connector,
+	from, data, value []byte,
 	gasLimit uint64,
 	txContext *ffi.TransactionContext,
 	commit bool,
 ) (*ffi.HandleTransactionResponse, error) {
 	// Construct mocked querier
-	q := buildQuerier(querier)
+	c := buildConnector(connector)
 
 	// Create protobuf-encoded transaction data
 	params := &ffi.SGXVMCreateParams{
 		From:     from,
 		Value:    value,
 		GasLimit: gasLimit,
-		Data: data,
-		Commit: commit,
+		Data:     data,
+		Commit:   commit,
 	}
 
 	// Create protobuf encoded request
 	req := ffi.FFIRequest{Req: &ffi.FFIRequest_CreateRequest{
 		CreateRequest: &ffi.SGXVMCreateRequest{
-			Params: params,
+			Params:  params,
 			Context: txContext,
 		},
 	}}
@@ -126,7 +122,7 @@ func Create(
 	defer runtime.KeepAlive(reqBytes)
 
 	errmsg := newUnmanagedVector(nil)
-	ptr, err := C.make_pb_request(q, d, &errmsg)
+	ptr, err := C.make_pb_request(c, d, &errmsg)
 	if err != nil {
 		return &ffi.HandleTransactionResponse{}, errorWithMessage(err, errmsg)
 	}
@@ -145,9 +141,9 @@ func Create(
 
 func errorWithMessage(err error, b C.UnmanagedVector) error {
 	// this checks for out of gas as a special case
-	if errno, ok := err.(syscall.Errno); ok && int(errno) == 2 {
-		return types.OutOfGasError{}
-	}
+	//if errno, ok := err.(syscall.Errno); ok && int(errno) == 2 {
+	//	return types.OutOfGasError{}
+	//}
 	msg := copyAndDestroyUnmanagedVector(b)
 	if msg == nil {
 		return err
