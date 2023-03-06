@@ -6,11 +6,14 @@ import "C"
 
 import (
 	"fmt"
-	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
-	types "github.com/SigmaGmbH/librustgo/types"
+	ethcommon "github.com/ethereum/go-ethereum/common"
 	"google.golang.org/protobuf/proto"
 	"log"
 	"runtime"
+
+	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
+	"github.com/SigmaGmbH/librustgo/types"
+	ethtypes "github.com/ethereum/go-ethereum/core/types"
 )
 
 // Value types
@@ -36,6 +39,7 @@ type Connector = types.Connector
 func Call(
 	connector Connector,
 	from, to, data, value []byte,
+	accessList ethtypes.AccessList,
 	gasLimit uint64,
 	txContext *ffi.TransactionContext,
 	commit bool,
@@ -45,12 +49,13 @@ func Call(
 
 	// Create protobuf-encoded transaction data
 	params := &ffi.SGXVMCallParams{
-		From:     from,
-		To:       to,
-		Value:    value,
-		GasLimit: gasLimit,
-		Data:     data,
-		Commit:   commit,
+		From:       from,
+		To:         to,
+		Data:       data,
+		GasLimit:   gasLimit,
+		Value:      value,
+		AccessList: convertAccessList(accessList),
+		Commit:     commit,
 	}
 
 	// Create protobuf encoded request
@@ -89,6 +94,7 @@ func Call(
 func Create(
 	connector Connector,
 	from, data, value []byte,
+	accessList ethtypes.AccessList,
 	gasLimit uint64,
 	txContext *ffi.TransactionContext,
 	commit bool,
@@ -98,11 +104,12 @@ func Create(
 
 	// Create protobuf-encoded transaction data
 	params := &ffi.SGXVMCreateParams{
-		From:     from,
-		Value:    value,
-		GasLimit: gasLimit,
-		Data:     data,
-		Commit:   commit,
+		From:       from,
+		Data:       data,
+		GasLimit:   gasLimit,
+		Value:      value,
+		AccessList: convertAccessList(accessList),
+		Commit:     commit,
 	}
 
 	// Create protobuf encoded request
@@ -137,13 +144,32 @@ func Create(
 	return &response, nil
 }
 
+// Converts AccessList type from ethtypes to protobuf-compatible type
+func convertAccessList(accessList ethtypes.AccessList) []*ffi.AccessListItem {
+	var converted []*ffi.AccessListItem
+	for _, item := range accessList {
+		accessListItem := &ffi.AccessListItem{
+			StorageSlot: convertAccessListStorageSlots(item.StorageKeys),
+			Address:     item.Address.Bytes(),
+		}
+
+		converted = append(converted, accessListItem)
+	}
+	return converted
+}
+
+// Converts storage slots of access list in [][]byte format
+func convertAccessListStorageSlots(slots []ethcommon.Hash) [][]byte {
+	var converted [][]byte
+	for _, slot := range slots {
+		converted = append(converted, slot.Bytes())
+	}
+	return converted
+}
+
 /**** To error module ***/
 
 func errorWithMessage(err error, b C.UnmanagedVector) error {
-	// this checks for out of gas as a special case
-	//if errno, ok := err.(syscall.Errno); ok && int(errno) == 2 {
-	//	return types.OutOfGasError{}
-	//}
 	msg := copyAndDestroyUnmanagedVector(b)
 	if msg == nil {
 		return err
