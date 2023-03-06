@@ -6,13 +6,11 @@ import "C"
 
 import (
 	"fmt"
+	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
+	types "github.com/SigmaGmbH/librustgo/types"
 	"google.golang.org/protobuf/proto"
 	"log"
 	"runtime"
-	"syscall"
-
-	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
-	types "github.com/SigmaGmbH/librustgo/types"
 )
 
 // Value types
@@ -149,9 +147,9 @@ func Debug(conn Connector) {
 
 func errorWithMessage(err error, b C.UnmanagedVector) error {
 	// this checks for out of gas as a special case
-	if errno, ok := err.(syscall.Errno); ok && int(errno) == 2 {
-		return types.OutOfGasError{}
-	}
+	//if errno, ok := err.(syscall.Errno); ok && int(errno) == 2 {
+	//	return types.OutOfGasError{}
+	//}
 	msg := copyAndDestroyUnmanagedVector(b)
 	if msg == nil {
 		return err
