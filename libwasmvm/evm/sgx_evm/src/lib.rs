@@ -114,6 +114,7 @@ fn handle_evm_result(exit_reason: ExitReason, data: Vec<u8>) -> Result<Vec<u8>, 
 
 #[cfg(test)]
 mod tests {
+    use core::ops::{Add, Sub};
     use primitive_types::{H160, U256, H256};
     use sha3::{Digest, Keccak256};
     use crate::backend::Backend;
@@ -214,5 +215,123 @@ mod tests {
         assert_ne!(transaction_result.logs.len(), 0);
         // Since this transaction contains call to the contract, used gas should be greater than intrinsic gas (21000)
         assert!(transaction_result.gas_used > 21000);
+    }
+
+    #[test]
+    fn test_deployment_in_dry_mode() {
+        // Prepare environment
+        let sender = H160::from_slice(
+            &hex::decode("8c3FfC3600bCb365F7141EAf47b5921aEfB7917a").unwrap()
+        );
+        let vicinity = Vicinity {
+            origin: sender.clone(),
+        };
+        let mut storage = MockedStorage::default();
+        let mut backend = Backend {
+            vicinity,
+            state: &mut storage,
+            logs: vec![],
+        };
+
+        let sender_nonce_before = backend.state.get_account(&sender.clone()).nonce.as_u64();
+
+        // Deploy contract which emits logs
+        // Deployment data was taken from solidity tests from `chain` repo
+        let contract_address = create_address(sender.clone(), sender_nonce_before);
+        let deployment_data = hex::decode("608060405234801561001057600080fd5b50610280806100206000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c80632933c3c91461003b5780636057361d14610057575b600080fd5b61005560048036038101906100509190610168565b610073565b005b610071600480360381019061006c9190610168565b610123565b005b806000819055507f87199fbf46fb4529ad34a05f4a4704392dd5527b5c0e6f29591e4fccb7fd2717816040516100a991906101a4565b60405180910390a17fe409dd6b927a692d5f15854e2af1f02b98987acf9c5c4dbe265f2826e64b336b816040516100e0919061021c565b60405180910390a1807f932182c87b2d9b135ef769772728a1da9de5b81063424f9dbd99333f717f2cc382604051610118919061021c565b60405180910390a250565b8060008190555050565b600080fd5b6000819050919050565b61014581610132565b811461015057600080fd5b50565b6000813590506101628161013c565b92915050565b60006020828403121561017e5761017d61012d565b5b600061018c84828501610153565b91505092915050565b61019e81610132565b82525050565b60006020820190506101b96000830184610195565b92915050565b600082825260208201905092915050565b7f546573744d736700000000000000000000000000000000000000000000000000600082015250565b60006102066007836101bf565b9150610211826101d0565b602082019050919050565b60006040820190508181036000830152610235816101f9565b90506102446020830184610195565b9291505056fea2646970667358221220da89886bcfc76a0346e37a726a7b282db80890d5ec6d8b6f87d5222c72c6bfc464736f6c63430008110033").unwrap();
+        let deployment_result = handle_sgxvm_create(
+            &mut backend,
+            200000,
+            sender.clone(),
+            U256::zero(),
+            deployment_data,
+            vec![],
+            false  // We set false here to run contract deployment in a simulation mode
+        );
+
+        // Check if contract was deployed correctly
+        let contract_code = backend.state.get_account_code(&contract_address);
+        assert!(contract_code.is_none());
+
+        let sender_nonce_after = backend.state.get_account(&sender.clone()).nonce.as_u64();
+        assert_eq!(sender_nonce_before, sender_nonce_after)
+    }
+
+    #[test]
+    fn test_transfer() {
+        // Prepare environment
+        let sender = H160::from_slice(&hex::decode("8c3FfC3600bCb365F7141EAf47b5921aEfB7917a").unwrap());
+        let receiver = H160::from_slice(&hex::decode("0000000000000000000000000000000000000000").unwrap());
+        let vicinity = Vicinity {
+            origin: sender.clone(),
+        };
+        let mut storage = MockedStorage::default();
+        let mut backend = Backend {
+            vicinity,
+            state: &mut storage,
+            logs: vec![],
+        };
+
+        let sender_account_before = backend.state.get_account(&sender);
+        let receiver_account_before = backend.state.get_account(&receiver);
+
+        let amount_to_send = 10000;
+        let deployment_result = handle_sgxvm_call(
+            &mut backend,
+            200000,
+            sender.clone(),
+            receiver.clone(),
+            U256::from(amount_to_send),
+            vec![],
+            vec![],
+            true
+        );
+
+        let sender_account_after = backend.state.get_account(&sender);
+        let receiver_account_after = backend.state.get_account(&receiver);
+
+
+        assert_eq!(sender_account_after.balance, sender_account_before.balance.sub(amount_to_send));
+        assert_eq!(receiver_account_after.balance, receiver_account_before.balance.add(amount_to_send));
+        assert_eq!(sender_account_after.nonce, sender_account_before.nonce.add(1));
+    }
+
+    #[test]
+    fn test_transfer_in_dry_mode() {
+        // Prepare environment
+        let sender = H160::from_slice(&hex::decode("8c3FfC3600bCb365F7141EAf47b5921aEfB7917a").unwrap());
+        let receiver = H160::from_slice(&hex::decode("0000000000000000000000000000000000000000").unwrap());
+        let vicinity = Vicinity {
+            origin: sender.clone(),
+        };
+        let mut storage = MockedStorage::default();
+        let mut backend = Backend {
+            vicinity,
+            state: &mut storage,
+            logs: vec![],
+        };
+
+        let sender_account_before = backend.state.get_account(&sender);
+        let receiver_account_before = backend.state.get_account(&receiver);
+
+        let amount_to_send = 10000;
+        let deployment_result = handle_sgxvm_call(
+            &mut backend,
+            200000,
+            sender.clone(),
+            receiver.clone(),
+            U256::from(amount_to_send),
+            vec![],
+            vec![],
+            false // We set false here to run contract deployment in a simulation mode
+        );
+
+        let sender_account_after = backend.state.get_account(&sender);
+        let receiver_account_after = backend.state.get_account(&receiver);
+
+
+        assert_eq!(sender_account_after.balance, sender_account_before.balance);
+        assert_eq!(receiver_account_after.balance, receiver_account_before.balance);
+        assert_eq!(sender_account_after.nonce, sender_account_before.nonce);
     }
 }
