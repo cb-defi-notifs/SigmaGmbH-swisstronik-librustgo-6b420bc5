@@ -53,7 +53,7 @@ pub fn handle_sgxvm_call(
 
     if commit {
         let (vals, logs) = executor.into_state().deconstruct();
-        backend.apply(vals, logs, false); 
+        backend.apply(vals, logs, false);
     }
 
     ExecutionResult {
@@ -91,7 +91,7 @@ pub fn handle_sgxvm_create(
 
     if commit {
         let (vals, logs) = executor.into_state().deconstruct();
-        backend.apply(vals, logs, false); 
+        backend.apply(vals, logs, false);
     }
 
     ExecutionResult {
@@ -109,5 +109,56 @@ fn handle_evm_result(exit_reason: ExitReason, data: Vec<u8>) -> Result<Vec<u8>, 
         ExitReason::Revert(err) => Err((format!("execution reverted: {:?}", err), data)),
         ExitReason::Error(err) => Err((format!("evm error: {:?}", err), data)),
         ExitReason::Fatal(err) => Err((format!("fatal evm error: {:?}", err), data)),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use primitive_types::{H160, U256};
+    use crate::backend::Backend;
+    use crate::storage::mocked_storage::MockedStorage;
+    use crate::{handle_sgxvm_call, handle_sgxvm_create, Vicinity};
+
+    #[test]
+    fn handle_sgxvm_emit_logs() {
+        // Prepare environment
+        let vicinity = Vicinity {
+            origin: H160::from_str("0x8c3FfC3600bCb365F7141EAf47b5921aEfB7917a"),
+        };
+        let mut storage = MockedStorage::default();
+        let mut backend = Backend {
+            vicinity,
+            state: &mut storage,
+            logs: vec![],
+        };
+
+        // Deploy contract which emits logs
+        // Deployment data was taken from solidity tests from `chain` repo
+        let deployment_data = hex::decode("0x608060405234801561001057600080fd5b50610280806100206000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c80632933c3c91461003b5780636057361d14610057575b600080fd5b61005560048036038101906100509190610168565b610073565b005b610071600480360381019061006c9190610168565b610123565b005b806000819055507f87199fbf46fb4529ad34a05f4a4704392dd5527b5c0e6f29591e4fccb7fd2717816040516100a991906101a4565b60405180910390a17fe409dd6b927a692d5f15854e2af1f02b98987acf9c5c4dbe265f2826e64b336b816040516100e0919061021c565b60405180910390a1807f932182c87b2d9b135ef769772728a1da9de5b81063424f9dbd99333f717f2cc382604051610118919061021c565b60405180910390a250565b8060008190555050565b600080fd5b6000819050919050565b61014581610132565b811461015057600080fd5b50565b6000813590506101628161013c565b92915050565b60006020828403121561017e5761017d61012d565b5b600061018c84828501610153565b91505092915050565b61019e81610132565b82525050565b60006020820190506101b96000830184610195565b92915050565b600082825260208201905092915050565b7f546573744d736700000000000000000000000000000000000000000000000000600082015250565b60006102066007836101bf565b9150610211826101d0565b602082019050919050565b60006040820190508181036000830152610235816101f9565b90506102446020830184610195565b9291505056fea2646970667358221220da89886bcfc76a0346e37a726a7b282db80890d5ec6d8b6f87d5222c72c6bfc464736f6c63430008110033").unwrap();
+        let deployment_result = handle_sgxvm_create(
+            &mut backend,
+            200000,
+            vicinity.origin,
+            U256::zero(),
+            deployment_data,
+            vec![],
+            true
+        );
+        let contract_address = H160::from(deployment_result.data);
+        println!("Contract was deployed with address: {:?}", hex::encode(contract_address.to_fixed_bytes()));
+
+        // Send transaction to emit events
+        let transaction_data = hex::decode("0x2933c3c90000000000000000000000000000000000000000000000000000000000000378").unwrap();
+        let transaction_result = handle_sgxvm_call(
+            &mut backend,
+            200000,
+            vicinity.origin,
+            contract_address,
+            U256::zero(),
+            transaction_data,
+            vec![],
+            true
+        );
+        println!("Transaction was executed. Logs len: {:?}", transaction_result.logs.len())
     }
 }

@@ -82,6 +82,14 @@ impl Default for MockedStorage {
             }
         );
 
+        accounts.insert(
+            H160::from_str("0x8c3FfC3600bCb365F7141EAf47b5921aEfB7917a").unwrap(),
+            Basic {
+                nonce: U256::zero(),
+                balance: U256::from_dec_str("1000000000000000000000").unwrap(),
+            }
+        );
+
         Self {
             storage: BTreeMap::new(),
             contracts: BTreeMap::new(),
