@@ -26,7 +26,7 @@ func CreateMockedDatabase() MockedDB {
 				Name: "account",
 				Indexes: map[string]*memdb.IndexSchema{
 					"id": &memdb.IndexSchema{
-						Name:    "Address",
+						Name:    "id",
 						Unique:  true,
 						Indexer: &memdb.StringFieldIndex{Field: "Address"},
 					},
