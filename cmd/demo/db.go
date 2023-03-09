@@ -49,7 +49,7 @@ func (m MockedDB) GetAccount(address ethcommon.Address) (*Account, error) {
 	txn := m.db.Txn(false)
 	defer txn.Abort()
 
-	raw, err := txn.First("account", "id", address)
+	raw, err := txn.First("account", "id", address.String())
 	if err != nil {
 		return &Account{}, err
 	}
