@@ -8,6 +8,7 @@ require (
 	github.com/tendermint/tm-db v0.6.7
 	google.golang.org/protobuf v1.28.1
 	github.com/ethereum/go-ethereum v1.10.26
+	github.com/hashicorp/go-memdb v1.3.4
 )
 
 require (

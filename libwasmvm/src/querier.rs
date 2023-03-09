@@ -89,7 +89,7 @@ impl GoQuerier {
                 match ffi::QueryGetAccountResponse::parse_from_bytes(&raw_result) {
                     Ok(result) => {
                         let balance = U256::from_big_endian(result.get_balance());
-                        let nonce = U256::from_big_endian(result.get_nonce());
+                        let nonce = U256::from(result.get_nonce());
                         (balance, nonce)
                     },
                     Err(err) => {
@@ -205,7 +205,7 @@ impl GoQuerier {
         let mut request = ffi::QueryInsertAccount::new();
         request.set_address(account_address.as_bytes().to_vec());
         request.set_balance(u256_to_vec(data.balance));
-        request.set_nonce(u256_to_vec(data.nonce));
+        request.set_nonce(data.nonce.as_u64());
         cosmos_request.set_insertAccount(request);
         let request_bytes = cosmos_request.write_to_bytes().unwrap();
 

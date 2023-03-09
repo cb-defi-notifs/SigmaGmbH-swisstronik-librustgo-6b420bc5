@@ -27,7 +27,7 @@ message TransactionContext {
   uint64 block_gas_limit = 4;
   bytes block_base_fee_per_gas = 5;
   bytes block_coinbase = 6;
-  uint64 block_number = 7; 
+  uint64 block_number = 7;
 }
 
 message HandleTransactionRequest {
@@ -75,14 +75,14 @@ message QueryGetAccount {
 message QueryGetAccountResponse {
   // Since both fields are 256-bit unsigned integer, we encode them as big-endian bytes
   bytes balance = 1;
-  bytes nonce = 2;
+  uint64 nonce = 2;
 }
 
 // Request to insert account data such as balance and nonce
 message QueryInsertAccount {
   bytes address = 1;
   bytes balance = 2;
-  bytes nonce = 3;
+  uint64 nonce = 3;
 }
 
 // Response for account insertion
