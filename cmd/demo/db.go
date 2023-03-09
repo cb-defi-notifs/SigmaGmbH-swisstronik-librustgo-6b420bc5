@@ -3,11 +3,12 @@ package main
 import (
 	"encoding/hex"
 	"errors"
+	ethcommon "github.com/ethereum/go-ethereum/common"
 	"github.com/hashicorp/go-memdb"
 )
 
 type Account struct {
-	Address []byte // 20-bytes address
+	Address string // ethereum address
 	Balance []byte // big-endian encoded Uint256 balance
 	Nonce   uint64
 	Code    []byte            // Contract code. Is nil if account is not a contract
@@ -22,10 +23,10 @@ type MockedDB struct {
 func CreateMockedDatabase() MockedDB {
 	schema := &memdb.DBSchema{
 		Tables: map[string]*memdb.TableSchema{
-			"account": &memdb.TableSchema{
+			"account": {
 				Name: "account",
 				Indexes: map[string]*memdb.IndexSchema{
-					"id": &memdb.IndexSchema{
+					"id": {
 						Name:    "id",
 						Unique:  true,
 						Indexer: &memdb.StringFieldIndex{Field: "Address"},
@@ -44,7 +45,7 @@ func CreateMockedDatabase() MockedDB {
 }
 
 // GetAccount returns account struct stored in database
-func (m MockedDB) GetAccount(address []byte) (*Account, error) {
+func (m MockedDB) GetAccount(address ethcommon.Address) (*Account, error) {
 	txn := m.db.Txn(false)
 	defer txn.Abort()
 
@@ -57,7 +58,7 @@ func (m MockedDB) GetAccount(address []byte) (*Account, error) {
 }
 
 // GetAccountOrEmpty returns found account or account with empty fields
-func (m MockedDB) GetAccountOrEmpty(address []byte) (Account, error) {
+func (m MockedDB) GetAccountOrEmpty(address ethcommon.Address) (Account, error) {
 	acct, err := m.GetAccount(address)
 
 	if err != nil {
@@ -66,7 +67,7 @@ func (m MockedDB) GetAccountOrEmpty(address []byte) (Account, error) {
 
 	if acct == nil {
 		return Account{
-			Address: address,
+			Address: address.String(),
 			Balance: make([]byte, 32),
 			Nonce:   0,
 			Code:    nil,
@@ -84,10 +85,10 @@ func (m MockedDB) GetAccountOrEmpty(address []byte) (Account, error) {
 }
 
 // InsertAccount inserts new account with balance and nonce fields
-func (m MockedDB) InsertAccount(address []byte, balance []byte, nonce uint64) error {
+func (m MockedDB) InsertAccount(address ethcommon.Address, balance []byte, nonce uint64) error {
 	txn := m.db.Txn(true)
 	acct := Account{
-		Address: address,
+		Address: address.String(),
 		Balance: balance,
 		Nonce:   nonce,
 	}
@@ -101,7 +102,7 @@ func (m MockedDB) InsertAccount(address []byte, balance []byte, nonce uint64) er
 }
 
 // InsertContractCode inserts code of the contract
-func (m MockedDB) InsertContractCode(address []byte, code []byte) error {
+func (m MockedDB) InsertContractCode(address ethcommon.Address, code []byte) error {
 	acct, err := m.GetAccount(address)
 	if err != nil {
 		return err
@@ -127,7 +128,7 @@ func (m MockedDB) InsertContractCode(address []byte, code []byte) error {
 }
 
 // InsertStorageCell inserts new storage cell
-func (m MockedDB) InsertStorageCell(address []byte, key []byte, value []byte) error {
+func (m MockedDB) InsertStorageCell(address ethcommon.Address, key []byte, value []byte) error {
 	acct, err := m.GetAccount(address)
 	if err != nil {
 		return err
@@ -161,7 +162,7 @@ func (m MockedDB) InsertStorageCell(address []byte, key []byte, value []byte) er
 }
 
 // GetStorageCell returns value contained in the storage cell
-func (m MockedDB) GetStorageCell(address []byte, key []byte) ([]byte, error) {
+func (m MockedDB) GetStorageCell(address ethcommon.Address, key []byte) ([]byte, error) {
 	acct, err := m.GetAccount(address)
 	if err != nil {
 		return nil, err
@@ -184,7 +185,7 @@ func (m MockedDB) GetStorageCell(address []byte, key []byte) ([]byte, error) {
 }
 
 // Contains checks if provided address presents in DB
-func (m MockedDB) Contains(address []byte) (bool, error) {
+func (m MockedDB) Contains(address ethcommon.Address) (bool, error) {
 	acct, err := m.GetAccount(address)
 	if err != nil {
 		return false, err
@@ -194,7 +195,7 @@ func (m MockedDB) Contains(address []byte) (bool, error) {
 }
 
 // Delete removes account record from the database
-func (m MockedDB) Delete(address []byte) error {
+func (m MockedDB) Delete(address ethcommon.Address) error {
 	txn := m.db.Txn(true)
-	return txn.Delete("account", Account{Address: address})
+	return txn.Delete("account", Account{Address: address.String()})
 }
