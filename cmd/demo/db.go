@@ -57,15 +57,15 @@ func (m MockedDB) GetAccount(address []byte) (*Account, error) {
 }
 
 // GetAccountOrEmpty returns found account or account with empty fields
-func (m MockedDB) GetAccountOrEmpty(address []byte) (*Account, error) {
+func (m MockedDB) GetAccountOrEmpty(address []byte) (Account, error) {
 	acct, err := m.GetAccount(address)
 
 	if err != nil {
-		return nil, err
+		return Account{}, err
 	}
 
 	if acct == nil {
-		return &Account{
+		return Account{
 			Address: address,
 			Balance: make([]byte, 32),
 			Nonce:   0,
@@ -74,7 +74,13 @@ func (m MockedDB) GetAccountOrEmpty(address []byte) (*Account, error) {
 		}, nil
 	}
 
-	return acct, nil
+	return Account{
+		Address: acct.Address,
+		Balance: acct.Balance,
+		Nonce:   acct.Nonce,
+		Code:    acct.Code,
+		State:   acct.State,
+	}, nil
 }
 
 // InsertAccount inserts new account with balance and nonce fields
@@ -175,4 +181,20 @@ func (m MockedDB) GetStorageCell(address []byte, key []byte) ([]byte, error) {
 	}
 
 	return value, nil
+}
+
+// Contains checks if provided address presents in DB
+func (m MockedDB) Contains(address []byte) (bool, error) {
+	acct, err := m.GetAccount(address)
+	if err != nil {
+		return false, err
+	}
+
+	return acct != nil, nil
+}
+
+// Delete removes account record from the database
+func (m MockedDB) Delete(address []byte) error {
+	txn := m.db.Txn(true)
+	return txn.Delete("account", Account{Address: address})
 }
