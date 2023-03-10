@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/hex"
 	"errors"
 	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
 	"github.com/SigmaGmbH/librustgo/types"
@@ -63,6 +64,8 @@ func (c MockedConnector) Query(request []byte) ([]byte, error) {
 			return nil, err
 		}
 
+		println("Got account code: ", hex.EncodeToString(acct.Code))
+
 		return proto.Marshal(&ffi.QueryGetAccountCodeResponse{Code: acct.Code})
 	case *ffi.CosmosRequest_StorageCell:
 		println("[Go:Query] Get storage cell")
@@ -71,6 +74,14 @@ func (c MockedConnector) Query(request []byte) ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
+
+		// TODO: Debug check
+		acct, err := c.db.GetAccountOrEmpty(ethAddress)
+		if err != nil {
+			return nil, err
+		}
+		println("DEBUG get storage cell: ", hex.EncodeToString(acct.Code))
+
 		return proto.Marshal(&ffi.QueryGetAccountStorageCellResponse{Value: value})
 	case *ffi.CosmosRequest_InsertAccountCode:
 		ethAddress := common.BytesToAddress(request.InsertAccountCode.Address)
@@ -83,9 +94,25 @@ func (c MockedConnector) Query(request []byte) ([]byte, error) {
 		println("[Go:Query] Insert storage cell")
 		data := request.InsertStorageCell
 		ethAddress := common.BytesToAddress(request.InsertStorageCell.Address)
+
+		// TODO: Debug check
+		acct, err := c.db.GetAccountOrEmpty(ethAddress)
+		if err != nil {
+			return nil, err
+		}
+		println("DEBUG insert storage cell before: ", hex.EncodeToString(acct.Code))
+
 		if err := c.db.InsertStorageCell(ethAddress, data.Index, data.Value); err != nil {
 			return nil, err
 		}
+
+		// TODO: Debug check
+		acct, err = c.db.GetAccountOrEmpty(ethAddress)
+		if err != nil {
+			return nil, err
+		}
+		println("DEBUG insert storage cell after: ", hex.EncodeToString(acct.Code))
+
 		return proto.Marshal(&ffi.QueryInsertStorageCellResponse{})
 	case *ffi.CosmosRequest_Remove:
 		println("[Go:Query] Remove account")
@@ -97,7 +124,7 @@ func (c MockedConnector) Query(request []byte) ([]byte, error) {
 	case *ffi.CosmosRequest_RemoveStorageCell:
 		println("[Go:Query] Remove storage cell")
 		ethAddress := common.BytesToAddress(request.RemoveStorageCell.Address)
-		if err := c.db.InsertStorageCell(ethAddress, request.RemoveStorageCell.Index, make([]byte, 32)); err != nil {
+		if err := c.db.InsertStorageCell(ethAddress, request.RemoveStorageCell.Index, common.Hash{}.Bytes()); err != nil {
 			return nil, err
 		}
 		return proto.Marshal(&ffi.QueryRemoveStorageCellResponse{})
