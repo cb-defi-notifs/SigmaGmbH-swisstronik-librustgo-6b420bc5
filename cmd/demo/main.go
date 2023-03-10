@@ -4,12 +4,14 @@ import (
 	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
 	"github.com/SigmaGmbH/librustgo/internal/api"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/crypto"
+	"google.golang.org/protobuf/proto"
 )
 
 // This is just a demo to ensure we can compile a static go binary
 func main() {
 	db := CreateMockedDatabase()
-	connector := MockedConnector{db}
+	connector := MockedConnector{&db}
 
 	from := common.HexToAddress("0x690b9a9e9aa1c9db991c7721a92d351db4fac990")
 	value := common.Hex2Bytes("0x00")
@@ -31,6 +33,11 @@ func main() {
 		panic(err)
 	}
 
+	// Check if contract was deployed correctly
+	contractAddress := crypto.CreateAddress(from, 0)
+	acct, _ := db.GetAccountOrEmpty(contractAddress)
+	println(acct.Code)
+
 	// TODO: Call `add` method
 	// TODO: Make a query to contract to obtain current `count` value
 }
@@ -45,4 +52,71 @@ func getDefaultTxContext() *ffi.TransactionContext {
 		ChainId:            1,
 		GasPrice:           make([]byte, 32),
 	}
+}
+
+// Additional function to debug connector.
+// TODO: Should be removed when demo command will be finished
+func debugConnector() {
+	db := CreateMockedDatabase()
+	connector := MockedConnector{&db}
+
+	// Set account
+	request := &ffi.CosmosRequest{Req: &ffi.CosmosRequest_InsertAccount{InsertAccount: &ffi.QueryInsertAccount{
+		Address: common.Address{}.Bytes(),
+		Balance: make([]byte, 32),
+		Nonce:   10,
+	}}}
+	byteRequest, err := proto.Marshal(request)
+	if err != nil {
+		panic(err)
+	}
+	_, err = connector.Query(byteRequest)
+	if err != nil {
+		panic(err)
+	}
+
+	// Check if account was added correctly
+	acct, err := db.GetAccountOrEmpty(common.Address{})
+	if err != nil {
+		panic(err)
+	}
+	if acct.Nonce != 10 {
+		panic("Account was not added")
+	}
+
+	// Set contract code
+	request = &ffi.CosmosRequest{Req: &ffi.CosmosRequest_InsertAccountCode{InsertAccountCode: &ffi.QueryInsertAccountCode{
+		Address: common.Address{}.Bytes(),
+		Code:    make([]byte, 100),
+	}}}
+	byteRequest, err = proto.Marshal(request)
+	if err != nil {
+		panic(err)
+	}
+	_, err = connector.Query(byteRequest)
+	if err != nil {
+		panic(err)
+	}
+
+	// Check if contract code was set correctly
+	acct, err = db.GetAccountOrEmpty(common.Address{})
+	if len(acct.Code) != 100 {
+		panic("Contract was not deployed")
+	}
+
+	// Check request for empty account. Should not fail
+	debugAddress := common.HexToAddress("0x690b9a9e9aa1c9db991c7721a92d351db4fac990")
+	request = &ffi.CosmosRequest{Req: &ffi.CosmosRequest_GetAccount{GetAccount: &ffi.QueryGetAccount{Address: debugAddress.Bytes()}}}
+	byteRequest, err = proto.Marshal(request)
+	if err != nil {
+		panic(err)
+	}
+	result, err := connector.Query(byteRequest)
+	if err != nil {
+		panic(err)
+	}
+
+	accountRequestResult := &ffi.QueryGetAccountResponse{}
+	proto.Unmarshal(result, accountRequestResult)
+	println(accountRequestResult.Nonce)
 }

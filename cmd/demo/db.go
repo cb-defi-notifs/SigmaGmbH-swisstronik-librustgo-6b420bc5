@@ -54,6 +54,10 @@ func (m MockedDB) GetAccount(address ethcommon.Address) (*Account, error) {
 		return &Account{}, err
 	}
 
+	if raw == nil {
+		return nil, nil
+	}
+
 	return raw.(*Account), nil
 }
 
@@ -93,7 +97,7 @@ func (m MockedDB) InsertAccount(address ethcommon.Address, balance []byte, nonce
 		Nonce:   nonce,
 	}
 
-	if err := txn.Insert("account", acct); err != nil {
+	if err := txn.Insert("account", &acct); err != nil {
 		return err
 	}
 
@@ -120,7 +124,7 @@ func (m MockedDB) InsertContractCode(address ethcommon.Address, code []byte) err
 		Code:    code,
 		State:   acct.State,
 	}
-	if err := txn.Insert("account", updatedAcct); err != nil {
+	if err := txn.Insert("account", &updatedAcct); err != nil {
 		return err
 	}
 	txn.Commit()
