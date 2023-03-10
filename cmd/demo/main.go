@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/hex"
 	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
 	"github.com/SigmaGmbH/librustgo/internal/api"
 	"github.com/ethereum/go-ethereum/common"
@@ -68,7 +69,23 @@ func main() {
 		panic("Incorrect logs")
 	}
 
-	// TODO: Make a query to contract to obtain current `count` value
+	// Make a query to contract to obtain current `count` value
+	data = common.Hex2Bytes("61bc221a")
+	res, err = api.Call(
+		connector,
+		from.Bytes(),
+		contractAddress.Bytes(),
+		data,
+		value,
+		nil,
+		gasLimit,
+		txContext,
+		false, // commit = false, because we're doing a query to contract
+	)
+	if err != nil {
+		panic(err)
+	}
+	println("Request result: ", hex.EncodeToString(res.Ret))
 }
 
 func getDefaultTxContext() *ffi.TransactionContext {
@@ -146,6 +163,6 @@ func debugConnector() {
 	}
 
 	accountRequestResult := &ffi.QueryGetAccountResponse{}
-	proto.Unmarshal(result, accountRequestResult)
+	_ = proto.Unmarshal(result, accountRequestResult)
 	println(accountRequestResult.Nonce)
 }
