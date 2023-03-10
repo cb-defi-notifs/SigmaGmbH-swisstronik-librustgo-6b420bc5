@@ -40,7 +40,34 @@ func main() {
 		panic("Contract was not deployed")
 	}
 
-	// TODO: Call `add` method
+	// Call `add` method
+	data = common.Hex2Bytes("4f2be91f")
+	res, err := api.Call(
+		connector,
+		from.Bytes(),
+		contractAddress.Bytes(),
+		data,
+		value,
+		nil,
+		gasLimit,
+		txContext,
+		true,
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	// Check if transaction was executed correctly
+	if res.GasUsed <= 21000 {
+		panic("Incorrect gas calculation")
+	}
+	if res.VmError != "" {
+		panic("Got non-empty VM error")
+	}
+	if len(res.Logs) != 2 {
+		panic("Incorrect logs")
+	}
+
 	// TODO: Make a query to contract to obtain current `count` value
 }
 
