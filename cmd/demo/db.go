@@ -158,7 +158,7 @@ func (m MockedDB) InsertStorageCell(address ethcommon.Address, key []byte, value
 		Code:    acct.Code,
 		State:   stateMap,
 	}
-	if err := txn.Insert("account", updatedAcct); err != nil {
+	if err := txn.Insert("account", &updatedAcct); err != nil {
 		return err
 	}
 	txn.Commit()
