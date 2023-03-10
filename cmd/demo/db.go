@@ -139,7 +139,7 @@ func (m MockedDB) InsertStorageCell(address ethcommon.Address, key []byte, value
 	}
 
 	if acct == nil {
-		return errors.New("cannot insert contract code. Account not found")
+		return errors.New("cannot insert storage cell. Account not found")
 	}
 
 	txn := m.db.Txn(true)

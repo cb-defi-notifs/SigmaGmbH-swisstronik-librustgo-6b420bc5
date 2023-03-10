@@ -164,5 +164,26 @@ func debugConnector() {
 
 	accountRequestResult := &ffi.QueryGetAccountResponse{}
 	_ = proto.Unmarshal(result, accountRequestResult)
-	println(accountRequestResult.Nonce)
+	if accountRequestResult.Nonce != 0 {
+		panic("Invalid nonce for non-existing account")
+	}
+
+	// Insert storage cell
+	addressToInsert := common.Address{}
+	index := common.HexToHash("0xd09ed9e011d94ef50c41905a4cefd67f1d35ddd6f077803a25115eea8d194d35")
+	value := common.HexToHash("0x6cb73911b6666201be60d0db3936aef746074d13fd1fdca845f680e9c76563dd")
+	request = &ffi.CosmosRequest{Req: &ffi.CosmosRequest_InsertStorageCell{InsertStorageCell: &ffi.QueryInsertStorageCell{
+		Address: addressToInsert.Bytes(),
+		Index:   index.Bytes(),
+		Value:   value.Bytes(),
+	}}}
+	byteRequest, _ = proto.Marshal(request)
+	_, err = connector.Query(byteRequest)
+	if err != nil {
+		panic(err)
+	}
+
+	// Check if storage cell was set
+	getStorageCellRes, err := connector.db.GetStorageCell(addressToInsert, index.Bytes())
+	println("Cell value", common.BytesToHash(getStorageCellRes).String())
 }
