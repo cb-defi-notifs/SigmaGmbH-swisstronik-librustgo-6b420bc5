@@ -91,13 +91,21 @@ func (m MockedDB) GetAccountOrEmpty(address ethcommon.Address) (Account, error) 
 // InsertAccount inserts new account with balance and nonce fields
 func (m MockedDB) InsertAccount(address ethcommon.Address, balance []byte, nonce uint64) error {
 	txn := m.db.Txn(true)
-	acct := Account{
-		Address: address.String(),
-		Balance: balance,
-		Nonce:   nonce,
+
+	acct, err := m.GetAccountOrEmpty(address)
+	if err != nil {
+		return err
 	}
 
-	if err := txn.Insert("account", &acct); err != nil {
+	updAcct := Account{
+		Address: acct.Address,
+		Balance: balance,
+		Nonce:   nonce,
+		Code:    acct.Code,
+		State:   acct.State,
+	}
+
+	if err := txn.Insert("account", &updAcct); err != nil {
 		return err
 	}
 

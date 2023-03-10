@@ -42,24 +42,9 @@ func (c MockedConnector) Query(request []byte) ([]byte, error) {
 		data := request.InsertAccount
 		ethAddress := common.BytesToAddress(request.InsertAccount.Address)
 		println("[Go:Query] Insert/Update account: ", ethAddress.String())
-
-		// TODO: Debug check. Remove
-		acct, err := c.db.GetAccountOrEmpty(ethAddress)
-		if err != nil {
-			return nil, err
-		}
-		println("DEBUG: code len after InsertAccount: ", len(acct.Code))
-
 		if err := c.db.InsertAccount(ethAddress, data.Balance, data.Nonce); err != nil {
 			return nil, err
 		}
-
-		// TODO: Debug check. Remove
-		acct, err = c.db.GetAccountOrEmpty(ethAddress)
-		if err != nil {
-			return nil, err
-		}
-		println("DEBUG: code len after InsertAccount: ", len(acct.Code))
 		return proto.Marshal(&ffi.QueryInsertAccountResponse{})
 	case *ffi.CosmosRequest_ContainsKey:
 		ethAddress := common.BytesToAddress(request.ContainsKey.Key)
@@ -76,9 +61,6 @@ func (c MockedConnector) Query(request []byte) ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-
-		println("Got account code len: ", len(acct.Code))
-
 		return proto.Marshal(&ffi.QueryGetAccountCodeResponse{Code: acct.Code})
 	case *ffi.CosmosRequest_StorageCell:
 		ethAddress := common.BytesToAddress(request.StorageCell.Address)
@@ -87,14 +69,6 @@ func (c MockedConnector) Query(request []byte) ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-
-		// TODO: Debug check. Remove
-		acct, err := c.db.GetAccountOrEmpty(ethAddress)
-		if err != nil {
-			return nil, err
-		}
-		println("DEBUG: code len after GetStorageCell: ", len(acct.Code))
-
 		return proto.Marshal(&ffi.QueryGetAccountStorageCellResponse{Value: value})
 	case *ffi.CosmosRequest_InsertAccountCode:
 		ethAddress := common.BytesToAddress(request.InsertAccountCode.Address)
@@ -107,25 +81,9 @@ func (c MockedConnector) Query(request []byte) ([]byte, error) {
 		data := request.InsertStorageCell
 		ethAddress := common.BytesToAddress(request.InsertStorageCell.Address)
 		println("[Go:Query] Insert storage cell: ", ethAddress.String())
-
-		// TODO: Debug check
-		acct, err := c.db.GetAccountOrEmpty(ethAddress)
-		if err != nil {
-			return nil, err
-		}
-		println("DEBUG: code len before InsertStorageCell: ", len(acct.Code))
-
 		if err := c.db.InsertStorageCell(ethAddress, data.Index, data.Value); err != nil {
 			return nil, err
 		}
-
-		// TODO: Debug check
-		acct, err = c.db.GetAccountOrEmpty(ethAddress)
-		if err != nil {
-			return nil, err
-		}
-		println("DEBUG: code len after InsertStorageCell: ", len(acct.Code))
-
 		return proto.Marshal(&ffi.QueryInsertStorageCellResponse{})
 	case *ffi.CosmosRequest_Remove:
 		ethAddress := common.BytesToAddress(request.Remove.Address)
