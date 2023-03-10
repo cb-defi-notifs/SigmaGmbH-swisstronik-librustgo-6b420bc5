@@ -1,8 +1,8 @@
-# wasmvm
+# Librustgo
 
-This is a wrapper around the [CosmWasm VM](https://github.com/CosmWasm/cosmwasm/tree/main/packages/vm).
-It allows you to compile, initialize and execute CosmWasm smart contracts
-from Go applications, in particular from [x/wasm](https://github.com/CosmWasm/wasmd/tree/master/x/wasm).
+This is a wrapper around the [Sputnik VM](https://github.com/rust-blockchain/evm).
+It allows you to compile, initialize and execute EVM smart contracts
+from Go applications, in particular from [x/evm](https://github.com/CosmWasm/wasmd/tree/master/x/wasm).
 
 ## Build & Run
 
@@ -79,9 +79,9 @@ Run `(cd libwasmvm && cargo doc --no-deps --open)`.
 
 ## Design
 
-Please read the [Documentation](./spec/Index.md) to understand both the general
-[Architecture](./spec/Architecture.md), as well as the more detailed
-[Specification](./spec/Specification.md) of the parameters and entry points.
+To understand how Cosmos SDK and EVM Keeper interacts with this library, you can refer to diagram below:
+
+![plot](./spec/sgxsequence.png)
 
 ## Development
 
