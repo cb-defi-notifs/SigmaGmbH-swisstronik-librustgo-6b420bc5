@@ -144,6 +144,13 @@ pub extern "C" fn make_pb_request(
     UnmanagedVector::new(Some(data))
 }
 
+#[no_mangle]
+// TODO: Remove after debugging
+pub extern "C" fn make_debug_request() -> UnmanagedVector {
+    let data = vec![1, 2, 3, 4];
+    UnmanagedVector::new(Some(data))
+}
+
 fn convert_topic_to_proto(topic: H256) -> Topic {
     let mut protobuf_topic = Topic::new();
     protobuf_topic.set_inner(topic.as_fixed_bytes().to_vec());
@@ -204,5 +211,10 @@ mod tests {
             ])),
             "A,AA,B,C,a,aa,b,c",
         );
+    }
+
+    #[test]
+    fn debug_request_to_rust_works() {
+
     }
 }
