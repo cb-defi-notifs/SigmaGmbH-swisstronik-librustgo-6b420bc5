@@ -1099,6 +1099,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "sgx_wrapper"
+version = "1.1.2"
+dependencies = [
+ "cbindgen",
+ "common_types",
+ "errno",
+ "hex",
+ "protobuf",
+ "protoc-rust",
+ "serde",
+ "serde_json",
+ "sgx_evm",
+ "tempfile",
+ "thiserror",
+]
+
+[[package]]
 name = "sha2"
 version = "0.10.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1295,23 +1312,6 @@ name = "wasi"
 version = "0.11.0+wasi-snapshot-preview1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9c8d87e72b64a3b4db28d11ce29237c246188f4f51057d65a7eab63b7987e423"
-
-[[package]]
-name = "wasmvm"
-version = "1.1.2"
-dependencies = [
- "cbindgen",
- "common_types",
- "errno",
- "hex",
- "protobuf",
- "protoc-rust",
- "serde",
- "serde_json",
- "sgx_evm",
- "tempfile",
- "thiserror",
-]
 
 [[package]]
 name = "which"

@@ -1,6 +1,6 @@
 .PHONY: all build build-rust build-go test
 
-# Builds the Rust library libwasmvm
+# Builds the Rust library libsgx_wrapper
 BUILDERS_PREFIX := cosmwasm/go-ext-builder:0013
 # Contains a full Go dev environment in order to run Go tests on the built library
 ALPINE_TESTER := cosmwasm/go-ext-builder:0013-alpine
@@ -11,17 +11,17 @@ USER_GROUP = $(shell id -g)
 SHARED_LIB_SRC = "" # File name of the shared library as created by the Rust build system
 SHARED_LIB_DST = "" # File name of the shared library that we store
 ifeq ($(OS),Windows_NT)
-	SHARED_LIB_SRC = wasmvm.dll
-	SHARED_LIB_DST = wasmvm.dll
+	SHARED_LIB_SRC = sgx_wrapper.dll
+	SHARED_LIB_DST = sgx_wrapper.dll
 else
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
-		SHARED_LIB_SRC = libwasmvm.so
-		SHARED_LIB_DST = libwasmvm.$(shell rustc --print cfg | grep target_arch | cut  -d '"' -f 2).so
+		SHARED_LIB_SRC = libsgx_wrapper.so
+		SHARED_LIB_DST = libsgx_wrapper.$(shell rustc --print cfg | grep target_arch | cut  -d '"' -f 2).so
 	endif
 	ifeq ($(UNAME_S),Darwin)
-		SHARED_LIB_SRC = libwasmvm.dylib
-		SHARED_LIB_DST = libwasmvm.dylib
+		SHARED_LIB_SRC = libsgx_wrapper.dylib
+		SHARED_LIB_DST = libsgx_wrapper.dylib
 	endif
 endif
 
@@ -38,8 +38,8 @@ build-rust: build-rust-release
 # Use debug build for quick testing.
 # In order to use "--features backtraces" here we need a Rust nightly toolchain, which we don't have by default
 build-rust-debug:
-	(cd libwasmvm && cargo build)
-	cp libwasmvm/target/debug/$(SHARED_LIB_SRC) internal/api/$(SHARED_LIB_DST)
+	(cd libsgx_wrapper && cargo build)
+	cp libsgx_wrapper/target/debug/$(SHARED_LIB_SRC) internal/api/$(SHARED_LIB_DST)
 	make update-bindings
 
 # use release build to actually ship - smaller and much faster
@@ -47,8 +47,8 @@ build-rust-debug:
 # See https://github.com/SigmaGmbH/librustgo/issues/222#issuecomment-880616953 for two approaches to
 # enable stripping through cargo (if that is desired).
 build-rust-release:
-	(cd libwasmvm && cargo build --release)
-	cp libwasmvm/target/release/$(SHARED_LIB_SRC) internal/api/$(SHARED_LIB_DST)
+	(cd libsgx_wrapper && cargo build --release)
+	cp libsgx_wrapper/target/release/$(SHARED_LIB_SRC) internal/api/$(SHARED_LIB_DST)
 	make update-bindings
 	@ #this pulls out ELF symbols, 80% size reduction!
 
@@ -65,40 +65,40 @@ test-safety:
 
 # Creates a release build in a containerized build environment of the static library for Alpine Linux (.a)
 release-build-alpine:
-	rm -rf libwasmvm/target/release
+	rm -rf libsgx_wrapper/target/release
 	# build the muslc *.a file
-	docker run --rm -u $(USER_ID):$(USER_GROUP) -v $(shell pwd)/libwasmvm:/code $(BUILDERS_PREFIX)-alpine
-	cp libwasmvm/artifacts/libwasmvm_muslc.a internal/api
-	cp libwasmvm/artifacts/libwasmvm_muslc.aarch64.a internal/api
+	docker run --rm -u $(USER_ID):$(USER_GROUP) -v $(shell pwd)/libsgx_wrapper:/code $(BUILDERS_PREFIX)-alpine
+	cp libsgx_wrapper/artifacts/libsgx_wrapper_muslc.a internal/api
+	cp libsgx_wrapper/artifacts/libsgx_wrapper_muslc.aarch64.a internal/api
 	make update-bindings
 
 # Creates a release build in a containerized build environment of the shared library for glibc Linux (.so)
 release-build-linux:
-	rm -rf libwasmvm/target/release
-	docker run --rm -u $(USER_ID):$(USER_GROUP) -v $(shell pwd)/libwasmvm:/code $(BUILDERS_PREFIX)-centos7
-	cp libwasmvm/artifacts/libwasmvm.x86_64.so internal/api
-	cp libwasmvm/artifacts/libwasmvm.aarch64.so internal/api
+	rm -rf libsgx_wrapper/target/release
+	docker run --rm -u $(USER_ID):$(USER_GROUP) -v $(shell pwd)/libsgx_wrapper:/code $(BUILDERS_PREFIX)-centos7
+	cp libsgx_wrapper/artifacts/libsgx_wrapper.x86_64.so internal/api
+	cp libsgx_wrapper/artifacts/libsgx_wrapper.aarch64.so internal/api
 	make update-bindings
 
 # Creates a release build in a containerized build environment of the shared library for macOS (.dylib)
 release-build-macos:
-	rm -rf libwasmvm/target/x86_64-apple-darwin/release
-	rm -rf libwasmvm/target/aarch64-apple-darwin/release
-	docker run --rm -u $(USER_ID):$(USER_GROUP) -v $(shell pwd)/libwasmvm:/code $(BUILDERS_PREFIX)-cross build_macos.sh
-	cp libwasmvm/artifacts/libwasmvm.dylib internal/api
+	rm -rf libsgx_wrapper/target/x86_64-apple-darwin/release
+	rm -rf libsgx_wrapper/target/aarch64-apple-darwin/release
+	docker run --rm -u $(USER_ID):$(USER_GROUP) -v $(shell pwd)/libsgx_wrapper:/code $(BUILDERS_PREFIX)-cross build_macos.sh
+	cp libsgx_wrapper/artifacts/libsgx_wrapper.dylib internal/api
 	make update-bindings
 
 # Creates a release build in a containerized build environment of the shared library for Windows (.dll)
 release-build-windows:
-	rm -rf libwasmvm/target/release
-	docker run --rm -u $(USER_ID):$(USER_GROUP) -v $(shell pwd)/libwasmvm:/code $(BUILDERS_PREFIX)-cross build_windows.sh
-	cp libwasmvm/target/x86_64-pc-windows-gnu/release/wasmvm.dll internal/api
+	rm -rf libsgx_wrapper/target/release
+	docker run --rm -u $(USER_ID):$(USER_GROUP) -v $(shell pwd)/libsgx_wrapper:/code $(BUILDERS_PREFIX)-cross build_windows.sh
+	cp libsgx_wrapper/target/x86_64-pc-windows-gnu/release/sgx_wrapper.dll internal/api
 	make update-bindings
 
 update-bindings:
-# After we build libwasmvm, we have to copy the generated bindings for Go code to use.
+# After we build libsgx_wrapper, we have to copy the generated bindings for Go code to use.
 # We cannot use symlinks as those are not reliably resolved by `go get` (https://github.com/SigmaGmbH/librustgo/pull/235).
-	cp libwasmvm/bindings.h internal/api
+	cp libsgx_wrapper/bindings.h internal/api
 
 release-build:
 	# Write like this because those must not run in parallel

@@ -120,7 +120,7 @@ impl U8SliceView {
 /// Transferring ownership from Rust to Go using return values of FFI calls:
 ///
 /// ```
-/// # use wasmvm::{cache_t, ByteSliceView, UnmanagedVector};
+/// # use sgx_wrapper::{cache_t, ByteSliceView, UnmanagedVector};
 /// #[no_mangle]
 /// pub extern "C" fn save_wasm_to_cache(
 ///     cache: *mut cache_t,
@@ -138,7 +138,7 @@ impl U8SliceView {
 ///
 /// ```rust
 /// # use cosmwasm_vm::{BackendResult, GasInfo};
-/// # use wasmvm::{Db, GoError, U8SliceView, UnmanagedVector};
+/// # use sgx_wrapper::{Db, GoError, U8SliceView, UnmanagedVector};
 /// fn db_read(db: &Db, key: &[u8]) -> BackendResult<Option<Vec<u8>>> {
 ///
 ///     // Create a None vector in order to reserve memory for the result
@@ -173,7 +173,7 @@ impl U8SliceView {
 /// If you want to mutate data, you need to comsume the vector and create a new one:
 ///
 /// ```rust
-/// # use wasmvm::{UnmanagedVector};
+/// # use sgx_wrapper::{UnmanagedVector};
 /// # let input = UnmanagedVector::new(Some(vec![0xAA]));
 /// let mut mutable: Vec<u8> = input.consume().unwrap_or_default();
 /// assert_eq!(mutable, vec![0xAA]);

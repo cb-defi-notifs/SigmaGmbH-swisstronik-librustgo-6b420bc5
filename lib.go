@@ -91,9 +91,9 @@ func Create(
 	return executionResult, nil
 }
 
-// LibwasmvmVersion returns the version of the loaded library
+// Libsgx_wrapperVersion returns the version of the loaded library
 // at runtime. This can be used for debugging to verify the loaded version
 // matches the expected version.
-func LibwasmvmVersion() (string, error) {
-	return api.LibwasmvmVersion()
+func Libsgx_wrapperVersion() (string, error) {
+	return api.Libsgx_wrapperVersion()
 }

@@ -5,7 +5,7 @@ set -o errexit -o nounset -o pipefail
 export PATH="/opt/osxcross/target/bin:$PATH"
 export LIBZ_SYS_STATIC=1
 
-# See https://github.com/CosmWasm/wasmvm/issues/222#issuecomment-880616953 for two approaches to
+# See https://github.com/CosmWasm/sgx_wrapper/issues/222#issuecomment-880616953 for two approaches to
 # enable stripping through cargo (if that is desired).
 
 echo "Starting aarch64-apple-darwin build"
@@ -19,6 +19,6 @@ export CXX=o64-clang++
 cargo build --release --target x86_64-apple-darwin
 
 # Create a universal library with both archs
-lipo -output artifacts/libwasmvm.dylib -create \
-  target/x86_64-apple-darwin/release/deps/libwasmvm.dylib \
-  target/aarch64-apple-darwin/release/deps/libwasmvm.dylib
+lipo -output artifacts/libsgx_wrapper.dylib -create \
+  target/x86_64-apple-darwin/release/deps/libsgx_wrapper.dylib \
+  target/aarch64-apple-darwin/release/deps/libsgx_wrapper.dylib

@@ -26,7 +26,7 @@ jobs:
           cargo install --debug cargo-audit --version 0.17.4
       - name: Run cargo-audit
         run: |
-          cd libwasmvm; cargo audit
+          cd libsgx_wrapper; cargo audit
 
   build-shared-lib-ubuntu-x86_64:
     runs-on: ubuntu-22.04
@@ -54,7 +54,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: librustgo_x86_64.so
-          path: ./internal/api/libwasmvm.x86_64.so
+          path: ./internal/api/sgx_wrapper.x86_64.so
 
   build-shared-lib-ubuntu-aarch64:
     # The host should always be Linux
@@ -97,7 +97,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: librustgo_aarch64.so
-          path: ./internal/api/libwasmvm.aarch64.so
+          path: ./internal/api/sgx_wrapper.aarch64.so
 
   build-shared-lib-macos:
     runs-on: macOS-12
@@ -125,7 +125,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: librustgo.dylib
-          path: ./internal/api/libwasmvm.dylib
+          path: ./internal/api/sgx_wrapper.dylib
   test-go:
     runs-on: ubuntu-22.04
     needs: build-shared-lib-ubuntu-x86_64
@@ -146,7 +146,7 @@ jobs:
           name: librustgo_x86_64.so
       - shell: bash
         run: |
-          mv libwasmvm.x86_64.so ./internal/api/libwasmvm.x86_64.so
+          mv libsgx_wrapper.x86_64.so ./internal/api/libsgx_wrapper.x86_64.so
       - name: Go integration tests
         env:
           GORACE: "halt_on_error=1"
