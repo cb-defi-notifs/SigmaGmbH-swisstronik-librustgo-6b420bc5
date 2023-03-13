@@ -1,8 +1,6 @@
-use sgx_evm::evm::backend::Basic;
-use sgx_evm::primitive_types::{H160, U256, H256};
+use sgxvm::evm::backend::Basic;
+use sgxvm::primitive_types::{H160, U256, H256};
 use protobuf::Message;
-
-use crate::{UnmanagedVector, U8SliceView, GoError};
 use crate::protobuf_generated::ffi;
 
 fn u256_to_vec(value: U256) -> Vec<u8> {
