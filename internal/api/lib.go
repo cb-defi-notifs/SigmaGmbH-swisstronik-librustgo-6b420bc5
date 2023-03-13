@@ -176,3 +176,12 @@ func errorWithMessage(err error, b C.UnmanagedVector) error {
 	}
 	return fmt.Errorf("%s", string(msg))
 }
+
+// TODO: Remove
+func MakeDebugRequest() {
+	ptr := C.make_debug_request()
+	res := copyAndDestroyUnmanagedVector(ptr)
+	for _, b := range res {
+		print(b)
+	}
+}
