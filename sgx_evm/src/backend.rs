@@ -6,6 +6,9 @@ use sgxvm::primitive_types::{H160, H256, U256};
 use sgxvm::storage::Storage;
 use sgxvm::Vicinity;
 
+use crate::coder;
+use crate::ocall;
+
 /// Contains context of the transaction such as gas price, block hash, block timestamp, etc.
 pub struct TxContext {
     pub chain_id: U256,
@@ -44,7 +47,10 @@ impl<'state> EvmBackend for FFIBackend<'state> {
     }
 
     fn block_hash(&self, number: U256) -> H256 {
-        self.querier.query_block_hash(number)
+        // TODO: Remove usage of querier
+        H256::default()
+        // let encoded_request = coder::get_block_hash(number);
+        // self.querier.query_block_hash(number)
     }
 
     fn block_number(&self) -> U256 {

@@ -13,6 +13,8 @@ use protobuf::RepeatedField;
 mod error;
 mod protobuf_generated;
 mod backend;
+mod ocall;
+mod coder;
 
 #[no_mangle]
 /// Handles incoming protobuf-encoded request for transaction handling
@@ -123,7 +125,6 @@ fn handle_call_request(data: SGXVMCallRequest) -> ExecutionResult {
     let vicinity = Vicinity { origin: H160::from_slice(&params.from) };
     let mut storage = crate::evm::storage::FFIStorage::new(&querier);
     let mut backend = backend::FFIBackend::new(
-        &querier,
         &mut storage,
         vicinity,
         build_transaction_context(context),
@@ -148,7 +149,6 @@ fn handle_create_request(data: SGXVMCreateRequest) -> ExecutionResult {
     let vicinity = Vicinity { origin: H160::from_slice(&params.from) };
     let mut storage = crate::evm::storage::FFIStorage::new(&querier);
     let mut backend = backend::FFIBackend::new(
-        &querier,
         &mut storage,
         vicinity,
         build_transaction_context(context),

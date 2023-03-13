@@ -56,3 +56,25 @@ enum GoError {
   GoError_Other = -1,
 };
 typedef int32_t GoError;
+
+typedef struct Vec_u8 Vec_u8;
+
+extern struct Vec_u8 get_block_hash(struct Vec_u8 req);
+
+extern struct Vec_u8 get_account(struct Vec_u8 req);
+
+extern struct Vec_u8 contains_key(struct Vec_u8 req);
+
+extern struct Vec_u8 get_storage_cell(struct Vec_u8 req);
+
+extern struct Vec_u8 get_account_code(struct Vec_u8 req);
+
+extern struct Vec_u8 insert_account(struct Vec_u8 req);
+
+extern struct Vec_u8 insert_account_code(struct Vec_u8 req);
+
+extern struct Vec_u8 insert_storage_cell(struct Vec_u8 req);
+
+extern struct Vec_u8 remove(struct Vec_u8 req);
+
+extern struct Vec_u8 remove_storage_cell(struct Vec_u8 req);
