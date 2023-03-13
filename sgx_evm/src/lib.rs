@@ -32,8 +32,8 @@ pub fn handle_debug(_: Vec<u8>) -> Vec<u8> {
 
 #[no_mangle]
 /// Handles incoming protobuf-encoded request for transaction handling
-pub fn handle_request(
-    // q: querier::GoQuerier,
+pub extern "C" fn handle_request(
+    querier: querier::GoQuerier,
     request: ByteSliceView,
     error_msg: Option<&mut UnmanagedVector>,
 ) -> UnmanagedVector {

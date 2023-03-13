@@ -19,7 +19,7 @@ pub const PB_REQUEST_ARG: &str = "pb_request";
 
 extern "C" {
     fn handle_debug(req: Vec<u8>) -> Vec<u8>;
-    fn handle_request(request: ByteSliceView, error_msg: Option<&mut UnmanagedVector>) -> UnmanagedVector;
+    fn handle_request(querier: GoQuerier, request: ByteSliceView, error_msg: Option<&mut UnmanagedVector>) -> UnmanagedVector;
 }
 
 #[repr(C)]
@@ -149,7 +149,7 @@ pub extern "C" fn make_pb_request(
     // let data = handle_c_error_default(r, error_msg);
     // UnmanagedVector::new(Some(data))
 
-    unsafe { handle_request(request, error_msg) }
+    unsafe { handle_request(querier, request, error_msg) }
 }
 
 #[no_mangle]
