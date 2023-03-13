@@ -5,12 +5,12 @@ use sgxvm::{self, Vicinity};
 use sgxvm::primitive_types::{H160, H256, U256};
 use std::panic::catch_unwind;
 
-use crate::error::Error;
+use crate::error::{handle_c_error_default, Error};
 use crate::protobuf_generated::ffi::{
     AccessListItem, FFIRequest, FFIRequest_oneof_req, HandleTransactionResponse, Log,
     SGXVMCallRequest, SGXVMCreateRequest, Topic, TransactionContext as ProtoTransactionContext,
 };
-use crate::memory::UnmanagedVector;
+use crate::memory::{ByteSliceView, UnmanagedVector};
 
 mod error;
 mod protobuf_generated;
@@ -19,6 +19,9 @@ mod ocall;
 mod coder;
 mod storage;
 mod memory;
+
+// store some common string for argument names
+pub const PB_REQUEST_ARG: &str = "pb_request";
 
 #[no_mangle]
 pub fn handle_debug(_: Vec<u8>) -> Vec<u8> {
