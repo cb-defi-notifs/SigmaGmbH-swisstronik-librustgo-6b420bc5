@@ -1,0 +1,24 @@
+[package]
+name = "evm-precompile-modexp"
+version = "1.0.0-dev"
+edition = "2021"
+description = "MODEXP precompiles for EVM"
+
+[dependencies]
+num = { version = "0.4", default-features = false, features = ["alloc"] }
+
+# Precompile-std
+precompile-std = { version = "1.0.0-dev", path = "../precompile-std", default-features = false }
+
+[dev-dependencies]
+hex = "0.4.3"
+#pallet-evm-test-vector-support = { version = "1.0.0-dev", path = "../../test-vector-support" }
+
+[features]
+default = ["std"]
+std = [
+    "num/std",
+    # Precompile-std
+    "precompile-std/std",
+]
+sgx = ["precompile-std/sgx"]

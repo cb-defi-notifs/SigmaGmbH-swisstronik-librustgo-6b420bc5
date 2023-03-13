@@ -6,7 +6,7 @@ use protoc_rust::Customize;
 
 fn main() {
     println!("cargo:rustc-link-search={}", "./");
-    println!("cargo:rustc-link-lib=dylib=sgx_evm");
+    println!("cargo:rustc-link-lib=dylib=sgxvm");
 
     let crate_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
 
