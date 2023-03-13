@@ -179,10 +179,6 @@ typedef struct UnmanagedVector {
   uintptr_t cap;
 } UnmanagedVector;
 
-typedef struct querier_t {
-  uint8_t _private[0];
-} querier_t;
-
 /**
  * A view into a `Option<&[u8]>`, created and maintained by Rust.
  *
@@ -197,46 +193,26 @@ typedef struct U8SliceView {
   uintptr_t len;
 } U8SliceView;
 
-typedef struct Querier_vtable {
-  int32_t (*query_external)(const struct querier_t*, struct U8SliceView, struct UnmanagedVector*, struct UnmanagedVector*);
-} Querier_vtable;
+extern struct Vec_u8 get_block_hash(struct Vec_u8 req);
 
-typedef struct GoQuerier {
-  const struct querier_t *state;
-  struct Querier_vtable vtable;
-} GoQuerier;
+extern struct Vec_u8 get_account(struct Vec_u8 req);
 
-/**
- * A view into an externally owned byte slice (Go `[]byte`).
- * Use this for the current call only. A view cannot be copied for safety reasons.
- * If you need a copy, use [`ByteSliceView::to_owned`].
- *
- * Go's nil value is fully supported, such that we can differentiate between nil and an empty slice.
- */
-typedef struct ByteSliceView {
-  /**
-   * True if and only if the byte slice is nil in Go. If this is true, the other fields must be ignored.
-   */
-  bool is_nil;
-  const uint8_t *ptr;
-  uintptr_t len;
-} ByteSliceView;
+extern struct Vec_u8 contains_key(struct Vec_u8 req);
 
-extern struct Vec_u8 handle_debug(struct Vec_u8 req);
+extern struct Vec_u8 get_storage_cell(struct Vec_u8 req);
 
-struct UnmanagedVector make_pb_request(struct GoQuerier querier,
-                                       struct ByteSliceView request,
-                                       struct UnmanagedVector *error_msg);
+extern struct Vec_u8 get_account_code(struct Vec_u8 req);
 
-struct UnmanagedVector make_debug_request(void);
+extern struct Vec_u8 insert_account(struct Vec_u8 req);
+
+extern struct Vec_u8 insert_account_code(struct Vec_u8 req);
+
+extern struct Vec_u8 insert_storage_cell(struct Vec_u8 req);
+
+extern struct Vec_u8 remove(struct Vec_u8 req);
+
+extern struct Vec_u8 remove_storage_cell(struct Vec_u8 req);
 
 struct UnmanagedVector new_unmanaged_vector(bool nil, const uint8_t *ptr, uintptr_t length);
 
 void destroy_unmanaged_vector(struct UnmanagedVector v);
-
-/**
- * Returns a version number of this library as a C string.
- *
- * The string is owned by sgx_wrapper and must not be mutated or destroyed by the caller.
- */
-const char *version_str(void);

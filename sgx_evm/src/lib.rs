@@ -1,14 +1,16 @@
-use std::panic::catch_unwind;
-use crate::error::{Error};
-use crate::protobuf_generated::ffi::{
-    FFIRequest, FFIRequest_oneof_req, HandleTransactionResponse, Log, Topic,
-    TransactionContext as ProtoTransactionContext, AccessListItem, SGXVMCreateRequest, SGXVMCallRequest,
-};
-use protobuf::Message;
-use sgxvm::primitive_types::{U256, H160, H256};
-use sgxvm::{self, Vicinity};
 use internal_types::ExecutionResult;
+use protobuf::Message;
 use protobuf::RepeatedField;
+use sgxvm::{self, Vicinity};
+use sgxvm::primitive_types::{H160, H256, U256};
+use std::panic::catch_unwind;
+
+use crate::error::Error;
+use crate::protobuf_generated::ffi::{
+    AccessListItem, FFIRequest, FFIRequest_oneof_req, HandleTransactionResponse, Log,
+    SGXVMCallRequest, SGXVMCreateRequest, Topic, TransactionContext as ProtoTransactionContext,
+};
+use crate::memory::UnmanagedVector;
 
 mod error;
 mod protobuf_generated;
@@ -16,6 +18,7 @@ mod backend;
 mod ocall;
 mod coder;
 mod storage;
+mod memory;
 
 #[no_mangle]
 pub fn handle_debug(_: Vec<u8>) -> Vec<u8> {
@@ -24,8 +27,15 @@ pub fn handle_debug(_: Vec<u8>) -> Vec<u8> {
 
 #[no_mangle]
 /// Handles incoming protobuf-encoded request for transaction handling
-pub fn handle_request(req_bytes: Vec<u8>) {
-    let result = catch_unwind(|| {
+pub fn handle_request(
+    request: ByteSliceView,
+    error_msg: Option<&mut UnmanagedVector>,
+) -> UnmanagedVector {
+    let r = catch_unwind(|| {
+        let req_bytes = request
+            .read()
+            .ok_or_else(|| Error::unset_arg(PB_REQUEST_ARG))?;
+
         match FFIRequest::parse_from_bytes(&req_bytes) {
             Ok(request) => {
                 if let Some(req) = request.req {
@@ -121,7 +131,10 @@ pub fn handle_request(req_bytes: Vec<u8>) {
             }
             Err(e) => Err(Error::protobuf_decode(e.to_string())),
         }
-    });
+    }).unwrap_or_else(|_| Err(Error::panic()));
+
+    let data = handle_c_error_default(r, error_msg);
+    UnmanagedVector::new(Some(data))
 }
 
 fn handle_call_request(data: SGXVMCallRequest) -> ExecutionResult {

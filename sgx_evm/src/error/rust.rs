@@ -2,6 +2,7 @@ use errno::{set_errno, Errno};
 #[cfg(feature = "backtraces")]
 use std::backtrace::Backtrace;
 use thiserror::Error;
+use crate::memory::UnmanagedVector;
 
 #[derive(Error, Debug)]
 pub enum RustError {
@@ -124,6 +125,52 @@ enum ErrnoValue {
     Success = 0,
     Other = 1,
     OutOfGas = 2,
+}
+
+/// If `result` is Ok, this returns the Ok value and clears [errno].
+/// Otherwise it returns the default value, writes the error message to `error_msg` and sets [errno].
+///
+/// [errno]: https://utcc.utoronto.ca/~cks/space/blog/programming/GoCgoErrorReturns
+pub fn handle_c_error_default<T>(
+    result: Result<T, RustError>,
+    error_msg: Option<&mut UnmanagedVector>,
+) -> T
+    where
+        T: Default,
+{
+    match result {
+        Ok(value) => {
+            clear_error();
+            value
+        }
+        Err(error) => {
+            set_error(error, error_msg);
+            Default::default()
+        }
+    }
+}
+
+pub fn set_error(err: RustError, error_msg: Option<&mut UnmanagedVector>) {
+    if let Some(error_msg) = error_msg {
+        if error_msg.is_some() {
+            panic!(
+                "There is an old error message in the given pointer that has not been \
+                cleaned up. Error message pointers should not be reused for multiple calls."
+            )
+        }
+
+        let msg: Vec<u8> = err.to_string().into();
+        *error_msg = UnmanagedVector::new(Some(msg));
+    } else {
+        // The caller provided a nil pointer for the error message.
+        // That's not nice but we can live with it.
+    }
+
+    let errno = match err {
+        RustError::OutOfGas { .. } => ErrnoValue::OutOfGas,
+        _ => ErrnoValue::Other,
+    } as i32;
+    set_errno(Errno(errno));
 }
 
 pub fn clear_error() {
