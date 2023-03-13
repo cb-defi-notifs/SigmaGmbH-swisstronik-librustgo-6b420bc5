@@ -19,11 +19,13 @@ mod ocall;
 mod coder;
 mod storage;
 mod memory;
+mod querier;
 
 // store some common string for argument names
 pub const PB_REQUEST_ARG: &str = "pb_request";
 
 #[no_mangle]
+// TODO: Remove after debugging
 pub fn handle_debug(_: Vec<u8>) -> Vec<u8> {
     vec![1, 2, 3, 4]
 }
@@ -31,6 +33,7 @@ pub fn handle_debug(_: Vec<u8>) -> Vec<u8> {
 #[no_mangle]
 /// Handles incoming protobuf-encoded request for transaction handling
 pub fn handle_request(
+    // q: querier::GoQuerier,
     request: ByteSliceView,
     error_msg: Option<&mut UnmanagedVector>,
 ) -> UnmanagedVector {

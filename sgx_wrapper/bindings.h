@@ -179,6 +179,22 @@ typedef struct UnmanagedVector {
   uintptr_t cap;
 } UnmanagedVector;
 
+/**
+ * A view into an externally owned byte slice (Go `[]byte`).
+ * Use this for the current call only. A view cannot be copied for safety reasons.
+ * If you need a copy, use [`ByteSliceView::to_owned`].
+ *
+ * Go's nil value is fully supported, such that we can differentiate between nil and an empty slice.
+ */
+typedef struct ByteSliceView {
+  /**
+   * True if and only if the byte slice is nil in Go. If this is true, the other fields must be ignored.
+   */
+  bool is_nil;
+  const uint8_t *ptr;
+  uintptr_t len;
+} ByteSliceView;
+
 typedef struct querier_t {
   uint8_t _private[0];
 } querier_t;
@@ -206,23 +222,10 @@ typedef struct GoQuerier {
   struct Querier_vtable vtable;
 } GoQuerier;
 
-/**
- * A view into an externally owned byte slice (Go `[]byte`).
- * Use this for the current call only. A view cannot be copied for safety reasons.
- * If you need a copy, use [`ByteSliceView::to_owned`].
- *
- * Go's nil value is fully supported, such that we can differentiate between nil and an empty slice.
- */
-typedef struct ByteSliceView {
-  /**
-   * True if and only if the byte slice is nil in Go. If this is true, the other fields must be ignored.
-   */
-  bool is_nil;
-  const uint8_t *ptr;
-  uintptr_t len;
-} ByteSliceView;
-
 extern struct Vec_u8 handle_debug(struct Vec_u8 req);
+
+extern struct UnmanagedVector handle_request(struct ByteSliceView request,
+                                             struct UnmanagedVector *error_msg);
 
 struct UnmanagedVector make_pb_request(struct GoQuerier querier,
                                        struct ByteSliceView request,
