@@ -12,7 +12,7 @@ use protobuf::RepeatedField;
 
 mod error;
 mod protobuf_generated;
-mod ffi_backend;
+mod backend;
 
 #[no_mangle]
 /// Handles incoming protobuf-encoded request for transaction handling
@@ -181,8 +181,8 @@ fn parse_access_list(data: RepeatedField<AccessListItem>) -> Vec<(H160, Vec<H256
     access_list
 }
 
-fn build_transaction_context(context: ProtoTransactionContext) -> ffi_backend::TxContext {
-    ffi_backend::TxContext {
+fn build_transaction_context(context: ProtoTransactionContext) -> backend::TxContext {
+    backend::TxContext {
         chain_id: U256::from(context.chain_id),
         gas_price: U256::from_big_endian(&context.gas_price),
         block_number: U256::from(context.block_number),
