@@ -11,6 +11,7 @@ use crate::protobuf_generated::ffi::{
     SGXVMCallRequest, SGXVMCreateRequest, Topic, TransactionContext as ProtoTransactionContext,
 };
 use crate::memory::{ByteSliceView, UnmanagedVector};
+use crate::querier::GoQuerier;
 
 mod error;
 mod protobuf_generated;
@@ -47,7 +48,7 @@ pub extern "C" fn handle_request(
                 if let Some(req) = request.req {
                     match req {
                         FFIRequest_oneof_req::callRequest(req) => {
-                            let execution_result = handle_call_request(req);
+                            let execution_result = handle_call_request(querier, req);
 
                             // Create protobuf-encoded response
                             let mut response = HandleTransactionResponse::new();
@@ -89,7 +90,7 @@ pub extern "C" fn handle_request(
                             Ok(response_bytes)
                         }
                         FFIRequest_oneof_req::createRequest(req) => {
-                            let execution_result = handle_create_request(req);
+                            let execution_result = handle_create_request(querier, req);
 
                             // Create protobuf-encoded response
                             let mut response = HandleTransactionResponse::new();
@@ -143,7 +144,7 @@ pub extern "C" fn handle_request(
     UnmanagedVector::new(Some(data))
 }
 
-fn handle_call_request(data: SGXVMCallRequest) -> ExecutionResult {
+fn handle_call_request(querier: GoQuerier, data: SGXVMCallRequest) -> ExecutionResult {
     let params = data.params.unwrap();
     let context = data.context.unwrap();
 
@@ -167,7 +168,7 @@ fn handle_call_request(data: SGXVMCallRequest) -> ExecutionResult {
     )
 }
 
-fn handle_create_request(data: SGXVMCreateRequest) -> ExecutionResult {
+fn handle_create_request(querier: GoQuerier, data: SGXVMCreateRequest) -> ExecutionResult {
     let params = data.params.unwrap();
     let context = data.context.unwrap();
 
