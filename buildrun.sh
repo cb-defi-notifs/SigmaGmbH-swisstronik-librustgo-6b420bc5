@@ -2,6 +2,11 @@
 export PATH=$PATH:$HOME/go/bin
 set -e
 
+cd sgx_evm || exit
+cargo build --release --target aarch64-apple-darwin
+cp ./target/aarch64-apple-darwin/release/libsgx_evm.dylib ../sgx_wrapper
+cd ..
+
 cd sgx_wrapper || exit
 
 cargo build --release --target aarch64-apple-darwin

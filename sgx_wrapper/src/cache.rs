@@ -1,6 +1,7 @@
 use std::collections::HashSet;
 use std::marker::PhantomData;
 use std::panic::catch_unwind;
+use std::ptr::slice_from_raw_parts;
 
 use protobuf::Message;
 use sgx_evm::primitive_types::H256;
@@ -15,6 +16,10 @@ use crate::querier::GoQuerier;
 
 // store some common string for argument names
 pub const PB_REQUEST_ARG: &str = "pb_request";
+
+extern "C" {
+    fn handle_debug(req: Vec<u8>) -> Vec<u8>;
+}
 
 #[repr(C)]
 #[allow(dead_code)]
@@ -147,8 +152,10 @@ pub extern "C" fn make_pb_request(
 #[no_mangle]
 // TODO: Remove after debugging
 pub extern "C" fn make_debug_request() -> UnmanagedVector {
-    let data = vec![1, 2, 3, 4];
-    UnmanagedVector::new(Some(data))
+    let data = vec![4u8, 3u8, 2u8, 1u8];
+    let res = unsafe { handle_debug(data) };
+
+    UnmanagedVector::new(Some(res.to_vec()))
 }
 
 fn convert_topic_to_proto(topic: H256) -> Topic {
@@ -211,10 +218,5 @@ mod tests {
             ])),
             "A,AA,B,C,a,aa,b,c",
         );
-    }
-
-    #[test]
-    fn debug_request_to_rust_works() {
-
     }
 }

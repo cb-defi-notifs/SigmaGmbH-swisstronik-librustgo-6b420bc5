@@ -5,6 +5,9 @@ use protoc_rust::Customize;
 
 
 fn main() {
+    println!("cargo:rustc-link-search={}", "./");
+    println!("cargo:rustc-link-lib=dylib=sgx_evm");
+
     let crate_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
 
     let generated = cbindgen::generate(crate_dir).expect("Unable to generate bindings");

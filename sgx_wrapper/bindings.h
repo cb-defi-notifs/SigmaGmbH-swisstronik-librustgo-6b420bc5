@@ -57,6 +57,8 @@ enum GoError {
 };
 typedef int32_t GoError;
 
+typedef struct Vec_u8 Vec_u8;
+
 /**
  * An optional Vector type that requires explicit creation and destruction
  * and can be sent via FFI.
@@ -219,6 +221,8 @@ typedef struct ByteSliceView {
   const uint8_t *ptr;
   uintptr_t len;
 } ByteSliceView;
+
+extern struct Vec_u8 handle_debug(struct Vec_u8 req);
 
 struct UnmanagedVector make_pb_request(struct GoQuerier querier,
                                        struct ByteSliceView request,
