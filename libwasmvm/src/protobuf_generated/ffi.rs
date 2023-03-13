@@ -2063,7 +2063,7 @@ impl ::protobuf::reflect::ProtobufValue for QueryGetAccount {
 pub struct QueryGetAccountResponse {
     // message fields
     pub balance: ::std::vec::Vec<u8>,
-    pub nonce: ::std::vec::Vec<u8>,
+    pub nonce: u64,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -2106,30 +2106,19 @@ impl QueryGetAccountResponse {
         ::std::mem::replace(&mut self.balance, ::std::vec::Vec::new())
     }
 
-    // bytes nonce = 2;
+    // uint64 nonce = 2;
 
 
-    pub fn get_nonce(&self) -> &[u8] {
-        &self.nonce
+    pub fn get_nonce(&self) -> u64 {
+        self.nonce
     }
     pub fn clear_nonce(&mut self) {
-        self.nonce.clear();
+        self.nonce = 0;
     }
 
     // Param is passed by value, moved
-    pub fn set_nonce(&mut self, v: ::std::vec::Vec<u8>) {
+    pub fn set_nonce(&mut self, v: u64) {
         self.nonce = v;
-    }
-
-    // Mutable pointer to the field.
-    // If field is not initialized, it is initialized with default value first.
-    pub fn mut_nonce(&mut self) -> &mut ::std::vec::Vec<u8> {
-        &mut self.nonce
-    }
-
-    // Take field
-    pub fn take_nonce(&mut self) -> ::std::vec::Vec<u8> {
-        ::std::mem::replace(&mut self.nonce, ::std::vec::Vec::new())
     }
 }
 
@@ -2146,7 +2135,11 @@ impl ::protobuf::Message for QueryGetAccountResponse {
                     ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.balance)?;
                 },
                 2 => {
-                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.nonce)?;
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.nonce = tmp;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -2163,8 +2156,8 @@ impl ::protobuf::Message for QueryGetAccountResponse {
         if !self.balance.is_empty() {
             my_size += ::protobuf::rt::bytes_size(1, &self.balance);
         }
-        if !self.nonce.is_empty() {
-            my_size += ::protobuf::rt::bytes_size(2, &self.nonce);
+        if self.nonce != 0 {
+            my_size += ::protobuf::rt::value_size(2, self.nonce, ::protobuf::wire_format::WireTypeVarint);
         }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
@@ -2175,8 +2168,8 @@ impl ::protobuf::Message for QueryGetAccountResponse {
         if !self.balance.is_empty() {
             os.write_bytes(1, &self.balance)?;
         }
-        if !self.nonce.is_empty() {
-            os.write_bytes(2, &self.nonce)?;
+        if self.nonce != 0 {
+            os.write_uint64(2, self.nonce)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -2221,7 +2214,7 @@ impl ::protobuf::Message for QueryGetAccountResponse {
                 |m: &QueryGetAccountResponse| { &m.balance },
                 |m: &mut QueryGetAccountResponse| { &mut m.balance },
             ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
                 "nonce",
                 |m: &QueryGetAccountResponse| { &m.nonce },
                 |m: &mut QueryGetAccountResponse| { &mut m.nonce },
@@ -2243,7 +2236,7 @@ impl ::protobuf::Message for QueryGetAccountResponse {
 impl ::protobuf::Clear for QueryGetAccountResponse {
     fn clear(&mut self) {
         self.balance.clear();
-        self.nonce.clear();
+        self.nonce = 0;
         self.unknown_fields.clear();
     }
 }
@@ -2265,7 +2258,7 @@ pub struct QueryInsertAccount {
     // message fields
     pub address: ::std::vec::Vec<u8>,
     pub balance: ::std::vec::Vec<u8>,
-    pub nonce: ::std::vec::Vec<u8>,
+    pub nonce: u64,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
@@ -2334,30 +2327,19 @@ impl QueryInsertAccount {
         ::std::mem::replace(&mut self.balance, ::std::vec::Vec::new())
     }
 
-    // bytes nonce = 3;
+    // uint64 nonce = 3;
 
 
-    pub fn get_nonce(&self) -> &[u8] {
-        &self.nonce
+    pub fn get_nonce(&self) -> u64 {
+        self.nonce
     }
     pub fn clear_nonce(&mut self) {
-        self.nonce.clear();
+        self.nonce = 0;
     }
 
     // Param is passed by value, moved
-    pub fn set_nonce(&mut self, v: ::std::vec::Vec<u8>) {
+    pub fn set_nonce(&mut self, v: u64) {
         self.nonce = v;
-    }
-
-    // Mutable pointer to the field.
-    // If field is not initialized, it is initialized with default value first.
-    pub fn mut_nonce(&mut self) -> &mut ::std::vec::Vec<u8> {
-        &mut self.nonce
-    }
-
-    // Take field
-    pub fn take_nonce(&mut self) -> ::std::vec::Vec<u8> {
-        ::std::mem::replace(&mut self.nonce, ::std::vec::Vec::new())
     }
 }
 
@@ -2377,7 +2359,11 @@ impl ::protobuf::Message for QueryInsertAccount {
                     ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.balance)?;
                 },
                 3 => {
-                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.nonce)?;
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_uint64()?;
+                    self.nonce = tmp;
                 },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
@@ -2397,8 +2383,8 @@ impl ::protobuf::Message for QueryInsertAccount {
         if !self.balance.is_empty() {
             my_size += ::protobuf::rt::bytes_size(2, &self.balance);
         }
-        if !self.nonce.is_empty() {
-            my_size += ::protobuf::rt::bytes_size(3, &self.nonce);
+        if self.nonce != 0 {
+            my_size += ::protobuf::rt::value_size(3, self.nonce, ::protobuf::wire_format::WireTypeVarint);
         }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
@@ -2412,8 +2398,8 @@ impl ::protobuf::Message for QueryInsertAccount {
         if !self.balance.is_empty() {
             os.write_bytes(2, &self.balance)?;
         }
-        if !self.nonce.is_empty() {
-            os.write_bytes(3, &self.nonce)?;
+        if self.nonce != 0 {
+            os.write_uint64(3, self.nonce)?;
         }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
@@ -2463,7 +2449,7 @@ impl ::protobuf::Message for QueryInsertAccount {
                 |m: &QueryInsertAccount| { &m.balance },
                 |m: &mut QueryInsertAccount| { &mut m.balance },
             ));
-            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+            fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeUint64>(
                 "nonce",
                 |m: &QueryInsertAccount| { &m.nonce },
                 |m: &mut QueryInsertAccount| { &mut m.nonce },
@@ -2486,7 +2472,7 @@ impl ::protobuf::Clear for QueryInsertAccount {
     fn clear(&mut self) {
         self.address.clear();
         self.balance.clear();
-        self.nonce.clear();
+        self.nonce = 0;
         self.unknown_fields.clear();
     }
 }
@@ -7972,10 +7958,10 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     cR\x06topics\x12\x12\n\x04data\x18\x03\x20\x01(\x0cR\x04data\"+\n\x0fQue\
     ryGetAccount\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\"I\n\
     \x17QueryGetAccountResponse\x12\x18\n\x07balance\x18\x01\x20\x01(\x0cR\
-    \x07balance\x12\x14\n\x05nonce\x18\x02\x20\x01(\x0cR\x05nonce\"^\n\x12Qu\
+    \x07balance\x12\x14\n\x05nonce\x18\x02\x20\x01(\x04R\x05nonce\"^\n\x12Qu\
     eryInsertAccount\x12\x18\n\x07address\x18\x01\x20\x01(\x0cR\x07address\
     \x12\x18\n\x07balance\x18\x02\x20\x01(\x0cR\x07balance\x12\x14\n\x05nonc\
-    e\x18\x03\x20\x01(\x0cR\x05nonce\"\x1c\n\x1aQueryInsertAccountResponse\"\
+    e\x18\x03\x20\x01(\x04R\x05nonce\"\x1c\n\x1aQueryInsertAccountResponse\"\
     $\n\x10QueryContainsKey\x12\x10\n\x03key\x18\x01\x20\x01(\x0cR\x03key\"6\
     \n\x18QueryContainsKeyResponse\x12\x1a\n\x08contains\x18\x01\x20\x01(\
     \x08R\x08contains\"L\n\x1aQueryGetAccountStorageCell\x12\x18\n\x07addres\
