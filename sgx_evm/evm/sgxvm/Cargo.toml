@@ -13,7 +13,7 @@ sha3 = { version = "0.10", default-features = false }
 rlp = { version = "0.5.1", default-features = false }
 k256 = { version = "0.11.6", default-features = false, features = ["keccak256", "ecdsa"] }
 rlp-derive = "0.1.0"
-common_types = { path = "../common-types", default-features = false }
+internal_types = { path = "../internal_types", default-features = false }
 
 # Precompiles
 precompile-std = { path = "../precompiles/precompile-std", default-features = false }

@@ -5,7 +5,7 @@
 extern crate sgx_tstd as std;
 
 use backend::ExtendedBackend;
-use common_types::ExecutionResult;
+use internal_types::ExecutionResult;
 pub use ethereum;
 pub use evm;
 use evm::executor::stack::{MemoryStackState, StackExecutor, StackSubstateMetadata};
