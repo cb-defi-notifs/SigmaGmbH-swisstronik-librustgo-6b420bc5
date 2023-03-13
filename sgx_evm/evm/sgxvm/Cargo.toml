@@ -26,7 +26,7 @@ evm-precompile-blake2f = { path = "../precompiles/blake2f", default-features = f
 [features]
 default = ["std"]
 std = [
-    "common_types/std",
+    "internal_types/std",
     "precompile-std/std",
     "evm-precompile-simple/std",
     "evm-precompile-sha3fips/std",
@@ -36,7 +36,7 @@ std = [
 ]
 sgx = [
     "sgx_tstd",
-    "common_types/sgx",
+    "internal_types/sgx",
     "precompile-std/sgx",
     "evm-precompile-simple/sgx",
     "evm-precompile-sha3fips/sgx",
