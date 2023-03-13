@@ -6,7 +6,7 @@ require (
 	github.com/ethereum/go-ethereum v1.10.26
 	github.com/hashicorp/go-memdb v1.3.4
 	github.com/holiman/uint256 v1.2.1
-	github.com/stretchr/testify v1.7.2
+	github.com/stretchr/testify v1.8.2
 	github.com/tendermint/tm-db v0.6.7
 	google.golang.org/protobuf v1.28.1
 )

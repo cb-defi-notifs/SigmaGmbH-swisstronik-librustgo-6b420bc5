@@ -224,6 +224,8 @@ struct UnmanagedVector make_pb_request(struct GoQuerier querier,
                                        struct ByteSliceView request,
                                        struct UnmanagedVector *error_msg);
 
+struct UnmanagedVector make_debug_request(void);
+
 struct UnmanagedVector new_unmanaged_vector(bool nil, const uint8_t *ptr, uintptr_t length);
 
 void destroy_unmanaged_vector(struct UnmanagedVector v);
