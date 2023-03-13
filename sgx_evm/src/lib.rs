@@ -18,6 +18,11 @@ mod coder;
 mod storage;
 
 #[no_mangle]
+pub fn handle_debug(_: Vec<u8>) -> Vec<u8> {
+    vec![1, 2, 3, 4]
+}
+
+#[no_mangle]
 /// Handles incoming protobuf-encoded request for transaction handling
 pub fn handle_request(req_bytes: Vec<u8>) {
     let result = catch_unwind(|| {
