@@ -107,3 +107,9 @@ pub fn handle_request(req_bytes: Vec<u8>) {
         Err(e) => Err(Error::protobuf_decode(e.to_string())),
     };
 }
+
+#[no_mangle]
+/// Debug function that used to check if data was passed correctly via FFI
+pub fn handle_debug(_: Vec<u8>) -> Vec<u8> {
+    vec![1, 2, 3, 4]
+}
