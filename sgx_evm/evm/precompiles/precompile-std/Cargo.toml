@@ -9,14 +9,4 @@ targets = ["x86_64-unknown-linux-gnu"]
 
 [dependencies]
 evm = { version = "0.37", default-features = false }
-serde = { version = "1.0.144", features = ["derive"], optional = true }
-sgx_tstd = { git = "https://github.com/apache/teaclave-sgx-sdk.git", optional = true }
-
-[features]
-default = ["std"]
-std = [
-    "evm/std",
-    "evm/with-serde",
-    "serde",
-]
-sgx = ["sgx_tstd"]
+sgx_tstd = { git = "https://github.com/apache/teaclave-sgx-sdk.git" }

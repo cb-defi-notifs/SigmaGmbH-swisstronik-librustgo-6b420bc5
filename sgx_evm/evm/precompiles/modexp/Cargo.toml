@@ -13,12 +13,3 @@ precompile-std = { version = "1.0.0-dev", path = "../precompile-std", default-fe
 [dev-dependencies]
 hex = "0.4.3"
 #pallet-evm-test-vector-support = { version = "1.0.0-dev", path = "../../test-vector-support" }
-
-[features]
-default = ["std"]
-std = [
-    "num/std",
-    # Precompile-std
-    "precompile-std/std",
-]
-sgx = ["precompile-std/sgx"]

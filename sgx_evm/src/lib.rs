@@ -1,3 +1,7 @@
+#![crate_name = "sgx-evm"]
+#![crate_type = "staticlib"]
+#![no_std]
+
 use internal_types::ExecutionResult;
 use protobuf::Message;
 use protobuf::RepeatedField;

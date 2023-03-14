@@ -84,16 +84,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
-name = "common_types"
-version = "0.1.0"
-dependencies = [
- "ethereum",
- "rlp",
- "rlp-derive",
- "sgx_tstd",
-]
-
-[[package]]
 name = "const-oid"
 version = "0.9.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -503,6 +493,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "internal_types"
+version = "0.1.0"
+dependencies = [
+ "ethereum",
+ "rlp",
+ "rlp-derive",
+ "sgx_tstd",
+]
+
+[[package]]
 name = "k256"
 version = "0.11.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -674,7 +674,6 @@ version = "1.0.0-dev"
 dependencies = [
  "evm",
  "serde",
- "sgx_tstd",
 ]
 
 [[package]]
@@ -911,28 +910,6 @@ version = "1.1.6"
 source = "git+https://github.com/apache/teaclave-sgx-sdk.git#b2a8d1596727797c46f483d253f0e770333affb2"
 
 [[package]]
-name = "sgx_evm"
-version = "0.1.0"
-dependencies = [
- "common_types",
- "ethereum",
- "evm",
- "evm-precompile-blake2f",
- "evm-precompile-bn128",
- "evm-precompile-modexp",
- "evm-precompile-sha3fips",
- "evm-precompile-simple",
- "hex",
- "k256",
- "precompile-std",
- "primitive-types",
- "rlp",
- "rlp-derive",
- "sgx_tstd",
- "sha3",
-]
-
-[[package]]
 name = "sgx_libc"
 version = "1.1.6"
 source = "git+https://github.com/apache/teaclave-sgx-sdk.git#b2a8d1596727797c46f483d253f0e770333affb2"
@@ -985,6 +962,28 @@ version = "1.1.6"
 source = "git+https://github.com/apache/teaclave-sgx-sdk.git#b2a8d1596727797c46f483d253f0e770333affb2"
 dependencies = [
  "sgx_build_helper",
+]
+
+[[package]]
+name = "sgxvm"
+version = "0.1.0"
+dependencies = [
+ "ethereum",
+ "evm",
+ "evm-precompile-blake2f",
+ "evm-precompile-bn128",
+ "evm-precompile-modexp",
+ "evm-precompile-sha3fips",
+ "evm-precompile-simple",
+ "hex",
+ "internal_types",
+ "k256",
+ "precompile-std",
+ "primitive-types",
+ "rlp",
+ "rlp-derive",
+ "sgx_tstd",
+ "sha3",
 ]
 
 [[package]]

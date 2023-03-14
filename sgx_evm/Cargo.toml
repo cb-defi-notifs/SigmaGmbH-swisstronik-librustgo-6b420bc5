@@ -13,9 +13,18 @@ errno = "0.2.8"
 serde_json = "1.0.86"
 thiserror = "1.0.37"
 hex = "0.4.3"
-protobuf = "2.28.0"
-sgxvm = { path = "./evm/sgxvm" }
-internal_types = { path = "./evm/internal_types" }
+protobuf = { git = "https://github.com/mesalock-linux/rust-protobuf-sgx", branch = "v2.8" }
+sgxvm = { path = "./evm/sgxvm", features=["sgx"] }
+internal_types = { path = "./evm/internal_types", features=["sgx"] }
+
+sgx_types = { git = "https://github.com/apache/teaclave-sgx-sdk.git" }
+sgx_tstd = { git = "https://github.com/apache/teaclave-sgx-sdk.git", features = ["backtrace"] }
+sgx_tcrypto = { git = "https://github.com/apache/teaclave-sgx-sdk.git" }
+sgx_trts = { git = "https://github.com/apache/teaclave-sgx-sdk.git" }
+sgx_tseal = { git = "https://github.com/apache/teaclave-sgx-sdk.git" }
+sgx_serialize = { git = "https://github.com/apache/teaclave-sgx-sdk.git" }
+sgx_alloc = { git = "https://github.com/apache/teaclave-sgx-sdk.git" }
+sgx_libc = { git = "https://github.com/apache/teaclave-sgx-sdk.git" }
 
 [dev-dependencies]
 serde = { version = "1.0.145", default-features = false, features = ["derive"] }
