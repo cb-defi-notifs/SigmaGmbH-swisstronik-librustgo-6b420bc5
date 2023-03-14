@@ -1,4 +1,4 @@
-#![cfg_attr(not(feature = "std"), no_std)]
+#![no_std]
 
 extern crate alloc;
 
@@ -74,7 +74,7 @@ impl LinearCostPrecompile for ECRecover {
                 address[0..12].copy_from_slice(&[0u8; 12]);
                 address.to_vec()
             }
-            Err(_) => vec![],
+            Err(_) => Vec::default(),
         };
 
         Ok((ExitSucceed::Returned, result))
