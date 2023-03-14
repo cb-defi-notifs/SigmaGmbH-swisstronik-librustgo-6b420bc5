@@ -143,8 +143,9 @@ fn handle_call_request(querier: GoQuerier, data: SGXVMCallRequest) -> ExecutionR
     let context = data.context.unwrap();
 
     let vicinity = Vicinity { origin: H160::from_slice(&params.from) };
-    let mut storage = crate::storage::FFIStorage::new();
+    let mut storage = crate::storage::FFIStorage::new(&querier);
     let mut backend = backend::FFIBackend::new(
+        &querier,
         &mut storage,
         vicinity,
         build_transaction_context(context),
@@ -167,8 +168,9 @@ fn handle_create_request(querier: GoQuerier, data: SGXVMCreateRequest) -> Execut
     let context = data.context.unwrap();
 
     let vicinity = Vicinity { origin: H160::from_slice(&params.from) };
-    let mut storage = crate::storage::FFIStorage::new();
+    let mut storage = crate::storage::FFIStorage::new(&querier);
     let mut backend = backend::FFIBackend::new(
+        &querier,
         &mut storage,
         vicinity,
         build_transaction_context(context),

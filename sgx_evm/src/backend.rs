@@ -6,7 +6,7 @@ use sgxvm::primitive_types::{H160, H256, U256};
 use sgxvm::storage::Storage;
 use sgxvm::Vicinity;
 
-use crate::coder;
+use crate::{coder, GoQuerier};
 use crate::ocall;
 
 /// Contains context of the transaction such as gas price, block hash, block timestamp, etc.
@@ -21,6 +21,8 @@ pub struct TxContext {
 }
 
 pub struct FFIBackend<'state> {
+    // We keep GoQuerier to make it accessible for `OCALL` handlers
+    querier: &'state GoQuerier,
     // Contains gas price and original sender
     pub vicinity: Vicinity,
     // Accounts state
@@ -169,11 +171,10 @@ impl<'state> EvmApplyBackend for FFIBackend<'state> {
         }
 
         // Used to avoid corrupting state via invariant violation
-        assert!(
-            total_supply_add == total_supply_sub,
-            "evm execution would lead to invariant violation ({} != {})",
+        assert_eq!(
             total_supply_add,
-            total_supply_sub
+            total_supply_sub,
+            "evm execution would lead to invariant violation ({} != {})", total_supply_add, total_supply_sub
         );
 
         for log in logs {
@@ -184,10 +185,11 @@ impl<'state> EvmApplyBackend for FFIBackend<'state> {
 
 impl<'state> FFIBackend<'state> {
     pub fn new(
+        querier: &'state GoQuerier,
         storage: &'state mut dyn Storage,
         vicinity: Vicinity,
         tx_context: TxContext,
     ) -> Self {
-        Self { vicinity, state: storage, logs: vec![], tx_context }
+        Self { querier, vicinity, state: storage, logs: vec![], tx_context }
     }
 }
