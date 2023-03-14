@@ -16,7 +16,6 @@ use crate::querier::GoQuerier;
 mod error;
 mod protobuf_generated;
 mod backend;
-mod ocall;
 mod coder;
 mod storage;
 mod memory;
