@@ -2,6 +2,9 @@
 #![crate_type = "staticlib"]
 #![no_std]
 
+#[macro_use]
+extern crate sgx_tstd as std;
+
 use internal_types::ExecutionResult;
 use protobuf::Message;
 use protobuf::RepeatedField;
