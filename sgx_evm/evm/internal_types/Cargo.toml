@@ -5,7 +5,7 @@ edition = "2021"
 
 [dependencies]
 ethereum = { version = "^0.14", default-features = false }
-sgx_tstd = { git = "https://github.com/apache/teaclave-sgx-sdk.git" }
+sgx_tstd = { version="1.1.5", git = "https://github.com/apache/teaclave-sgx-sdk.git", branch="master" }
 rlp-derive = "0.1.0"
 rlp = { version = "0.5.1", default-features = false }
 

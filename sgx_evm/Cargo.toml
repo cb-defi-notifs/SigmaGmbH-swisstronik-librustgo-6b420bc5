@@ -17,14 +17,22 @@ protobuf = { git = "https://github.com/mesalock-linux/rust-protobuf-sgx", branch
 sgxvm = { path = "./evm/sgxvm" }
 internal_types = { path = "./evm/internal_types" }
 
-sgx_types = { git = "https://github.com/apache/teaclave-sgx-sdk.git" }
-sgx_tstd = { git = "https://github.com/apache/teaclave-sgx-sdk.git", features = ["backtrace"] }
-sgx_tcrypto = { git = "https://github.com/apache/teaclave-sgx-sdk.git" }
-sgx_trts = { git = "https://github.com/apache/teaclave-sgx-sdk.git" }
-sgx_tseal = { git = "https://github.com/apache/teaclave-sgx-sdk.git" }
-sgx_serialize = { git = "https://github.com/apache/teaclave-sgx-sdk.git" }
-sgx_alloc = { git = "https://github.com/apache/teaclave-sgx-sdk.git" }
-sgx_libc = { git = "https://github.com/apache/teaclave-sgx-sdk.git" }
+sgx_types = { version = "1.1.5", git = "https://github.com/apache/teaclave-sgx-sdk.git", branch = "master" }
+sgx_tstd = { version = "1.1.5", git = "https://github.com/apache/teaclave-sgx-sdk.git", branch = "master" }
+sgx_trts = { version = "1.1.5", git = "https://github.com/apache/teaclave-sgx-sdk.git", branch = "master" }
+
+[patch."https://github.com/apache/teaclave-sgx-sdk.git"]
+sgx_tstd = { version = "1.1.5", git = "https://github.com/haerdib/incubator-teaclave-sgx-sdk", branch = "master"}
+sgx_alloc = { version = "1.1.5", git = "https://github.com/haerdib/incubator-teaclave-sgx-sdk", branch = "master"}
+sgx_libc = { version = "1.1.5", git = "https://github.com/haerdib/incubator-teaclave-sgx-sdk", branch = "master"}
+sgx_serialize = { version = "1.1.5", git = "https://github.com/haerdib/incubator-teaclave-sgx-sdk", branch = "master"}
+sgx_serialize_derive = { version = "1.1.5", git = "https://github.com/haerdib/incubator-teaclave-sgx-sdk", branch = "master"}
+sgx_serialize_derive_internals = { version = "1.1.5", git = "https://github.com/haerdib/incubator-teaclave-sgx-sdk", branch = "master"}
+sgx_trts = { version = "1.1.5", git = "https://github.com/haerdib/incubator-teaclave-sgx-sdk", branch = "master"}
+sgx_types = { version = "1.1.5", git = "https://github.com/haerdib/incubator-teaclave-sgx-sdk", branch = "master"}
+sgx_tcrypto = { version = "1.1.5", git = "https://github.com/haerdib/incubator-teaclave-sgx-sdk", branch = "master"}
+sgx_tcrypto_helper = { version = "1.1.5", git = "https://github.com/haerdib/incubator-teaclave-sgx-sdk", branch = "master"}
+sgx_crypto_helper = { version = "1.1.5", git = "https://github.com/haerdib/incubator-teaclave-sgx-sdk", branch = "master"}
 
 [dev-dependencies]
 serde = { version = "1.0.145", default-features = false, features = ["derive"] }
