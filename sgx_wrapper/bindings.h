@@ -222,6 +222,12 @@ typedef struct ByteSliceView {
   uintptr_t len;
 } ByteSliceView;
 
+typedef struct QueryResult {
+  struct UnmanagedVector output;
+  GoError error;
+  struct UnmanagedVector error_message;
+} QueryResult;
+
 extern struct Vec_u8 handle_debug(struct Vec_u8 req);
 
 extern struct UnmanagedVector handle_request(struct GoQuerier querier,
@@ -244,3 +250,5 @@ void destroy_unmanaged_vector(struct UnmanagedVector v);
  * The string is owned by sgx_wrapper and must not be mutated or destroyed by the caller.
  */
 const char *version_str(void);
+
+extern struct QueryResult query(struct GoQuerier q, struct U8SliceView req);

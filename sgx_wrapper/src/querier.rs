@@ -31,6 +31,13 @@ pub struct Querier_vtable {
     ) -> i32,
 }
 
+#[repr(C)]
+pub struct QueryResult {
+    pub output: UnmanagedVector,
+    pub error: GoError,
+    pub error_message: UnmanagedVector,
+}
+
 fn u256_to_vec(value: U256) -> Vec<u8> {
     let mut buffer = [0u8; 32];
     value.to_big_endian(&mut buffer);
@@ -307,6 +314,24 @@ impl GoQuerier {
             Err(err) => {
                 println!("[Rust] remove_storage_cell: got error: {:?}", err);
             }
+        }
+    }
+
+    pub fn make_query(&self, request: U8SliceView) -> QueryResult {
+        let mut output = UnmanagedVector::default();
+        let mut error_msg = UnmanagedVector::default();
+
+        let go_result: GoError = (self.vtable.query_external)(
+            self.state,
+            request,
+            &mut output as *mut UnmanagedVector,
+            &mut error_msg as *mut UnmanagedVector,
+        ).into();
+
+        QueryResult {
+            output,
+            error: go_result,
+            error_message: error_msg,
         }
     }
 
