@@ -14,8 +14,8 @@ serde_json = "1.0.86"
 thiserror = "1.0.37"
 hex = "0.4.3"
 protobuf = { git = "https://github.com/mesalock-linux/rust-protobuf-sgx", branch = "v2.8" }
-sgxvm = { path = "./evm/sgxvm", features=["sgx"] }
-internal_types = { path = "./evm/internal_types", features=["sgx"] }
+sgxvm = { path = "./evm/sgxvm" }
+internal_types = { path = "./evm/internal_types" }
 
 sgx_types = { git = "https://github.com/apache/teaclave-sgx-sdk.git" }
 sgx_tstd = { git = "https://github.com/apache/teaclave-sgx-sdk.git", features = ["backtrace"] }
