@@ -1,5 +1,3 @@
-#![no_std]
-
 use std::boxed::Box;
 use std::vec::Vec;
 
