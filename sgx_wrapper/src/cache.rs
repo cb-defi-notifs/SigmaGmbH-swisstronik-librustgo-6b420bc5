@@ -18,7 +18,6 @@ use crate::querier::GoQuerier;
 pub const PB_REQUEST_ARG: &str = "pb_request";
 
 extern "C" {
-    fn handle_debug(req: Vec<u8>) -> Vec<u8>;
     fn handle_request(querier: GoQuerier, request: ByteSliceView, error_msg: Option<&mut UnmanagedVector>) -> UnmanagedVector;
 }
 
@@ -150,15 +149,6 @@ pub extern "C" fn make_pb_request(
     // UnmanagedVector::new(Some(data))
 
     unsafe { handle_request(querier, request, error_msg) }
-}
-
-#[no_mangle]
-// TODO: Remove after debugging
-pub extern "C" fn make_debug_request() -> UnmanagedVector {
-    let data = vec![4u8, 3u8, 2u8, 1u8];
-    let res = unsafe { handle_debug(data) };
-
-    UnmanagedVector::new(Some(res.to_vec()))
 }
 
 fn convert_topic_to_proto(topic: H256) -> Topic {

@@ -57,8 +57,6 @@ enum GoError {
 };
 typedef int32_t GoError;
 
-typedef struct Vec_u8 Vec_u8;
-
 /**
  * An optional Vector type that requires explicit creation and destruction
  * and can be sent via FFI.
@@ -228,8 +226,6 @@ typedef struct QueryResult {
   struct UnmanagedVector error_message;
 } QueryResult;
 
-extern struct Vec_u8 handle_debug(struct Vec_u8 req);
-
 extern struct UnmanagedVector handle_request(struct GoQuerier querier,
                                              struct ByteSliceView request,
                                              struct UnmanagedVector *error_msg);
@@ -237,8 +233,6 @@ extern struct UnmanagedVector handle_request(struct GoQuerier querier,
 struct UnmanagedVector make_pb_request(struct GoQuerier querier,
                                        struct ByteSliceView request,
                                        struct UnmanagedVector *error_msg);
-
-struct UnmanagedVector make_debug_request(void);
 
 struct UnmanagedVector new_unmanaged_vector(bool nil, const uint8_t *ptr, uintptr_t length);
 

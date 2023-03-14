@@ -26,12 +26,6 @@ mod querier;
 pub const PB_REQUEST_ARG: &str = "pb_request";
 
 #[no_mangle]
-// TODO: Remove after debugging
-pub fn handle_debug(_: Vec<u8>) -> Vec<u8> {
-    vec![1, 2, 3, 4]
-}
-
-#[no_mangle]
 /// Handles incoming protobuf-encoded request for transaction handling
 pub extern "C" fn handle_request(
     querier: querier::GoQuerier,
