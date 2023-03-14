@@ -28,7 +28,7 @@ pub const PB_REQUEST_ARG: &str = "pb_request";
 #[no_mangle]
 /// Handles incoming protobuf-encoded request for transaction handling
 pub extern "C" fn handle_request(
-    querier: querier::GoQuerier,
+    querier: *mut GoQuerier,
     request: ByteSliceView,
     error_msg: Option<&mut UnmanagedVector>,
 ) -> UnmanagedVector {
@@ -138,14 +138,14 @@ pub extern "C" fn handle_request(
     UnmanagedVector::new(Some(data))
 }
 
-fn handle_call_request(querier: GoQuerier, data: SGXVMCallRequest) -> ExecutionResult {
+fn handle_call_request(querier: *mut GoQuerier, data: SGXVMCallRequest) -> ExecutionResult {
     let params = data.params.unwrap();
     let context = data.context.unwrap();
 
     let vicinity = Vicinity { origin: H160::from_slice(&params.from) };
-    let mut storage = crate::storage::FFIStorage::new(&querier);
+    let mut storage = crate::storage::FFIStorage::new(querier);
     let mut backend = backend::FFIBackend::new(
-        &querier,
+        querier,
         &mut storage,
         vicinity,
         build_transaction_context(context),
@@ -163,14 +163,14 @@ fn handle_call_request(querier: GoQuerier, data: SGXVMCallRequest) -> ExecutionR
     )
 }
 
-fn handle_create_request(querier: GoQuerier, data: SGXVMCreateRequest) -> ExecutionResult {
+fn handle_create_request(querier: *mut GoQuerier, data: SGXVMCreateRequest) -> ExecutionResult {
     let params = data.params.unwrap();
     let context = data.context.unwrap();
 
     let vicinity = Vicinity { origin: H160::from_slice(&params.from) };
-    let mut storage = crate::storage::FFIStorage::new(&querier);
+    let mut storage = crate::storage::FFIStorage::new(querier);
     let mut backend = backend::FFIBackend::new(
-        &querier,
+        querier,
         &mut storage,
         vicinity,
         build_transaction_context(context),

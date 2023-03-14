@@ -22,7 +22,7 @@ pub struct TxContext {
 
 pub struct FFIBackend<'state> {
     // We keep GoQuerier to make it accessible for `OCALL` handlers
-    querier: &'state GoQuerier,
+    querier: *mut GoQuerier,
     // Contains gas price and original sender
     pub vicinity: Vicinity,
     // Accounts state
@@ -185,7 +185,7 @@ impl<'state> EvmApplyBackend for FFIBackend<'state> {
 
 impl<'state> FFIBackend<'state> {
     pub fn new(
-        querier: &'state GoQuerier,
+        querier: *mut GoQuerier,
         storage: &'state mut dyn Storage,
         vicinity: Vicinity,
         tx_context: TxContext,

@@ -3,5 +3,5 @@ use crate::error::GoError;
 use crate::memory::U8SliceView;
 
 extern "C" {
-    pub fn query(q: GoQuerier, req: U8SliceView) -> QueryResult;
+    pub fn query(q: *mut GoQuerier, req: U8SliceView) -> QueryResult;
 }

@@ -3,7 +3,6 @@ use std::marker::PhantomData;
 use std::panic::catch_unwind;
 use std::ptr::slice_from_raw_parts;
 
-use protobuf::Message;
 use sgx_evm::primitive_types::H256;
 
 use crate::error::{handle_c_error_default, Error};
@@ -18,7 +17,7 @@ use crate::querier::GoQuerier;
 pub const PB_REQUEST_ARG: &str = "pb_request";
 
 extern "C" {
-    fn handle_request(querier: GoQuerier, request: ByteSliceView, error_msg: Option<&mut UnmanagedVector>) -> UnmanagedVector;
+    fn handle_request(querier: *mut GoQuerier, request: ByteSliceView, error_msg: Option<&mut UnmanagedVector>) -> UnmanagedVector;
 }
 
 #[repr(C)]
@@ -148,7 +147,8 @@ pub extern "C" fn make_pb_request(
     // let data = handle_c_error_default(r, error_msg);
     // UnmanagedVector::new(Some(data))
 
-    unsafe { handle_request(querier, request, error_msg) }
+    let querier_boxed: Box<GoQuerier> = Box::new(querier);
+    unsafe { handle_request(Box::into_raw(querier_boxed), request, error_msg) }
 }
 
 fn convert_topic_to_proto(topic: H256) -> Topic {
