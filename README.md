@@ -4,6 +4,18 @@ This is a wrapper around the [Sputnik VM](https://github.com/rust-blockchain/evm
 It allows you to compile, initialize and execute EVM smart contracts
 from Go applications, in particular from [x/evm](https://github.com/CosmWasm/wasmd/tree/master/x/wasm).
 
+## Build SGX-EVM & SGX-Wrapper
+
+Ensure that SGX SDK was installed to `/opt/intel/` directory
+
+Then run:
+`source /opt/intel/sgxsdk/environment`
+
+Now you are ready to build enclave with SGX-EVM and wrapper around it. To do it, run:
+`make build`
+
+If you want to build SGX-EVM enclave only, run: `make sgx`
+
 ## Build & Run
 
 `cd libsgx_wrapper`
