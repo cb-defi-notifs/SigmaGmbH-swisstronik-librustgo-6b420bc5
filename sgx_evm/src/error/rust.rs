@@ -1,9 +1,11 @@
 use errno::{set_errno, Errno};
 #[cfg(feature = "backtraces")]
 use std::backtrace::Backtrace;
-use thiserror::Error;
+use thiserror_no_std::Error;
 use crate::memory::UnmanagedVector;
 use std::string::String;
+use std::vec::Vec;
+use std::string::ToString;
 
 #[derive(Error, Debug)]
 pub enum RustError {

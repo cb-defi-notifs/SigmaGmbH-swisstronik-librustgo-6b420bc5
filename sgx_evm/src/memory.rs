@@ -1,6 +1,7 @@
 use std::mem;
 use std::slice;
 use std::vec::Vec;
+use std::borrow::ToOwned;
 
 /// A view into an externally owned byte slice (Go `[]byte`).
 /// Use this for the current call only. A view cannot be copied for safety reasons.

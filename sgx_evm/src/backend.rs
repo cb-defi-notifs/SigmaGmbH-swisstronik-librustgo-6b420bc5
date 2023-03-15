@@ -5,6 +5,7 @@ use sgxvm::evm::backend::{Backend as EvmBackend, ApplyBackend as EvmApplyBackend
 use sgxvm::primitive_types::{H160, H256, U256};
 use sgxvm::storage::Storage;
 use sgxvm::Vicinity;
+use std::vec::Vec;
 
 use crate::{coder, GoQuerier};
 

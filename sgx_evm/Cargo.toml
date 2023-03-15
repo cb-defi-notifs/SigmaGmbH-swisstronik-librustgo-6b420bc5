@@ -10,9 +10,9 @@ crate-type = ["staticlib"]
 
 [dependencies]
 errno = { version = "0.2.8", default-features=false }
-thiserror = "1.0.37"
+thiserror-no-std = "2.0.2"
 hex = { version = "0.4.3", default-features=false }
-protobuf = { git = "https://github.com/mesalock-linux/rust-protobuf-sgx", branch = "v2.8", default-features=false }
+protobuf = { git = "https://github.com/mesalock-linux/rust-protobuf-sgx", branch = "v2.8" }
 sgxvm = { path = "./evm/sgxvm" }
 internal_types = { path = "./evm/internal_types" }
 
@@ -25,10 +25,5 @@ sgx_tstd = { version = "1.1.5", git = "https://github.com/haerdib/incubator-teac
 sgx_trts = { version = "1.1.5", git = "https://github.com/haerdib/incubator-teaclave-sgx-sdk", branch = "master"}
 sgx_types = { version = "1.1.5", git = "https://github.com/haerdib/incubator-teaclave-sgx-sdk", branch = "master"}
 
-[dev-dependencies]
-serde = { version = "1.0.145", default-features = false, features = ["derive"] }
-tempfile = "3.3.0"
-
-[build-dependencies]
-cbindgen = "0.24.3"
-protoc-rust = { git = "https://github.com/mesalock-linux/rust-protobuf-sgx", branch = "v2.8", default-features=false }
+#[build-dependencies]
+#protoc-rust = { git = "https://github.com/mesalock-linux/rust-protobuf-sgx", branch = "v2.8", default-features=false }
