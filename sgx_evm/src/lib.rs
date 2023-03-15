@@ -1,5 +1,3 @@
-#![crate_name = "sgx-evm"]
-#![crate_type = "staticlib"]
 #![no_std]
 
 #[macro_use]
@@ -11,6 +9,7 @@ use protobuf::RepeatedField;
 use sgxvm::{self, Vicinity};
 use sgxvm::primitive_types::{H160, H256, U256};
 use std::panic::catch_unwind;
+use std::vec::Vec;
 
 use crate::error::{handle_c_error_default, Error};
 use crate::protobuf_generated::ffi::{

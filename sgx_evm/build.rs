@@ -1,12 +1,11 @@
+#![no_std]
+
 extern crate protoc_rust;
 
-use std::env;
 use protoc_rust::Customize;
 
 
 fn main() {
-    let crate_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
-
     protoc_rust::Codegen::new()
         .out_dir("src/protobuf_generated")
         .includes(&["./protobuf_contracts"])

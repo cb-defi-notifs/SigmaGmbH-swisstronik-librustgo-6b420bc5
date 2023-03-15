@@ -1,130 +1,60 @@
-.PHONY: all build build-rust build-go test
+SHELL := /bin/bash
+COMPILER = rustc
+TARGET = $(shell rustc --version --verbose 2> /dev/null | awk "/host:/ { print \$$2 }")
+TARGET_DIR = target/release/
+DEFAULT = help
 
-# Builds the Rust library libsgx_wrapper
-BUILDERS_PREFIX := cosmwasm/go-ext-builder:0013
-# Contains a full Go dev environment in order to run Go tests on the built library
-ALPINE_TESTER := cosmwasm/go-ext-builder:0013-alpine
+define sgx_clean
+	@echo "Cleaning enclave dependencies"
+	@rm -rf ./bin/*
+	@rm -rf ./lib/*
+	@rm -f ./Enclave_u*
+	@rm -rf ./sgx_evm/target
+	@rm -f ./sgx_evm/Enclave_t*
+	@rm -f ./sgx_evm/enclave.unsigned.so
+endef
 
-USER_ID := $(shell id -u)
-USER_GROUP = $(shell id -g)
+define sgx_build
+	$(call sgx_clean)
+	@echo "Building enclave"
+	@CARGO_TARGET_DIR=./sgx_evm/target RUSTFLAGS="-C target-cpu=native" cargo build --release --manifest-path ./sgx_evm/Cargo.toml
+	@/opt/intel/sgxsdk/bin/x64/sgx_edger8r --trusted ./sgx_evm/Enclave.edl --search-path /opt/intel/sgxsdk/include --search-path ./sdk/edl --trusted-dir ./sgx_evm
+	@/opt/intel/sgxsdk/bin/x64/sgx_edger8r --untrusted ./sgx_evm/Enclave.edl --search-path /opt/intel/sgxsdk/include --search-path ./sdk/edl --untrusted-dir ./
+	@cc -m64 -O2 -fstack-protector -fPIC -Wno-attributes -I ./ -I./include -I/opt/intel/sgxsdk/include -I./sdk/edl -c ./Enclave_u.c -o ./Enclave_u.o
+	@ar rcsD ./lib/libEnclave_u.a ./Enclave_u.o
+	@cp ./sgx_evm/target/release/libenclave.a ./lib/libenclave.a
+	@cc -m64 -O2 -fstack-protector -ffreestanding -nostdinc -fvisibility=hidden -fpie -fno-strict-overflow -fno-delete-null-pointer-checks -I./sdk/common/inc -I./sdk/edl -I/opt/intel/sgxsdk/include -I/opt/intel/sgxsdk/include/tlibc -I/opt/intel/sgxsdk/include/stlport -I/opt/intel/sgxsdk/include/epid -I ./enclave -I./include -c ./enclave/Enclave_t.c -o ./enclave/Enclave_t.o
+	@g++ ./sgx_evm/Enclave_t.o -o ./sgx_evm/enclave.unsigned.so -Wl,--no-undefined -nostdlib -nodefaultlibs -nostartfiles -L/opt/intel/sgxsdk/lib64 -Wl,--whole-archive -lsgx_trts -Wl,--no-whole-archive -Wl,--start-group -lsgx_tstdc -lsgx_tcxx -lsgx_tservice -lsgx_tcrypto -lsgx_urts -lpthread -L./lib -lenclave -Wl,--end-group -Wl,--version-script=./sgx_evm/Enclave.lds -Wl,-z,relro,-z,now,-z,noexecstack -Wl,-Bstatic -Wl,-Bsymbolic -Wl,--no-undefined -Wl,-pie,-eenclave_entry -Wl,--export-dynamic -Wl,--gc-sections -Wl,--defsym,__ImageBase=0
+	@echo "Signing enclave"
+	@/opt/intel/sgxsdk/bin/x64/sgx_sign sign -key ./sgx_evm/Enclave_private.pem -enclave ./sgx_evm/enclave.unsigned.so -out ./bin/enclave.signed.so -config ./sgx_evm/Enclave.config.xml
+endef
 
-SHARED_LIB_SRC = "" # File name of the shared library as created by the Rust build system
-SHARED_LIB_DST = "" # File name of the shared library that we store
-ifeq ($(OS),Windows_NT)
-	SHARED_LIB_SRC = sgx_wrapper.dll
-	SHARED_LIB_DST = sgx_wrapper.dll
-else
-	UNAME_S := $(shell uname -s)
-	ifeq ($(UNAME_S),Linux)
-		SHARED_LIB_SRC = libsgx_wrapper.so
-		SHARED_LIB_DST = libsgx_wrapper.$(shell rustc --print cfg | grep target_arch | cut  -d '"' -f 2).so
-	endif
-	ifeq ($(UNAME_S),Darwin)
-		SHARED_LIB_SRC = libsgx_wrapper.dylib
-		SHARED_LIB_DST = libsgx_wrapper.dylib
-	endif
-endif
+all: $(DEFAULT)
 
-test-filenames:
-	echo $(SHARED_LIB_DST)
-	echo $(SHARED_LIB_SRC)
+help:
+	@echo "Usage:"
+	@echo "	make build						- Builds application"
+	@echo "	make sgx"						- Builds Intel SGX enclave
 
-all: build test
+.PHONY: \
+		build \
+		sgx \
+		clean \
 
-build: build-rust build-go
+clean:
+	$(call dcap_clean)
+	$(call sgx_clean)
+	cargo clean
+	rm -f "$(TARGET_DIR)"
+	echo "Binaries and dependencies deleted"
 
-build-rust: build-rust-release
+build:
+	$(call sgx_build)
+	@echo "Build application"
+	@cargo build --release
+	@cp ./bin/enclave.signed.so ./target/release/enclave.signed.so
+	@echo "Application built"
 
-# Use debug build for quick testing.
-# In order to use "--features backtraces" here we need a Rust nightly toolchain, which we don't have by default
-build-rust-debug:
-	(cd libsgx_wrapper && cargo build)
-	cp libsgx_wrapper/target/debug/$(SHARED_LIB_SRC) internal/api/$(SHARED_LIB_DST)
-	make update-bindings
-
-# use release build to actually ship - smaller and much faster
-#
-# See https://github.com/SigmaGmbH/librustgo/issues/222#issuecomment-880616953 for two approaches to
-# enable stripping through cargo (if that is desired).
-build-rust-release:
-	(cd libsgx_wrapper && cargo build --release)
-	cp libsgx_wrapper/target/release/$(SHARED_LIB_SRC) internal/api/$(SHARED_LIB_DST)
-	make update-bindings
-	@ #this pulls out ELF symbols, 80% size reduction!
-
-build-go:
-	go build ./...
-
-test:
-	# Use package list mode to include all subdirectores. The -count=1 turns off caching.
-	RUST_BACKTRACE=1 go test -v -count=1 ./...
-
-test-safety:
-	# Use package list mode to include all subdirectores. The -count=1 turns off caching.
-	GODEBUG=cgocheck=2 go test -race -v -count=1 ./...
-
-# Creates a release build in a containerized build environment of the static library for Alpine Linux (.a)
-release-build-alpine:
-	rm -rf libsgx_wrapper/target/release
-	# build the muslc *.a file
-	docker run --rm -u $(USER_ID):$(USER_GROUP) -v $(shell pwd)/libsgx_wrapper:/code $(BUILDERS_PREFIX)-alpine
-	cp libsgx_wrapper/artifacts/libsgx_wrapper_muslc.a internal/api
-	cp libsgx_wrapper/artifacts/libsgx_wrapper_muslc.aarch64.a internal/api
-	make update-bindings
-
-# Creates a release build in a containerized build environment of the shared library for glibc Linux (.so)
-release-build-linux:
-	rm -rf libsgx_wrapper/target/release
-	docker run --rm -u $(USER_ID):$(USER_GROUP) -v $(shell pwd)/libsgx_wrapper:/code $(BUILDERS_PREFIX)-centos7
-	cp libsgx_wrapper/artifacts/libsgx_wrapper.x86_64.so internal/api
-	cp libsgx_wrapper/artifacts/libsgx_wrapper.aarch64.so internal/api
-	make update-bindings
-
-# Creates a release build in a containerized build environment of the shared library for macOS (.dylib)
-release-build-macos:
-	rm -rf libsgx_wrapper/target/x86_64-apple-darwin/release
-	rm -rf libsgx_wrapper/target/aarch64-apple-darwin/release
-	docker run --rm -u $(USER_ID):$(USER_GROUP) -v $(shell pwd)/libsgx_wrapper:/code $(BUILDERS_PREFIX)-cross build_macos.sh
-	cp libsgx_wrapper/artifacts/libsgx_wrapper.dylib internal/api
-	make update-bindings
-
-# Creates a release build in a containerized build environment of the shared library for Windows (.dll)
-release-build-windows:
-	rm -rf libsgx_wrapper/target/release
-	docker run --rm -u $(USER_ID):$(USER_GROUP) -v $(shell pwd)/libsgx_wrapper:/code $(BUILDERS_PREFIX)-cross build_windows.sh
-	cp libsgx_wrapper/target/x86_64-pc-windows-gnu/release/sgx_wrapper.dll internal/api
-	make update-bindings
-
-update-bindings:
-# After we build libsgx_wrapper, we have to copy the generated bindings for Go code to use.
-# We cannot use symlinks as those are not reliably resolved by `go get` (https://github.com/SigmaGmbH/librustgo/pull/235).
-	cp libsgx_wrapper/bindings.h internal/api
-
-release-build:
-	# Write like this because those must not run in parallel
-	make release-build-alpine
-	make release-build-linux
-	make release-build-macos
-	make release-build-windows
-
-test-alpine: release-build-alpine
-# try running go tests using this lib with muslc
-	docker run --rm -u $(USER_ID):$(USER_GROUP) -v $(shell pwd):/mnt/testrun -w /mnt/testrun $(ALPINE_TESTER) go build -tags muslc ./...
-# Use package list mode to include all subdirectores. The -count=1 turns off caching.
-	docker run --rm -u $(USER_ID):$(USER_GROUP) -v $(shell pwd):/mnt/testrun -w /mnt/testrun $(ALPINE_TESTER) go test -tags muslc -count=1 ./...
-
-	@# Build a Go demo binary called ./demo that links the static library from the previous step.
-	@# Whether the result is a statically linked or dynamically linked binary is decided by `go build`
-	@# and it's a bit unclear how this is decided. We use `file` to see what we got.
-	docker run --rm -u $(USER_ID):$(USER_GROUP) -v $(shell pwd):/mnt/testrun -w /mnt/testrun $(ALPINE_TESTER) ./build_demo.sh
-	docker run --rm -u $(USER_ID):$(USER_GROUP) -v $(shell pwd):/mnt/testrun -w /mnt/testrun $(ALPINE_TESTER) file ./demo
-
-	@# Run the demo binary on Alpine machines
-	@# See https://de.wikipedia.org/wiki/Alpine_Linux#Versionen for supported versions
-	docker run --rm --read-only -v $(shell pwd):/mnt/testrun -w /mnt/testrun alpine:3.15 ./demo ./testdata/hackatom.wasm
-	docker run --rm --read-only -v $(shell pwd):/mnt/testrun -w /mnt/testrun alpine:3.14 ./demo ./testdata/hackatom.wasm
-	docker run --rm --read-only -v $(shell pwd):/mnt/testrun -w /mnt/testrun alpine:3.13 ./demo ./testdata/hackatom.wasm
-	docker run --rm --read-only -v $(shell pwd):/mnt/testrun -w /mnt/testrun alpine:3.12 ./demo ./testdata/hackatom.wasm
-
-	@# Run binary locally if you are on Linux
-	@# ./demo ./testdata/hackatom.wasm
+sgx:
+	$(call sgx_build)
+	@echo "Intel SGX enclave built and signed"

@@ -2,6 +2,7 @@ use sgxvm::evm::backend::Basic;
 use sgxvm::primitive_types::{H160, H256, U256};
 use sgxvm::storage::Storage;
 use crate::querier::GoQuerier;
+use std::vec::Vec;
 
 /// This struct allows us to obtain state from keeper
 /// that is located outside of Rust code

@@ -3,6 +3,7 @@ use errno::{set_errno, Errno};
 use std::backtrace::Backtrace;
 use thiserror::Error;
 use crate::memory::UnmanagedVector;
+use std::string::String;
 
 #[derive(Error, Debug)]
 pub enum RustError {
