@@ -5,6 +5,6 @@ enclave {
     from "sgx_tstdc.edl" import *;
 
     trusted {
-        public sgx_status_t handle_debug_call();
+        public sgx_status_t handle_request();
     };
 };

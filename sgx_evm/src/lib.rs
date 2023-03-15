@@ -3,6 +3,9 @@
 #[macro_use]
 extern crate sgx_tstd as std;
 
+extern crate sgx_types;
+use sgx_types::sgx_status_t;
+
 use internal_types::ExecutionResult;
 use protobuf::Message;
 use protobuf::RepeatedField;
@@ -33,10 +36,10 @@ pub const PB_REQUEST_ARG: &str = "pb_request";
 #[no_mangle]
 /// Handles incoming protobuf-encoded request for transaction handling
 pub extern "C" fn handle_request(
-    querier: *mut GoQuerier,
-    request: ByteSliceView,
-    error_msg: Option<&mut UnmanagedVector>,
-) -> UnmanagedVector {
+//    querier: *mut GoQuerier,
+//    request: ByteSliceView,
+//    error_msg: Option<&mut UnmanagedVector>,
+) -> sgx_types::sgx_status_t {
 //    let r = catch_unwind(|| {
 //        let req_bytes = request
 //            .read()
@@ -141,7 +144,7 @@ pub extern "C" fn handle_request(
 
 //    let data = handle_c_error_default(r, error_msg);
 //    UnmanagedVector::new(Some(data))
-    UnmanagedVector::new(None)
+    sgx_status_t::SGX_SUCCESS
 }
 
 fn handle_call_request(querier: *mut GoQuerier, data: SGXVMCallRequest) -> ExecutionResult {
