@@ -1,0 +1,13 @@
+[package]
+name = "debug_app"
+version = "0.1.0"
+edition = "2021"
+build = "build.rs"
+
+[[bin]]
+name = "debug_app"
+path = "src/bin.rs"
+
+[dependencies]
+sgx_types = { version = "1.1.5", tag = "v1.1.5", git = "https://github.com/apache/teaclave-sgx-sdk.git" }
+sgx_urts = { version = "1.1.5", tag = "v1.1.5", git = "https://github.com/apache/teaclave-sgx-sdk.git" }

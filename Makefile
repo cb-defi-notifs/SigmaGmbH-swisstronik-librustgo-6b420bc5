@@ -71,3 +71,11 @@ sgx:
 	$(call protobuf)
 	$(call sgx_build)
 	@echo "Intel SGX enclave built and signed"
+
+
+buildapp:
+	$(call protobuf)
+	$(call sgx_build)
+	@CARGO_TARGET_DIR=./debug_app/target cargo build --release --manifest-path=debug_app/Cargo.toml
+	@cp ../bin/enclave.signed.so ./target/release/enclave.signed.so
+	@echo "Debug application built"
