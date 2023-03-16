@@ -144,6 +144,7 @@ pub extern "C" fn handle_request(
 
 //    let data = handle_c_error_default(r, error_msg);
 //    UnmanagedVector::new(Some(data))
+    println!("hello from enclave");
     sgx_status_t::SGX_SUCCESS
 }
 
