@@ -1,5 +1,5 @@
 use std::string::ToString;
-use crate::{UnmanagedVector, U8SliceView, error::GoError};
+use crate::{UnmanagedVector, U8SliceView, errors::GoError};
 
 #[repr(C)]
 #[derive(Clone)]

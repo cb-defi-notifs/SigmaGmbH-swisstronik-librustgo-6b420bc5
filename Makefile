@@ -87,11 +87,6 @@ sgx:
 
 build:
 	$(call sgx_build)
-	@CARGO_TARGET_DIR=./app/target RUSTFLAGS="-C target-cpu=native" cargo build --release --manifest-path ./app/Cargo.toml
+	@cd app && cargo build --release
 	@cp ./sgx-artifacts/bin/enclave.signed.so ./app/target/release/enclave.signed.so
-
-build-wrapper-bin:
-	$(call sgx_build)
-	@CARGO_TARGET_DIR=./sgx_wrapper/target cargo build --bins --release --manifest-path ./sgx_wrapper/Cargo.toml
-	@cp ./sgx-artifacts/bin/enclave.signed.so ./sgx_wrapper/target/release/enclave.signed.so
 
