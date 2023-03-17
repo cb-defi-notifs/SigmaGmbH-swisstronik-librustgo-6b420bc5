@@ -4,13 +4,11 @@ use std::panic::catch_unwind;
 
 use crate::memory::{ByteSliceView, UnmanagedVector};
 use crate::querier::GoQuerier;
+use crate::errors::{handle_c_error_default, Error};
+use crate::enclave;
 
 // store some common string for argument names
 pub const PB_REQUEST_ARG: &str = "pb_request";
-
-extern "C" {
-    fn handle_request(querier: *mut GoQuerier, request: ByteSliceView, error_msg: Option<&mut UnmanagedVector>) -> UnmanagedVector;
-}
 
 #[repr(C)]
 #[allow(dead_code)]
@@ -36,62 +34,21 @@ pub extern "C" fn make_pb_request(
     request: ByteSliceView,
     error_msg: Option<&mut UnmanagedVector>,
 ) -> UnmanagedVector {
-    let querier_boxed: Box<GoQuerier> = Box::new(querier);
-    unsafe { handle_request(Box::into_raw(querier_boxed), request, error_msg) }
-}
+    let r = catch_unwind(|| {
+        // Check if request is correct
+        let req_bytes = request
+            .read()
+            .ok_or_else(|| Error::unset_arg(PB_REQUEST_ARG))?;
 
-fn _set_to_csv(set: HashSet<String>) -> String {
-    let mut list: Vec<String> = set.into_iter().collect();
-    list.sort_unstable();
-    list.join(",")
-}
+        // Initialize enclave
+        let evm_enclave = match enclave::init_enclave() {
+            Ok(r) => {r},
+            Err(err) => { return Err(Error::vm_err("Cannot initialize SGXVM enclave")) },
+        };
 
-/// frees a cache reference
-///
-/// # Safety
-///
-/// This must be called exactly once for any `*cache_t` returned by `init_cache`
-/// and cannot be called on any other pointer.
-// #[no_mangle]
-// pub extern "C" fn release_cache(cache: *mut cache_t) {
-//     if !cache.is_null() {
-//         // this will free cache when it goes out of scope
-//         let _ = unsafe { Box::from_raw(cache as *mut Cache<GoApi, GoStorage, GoQuerier>) };
-//     }
-// }
+        Ok(UnmanagedVector::new(None))
+    }).unwrap_or_else(|_| Err(Error::panic()));
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use std::iter::FromIterator;
-
-    #[test]
-    fn set_to_csv_works() {
-        assert_eq!(_set_to_csv(HashSet::new()), "");
-        assert_eq!(
-            _set_to_csv(HashSet::from_iter(vec!["foo".to_string()])),
-            "foo",
-        );
-        assert_eq!(
-            _set_to_csv(HashSet::from_iter(vec![
-                "foo".to_string(),
-                "bar".to_string(),
-                "baz".to_string(),
-            ])),
-            "bar,baz,foo",
-        );
-        assert_eq!(
-            _set_to_csv(HashSet::from_iter(vec![
-                "a".to_string(),
-                "aa".to_string(),
-                "b".to_string(),
-                "c".to_string(),
-                "A".to_string(),
-                "AA".to_string(),
-                "B".to_string(),
-                "C".to_string(),
-            ])),
-            "A,AA,B,C,a,aa,b,c",
-        );
-    }
+    let data = handle_c_error_default(r, error_msg);
+    UnmanagedVector::new(None)
 }
