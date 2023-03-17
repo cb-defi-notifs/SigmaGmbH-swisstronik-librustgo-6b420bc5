@@ -46,6 +46,9 @@ pub extern "C" fn make_pb_request(
             Err(err) => { return Err(Error::vm_err("Cannot initialize SGXVM enclave")) },
         };
 
+        // Destory enclave after usage
+        evm_enclave.destroy();
+
         Ok(UnmanagedVector::new(None))
     }).unwrap_or_else(|_| Err(Error::panic()));
 
