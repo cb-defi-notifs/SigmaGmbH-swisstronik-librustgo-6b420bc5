@@ -220,6 +220,8 @@ typedef struct ByteSliceView {
   uintptr_t len;
 } ByteSliceView;
 
+extern sgx_status_t handle_request(sgx_enclave_id_t eid, sgx_status_t *retval);
+
 extern struct UnmanagedVector handle_request(struct GoQuerier *querier,
                                              struct ByteSliceView request,
                                              struct UnmanagedVector *error_msg);

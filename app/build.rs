@@ -1,5 +1,3 @@
-use std::env;
-
 fn main () {
     println!("cargo:rustc-link-search=native=../sgx-artifacts/lib");
     println!("cargo:rustc-link-lib=static=Enclave_u");

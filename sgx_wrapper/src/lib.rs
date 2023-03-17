@@ -1,6 +1,17 @@
 #![cfg_attr(feature = "backtraces", feature(backtrace))]
 #![allow(clippy::not_unsafe_ptr_arg_deref, clippy::missing_safety_doc)]
 
+extern crate sgx_types;
+extern crate sgx_urts;
+use sgx_types::*;
+use sgx_urts::SgxEnclave;
+
+static ENCLAVE_FILE: &'static str = "enclave.signed.so";
+
+extern "C" {
+    fn handle_request(eid: sgx_enclave_id_t, retval: *mut sgx_status_t) -> sgx_status_t;
+}
+
 extern crate alloc;
 
 mod cache;
