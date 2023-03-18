@@ -3,6 +3,8 @@ COMPILER = rustc
 TARGET = $(shell rustc --version --verbose 2> /dev/null | awk "/host:/ { print \$$2 }")
 TARGET_DIR = target/release/
 DEFAULT = help
+CC=clang
+CXX=clang++
 
 # DEFINEs
 
@@ -66,6 +68,16 @@ define sign_enclave
 	@/opt/intel/sgxsdk/bin/x64/sgx_sign sign -key ./sgx-evm/Enclave_private.pem -enclave ./sgx-evm/enclave.unsigned.so -out ./sgx-artifacts/bin/enclave.signed.so -config ./sgx-evm/Enclave.config.xml
 endef
 
+define app_build
+	@cd app && cargo build --release
+	@cp ./sgx-artifacts/bin/enclave.signed.so ./app/target/release/enclave.signed.so
+endef
+
+define go_build
+	@cp ./app/target/release/libapp.so ./internal/api/libwasmvm.x86_64.so
+ @protoc --go_out=go_protobuf_gen --proto_path=sgx-evm/protobuf_contracts/ sgx-evm/protobuf_contracts/ffi.proto
+endef
+
 define sgx_build
 	$(call sgx_clean)
 	$(call compile_protobuf)
@@ -85,8 +97,17 @@ sgx:
 	$(call sgx_build)
 	@echo "Intel SGX enclave built and signed"
 
-build:
+build_app:
 	$(call sgx_build)
-	@cd app && cargo build --release
-	@cp ./sgx-artifacts/bin/enclave.signed.so ./app/target/release/enclave.signed.so
+	$(call app_build)
 
+build_go:
+	$(call sgx_build)
+	$(call app_build)
+	$(call go_build)
+
+run_go:
+	$(call sgx_build)
+	$(call app_build)
+	$(call go_build)
+	@go run ./cmd/demo/main.go
