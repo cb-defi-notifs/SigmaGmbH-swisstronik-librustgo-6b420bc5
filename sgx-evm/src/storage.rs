@@ -1,8 +1,11 @@
 use sgxvm::evm::backend::Basic;
 use sgxvm::primitive_types::{H160, H256, U256};
 use sgxvm::storage::Storage;
-use crate::querier::GoQuerier;
 use std::vec::Vec;
+
+use crate::querier::GoQuerier;
+use crate::ocall;
+use crate::coder;
 
 /// This struct allows us to obtain state from keeper
 /// that is located outside of Rust code
@@ -32,6 +35,14 @@ impl Storage for FFIStorage {
     fn get_account(&self, key: &H160) -> Basic {
         // TODO: Get data using OCALL
         // let (balance, nonce) = self.querier.query_account(key);
+        println!("Get account called");
+
+        let encoded_request = coder::encode_get_account(key);
+        let result = unsafe {
+            ocall::ocall_query_raw()
+        };
+        println!("OCALL result: {:?}", result.as_str());
+
         let balance = U256::default();
         let nonce = U256::default();
         Basic { balance, nonce }

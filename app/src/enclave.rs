@@ -32,12 +32,7 @@ pub fn init_enclave() -> SgxResult<SgxEnclave> {
 }
 
 #[no_mangle]
-pub extern "C" fn ocall_query_raw(
-    querier: *mut GoQuerier,
-    request: *const u8,
-    request_len: usize,
-    result: *mut u8,
-    max_result_len: usize,
-) -> sgx_status_t {
+pub extern "C" fn ocall_query_raw() -> sgx_status_t {
+    println!("HELLO FROM OCALL");
     sgx_status_t::SGX_SUCCESS
 }
