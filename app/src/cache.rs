@@ -51,8 +51,16 @@ pub extern "C" fn make_pb_request(
         };
 
         // Call the enclave
+        let request_vec = Vec::from(req_bytes);
         let mut retval = sgx_status_t::SGX_SUCCESS;
-        let evm_res = unsafe { enclave::handle_request(evm_enclave.geteid(), &mut retval) };
+        let evm_res = unsafe { 
+            enclave::handle_request(
+                evm_enclave.geteid(), 
+                &mut retval,
+                request_vec.as_ptr(),
+                req_bytes.len(),
+            ) 
+        };
         match evm_res {
             sgx_status_t::SGX_SUCCESS => {
                 println!("Successful call");

@@ -13,6 +13,7 @@ use sgxvm::{self, Vicinity};
 use sgxvm::primitive_types::{H160, H256, U256};
 use std::panic::catch_unwind;
 use std::vec::Vec;
+use std::slice;
 
 use crate::error::{handle_c_error_default, Error};
 use crate::protobuf_generated::ffi::{
@@ -39,6 +40,8 @@ pub extern "C" fn handle_request(
 //    querier: *mut GoQuerier,
 //    request: ByteSliceView,
 //    error_msg: Option<&mut UnmanagedVector>,
+    request: *const u8,
+    len: usize,
 ) -> sgx_types::sgx_status_t {
 //    let r = catch_unwind(|| {
 //        let req_bytes = request
@@ -144,7 +147,9 @@ pub extern "C" fn handle_request(
 
 //    let data = handle_c_error_default(r, error_msg);
 //    UnmanagedVector::new(Some(data))
-    println!("hello from enclave");
+
+    let request_slice = unsafe { slice::from_raw_parts(request, len) }; 
+    println!("hello from enclave. Got request with len: {:?}", request_slice.len());
     sgx_status_t::SGX_SUCCESS
 }
 

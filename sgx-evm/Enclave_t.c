@@ -29,6 +29,8 @@
 
 typedef struct ms_handle_request_t {
 	sgx_status_t ms_retval;
+	const uint8_t* ms_request;
+	size_t ms_len;
 } ms_handle_request_t;
 
 typedef struct ms_t_global_init_ecall_t {
@@ -508,16 +510,45 @@ static sgx_status_t SGX_CDECL sgx_handle_request(void* pms)
 		return SGX_ERROR_UNEXPECTED;
 	}
 	sgx_status_t status = SGX_SUCCESS;
+	const uint8_t* _tmp_request = __in_ms.ms_request;
+	size_t _tmp_len = __in_ms.ms_len;
+	size_t _len_request = _tmp_len;
+	uint8_t* _in_request = NULL;
 	sgx_status_t _in_retval;
 
+	CHECK_UNIQUE_POINTER(_tmp_request, _len_request);
 
-	_in_retval = handle_request();
+	//
+	// fence after pointer checks
+	//
+	sgx_lfence();
+
+	if (_tmp_request != NULL && _len_request != 0) {
+		if ( _len_request % sizeof(*_tmp_request) != 0)
+		{
+			status = SGX_ERROR_INVALID_PARAMETER;
+			goto err;
+		}
+		_in_request = (uint8_t*)malloc(_len_request);
+		if (_in_request == NULL) {
+			status = SGX_ERROR_OUT_OF_MEMORY;
+			goto err;
+		}
+
+		if (memcpy_s(_in_request, _len_request, _tmp_request, _len_request)) {
+			status = SGX_ERROR_UNEXPECTED;
+			goto err;
+		}
+
+	}
+	_in_retval = handle_request((const uint8_t*)_in_request, _tmp_len);
 	if (memcpy_verw_s(&ms->ms_retval, sizeof(ms->ms_retval), &_in_retval, sizeof(_in_retval))) {
 		status = SGX_ERROR_UNEXPECTED;
 		goto err;
 	}
 
 err:
+	if (_in_request) free(_in_request);
 	return status;
 }
 

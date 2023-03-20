@@ -6,6 +6,9 @@ enclave {
     from "sgx_fd.edl" import *;
 
     trusted {
-        public sgx_status_t handle_request();
+        public sgx_status_t handle_request(
+            [in, size=len] const uint8_t* request, 
+            size_t len
+        );
     };
 };
