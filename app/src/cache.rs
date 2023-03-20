@@ -44,7 +44,10 @@ pub extern "C" fn make_pb_request(
         // Initialize enclave
         let evm_enclave = match enclave::init_enclave() {
             Ok(r) => {r},
-            Err(err) => { return Err(Error::vm_err("Cannot initialize SGXVM enclave")) },
+            Err(err) => { 
+                println!("Got error: {:?}", err.as_str());
+                return Err(Error::vm_err("Cannot initialize SGXVM enclave")) 
+            },
         };
 
         // Call the enclave
