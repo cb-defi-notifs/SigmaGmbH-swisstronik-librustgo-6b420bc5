@@ -66,8 +66,7 @@ impl<'state> EvmBackend for FFIBackend<'state> {
     }
 
     fn block_difficulty(&self) -> U256 {
-        // Only applicable for PoW
-        U256::zero()
+        U256::zero() // Only applicable for PoW
     }
 
     fn block_gas_limit(&self) -> U256 {
