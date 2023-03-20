@@ -17,21 +17,63 @@ pub struct FFIStorage {
 
 impl Storage for FFIStorage {
     fn contains_key(&self, key: &H160) -> bool {
-        // TODO: Get data using OCALL
-        // self.querier.query_contains_key(key)
-        false
+        println!("Contains key called");
+
+        let encoded_request = coder::encode_contains_key(key);
+        if let Some(result) = ocall::make_request(self.querier, encoded_request) {
+            // Decode protobuf
+            let decoded_result = match protobuf::parse_from_bytes::<ffi::QueryContainsKeyResponse>(result.as_slice()) {
+                Ok(res) => res,
+                Err(err) => {
+                    println!("Cannot decode protobuf response: {:?}", err);
+                    return false
+                }
+            };
+            return decoded_result.contains;
+        } else {
+            println!("Contains key failed. Empty response");
+            return false;
+        };
     }
 
     fn get_account_storage_cell(&self, key: &H160, index: &H256) -> Option<H256> {
-        // TODO: Get data using OCALL
-        // self.querier.query_account_storage_cell(key, index)
-        None
+        println!("Get account storage cell called");
+
+        let encoded_request = coder::encode_get_storage_cell(key, index);
+        if let Some(result) = ocall::make_request(self.querier, encoded_request) {
+            // Decode protobuf
+            let decoded_result = match protobuf::parse_from_bytes::<ffi::QueryGetAccountStorageCellResponse>(result.as_slice()) {
+                Ok(res) => res,
+                Err(err) => {
+                    println!("Cannot decode protobuf response: {:?}", err);
+                    return None
+                }
+            };
+            return Some(H256::from_slice(decoded_result.value.as_slice()));
+        } else {
+            println!("Get account storage cell failed. Empty response");
+            return None
+        }
     }
 
     fn get_account_code(&self, key: &H160) -> Option<Vec<u8>> {
-        // TODO: Get data using OCALL
-        // self.querier.query_account_code(key)
-        None
+        println!("Get account code called");
+
+        let encoded_request = coder::encode_get_account_code(key);
+        if let Some(result) = ocall::make_request(self.querier, encoded_request) {
+            // Decode protobuf
+            let decoded_result = match protobuf::parse_from_bytes::<ffi::QueryGetAccountCodeResponse>(result.as_slice()) {
+                Ok(res) => res,
+                Err(err) => {
+                    println!("Cannot decode protobuf response: {:?}", err);
+                    return None
+                }
+            };
+            return Some(decoded_result.code);
+        } else {
+            println!("Get account code failed. Empty response");
+            return None
+        }
     }
 
     fn get_account(&self, key: &H160) -> Basic {
@@ -55,6 +97,7 @@ impl Storage for FFIStorage {
                 nonce: U256::from(decoded_result.nonce),
             };
         } else {
+            println!("Get account failed. Empty response");
             return Basic {
                 balance: U256::default(),
                 nonce: U256::default(),
@@ -63,28 +106,78 @@ impl Storage for FFIStorage {
     }
 
     fn insert_account(&mut self, key: H160, data: Basic) {
-        // TODO: Get data using OCALL
-        // self.querier.insert_account(key, data);
+        println!("Insert account called");
+        let encoded_request = coder::encode_insert_account(key, data);
+        if let Some(result) = ocall::make_request(self.querier, encoded_request) {
+            match protobuf::parse_from_bytes::<ffi::QueryInsertAccountResponse>(result.as_slice()) {
+                Err(err) => {
+                    println!("Cannot decode protobuf. Got error: {:?}", err);
+                },
+                _ => {}
+            }
+        } else {
+            println!("Insert account failed. Empty response");
+        }
     }
 
     fn insert_account_code(&mut self, key: H160, code: Vec<u8>) {
-        // TODO: Get data using OCALL
-        // self.querier.insert_account_code(key, code);
+        println!("Insert account code called");
+        let encoded_request = coder::encode_insert_account_code(key, code);
+        if let Some(result) = ocall::make_request(self.querier, encoded_request) {
+            match protobuf::parse_from_bytes::<ffi::QueryInsertAccountCodeResponse>(result.as_slice()) {
+                Err(err) => {
+                    println!("Cannot decode protobuf. Got error: {:?}", err);
+                },
+                _ => {}
+            }
+        } else {
+            println!("Insert account code failed. Empty response");
+        }
     }
 
     fn insert_storage_cell(&mut self, key: H160, index: H256, value: H256) {
-        // TODO: Get data using OCALL
-        // self.querier.insert_storage_cell(key, index, value);
+        println!("Insert storage cell called");
+        let encoded_request = coder::encode_insert_storage_cell(key, index, value);
+        if let Some(result) = ocall::make_request(self.querier, encoded_request) {
+            match protobuf::parse_from_bytes::<ffi::QueryInsertStorageCellResponse>(result.as_slice()) {
+                Err(err) => {
+                    println!("Cannot decode protobuf. Got error: {:?}", err);
+                },
+                _ => {}
+            }
+        } else {
+            println!("Insert storage cell failed. Empty response");
+        }
     }
 
     fn remove(&mut self, key: &H160) {
-        // TODO: Get data using OCALL
-        // self.querier.remove(key);
+        println!("Remove called");
+        let encoded_request = coder::encode_remove(key);
+        if let Some(result) = ocall::make_request(self.querier, encoded_request) {
+            match protobuf::parse_from_bytes::<ffi::QueryRemoveResponse>(result.as_slice()) {
+                Err(err) => {
+                    println!("Cannot decode protobuf. Got error: {:?}", err);
+                },
+                _ => {}
+            }
+        } else {
+            println!("Remove failed. Empty response");
+        }
     }
 
     fn remove_storage_cell(&mut self, key: &H160, index: &H256) {
-        // TODO: Get data using OCALL
-        // self.querier.remove_storage_cell(key, index);
+        println!("Remove storage cell called");
+        let encoded_request = coder::encode_remove_storage_cell(key, index);
+        if let Some(result) = ocall::make_request(self.querier, encoded_request) {
+            match protobuf::parse_from_bytes::<ffi::QueryRemoveStorageCellResponse>(result.as_slice()) {
+                Err(err) => {
+                    println!("Cannot decode protobuf. Got error: {:?}", err);
+                },
+                _ => {}
+            }
+        } else {
+            println!("Remove storage cell failed. Empty response");
+        }
     }
 }
 
