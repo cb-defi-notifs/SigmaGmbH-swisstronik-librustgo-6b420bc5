@@ -16,6 +16,8 @@ typedef struct ms_t_global_init_ecall_t {
 
 typedef struct ms_ocall_query_raw_t {
 	sgx_status_t ms_retval;
+	const uint8_t* ms_request;
+	size_t ms_request_len;
 } ms_ocall_query_raw_t;
 
 typedef struct ms_u_thread_set_event_ocall_t {
@@ -479,7 +481,7 @@ typedef struct ms_sgx_thread_set_multiple_untrusted_events_ocall_t {
 static sgx_status_t SGX_CDECL Enclave_ocall_query_raw(void* pms)
 {
 	ms_ocall_query_raw_t* ms = SGX_CAST(ms_ocall_query_raw_t*, pms);
-	ms->ms_retval = ocall_query_raw();
+	ms->ms_retval = ocall_query_raw(ms->ms_request, ms->ms_request_len);
 
 	return SGX_SUCCESS;
 }

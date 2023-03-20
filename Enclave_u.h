@@ -23,7 +23,7 @@ extern "C" {
 
 #ifndef OCALL_QUERY_RAW_DEFINED__
 #define OCALL_QUERY_RAW_DEFINED__
-sgx_status_t SGX_UBRIDGE(SGX_NOCONVENTION, ocall_query_raw, (void));
+sgx_status_t SGX_UBRIDGE(SGX_NOCONVENTION, ocall_query_raw, (const uint8_t* request, size_t request_len));
 #endif
 #ifndef U_THREAD_SET_EVENT_OCALL_DEFINED__
 #define U_THREAD_SET_EVENT_OCALL_DEFINED__

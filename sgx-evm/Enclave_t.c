@@ -42,6 +42,8 @@ typedef struct ms_t_global_init_ecall_t {
 
 typedef struct ms_ocall_query_raw_t {
 	sgx_status_t ms_retval;
+	const uint8_t* ms_request;
+	size_t ms_request_len;
 } ms_ocall_query_raw_t;
 
 typedef struct ms_u_thread_set_event_ocall_t {
@@ -703,14 +705,20 @@ SGX_EXTERNC const struct {
 };
 
 
-sgx_status_t SGX_CDECL ocall_query_raw(sgx_status_t* retval)
+sgx_status_t SGX_CDECL ocall_query_raw(sgx_status_t* retval, const uint8_t* request, size_t request_len)
 {
 	sgx_status_t status = SGX_SUCCESS;
+	size_t _len_request = request_len * sizeof(uint8_t);
 
 	ms_ocall_query_raw_t* ms = NULL;
 	size_t ocalloc_size = sizeof(ms_ocall_query_raw_t);
 	void *__tmp = NULL;
 
+
+	CHECK_ENCLAVE_POINTER(request, _len_request);
+
+	if (ADD_ASSIGN_OVERFLOW(ocalloc_size, (request != NULL) ? _len_request : 0))
+		return SGX_ERROR_INVALID_PARAMETER;
 
 	__tmp = sgx_ocalloc(ocalloc_size);
 	if (__tmp == NULL) {
@@ -720,6 +728,30 @@ sgx_status_t SGX_CDECL ocall_query_raw(sgx_status_t* retval)
 	ms = (ms_ocall_query_raw_t*)__tmp;
 	__tmp = (void *)((size_t)__tmp + sizeof(ms_ocall_query_raw_t));
 	ocalloc_size -= sizeof(ms_ocall_query_raw_t);
+
+	if (request != NULL) {
+		if (memcpy_verw_s(&ms->ms_request, sizeof(const uint8_t*), &__tmp, sizeof(const uint8_t*))) {
+			sgx_ocfree();
+			return SGX_ERROR_UNEXPECTED;
+		}
+		if (_len_request % sizeof(*request) != 0) {
+			sgx_ocfree();
+			return SGX_ERROR_INVALID_PARAMETER;
+		}
+		if (memcpy_verw_s(__tmp, ocalloc_size, request, _len_request)) {
+			sgx_ocfree();
+			return SGX_ERROR_UNEXPECTED;
+		}
+		__tmp = (void *)((size_t)__tmp + _len_request);
+		ocalloc_size -= _len_request;
+	} else {
+		ms->ms_request = NULL;
+	}
+
+	if (memcpy_verw_s(&ms->ms_request_len, sizeof(ms->ms_request_len), &request_len, sizeof(request_len))) {
+		sgx_ocfree();
+		return SGX_ERROR_UNEXPECTED;
+	}
 
 	status = sgx_ocall(0, ms);
 

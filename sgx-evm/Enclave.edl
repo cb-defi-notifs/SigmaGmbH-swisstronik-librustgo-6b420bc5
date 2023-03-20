@@ -14,6 +14,9 @@ enclave {
     };
 
     untrusted {
-        sgx_status_t ocall_query_raw();
+        sgx_status_t ocall_query_raw(
+            [in, count=request_len] const uint8_t* request,
+            size_t request_len
+        );
     };
 };

@@ -1,3 +1,4 @@
+use sgx_types::sgx_status_t;
 use sgxvm::evm::backend::Basic;
 use sgxvm::primitive_types::{H160, H256, U256};
 use sgxvm::storage::Storage;
@@ -38,8 +39,9 @@ impl Storage for FFIStorage {
         println!("Get account called");
 
         let encoded_request = coder::encode_get_account(key);
+        let mut ret_val = sgx_status_t::SGX_SUCCESS;
         let result = unsafe {
-            ocall::ocall_query_raw()
+            ocall::ocall_query_raw(&mut ret_val, encoded_request.as_ptr(), encoded_request.len())
         };
         println!("OCALL result: {:?}", result.as_str());
 
