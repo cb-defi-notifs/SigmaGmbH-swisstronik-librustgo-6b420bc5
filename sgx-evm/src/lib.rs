@@ -55,11 +55,15 @@ pub extern "C" fn handle_request(
     match ffi_request.req {
         Some(req) => {
             match req {
-                FFIRequest_oneof_req::callRequest(call_request) => {
+                FFIRequest_oneof_req::callRequest(data) => {
                     println!("Got call request");
+                    let execution_result = handle_call_request(querier, data);
+                    println!("Execution result: {:?}", execution_result);
                 },
-                FFIRequest_oneof_req::createRequest(create_request) => {
+                FFIRequest_oneof_req::createRequest(data) => {
                     println!("Got create request");
+                    let execution_result = handle_create_request(querier, data);
+                    println!("Execution result: {:?}", execution_result);
                 }
             }
         },
