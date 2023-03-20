@@ -30,9 +30,9 @@ mod coder;
 mod storage;
 mod memory;
 mod querier;
+mod ocall;
 
-// store some common string for argument names
-pub const PB_REQUEST_ARG: &str = "pb_request";
+pub const MAX_RESULT_LEN: usize = 4096;
 
 #[no_mangle]
 /// Handles incoming protobuf-encoded request for transaction handling

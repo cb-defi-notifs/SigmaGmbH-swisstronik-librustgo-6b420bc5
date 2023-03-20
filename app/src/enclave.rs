@@ -30,3 +30,14 @@ pub fn init_enclave() -> SgxResult<SgxEnclave> {
         &mut misc_attr
     )
 }
+
+#[no_mangle]
+pub extern "C" fn ocall_query_raw(
+    querier: *mut GoQuerier,
+    request: *const u8,
+    request_len: usize,
+    result: *mut u8,
+    max_result_len: usize,
+) -> sgx_status_t {
+    sgx_status_t::SGX_SUCCESS
+}
