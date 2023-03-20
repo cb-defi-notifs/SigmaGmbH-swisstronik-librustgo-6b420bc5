@@ -1,12 +1,15 @@
 use sgx_types::*;
 use sgx_urts::SgxEnclave;
 
+use crate::querier::GoQuerier;
+
 static ENCLAVE_FILE: &'static str = "enclave.signed.so";
 
 extern "C" {
     pub fn handle_request(
         eid: sgx_enclave_id_t, 
         retval: *mut sgx_status_t,
+        querier: *mut GoQuerier,
         request: *const u8,
         len: usize,
     ) -> sgx_status_t;

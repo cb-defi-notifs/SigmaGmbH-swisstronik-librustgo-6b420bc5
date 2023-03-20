@@ -7,6 +7,7 @@ enclave {
 
     trusted {
         public sgx_status_t handle_request(
+            [user_check] void* querier,
             [in, size=len] const uint8_t* request, 
             size_t len
         );

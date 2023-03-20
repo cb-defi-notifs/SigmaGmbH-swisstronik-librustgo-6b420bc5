@@ -3,6 +3,7 @@
 
 typedef struct ms_handle_request_t {
 	sgx_status_t ms_retval;
+	void* ms_querier;
 	const uint8_t* ms_request;
 	size_t ms_len;
 } ms_handle_request_t;
@@ -1055,10 +1056,11 @@ static const struct {
 		(void*)Enclave_sgx_thread_set_multiple_untrusted_events_ocall,
 	}
 };
-sgx_status_t handle_request(sgx_enclave_id_t eid, sgx_status_t* retval, const uint8_t* request, size_t len)
+sgx_status_t handle_request(sgx_enclave_id_t eid, sgx_status_t* retval, void* querier, const uint8_t* request, size_t len)
 {
 	sgx_status_t status;
 	ms_handle_request_t ms;
+	ms.ms_querier = querier;
 	ms.ms_request = request;
 	ms.ms_len = len;
 	status = sgx_ecall(eid, 0, &ocall_table_Enclave, &ms);
