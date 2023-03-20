@@ -6,6 +6,7 @@ use crate::memory::{ByteSliceView, UnmanagedVector};
 use crate::querier::GoQuerier;
 use crate::errors::{handle_c_error_default, Error};
 use crate::enclave;
+use sgx_types::*;
 
 // store some common string for argument names
 pub const PB_REQUEST_ARG: &str = "pb_request";
@@ -45,6 +46,19 @@ pub extern "C" fn make_pb_request(
             Ok(r) => {r},
             Err(err) => { return Err(Error::vm_err("Cannot initialize SGXVM enclave")) },
         };
+
+        // Call the enclave
+        let mut retval = sgx_status_t::SGX_SUCCESS;
+        let evm_res = unsafe { enclave::handle_request(evm_enclave.geteid(), &mut retval) };
+        match evm_res {
+            sgx_status_t::SGX_SUCCESS => {
+                println!("Successful call");
+            },
+            _ => {
+                println!("Call failed");
+                return Err(Error::vm_err(format!("Call to EVM failed: {:?}", evm_res.as_str())));
+            }
+        }
 
         // Destory enclave after usage
         evm_enclave.destroy();
