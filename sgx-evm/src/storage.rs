@@ -35,8 +35,6 @@ impl Storage for FFIStorage {
     }
 
     fn get_account(&self, key: &H160) -> Basic {
-        // TODO: Get data using OCALL
-        // let (balance, nonce) = self.querier.query_account(key);
         println!("Get account called");
 
         let encoded_request = coder::encode_get_account(key);
