@@ -42,6 +42,7 @@ typedef struct ms_t_global_init_ecall_t {
 
 typedef struct ms_ocall_query_raw_t {
 	sgx_status_t ms_retval;
+	void* ms_querier;
 	const uint8_t* ms_request;
 	size_t ms_request_len;
 } ms_ocall_query_raw_t;
@@ -705,7 +706,7 @@ SGX_EXTERNC const struct {
 };
 
 
-sgx_status_t SGX_CDECL ocall_query_raw(sgx_status_t* retval, const uint8_t* request, size_t request_len)
+sgx_status_t SGX_CDECL ocall_query_raw(sgx_status_t* retval, void* querier, const uint8_t* request, size_t request_len)
 {
 	sgx_status_t status = SGX_SUCCESS;
 	size_t _len_request = request_len * sizeof(uint8_t);
@@ -728,6 +729,11 @@ sgx_status_t SGX_CDECL ocall_query_raw(sgx_status_t* retval, const uint8_t* requ
 	ms = (ms_ocall_query_raw_t*)__tmp;
 	__tmp = (void *)((size_t)__tmp + sizeof(ms_ocall_query_raw_t));
 	ocalloc_size -= sizeof(ms_ocall_query_raw_t);
+
+	if (memcpy_verw_s(&ms->ms_querier, sizeof(ms->ms_querier), &querier, sizeof(querier))) {
+		sgx_ocfree();
+		return SGX_ERROR_UNEXPECTED;
+	}
 
 	if (request != NULL) {
 		if (memcpy_verw_s(&ms->ms_request, sizeof(const uint8_t*), &__tmp, sizeof(const uint8_t*))) {
