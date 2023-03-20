@@ -40,7 +40,7 @@ pub extern "C" fn handle_request(
 //    querier: *mut GoQuerier,
 //    request: ByteSliceView,
 //    error_msg: Option<&mut UnmanagedVector>,
-    request: *const u8,
+    request_data: *const u8,
     len: usize,
 ) -> sgx_types::sgx_status_t {
 //    let r = catch_unwind(|| {
@@ -148,8 +148,34 @@ pub extern "C" fn handle_request(
 //    let data = handle_c_error_default(r, error_msg);
 //    UnmanagedVector::new(Some(data))
 
-    let request_slice = unsafe { slice::from_raw_parts(request, len) }; 
+    let request_slice = unsafe { slice::from_raw_parts(request_data, len) }; 
     println!("hello from enclave. Got request with len: {:?}", request_slice.len());
+
+    let ffi_request = match protobuf::parse_from_bytes::<FFIRequest>(request_slice) {
+        Ok(ffi_request) => ffi_request,
+        Err(err) => {
+            println!("Got error during protobuf decoding: {:?}", err);
+            return sgx_status_t::SGX_ERROR_UNEXPECTED;
+        }
+    };
+
+    match ffi_request.req {
+        Some(req) => {
+            match req {
+                FFIRequest_oneof_req::callRequest(call_request) => {
+                    println!("Got call request");
+                },
+                FFIRequest_oneof_req::createRequest(create_request) => {
+                    println!("Got create request");
+                }
+            }
+        },
+        None => {
+            println!("Got empty request during protobuf decoding");
+            return sgx_status_t::SGX_ERROR_UNEXPECTED;
+        }
+    }
+    
     sgx_status_t::SGX_SUCCESS
 }
 
