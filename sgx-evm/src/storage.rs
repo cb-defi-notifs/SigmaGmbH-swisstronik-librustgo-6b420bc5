@@ -39,11 +39,7 @@ impl Storage for FFIStorage {
         println!("Get account called");
 
         let encoded_request = coder::encode_get_account(key);
-        let mut ret_val = sgx_status_t::SGX_SUCCESS;
-        let result = unsafe {
-            ocall::ocall_query_raw(&mut ret_val, encoded_request.as_ptr(), encoded_request.len())
-        };
-        println!("OCALL result: {:?}", result.as_str());
+        ocall::make_request(self.querier, encoded_request);
 
         let balance = U256::default();
         let nonce = U256::default();
