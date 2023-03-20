@@ -16,7 +16,7 @@ use crate::querier::GoQuerier;
 // store some common string for argument names
 pub const PB_REQUEST_ARG: &str = "pb_request";
 
-extern "C" {
+extern {
     fn handle_request(querier: *mut GoQuerier, request: ByteSliceView, error_msg: Option<&mut UnmanagedVector>) -> UnmanagedVector;
 }
 
