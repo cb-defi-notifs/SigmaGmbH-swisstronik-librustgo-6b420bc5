@@ -1,5 +1,5 @@
 [package]
-name = "app"
+name = "sgx_wrapper"
 version = "1.0.0"
 authors = ["The Teaclave Authors"]
 build = "build.rs"

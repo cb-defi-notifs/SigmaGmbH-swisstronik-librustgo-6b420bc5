@@ -74,8 +74,8 @@ define app_build
 endef
 
 define go_build
-	@cp ./app/target/release/libapp.so ./internal/api/libwasmvm.x86_64.so
- @protoc --go_out=go_protobuf_gen --proto_path=sgx-evm/protobuf_contracts/ sgx-evm/protobuf_contracts/ffi.proto
+	@cp ./app/target/release/libsgx_wrapper.so ./internal/api/libsgx_wrapper.x86_64.so
+    @protoc --go_out=go_protobuf_gen --proto_path=sgx-evm/protobuf_contracts/ sgx-evm/protobuf_contracts/ffi.proto
 endef
 
 define sgx_build

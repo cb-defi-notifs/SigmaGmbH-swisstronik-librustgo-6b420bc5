@@ -3,19 +3,6 @@
 version = 3
 
 [[package]]
-name = "app"
-version = "1.0.0"
-dependencies = [
- "errno",
- "hex",
- "protobuf",
- "serde_json",
- "sgx_types",
- "sgx_urts",
- "thiserror",
-]
-
-[[package]]
 name = "cc"
 version = "1.0.79"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -119,6 +106,19 @@ source = "git+https://github.com/apache/teaclave-sgx-sdk.git?tag=v1.1.5#d2d339cb
 dependencies = [
  "libc",
  "sgx_types",
+]
+
+[[package]]
+name = "sgx_wrapper"
+version = "1.0.0"
+dependencies = [
+ "errno",
+ "hex",
+ "protobuf",
+ "serde_json",
+ "sgx_types",
+ "sgx_urts",
+ "thiserror",
 ]
 
 [[package]]

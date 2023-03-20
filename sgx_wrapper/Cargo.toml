@@ -11,8 +11,8 @@ readme = "README.md"
 build = "build.rs"
 exclude = [".circleci/*",".github/*", ".gitignore"]
 
-#[lib]
-#crate-type = ["cdylib"]
+[lib]
+crate-type = ["cdylib"]
 
 [[bin]]
 name = "debug_app"
