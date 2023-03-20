@@ -4,6 +4,7 @@ use sgxvm::primitive_types::{H160, H256, U256};
 use sgxvm::storage::Storage;
 use std::vec::Vec;
 
+use crate::protobuf_generated::ffi;
 use crate::querier::GoQuerier;
 use crate::ocall;
 use crate::coder;
@@ -39,11 +40,28 @@ impl Storage for FFIStorage {
         println!("Get account called");
 
         let encoded_request = coder::encode_get_account(key);
-        ocall::make_request(self.querier, encoded_request);
-
-        let balance = U256::default();
-        let nonce = U256::default();
-        Basic { balance, nonce }
+        if let Some(result) = ocall::make_request(self.querier, encoded_request) {
+            // Decode protobuf
+            let decoded_result = match protobuf::parse_from_bytes::<ffi::QueryGetAccountResponse>(result.as_slice()) {
+                Ok(res) => res,
+                Err(err) => {
+                    println!("Cannot decode protobuf response: {:?}", err);
+                    return Basic {
+                        balance: U256::default(),
+                        nonce: U256::default(),
+                    };
+                }
+            };
+            return Basic {
+                balance: U256::from_big_endian(decoded_result.balance.as_slice()),
+                nonce: U256::from(decoded_result.nonce),
+            };
+        } else {
+            return Basic {
+                balance: U256::default(),
+                nonce: U256::default(),
+            };
+        }
     }
 
     fn insert_account(&mut self, key: H160, data: Basic) {
