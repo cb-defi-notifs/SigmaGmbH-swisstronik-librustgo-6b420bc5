@@ -62,8 +62,20 @@ pub extern "C" fn ocall_query_raw(
     let output = output.consume();
     let error_msg = error_msg.consume();
 
-    println!("output: {:?}", output);
-
-    println!("HELLO FROM OCALL. SIZE: {:?}", len);
-    sgx_status_t::SGX_SUCCESS
+    match go_result {
+        GoError::None => {
+            let result = output.unwrap_or_default();
+            println!("[OCALL] query_raw: got result: {:?}", result);
+            return sgx_status_t::SGX_SUCCESS;
+        },
+        _ => {
+            let err_msg = error_msg.unwrap_or_default();
+            println!(
+                "[OCALL] query_raw: got error: {:?} with message: {:?}",
+                go_result,
+                String::from_utf8_lossy(&err_msg)
+            );
+            return sgx_status_t::SGX_ERROR_UNEXPECTED;
+        }
+    };
 }
