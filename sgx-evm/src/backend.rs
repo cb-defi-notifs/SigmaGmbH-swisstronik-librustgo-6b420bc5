@@ -8,6 +8,8 @@ use sgxvm::Vicinity;
 use std::vec::Vec;
 
 use crate::{coder, GoQuerier};
+use crate::ocall;
+use crate::protobuf_generated::ffi;
 
 /// Contains context of the transaction such as gas price, block hash, block timestamp, etc.
 pub struct TxContext {
@@ -49,8 +51,23 @@ impl<'state> EvmBackend for FFIBackend<'state> {
     }
 
     fn block_hash(&self, number: U256) -> H256 {
-        // TODO: Get data using OCALL
-        H256::default()
+        println!("Block hash called");
+
+        let encoded_request = coder::encode_query_block_hash(number);
+        if let Some(result) = ocall::make_request(self.querier, encoded_request) {
+            // Decode protobuf
+            let decoded_result = match protobuf::parse_from_bytes::<ffi::QueryBlockHashResponse>(result.as_slice()) {
+                Ok(res) => res,
+                Err(err) => {
+                    println!("Cannot decode protobuf response: {:?}", err);
+                    return H256::default();
+                }
+            };
+            return decoded_result.contains;
+        } else {
+            println!("Get block hash failed. Empty response");
+            return H256::default();
+        };
     }
 
     fn block_number(&self) -> U256 {
