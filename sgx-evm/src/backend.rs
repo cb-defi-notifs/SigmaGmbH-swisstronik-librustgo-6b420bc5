@@ -63,7 +63,7 @@ impl<'state> EvmBackend for FFIBackend<'state> {
                     return H256::default();
                 }
             };
-            return decoded_result.contains;
+            return H256::from_slice(decoded_result.hash.as_slice());
         } else {
             println!("Get block hash failed. Empty response");
             return H256::default();
