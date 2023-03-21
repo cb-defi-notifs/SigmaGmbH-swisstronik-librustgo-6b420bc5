@@ -16,8 +16,6 @@ extern "C" {
         querier: *mut GoQuerier,
         request: *const u8,
         len: usize,
-        result_ptr: *mut u8,
-        result_size: usize
     ) -> sgx_status_t;
 }
 
