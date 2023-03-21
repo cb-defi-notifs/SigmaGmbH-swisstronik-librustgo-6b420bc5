@@ -84,3 +84,10 @@ pub extern "C" fn ocall_query_raw(
         }
     };
 }
+
+#[no_mangle]
+pub extern "C" fn ocall_allocate(data: *const u8, len: usize) -> *mut u8 {
+    let slice = unsafe { slice::from_raw_parts(data, len) };
+    let boxed_vec = Box::new(slice.to_vec());
+    Box::into_raw(boxed_vec) as *mut u8
+}

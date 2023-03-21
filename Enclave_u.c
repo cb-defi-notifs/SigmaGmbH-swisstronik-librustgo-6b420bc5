@@ -23,6 +23,12 @@ typedef struct ms_ocall_query_raw_t {
 	size_t ms_result_len;
 } ms_ocall_query_raw_t;
 
+typedef struct ms_ocall_allocate_t {
+	uint8_t* ms_retval;
+	const uint8_t* ms_data;
+	size_t ms_len;
+} ms_ocall_allocate_t;
+
 typedef struct ms_u_thread_set_event_ocall_t {
 	int ms_retval;
 	int* ms_error;
@@ -485,6 +491,14 @@ static sgx_status_t SGX_CDECL Enclave_ocall_query_raw(void* pms)
 {
 	ms_ocall_query_raw_t* ms = SGX_CAST(ms_ocall_query_raw_t*, pms);
 	ms->ms_retval = ocall_query_raw(ms->ms_querier, ms->ms_request, ms->ms_request_len, ms->ms_result, ms->ms_result_len);
+
+	return SGX_SUCCESS;
+}
+
+static sgx_status_t SGX_CDECL Enclave_ocall_allocate(void* pms)
+{
+	ms_ocall_allocate_t* ms = SGX_CAST(ms_ocall_allocate_t*, pms);
+	ms->ms_retval = ocall_allocate(ms->ms_data, ms->ms_len);
 
 	return SGX_SUCCESS;
 }
@@ -1003,11 +1017,12 @@ static sgx_status_t SGX_CDECL Enclave_sgx_thread_set_multiple_untrusted_events_o
 
 static const struct {
 	size_t nr_ocall;
-	void * table[65];
+	void * table[66];
 } ocall_table_Enclave = {
-	65,
+	66,
 	{
 		(void*)Enclave_ocall_query_raw,
+		(void*)Enclave_ocall_allocate,
 		(void*)Enclave_u_thread_set_event_ocall,
 		(void*)Enclave_u_thread_wait_event_ocall,
 		(void*)Enclave_u_thread_set_multiple_events_ocall,

@@ -25,6 +25,10 @@ extern "C" {
 #define OCALL_QUERY_RAW_DEFINED__
 sgx_status_t SGX_UBRIDGE(SGX_NOCONVENTION, ocall_query_raw, (void* querier, const uint8_t* request, size_t request_len, uint8_t* result, size_t result_len));
 #endif
+#ifndef OCALL_ALLOCATE_DEFINED__
+#define OCALL_ALLOCATE_DEFINED__
+uint8_t* SGX_UBRIDGE(SGX_NOCONVENTION, ocall_allocate, (const uint8_t* data, size_t len));
+#endif
 #ifndef U_THREAD_SET_EVENT_OCALL_DEFINED__
 #define U_THREAD_SET_EVENT_OCALL_DEFINED__
 int SGX_UBRIDGE(SGX_NOCONVENTION, u_thread_set_event_ocall, (int* error, const void* tcs));

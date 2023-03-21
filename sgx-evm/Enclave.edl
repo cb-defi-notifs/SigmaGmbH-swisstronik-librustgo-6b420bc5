@@ -21,5 +21,10 @@ enclave {
             [out, size=result_len] uint8_t* result,
             size_t result_len
         );
+
+        uint8_t* ocall_allocate(
+            [in, size=len] const uint8_t* data,
+            size_t len
+        );
     };
 };
