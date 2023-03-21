@@ -54,6 +54,8 @@ pub extern "C" fn make_pb_request(
         let request_vec = Vec::from(req_bytes);
         let mut querier = querier;
         let mut retval = sgx_status_t::SGX_SUCCESS;
+        let mut actual_result_len = 0u32;
+        let mut result_buffer = Vec::<u8>::with_capacity(4096);
 
         // Call the enclave
         let evm_res = unsafe { 
@@ -63,6 +65,9 @@ pub extern "C" fn make_pb_request(
                 &mut querier as *mut GoQuerier,
                 request_vec.as_ptr(),
                 req_bytes.len(),
+                result_buffer.as_mut_ptr(),
+                4096,
+                &mut actual_result_len
             ) 
         };
 
