@@ -14,6 +14,7 @@ use sgxvm::primitive_types::{H160, H256, U256};
 use std::panic::catch_unwind;
 use std::vec::Vec;
 use std::slice;
+use std::ptr;
 
 use crate::error::{handle_c_error_default, Error};
 use crate::protobuf_generated::ffi::{
@@ -40,9 +41,11 @@ pub extern "C" fn handle_request(
     querier: *mut GoQuerier,
     request_data: *const u8,
     len: usize,
+    output: *mut u8,
+    _: usize,
+    actual_output_len: *mut u32,
 ) -> sgx_types::sgx_status_t {
     let request_slice = unsafe { slice::from_raw_parts(request_data, len) }; 
-    println!("hello from enclave. Got request with len: {:?}", request_slice.len());
 
     let ffi_request = match protobuf::parse_from_bytes::<FFIRequest>(request_slice) {
         Ok(ffi_request) => ffi_request,
@@ -54,18 +57,33 @@ pub extern "C" fn handle_request(
 
     match ffi_request.req {
         Some(req) => {
-            match req {
+            let execution_result = match req {
                 FFIRequest_oneof_req::callRequest(data) => {
                     println!("Got call request");
-                    let execution_result = handle_call_request(querier, data);
-                    println!("Execution result: {:?}", execution_result);
+                    handle_call_request(querier, data)
                 },
                 FFIRequest_oneof_req::createRequest(data) => {
                     println!("Got create request");
-                    let execution_result = handle_create_request(querier, data);
-                    println!("Execution result: {:?}", execution_result);
+                    handle_create_request(querier, data)
                 }
-            }
+            };
+
+            let response = HandleTransactionResponse::new();
+            response.set_gas_used(execution_result.gas_used);
+            response.set_vm_error(execution_result.vm_error);
+            response.set_ret(execution_result.data);
+            response.set_logs(execution_result.logs);
+            let encoded_response = match response.write_to_bytes() {
+                Ok(res) => res,
+                Err(err) => {
+                    println!("Cannot encode protobuf result");
+                    return sgx_status_t::SGX_ERROR_UNEXPECTED;
+                }
+            };
+
+            unsafe {
+                ptr::copy_nonoverlapping(encoded_response.as_ptr(), output, encoded_response.len());
+            };
         },
         None => {
             println!("Got empty request during protobuf decoding");
