@@ -69,8 +69,6 @@ pub extern "C" fn make_pb_request(
             ) 
         };
 
-        println!("cache.rs res: {:?}", result_buffer);
-
         // Destory enclave after usage
         evm_enclave.destroy();
 
