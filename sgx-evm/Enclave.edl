@@ -21,8 +21,7 @@ enclave {
             [in, size=request_len] const uint8_t* request,
             size_t request_len,
             [out, size=result_len] uint8_t* result,
-            size_t result_len,
-            [out] uint32_t* actual_result_len
+            size_t result_len
         );
     };
 };

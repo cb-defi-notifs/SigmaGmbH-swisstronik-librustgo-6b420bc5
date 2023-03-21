@@ -13,13 +13,11 @@ extern {
         len: usize,
         result: *mut u8,
         result_len: usize,
-        actual_result_len: *mut u32
     ) -> sgx_status_t;
 }
 
 pub fn make_request(querier: *mut GoQuerier, request: Vec<u8>) -> Option<Vec<u8>> {
     let mut ret_val = sgx_status_t::SGX_SUCCESS;
-    let mut actual_result_len = 0u32;
     let mut result_buffer = Vec::<u8>::with_capacity(crate::MAX_RESULT_LEN);
     let mut result = unsafe {
         ocall_query_raw(
@@ -29,7 +27,6 @@ pub fn make_request(querier: *mut GoQuerier, request: Vec<u8>) -> Option<Vec<u8>
             request.len(),
             result_buffer.as_mut_ptr(),
             crate::MAX_RESULT_LEN,
-            &mut actual_result_len
         )
     };
 

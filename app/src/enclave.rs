@@ -46,8 +46,7 @@ pub extern "C" fn ocall_query_raw(
     request: *const u8,
     len: usize,
     result_ptr: *mut u8,
-    _: usize,
-    actual_result_len: *mut u32
+    _: usize
 ) -> sgx_status_t {
     let request = unsafe { slice::from_raw_parts(request, len) };
     let querier = unsafe { &*querier };
@@ -74,7 +73,6 @@ pub extern "C" fn ocall_query_raw(
 
             unsafe {
                 ptr::copy_nonoverlapping(result.as_ptr(), result_ptr, result.len());
-                *actual_result_len = result.len() as u32
             }
 
             return sgx_status_t::SGX_SUCCESS;
