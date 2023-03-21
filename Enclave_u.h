@@ -282,7 +282,7 @@ int SGX_UBRIDGE(SGX_CDECL, sgx_thread_setwait_untrusted_events_ocall, (const voi
 int SGX_UBRIDGE(SGX_CDECL, sgx_thread_set_multiple_untrusted_events_ocall, (const void** waiters, size_t total));
 #endif
 
-sgx_status_t handle_request(sgx_enclave_id_t eid, sgx_status_t* retval, void* querier, const uint8_t* request, size_t len, uint8_t* result, size_t result_len, uint32_t* actual_result_len);
+sgx_status_t handle_request(sgx_enclave_id_t eid, sgx_status_t* retval, void* querier, const uint8_t* request, size_t len, uint8_t* result, size_t result_len);
 sgx_status_t t_global_init_ecall(sgx_enclave_id_t eid, uint64_t id, const uint8_t* path, size_t len);
 sgx_status_t t_global_exit_ecall(sgx_enclave_id_t eid);
 

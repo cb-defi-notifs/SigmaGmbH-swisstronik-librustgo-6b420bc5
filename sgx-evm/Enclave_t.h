@@ -20,7 +20,7 @@
 extern "C" {
 #endif
 
-sgx_status_t handle_request(void* querier, const uint8_t* request, size_t len, uint8_t* result, size_t result_len, uint32_t* actual_result_len);
+sgx_status_t handle_request(void* querier, const uint8_t* request, size_t len, uint8_t* result, size_t result_len);
 void t_global_init_ecall(uint64_t id, const uint8_t* path, size_t len);
 void t_global_exit_ecall(void);
 

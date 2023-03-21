@@ -34,7 +34,6 @@ typedef struct ms_handle_request_t {
 	size_t ms_len;
 	uint8_t* ms_result;
 	size_t ms_result_len;
-	uint32_t* ms_actual_result_len;
 } ms_handle_request_t;
 
 typedef struct ms_t_global_init_ecall_t {
@@ -533,14 +532,10 @@ static sgx_status_t SGX_CDECL sgx_handle_request(void* pms)
 	size_t _tmp_result_len = __in_ms.ms_result_len;
 	size_t _len_result = _tmp_result_len;
 	uint8_t* _in_result = NULL;
-	uint32_t* _tmp_actual_result_len = __in_ms.ms_actual_result_len;
-	size_t _len_actual_result_len = sizeof(uint32_t);
-	uint32_t* _in_actual_result_len = NULL;
 	sgx_status_t _in_retval;
 
 	CHECK_UNIQUE_POINTER(_tmp_request, _len_request);
 	CHECK_UNIQUE_POINTER(_tmp_result, _len_result);
-	CHECK_UNIQUE_POINTER(_tmp_actual_result_len, _len_actual_result_len);
 
 	//
 	// fence after pointer checks
@@ -578,20 +573,7 @@ static sgx_status_t SGX_CDECL sgx_handle_request(void* pms)
 
 		memset((void*)_in_result, 0, _len_result);
 	}
-	if (_tmp_actual_result_len != NULL && _len_actual_result_len != 0) {
-		if ( _len_actual_result_len % sizeof(*_tmp_actual_result_len) != 0)
-		{
-			status = SGX_ERROR_INVALID_PARAMETER;
-			goto err;
-		}
-		if ((_in_actual_result_len = (uint32_t*)malloc(_len_actual_result_len)) == NULL) {
-			status = SGX_ERROR_OUT_OF_MEMORY;
-			goto err;
-		}
-
-		memset((void*)_in_actual_result_len, 0, _len_actual_result_len);
-	}
-	_in_retval = handle_request(_tmp_querier, (const uint8_t*)_in_request, _tmp_len, _in_result, _tmp_result_len, _in_actual_result_len);
+	_in_retval = handle_request(_tmp_querier, (const uint8_t*)_in_request, _tmp_len, _in_result, _tmp_result_len);
 	if (memcpy_verw_s(&ms->ms_retval, sizeof(ms->ms_retval), &_in_retval, sizeof(_in_retval))) {
 		status = SGX_ERROR_UNEXPECTED;
 		goto err;
@@ -602,17 +584,10 @@ static sgx_status_t SGX_CDECL sgx_handle_request(void* pms)
 			goto err;
 		}
 	}
-	if (_in_actual_result_len) {
-		if (memcpy_verw_s(_tmp_actual_result_len, _len_actual_result_len, _in_actual_result_len, _len_actual_result_len)) {
-			status = SGX_ERROR_UNEXPECTED;
-			goto err;
-		}
-	}
 
 err:
 	if (_in_request) free(_in_request);
 	if (_in_result) free(_in_result);
-	if (_in_actual_result_len) free(_in_actual_result_len);
 	return status;
 }
 

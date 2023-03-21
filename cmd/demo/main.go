@@ -92,6 +92,8 @@ func CallAddMethod(from common.Address, contractAddress common.Address, db *type
 		return err
 	}
 
+	println("gas used: ", res.GasUsed, "logs: ", res.Logs)
+
 	// Check if transaction was executed correctly
 	if res.GasUsed <= 21000 {
 		return errors.New("incorrect gas calculation")

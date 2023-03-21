@@ -8,7 +8,6 @@ typedef struct ms_handle_request_t {
 	size_t ms_len;
 	uint8_t* ms_result;
 	size_t ms_result_len;
-	uint32_t* ms_actual_result_len;
 } ms_handle_request_t;
 
 typedef struct ms_t_global_init_ecall_t {
@@ -1078,7 +1077,7 @@ static const struct {
 		(void*)Enclave_sgx_thread_set_multiple_untrusted_events_ocall,
 	}
 };
-sgx_status_t handle_request(sgx_enclave_id_t eid, sgx_status_t* retval, void* querier, const uint8_t* request, size_t len, uint8_t* result, size_t result_len, uint32_t* actual_result_len)
+sgx_status_t handle_request(sgx_enclave_id_t eid, sgx_status_t* retval, void* querier, const uint8_t* request, size_t len, uint8_t* result, size_t result_len)
 {
 	sgx_status_t status;
 	ms_handle_request_t ms;
@@ -1087,7 +1086,6 @@ sgx_status_t handle_request(sgx_enclave_id_t eid, sgx_status_t* retval, void* qu
 	ms.ms_len = len;
 	ms.ms_result = result;
 	ms.ms_result_len = result_len;
-	ms.ms_actual_result_len = actual_result_len;
 	status = sgx_ecall(eid, 0, &ocall_table_Enclave, &ms);
 	if (status == SGX_SUCCESS && retval) *retval = ms.ms_retval;
 	return status;

@@ -43,7 +43,6 @@ pub extern "C" fn handle_request(
     len: usize,
     output: *mut u8,
     _: usize,
-    actual_output_len: *mut u32,
 ) -> sgx_types::sgx_status_t {
     let request_slice = unsafe { slice::from_raw_parts(request_data, len) };
 

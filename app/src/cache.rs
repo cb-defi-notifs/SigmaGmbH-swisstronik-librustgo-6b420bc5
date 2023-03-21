@@ -54,7 +54,6 @@ pub extern "C" fn make_pb_request(
         let request_vec = Vec::from(req_bytes);
         let mut querier = querier;
         let mut retval = sgx_status_t::SGX_SUCCESS;
-        let mut actual_result_len = 0u32;
         let mut result_buffer = Vec::<u8>::with_capacity(4096);
 
         // Call the enclave
@@ -66,28 +65,27 @@ pub extern "C" fn make_pb_request(
                 request_vec.as_ptr(),
                 req_bytes.len(),
                 result_buffer.as_mut_ptr(),
-                4096,
-                &mut actual_result_len
+                4096
             ) 
         };
+
+        println!("cache.rs res: {:?}", result_buffer);
+
+        // Destory enclave after usage
+        evm_enclave.destroy();
 
         // Parse execution result
         match evm_res {
             sgx_status_t::SGX_SUCCESS => {
-                println!("Successful call");
+                return Ok(result_buffer)
             },
             _ => {
                 println!("Call failed");
                 return Err(Error::vm_err(format!("Call to EVM failed: {:?}", evm_res.as_str())));
             }
         }
-
-        // Destory enclave after usage
-        evm_enclave.destroy();
-
-        Ok(UnmanagedVector::new(None))
     }).unwrap_or_else(|_| Err(Error::panic()));
 
     let data = handle_c_error_default(r, error_msg);
-    UnmanagedVector::new(None)
+    UnmanagedVector::new(Some(data))
 }
