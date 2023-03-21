@@ -62,8 +62,6 @@ pub extern "C" fn ocall_query_raw(
     )
     .into();
 
-    println!("Go Result: {:?}", go_result);
-
     let output = output.consume();
     let error_msg = error_msg.consume();
 

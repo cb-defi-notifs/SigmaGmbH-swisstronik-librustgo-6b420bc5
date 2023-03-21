@@ -17,8 +17,6 @@ pub struct FFIStorage {
 
 impl Storage for FFIStorage {
     fn contains_key(&self, key: &H160) -> bool {
-        println!("Contains key called");
-
         let encoded_request = coder::encode_contains_key(key);
         if let Some(result) = ocall::make_request(self.querier, encoded_request) {
             // Decode protobuf
@@ -37,8 +35,6 @@ impl Storage for FFIStorage {
     }
 
     fn get_account_storage_cell(&self, key: &H160, index: &H256) -> Option<H256> {
-        println!("Get account storage cell called");
-
         let encoded_request = coder::encode_get_storage_cell(key, index);
         if let Some(result) = ocall::make_request(self.querier, encoded_request) {
             // Decode protobuf
@@ -57,8 +53,6 @@ impl Storage for FFIStorage {
     }
 
     fn get_account_code(&self, key: &H160) -> Option<Vec<u8>> {
-        println!("Get account code called");
-
         let encoded_request = coder::encode_get_account_code(key);
         if let Some(result) = ocall::make_request(self.querier, encoded_request) {
             // Decode protobuf
@@ -77,8 +71,6 @@ impl Storage for FFIStorage {
     }
 
     fn get_account(&self, key: &H160) -> Basic {
-        println!("Get account called");
-
         let encoded_request = coder::encode_get_account(key);
         if let Some(result) = ocall::make_request(self.querier, encoded_request) {
             // Decode protobuf
@@ -106,7 +98,6 @@ impl Storage for FFIStorage {
     }
 
     fn insert_account(&mut self, key: H160, data: Basic) {
-        println!("Insert account called");
         let encoded_request = coder::encode_insert_account(key, data);
         if let Some(result) = ocall::make_request(self.querier, encoded_request) {
             match protobuf::parse_from_bytes::<ffi::QueryInsertAccountResponse>(result.as_slice()) {
@@ -121,7 +112,6 @@ impl Storage for FFIStorage {
     }
 
     fn insert_account_code(&mut self, key: H160, code: Vec<u8>) {
-        println!("Insert account code called");
         let encoded_request = coder::encode_insert_account_code(key, code);
         if let Some(result) = ocall::make_request(self.querier, encoded_request) {
             match protobuf::parse_from_bytes::<ffi::QueryInsertAccountCodeResponse>(result.as_slice()) {
@@ -136,7 +126,6 @@ impl Storage for FFIStorage {
     }
 
     fn insert_storage_cell(&mut self, key: H160, index: H256, value: H256) {
-        println!("Insert storage cell called");
         let encoded_request = coder::encode_insert_storage_cell(key, index, value);
         if let Some(result) = ocall::make_request(self.querier, encoded_request) {
             match protobuf::parse_from_bytes::<ffi::QueryInsertStorageCellResponse>(result.as_slice()) {
@@ -151,7 +140,6 @@ impl Storage for FFIStorage {
     }
 
     fn remove(&mut self, key: &H160) {
-        println!("Remove called");
         let encoded_request = coder::encode_remove(key);
         if let Some(result) = ocall::make_request(self.querier, encoded_request) {
             match protobuf::parse_from_bytes::<ffi::QueryRemoveResponse>(result.as_slice()) {
@@ -166,7 +154,6 @@ impl Storage for FFIStorage {
     }
 
     fn remove_storage_cell(&mut self, key: &H160, index: &H256) {
-        println!("Remove storage cell called");
         let encoded_request = coder::encode_remove_storage_cell(key, index);
         if let Some(result) = ocall::make_request(self.querier, encoded_request) {
             match protobuf::parse_from_bytes::<ffi::QueryRemoveStorageCellResponse>(result.as_slice()) {

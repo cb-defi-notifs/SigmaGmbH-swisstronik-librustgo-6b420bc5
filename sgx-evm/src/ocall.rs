@@ -32,11 +32,10 @@ pub fn make_request(querier: *mut GoQuerier, request: Vec<u8>) -> Option<Vec<u8>
 
     match result {
         sgx_status_t::SGX_SUCCESS => {
-            println!("make_request succeed!");
             return Some(result_buffer);
         },
         _ => {
-            println!("request failed");
+            println!("make_request failed");
             return None;
         }
     };

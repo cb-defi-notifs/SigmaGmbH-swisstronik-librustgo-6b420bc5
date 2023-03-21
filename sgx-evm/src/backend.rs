@@ -51,8 +51,6 @@ impl<'state> EvmBackend for FFIBackend<'state> {
     }
 
     fn block_hash(&self, number: U256) -> H256 {
-        println!("Block hash called");
-
         let encoded_request = coder::encode_query_block_hash(number);
         if let Some(result) = ocall::make_request(self.querier, encoded_request) {
             // Decode protobuf
