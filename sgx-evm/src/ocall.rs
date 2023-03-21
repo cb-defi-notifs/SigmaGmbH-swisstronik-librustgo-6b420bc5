@@ -17,10 +17,10 @@ extern {
 
     #[no_mangle]
     pub fn ocall_allocate(
-        ret_val: *mut sgx_status_t,
+        ret_val: *mut u8,
         data: *const u8,
         len: usize
-    ) -> *mut u8;
+    ) -> sgx_status_t;
 }
 
 pub fn make_request(querier: *mut GoQuerier, request: Vec<u8>) -> Option<Vec<u8>> {

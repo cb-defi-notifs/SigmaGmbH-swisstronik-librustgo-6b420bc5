@@ -96,6 +96,15 @@ pub extern "C" fn handle_request(
                     return sgx_status_t::SGX_ERROR_UNEXPECTED;
                 }
             };
+            
+            let mut retval = 0u8;
+            unsafe { 
+                ocall::ocall_allocate(
+                    &mut retval as *mut u8,
+                    encoded_response.as_ptr(),
+                    encoded_response.len()
+                ) 
+            };
         }
         None => {
             println!("Got empty request during protobuf decoding");
