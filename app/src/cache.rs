@@ -5,7 +5,7 @@ use std::panic::catch_unwind;
 use crate::memory::{ByteSliceView, UnmanagedVector};
 use crate::querier::{GoQuerier, self};
 use crate::errors::{handle_c_error_default, Error};
-use crate::enclave;
+use crate::enclave::{self, HandleResult};
 use sgx_types::*;
 
 // store some common string for argument names
@@ -53,7 +53,11 @@ pub extern "C" fn make_pb_request(
         // Prepare data for the enclave
         let request_vec = Vec::from(req_bytes);
         let mut querier = querier;
-        let mut retval = sgx_status_t::SGX_SUCCESS;
+        let mut retval = HandleResult {
+            result_ptr: std::ptr::null_mut(),
+            result_size: 0usize,
+            status: sgx_status_t::SGX_ERROR_UNEXPECTED,
+        };
 
         // Call the enclave
         let evm_res = unsafe { 
@@ -70,9 +74,10 @@ pub extern "C" fn make_pb_request(
         evm_enclave.destroy();
 
         // Parse execution result
-        match evm_res {
+        match retval.status {
             sgx_status_t::SGX_SUCCESS => {
-                return Ok(Vec::default())
+                let data = unsafe { std::slice::from_raw_parts(retval.result_ptr, retval.result_size)};
+                return Ok(data.to_vec())
             },
             _ => {
                 println!("Call failed");

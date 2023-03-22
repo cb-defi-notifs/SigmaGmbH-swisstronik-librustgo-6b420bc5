@@ -20,12 +20,28 @@
 extern "C" {
 #endif
 
-sgx_status_t handle_request(void* querier, const uint8_t* request, size_t len);
+#ifndef _HandleResult
+#define _HandleResult
+typedef struct HandleResult {
+	uint8_t* ptr;
+	size_t len;
+	sgx_status_t status;
+} HandleResult;
+#endif
+
+#ifndef _OcallAllocation
+#define _OcallAllocation
+typedef struct OcallAllocation {
+	uint8_t* ptr;
+} OcallAllocation;
+#endif
+
+HandleResult handle_request(void* querier, const uint8_t* request, size_t len);
 void t_global_init_ecall(uint64_t id, const uint8_t* path, size_t len);
 void t_global_exit_ecall(void);
 
 sgx_status_t SGX_CDECL ocall_query_raw(sgx_status_t* retval, void* querier, const uint8_t* request, size_t request_len, uint8_t* result, size_t result_len);
-sgx_status_t SGX_CDECL ocall_allocate(uint8_t** retval, const uint8_t* data, size_t len);
+sgx_status_t SGX_CDECL ocall_allocate(OcallAllocation* retval, const uint8_t* data, size_t len);
 sgx_status_t SGX_CDECL u_thread_set_event_ocall(int* retval, int* error, const void* tcs);
 sgx_status_t SGX_CDECL u_thread_wait_event_ocall(int* retval, int* error, const void* tcs, const struct timespec* timeout);
 sgx_status_t SGX_CDECL u_thread_set_multiple_events_ocall(int* retval, int* error, const void** tcss, int total);

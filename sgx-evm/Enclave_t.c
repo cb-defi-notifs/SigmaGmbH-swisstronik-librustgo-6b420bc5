@@ -28,7 +28,7 @@
 
 
 typedef struct ms_handle_request_t {
-	sgx_status_t ms_retval;
+	HandleResult ms_retval;
 	void* ms_querier;
 	const uint8_t* ms_request;
 	size_t ms_len;
@@ -50,7 +50,7 @@ typedef struct ms_ocall_query_raw_t {
 } ms_ocall_query_raw_t;
 
 typedef struct ms_ocall_allocate_t {
-	uint8_t* ms_retval;
+	OcallAllocation ms_retval;
 	const uint8_t* ms_data;
 	size_t ms_len;
 } ms_ocall_allocate_t;
@@ -531,7 +531,7 @@ static sgx_status_t SGX_CDECL sgx_handle_request(void* pms)
 	size_t _tmp_len = __in_ms.ms_len;
 	size_t _len_request = _tmp_len;
 	uint8_t* _in_request = NULL;
-	sgx_status_t _in_retval;
+	HandleResult _in_retval;
 
 	CHECK_UNIQUE_POINTER(_tmp_request, _len_request);
 
@@ -815,7 +815,7 @@ sgx_status_t SGX_CDECL ocall_query_raw(sgx_status_t* retval, void* querier, cons
 	return status;
 }
 
-sgx_status_t SGX_CDECL ocall_allocate(uint8_t** retval, const uint8_t* data, size_t len)
+sgx_status_t SGX_CDECL ocall_allocate(OcallAllocation* retval, const uint8_t* data, size_t len)
 {
 	sgx_status_t status = SGX_SUCCESS;
 	size_t _len_data = len;

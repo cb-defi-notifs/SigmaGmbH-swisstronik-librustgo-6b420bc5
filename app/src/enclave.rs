@@ -9,10 +9,22 @@ use std::ptr;
 
 static ENCLAVE_FILE: &'static str = "enclave.signed.so";
 
+#[repr(C)]
+pub struct OcallAllocation {
+    pub result_ptr: *mut u8
+}
+
+#[repr(C)]
+pub struct HandleResult {
+    pub result_ptr: *mut u8,
+    pub result_size: usize,
+    pub status: sgx_status_t
+}
+
 extern "C" {
     pub fn handle_request(
         eid: sgx_enclave_id_t,
-        retval: *mut sgx_status_t,
+        retval: *mut HandleResult,
         querier: *mut GoQuerier,
         request: *const u8,
         len: usize,
@@ -86,8 +98,10 @@ pub extern "C" fn ocall_query_raw(
 }
 
 #[no_mangle]
-pub extern "C" fn ocall_allocate(data: *const u8, len: usize) -> *mut u8 {
+pub extern "C" fn ocall_allocate(data: *const u8, len: usize) -> OcallAllocation {
     let slice = unsafe { slice::from_raw_parts(data, len) };
     let boxed_vec = Box::new(slice.to_vec());
-    Box::into_raw(boxed_vec) as *mut u8
+    let ptr = Box::into_raw(boxed_vec) as *mut u8;
+
+    OcallAllocation { result_ptr: ptr }
 }

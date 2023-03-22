@@ -5,8 +5,18 @@ enclave {
     from "sgx_tstdc.edl" import *;
     from "sgx_fd.edl" import *;
 
+    struct HandleResult {
+        uint8_t* ptr;
+        size_t len;
+        sgx_status_t status;
+    };
+
+    struct OcallAllocation {
+        uint8_t* ptr;
+    };
+
     trusted {
-        public sgx_status_t handle_request(
+        public HandleResult handle_request(
             [user_check] void* querier,
             [in, size=len] const uint8_t* request, 
             size_t len
@@ -22,7 +32,7 @@ enclave {
             size_t result_len
         );
 
-        uint8_t* ocall_allocate(
+        OcallAllocation ocall_allocate(
             [in, size=len] const uint8_t* data,
             size_t len
         );

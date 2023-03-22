@@ -35,20 +35,36 @@ mod storage;
 
 pub const MAX_RESULT_LEN: usize = 4096;
 
+#[repr(C)]
+pub struct HandleResult {
+    pub result_ptr: *mut u8,
+    pub result_len: usize,
+    pub status: sgx_status_t
+}
+
+#[repr(C)]
+pub struct OcallAllocation {
+    pub result_ptr: *mut u8
+}
+
 #[no_mangle]
 /// Handles incoming protobuf-encoded request for transaction handling
 pub extern "C" fn handle_request(
     querier: *mut GoQuerier,
     request_data: *const u8,
     len: usize,
-) -> sgx_types::sgx_status_t {
+) -> HandleResult {
     let request_slice = unsafe { slice::from_raw_parts(request_data, len) };
 
     let ffi_request = match protobuf::parse_from_bytes::<FFIRequest>(request_slice) {
         Ok(ffi_request) => ffi_request,
         Err(err) => {
             println!("Got error during protobuf decoding: {:?}", err);
-            return sgx_status_t::SGX_ERROR_UNEXPECTED;
+            return HandleResult {
+                result_ptr: std::ptr::null_mut(),
+                result_len: 0,
+                status: sgx_status_t::SGX_ERROR_UNEXPECTED
+            } 
         }
     };
 
@@ -93,14 +109,18 @@ pub extern "C" fn handle_request(
                 Ok(res) => res,
                 Err(err) => {
                     println!("Cannot encode protobuf result");
-                    return sgx_status_t::SGX_ERROR_UNEXPECTED;
+                    return HandleResult {
+                        result_ptr: std::ptr::null_mut(),
+                        result_len: 0,
+                        status: sgx_status_t::SGX_ERROR_UNEXPECTED
+                    } 
                 }
             };
             
-            let mut retval = 0u8;
+            let mut retval = OcallAllocation { result_ptr: std::ptr::null_mut() };
             unsafe { 
                 ocall::ocall_allocate(
-                    &mut retval as *mut u8,
+                    &mut retval as *mut OcallAllocation,
                     encoded_response.as_ptr(),
                     encoded_response.len()
                 ) 
@@ -108,11 +128,20 @@ pub extern "C" fn handle_request(
         }
         None => {
             println!("Got empty request during protobuf decoding");
-            return sgx_status_t::SGX_ERROR_UNEXPECTED;
+            return HandleResult {
+                result_ptr: std::ptr::null_mut(),
+                result_len: 0,
+                status: sgx_status_t::SGX_ERROR_UNEXPECTED
+            }
         }
     }
 
-    sgx_status_t::SGX_SUCCESS
+    // TODO: Return pointer to allocated buffer
+    return HandleResult {
+        result_ptr: std::ptr::null_mut(),
+        result_len: 0,
+        status: sgx_status_t::SGX_SUCCESS
+    } 
 }
 
 fn handle_call_request(querier: *mut GoQuerier, data: SGXVMCallRequest) -> ExecutionResult {
