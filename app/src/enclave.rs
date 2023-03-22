@@ -100,8 +100,8 @@ pub extern "C" fn ocall_query_raw(
 #[no_mangle]
 pub extern "C" fn ocall_allocate(data: *const u8, len: usize) -> OcallAllocation {
     let slice = unsafe { slice::from_raw_parts(data, len) };
-    let boxed_vec = Box::new(slice.to_vec());
-    let ptr = Box::into_raw(boxed_vec) as *mut u8;
-
-    OcallAllocation { result_ptr: ptr }
+    let vector_copy = slice.to_vec();
+    let boxed_vector = Box::new(vector_copy);
+    let heap_pointer = Box::into_raw(boxed_vector);
+    OcallAllocation { result_ptr: heap_pointer as *mut u8 }
 }

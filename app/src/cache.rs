@@ -53,11 +53,6 @@ pub extern "C" fn make_pb_request(
         // Prepare data for the enclave
         let request_vec = Vec::from(req_bytes);
         let mut querier = querier;
-        // let mut retval = HandleResult {
-        //     result_ptr: std::ptr::null_mut(),
-        //     result_size: 0usize,
-        //     status: sgx_status_t::SGX_ERROR_UNEXPECTED,
-        // };
         let mut handle_request_result = std::mem::MaybeUninit::<HandleResult>::uninit();
 
         // Call the enclave
@@ -80,6 +75,7 @@ pub extern "C" fn make_pb_request(
         match handle_request_result.status {
             sgx_status_t::SGX_SUCCESS => {
                 let data = unsafe { std::slice::from_raw_parts(handle_request_result.result_ptr, handle_request_result.result_size)};
+                println!("app response: {:?}", data.to_vec());
                 return Ok(data.to_vec())
             },
             _ => {
