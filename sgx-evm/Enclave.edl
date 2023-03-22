@@ -29,7 +29,7 @@ enclave {
     };
 
     untrusted {
-        sgx_status_t ocall_query_raw(
+        size_t ocall_query_raw(
             [user_check] void* querier,
             [in, size=request_len] const uint8_t* request,
             size_t request_len,

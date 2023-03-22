@@ -47,7 +47,7 @@ typedef struct ms_t_global_init_ecall_t {
 } ms_t_global_init_ecall_t;
 
 typedef struct ms_ocall_query_raw_t {
-	sgx_status_t ms_retval;
+	size_t ms_retval;
 	void* ms_querier;
 	const uint8_t* ms_request;
 	size_t ms_request_len;
@@ -777,7 +777,7 @@ SGX_EXTERNC const struct {
 };
 
 
-sgx_status_t SGX_CDECL ocall_query_raw(sgx_status_t* retval, void* querier, const uint8_t* request, size_t request_len, uint8_t* result, size_t result_len)
+sgx_status_t SGX_CDECL ocall_query_raw(size_t* retval, void* querier, const uint8_t* request, size_t request_len, uint8_t* result, size_t result_len)
 {
 	sgx_status_t status = SGX_SUCCESS;
 	size_t _len_request = request_len;

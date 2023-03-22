@@ -21,7 +21,7 @@ typedef struct ms_t_global_init_ecall_t {
 } ms_t_global_init_ecall_t;
 
 typedef struct ms_ocall_query_raw_t {
-	sgx_status_t ms_retval;
+	size_t ms_retval;
 	void* ms_querier;
 	const uint8_t* ms_request;
 	size_t ms_request_len;

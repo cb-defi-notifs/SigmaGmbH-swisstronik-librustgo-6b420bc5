@@ -39,7 +39,7 @@ typedef struct Allocation {
 
 #ifndef OCALL_QUERY_RAW_DEFINED__
 #define OCALL_QUERY_RAW_DEFINED__
-sgx_status_t SGX_UBRIDGE(SGX_NOCONVENTION, ocall_query_raw, (void* querier, const uint8_t* request, size_t request_len, uint8_t* result, size_t result_len));
+size_t SGX_UBRIDGE(SGX_NOCONVENTION, ocall_query_raw, (void* querier, const uint8_t* request, size_t request_len, uint8_t* result, size_t result_len));
 #endif
 #ifndef OCALL_ALLOCATE_DEFINED__
 #define OCALL_ALLOCATE_DEFINED__

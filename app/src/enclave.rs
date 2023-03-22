@@ -29,6 +29,13 @@ extern "C" {
         request: *const u8,
         len: usize,
     ) -> sgx_status_t;
+
+    pub fn ecall_allocate(
+        eid: sgx_enclave_id_t,
+        retval: *mut Allocation,
+        data: *const u8,
+        len: usize,
+    ) -> sgx_status_t;
 }
 
 pub fn init_enclave() -> SgxResult<SgxEnclave> {
