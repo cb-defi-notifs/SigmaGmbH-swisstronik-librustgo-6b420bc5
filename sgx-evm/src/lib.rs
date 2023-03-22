@@ -42,6 +42,16 @@ pub struct HandleResult {
     pub status: sgx_status_t
 }
 
+impl Default for HandleResult {
+    fn default() -> Self {
+        HandleResult {
+            result_ptr: std::ptr::null_mut(),
+            result_len: 0,
+            status: sgx_status_t::SGX_ERROR_UNEXPECTED,
+        }
+    }
+}
+
 #[repr(C)]
 pub struct OcallAllocation {
     pub result_ptr: *mut u8
@@ -60,11 +70,7 @@ pub extern "C" fn handle_request(
         Ok(ffi_request) => ffi_request,
         Err(err) => {
             println!("Got error during protobuf decoding: {:?}", err);
-            return HandleResult {
-                result_ptr: std::ptr::null_mut(),
-                result_len: 0,
-                status: sgx_status_t::SGX_ERROR_UNEXPECTED
-            } 
+            return HandleResult::default();
         }
     };
 
@@ -109,37 +115,36 @@ pub extern "C" fn handle_request(
                 Ok(res) => res,
                 Err(err) => {
                     println!("Cannot encode protobuf result");
-                    return HandleResult {
-                        result_ptr: std::ptr::null_mut(),
-                        result_len: 0,
-                        status: sgx_status_t::SGX_ERROR_UNEXPECTED
-                    } 
+                    return HandleResult::default();
                 }
             };
             
             let mut ocall_result = std::mem::MaybeUninit::<OcallAllocation>::uninit();
-            unsafe { 
+            let sgx_result = unsafe { 
                 ocall::ocall_allocate(
                     ocall_result.as_mut_ptr(),
                     encoded_response.as_ptr(),
                     encoded_response.len()
                 ) 
             };
-            let ocall_result = unsafe { ocall_result.assume_init() };
-
-            return HandleResult {
-                result_ptr: ocall_result.result_ptr,
-                result_len: encoded_response.len(),
-                status: sgx_status_t::SGX_SUCCESS
-            } 
+            match sgx_result {
+                sgx_status_t::SGX_SUCCESS => {
+                    let ocall_result = unsafe { ocall_result.assume_init() };
+                    return HandleResult {
+                        result_ptr: ocall_result.result_ptr,
+                        result_len: encoded_response.len(),
+                        status: sgx_status_t::SGX_SUCCESS
+                    }; 
+                },
+                _ => {
+                    println!("ENCLAVE: Ocall_allocate failed: {:?}", sgx_result.as_str());
+                    return HandleResult::default();
+                }
+            }
         }
         None => {
             println!("Got empty request during protobuf decoding");
-            return HandleResult {
-                result_ptr: std::ptr::null_mut(),
-                result_len: 0,
-                status: sgx_status_t::SGX_ERROR_UNEXPECTED
-            }
+            return HandleResult::default();
         }
     }
 }
