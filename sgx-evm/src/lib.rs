@@ -53,7 +53,7 @@ impl Default for HandleResult {
 }
 
 #[repr(C)]
-pub struct OcallAllocation {
+pub struct Allocation {
     pub result_ptr: *mut u8
 }
 
@@ -119,7 +119,7 @@ pub extern "C" fn handle_request(
                 }
             };
             
-            let mut ocall_result = std::mem::MaybeUninit::<OcallAllocation>::uninit();
+            let mut ocall_result = std::mem::MaybeUninit::<Allocation>::uninit();
             let sgx_result = unsafe { 
                 ocall::ocall_allocate(
                     ocall_result.as_mut_ptr(),

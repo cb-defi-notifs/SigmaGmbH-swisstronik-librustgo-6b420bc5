@@ -50,7 +50,7 @@ typedef struct ms_ocall_query_raw_t {
 } ms_ocall_query_raw_t;
 
 typedef struct ms_ocall_allocate_t {
-	OcallAllocation ms_retval;
+	Allocation ms_retval;
 	const uint8_t* ms_data;
 	size_t ms_len;
 } ms_ocall_allocate_t;
@@ -815,7 +815,7 @@ sgx_status_t SGX_CDECL ocall_query_raw(sgx_status_t* retval, void* querier, cons
 	return status;
 }
 
-sgx_status_t SGX_CDECL ocall_allocate(OcallAllocation* retval, const uint8_t* data, size_t len)
+sgx_status_t SGX_CDECL ocall_allocate(Allocation* retval, const uint8_t* data, size_t len)
 {
 	sgx_status_t status = SGX_SUCCESS;
 	size_t _len_data = len;

@@ -11,7 +11,7 @@ enclave {
         sgx_status_t status;
     };
 
-    struct OcallAllocation {
+    struct Allocation {
         uint8_t* ptr;
     };
 
@@ -32,7 +32,7 @@ enclave {
             size_t result_len
         );
 
-        OcallAllocation ocall_allocate(
+        Allocation ocall_allocate(
             [in, size=len] const uint8_t* data,
             size_t len
         );

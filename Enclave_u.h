@@ -30,11 +30,11 @@ typedef struct HandleResult {
 } HandleResult;
 #endif
 
-#ifndef _OcallAllocation
-#define _OcallAllocation
-typedef struct OcallAllocation {
+#ifndef _Allocation
+#define _Allocation
+typedef struct Allocation {
 	uint8_t* ptr;
-} OcallAllocation;
+} Allocation;
 #endif
 
 #ifndef OCALL_QUERY_RAW_DEFINED__
@@ -43,7 +43,7 @@ sgx_status_t SGX_UBRIDGE(SGX_NOCONVENTION, ocall_query_raw, (void* querier, cons
 #endif
 #ifndef OCALL_ALLOCATE_DEFINED__
 #define OCALL_ALLOCATE_DEFINED__
-OcallAllocation SGX_UBRIDGE(SGX_NOCONVENTION, ocall_allocate, (const uint8_t* data, size_t len));
+Allocation SGX_UBRIDGE(SGX_NOCONVENTION, ocall_allocate, (const uint8_t* data, size_t len));
 #endif
 #ifndef U_THREAD_SET_EVENT_OCALL_DEFINED__
 #define U_THREAD_SET_EVENT_OCALL_DEFINED__

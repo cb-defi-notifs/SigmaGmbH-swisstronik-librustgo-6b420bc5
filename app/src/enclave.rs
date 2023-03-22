@@ -10,7 +10,7 @@ use std::ptr;
 static ENCLAVE_FILE: &'static str = "enclave.signed.so";
 
 #[repr(C)]
-pub struct OcallAllocation {
+pub struct Allocation {
     pub result_ptr: *mut u8
 }
 
@@ -98,12 +98,12 @@ pub extern "C" fn ocall_query_raw(
 }
 
 #[no_mangle]
-pub extern "C" fn ocall_allocate(data: *const u8, len: usize) -> OcallAllocation {
+pub extern "C" fn ocall_allocate(data: *const u8, len: usize) -> Allocation {
     let slice = unsafe { slice::from_raw_parts(data, len) };
     let mut vector_copy = slice.to_vec();
 
     let ptr = vector_copy.as_mut_ptr();
     std::mem::forget(vector_copy);
 
-    OcallAllocation { result_ptr: ptr }
+    Allocation { result_ptr: ptr }
 }

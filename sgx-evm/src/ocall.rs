@@ -1,6 +1,6 @@
 /// This file contains signatures of `OCALL` functions
 
-use crate::{querier::GoQuerier, OcallAllocation};
+use crate::{querier::GoQuerier, Allocation};
 use sgx_types::sgx_status_t;
 use std::vec::Vec;
 
@@ -17,7 +17,7 @@ extern {
 
     #[no_mangle]
     pub fn ocall_allocate(
-        ret_val: *mut OcallAllocation,
+        ret_val: *mut Allocation,
         data: *const u8,
         len: usize
     ) -> sgx_status_t;

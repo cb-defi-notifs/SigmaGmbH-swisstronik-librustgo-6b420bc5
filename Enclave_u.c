@@ -24,7 +24,7 @@ typedef struct ms_ocall_query_raw_t {
 } ms_ocall_query_raw_t;
 
 typedef struct ms_ocall_allocate_t {
-	OcallAllocation ms_retval;
+	Allocation ms_retval;
 	const uint8_t* ms_data;
 	size_t ms_len;
 } ms_ocall_allocate_t;
