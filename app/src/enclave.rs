@@ -54,16 +54,19 @@ pub fn init_enclave() -> SgxResult<SgxEnclave> {
 pub extern "C" fn ocall_query_raw(
     querier: *mut GoQuerier,
     request: *const u8,
-    len: usize,
+    request_len: usize,
     result_ptr: *mut u8,
     _: usize
 ) -> sgx_status_t {
-    let request = unsafe { slice::from_raw_parts(request, len) };
+    // Recover request and querier
+    let request = unsafe { slice::from_raw_parts(request, request_len) };
     let querier = unsafe { &*querier };
 
+    // Prepare vectors for output and error
     let mut output = UnmanagedVector::default();
     let mut error_msg = UnmanagedVector::default();
 
+    // Make request to GoQuerier (Connector)
     let go_result: GoError = (querier.vtable.query_external)(
         querier.state,
         U8SliceView::new(Some(&request)),
@@ -72,15 +75,20 @@ pub extern "C" fn ocall_query_raw(
     )
     .into();
 
+    // Consume vectors to destroy them
     let output = output.consume();
     let error_msg = error_msg.consume();
 
     match go_result {
         GoError::None => {
-            let result = output.unwrap_or_default();
+            let output = output.unwrap_or_default();
 
             unsafe {
-                ptr::copy_nonoverlapping(result.as_ptr(), result_ptr, result.len());
+                ptr::copy_nonoverlapping(
+                    output.as_ptr(), 
+                    result_ptr, 
+                    output.len()
+                );
             }
 
             return sgx_status_t::SGX_SUCCESS;

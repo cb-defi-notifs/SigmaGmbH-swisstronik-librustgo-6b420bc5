@@ -37,6 +37,8 @@ pub fn make_request(querier: *mut GoQuerier, request: Vec<u8>) -> Option<Vec<u8>
         )
     };
 
+    println!("Debug enclave: make_request result len: {:?}", result_buffer.len());
+
     match result {
         sgx_status_t::SGX_SUCCESS => {
             return Some(result_buffer);
