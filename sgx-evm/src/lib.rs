@@ -118,8 +118,6 @@ pub extern "C" fn handle_request(
                     return HandleResult::default();
                 }
             };
-
-            println!("enclave response: {:?}", encoded_response.as_slice());
             
             let mut ocall_result = std::mem::MaybeUninit::<OcallAllocation>::uninit();
             let sgx_result = unsafe { 

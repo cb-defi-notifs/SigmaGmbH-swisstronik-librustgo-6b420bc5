@@ -99,6 +99,7 @@ func CallAddMethod(from common.Address, contractAddress common.Address, db *type
 	if res.VmError != "" {
 		return errors.New("got non-empty VM error")
 	}
+
 	if len(res.Logs) != 2 {
 		return errors.New("incorrect logs")
 	}
