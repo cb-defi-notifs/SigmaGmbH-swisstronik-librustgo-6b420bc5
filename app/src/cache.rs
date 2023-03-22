@@ -53,30 +53,33 @@ pub extern "C" fn make_pb_request(
         // Prepare data for the enclave
         let request_vec = Vec::from(req_bytes);
         let mut querier = querier;
-        let mut retval = HandleResult {
-            result_ptr: std::ptr::null_mut(),
-            result_size: 0usize,
-            status: sgx_status_t::SGX_ERROR_UNEXPECTED,
-        };
+        // let mut retval = HandleResult {
+        //     result_ptr: std::ptr::null_mut(),
+        //     result_size: 0usize,
+        //     status: sgx_status_t::SGX_ERROR_UNEXPECTED,
+        // };
+        let mut handle_request_result = std::mem::MaybeUninit::<HandleResult>::uninit();
 
         // Call the enclave
         let evm_res = unsafe { 
             enclave::handle_request(
                 evm_enclave.geteid(), 
-                &mut retval,
+                handle_request_result.as_mut_ptr(),
                 &mut querier as *mut GoQuerier,
                 request_vec.as_ptr(),
                 request_vec.len(),
             ) 
         };
 
+        let handle_request_result = unsafe { handle_request_result.assume_init() };
+
         // Destory enclave after usage
         evm_enclave.destroy();
 
         // Parse execution result
-        match retval.status {
+        match handle_request_result.status {
             sgx_status_t::SGX_SUCCESS => {
-                let data = unsafe { std::slice::from_raw_parts(retval.result_ptr, retval.result_size)};
+                let data = unsafe { std::slice::from_raw_parts(handle_request_result.result_ptr, handle_request_result.result_size)};
                 return Ok(data.to_vec())
             },
             _ => {

@@ -117,14 +117,21 @@ pub extern "C" fn handle_request(
                 }
             };
             
-            let mut retval = OcallAllocation { result_ptr: std::ptr::null_mut() };
+            let mut ocall_result = std::mem::MaybeUninit::<OcallAllocation>::uninit();
             unsafe { 
                 ocall::ocall_allocate(
-                    &mut retval as *mut OcallAllocation,
+                    ocall_result.as_mut_ptr(),
                     encoded_response.as_ptr(),
                     encoded_response.len()
                 ) 
             };
+            let ocall_result = unsafe { ocall_result.assume_init() };
+
+            return HandleResult {
+                result_ptr: ocall_result.result_ptr,
+                result_len: encoded_response.len(),
+                status: sgx_status_t::SGX_SUCCESS
+            } 
         }
         None => {
             println!("Got empty request during protobuf decoding");
@@ -135,13 +142,6 @@ pub extern "C" fn handle_request(
             }
         }
     }
-
-    // TODO: Return pointer to allocated buffer
-    return HandleResult {
-        result_ptr: std::ptr::null_mut(),
-        result_len: 0,
-        status: sgx_status_t::SGX_SUCCESS
-    } 
 }
 
 fn handle_call_request(querier: *mut GoQuerier, data: SGXVMCallRequest) -> ExecutionResult {
