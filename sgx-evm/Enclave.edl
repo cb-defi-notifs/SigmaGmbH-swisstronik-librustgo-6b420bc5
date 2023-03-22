@@ -21,6 +21,11 @@ enclave {
             [in, size=len] const uint8_t* request, 
             size_t len
         );
+
+        public Allocation ecall_allocate(
+            [in, size=len] const uint8_t* data,
+            size_t len
+        );
     };
 
     untrusted {

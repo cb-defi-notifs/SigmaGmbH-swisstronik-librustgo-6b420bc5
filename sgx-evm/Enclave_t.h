@@ -37,6 +37,7 @@ typedef struct Allocation {
 #endif
 
 HandleResult handle_request(void* querier, const uint8_t* request, size_t len);
+Allocation ecall_allocate(const uint8_t* data, size_t len);
 void t_global_init_ecall(uint64_t id, const uint8_t* path, size_t len);
 void t_global_exit_ecall(void);
 

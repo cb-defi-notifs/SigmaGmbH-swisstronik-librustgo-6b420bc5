@@ -58,6 +58,21 @@ pub struct Allocation {
 }
 
 #[no_mangle]
+pub extern "C" fn ecall_allocate(
+    data: *const u8,
+    len: usize,
+) -> Allocation {
+    // TODO: In case of any errors check: https://github.com/scrtlabs/SecretNetwork/blob/8e157399de55c8e9c3f9a05d2d23e259dae24095/cosmwasm/enclaves/shared/contract-engine/src/external/ecalls.rs#L41
+    let slice = unsafe { slice::from_raw_parts(data, len) };
+    let mut vector_copy = slice.to_vec();
+
+    let ptr = vector_copy.as_mut_ptr();
+    std::mem::forget(vector_copy);
+
+    Allocation { result_ptr: ptr }
+}
+
+#[no_mangle]
 /// Handles incoming protobuf-encoded request for transaction handling
 pub extern "C" fn handle_request(
     querier: *mut GoQuerier,
