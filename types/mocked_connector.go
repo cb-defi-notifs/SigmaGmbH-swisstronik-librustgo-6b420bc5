@@ -55,11 +55,11 @@ func (c MockedConnector) Query(request []byte) ([]byte, error) {
 		return proto.Marshal(&ffi.QueryContainsKeyResponse{Contains: contains})
 	case *ffi.CosmosRequest_AccountCode:
 		ethAddress := common.BytesToAddress(request.AccountCode.Address)
-		println("[Go:Query] Account code: ", ethAddress.String())
 		acct, err := c.DB.GetAccountOrEmpty(ethAddress)
 		if err != nil {
 			return nil, err
 		}
+		println("[Go:Query] Account code: ", ethAddress.String(), "code len: ", len(acct.Code))
 		return proto.Marshal(&ffi.QueryGetAccountCodeResponse{Code: acct.Code})
 	case *ffi.CosmosRequest_StorageCell:
 		ethAddress := common.BytesToAddress(request.StorageCell.Address)

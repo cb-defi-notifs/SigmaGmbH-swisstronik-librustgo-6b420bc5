@@ -1,9 +1,8 @@
-use std::collections::HashSet;
 use std::marker::PhantomData;
 use std::panic::catch_unwind;
 
 use crate::memory::{ByteSliceView, UnmanagedVector};
-use crate::querier::{GoQuerier, self};
+use crate::querier::{GoQuerier};
 use crate::errors::{handle_c_error_default, Error};
 use crate::enclave::{self, HandleResult};
 use sgx_types::*;
