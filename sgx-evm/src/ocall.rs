@@ -2,6 +2,7 @@
 
 use crate::{querier::GoQuerier, Allocation, AllocationWithResult};
 use sgx_types::sgx_status_t;
+use core::slice;
 use std::vec::Vec;
 
 extern {
@@ -24,12 +25,12 @@ extern {
 }
 
 pub fn make_request(querier: *mut GoQuerier, request: Vec<u8>) -> Option<Vec<u8>> {
-    let mut ret_val = std::mem::MaybeUninit::<AllocationWithResult>::uninit();
+    let mut allocation = std::mem::MaybeUninit::<AllocationWithResult>::uninit();
     let mut buffer = [0u8; crate::MAX_RESULT_LEN];
 
     let mut result = unsafe {
         ocall_query_raw(
-            ret_val.as_mut_ptr(), 
+            allocation.as_mut_ptr(), 
             querier, 
             request.as_ptr(), 
             request.len(),
@@ -38,11 +39,11 @@ pub fn make_request(querier: *mut GoQuerier, request: Vec<u8>) -> Option<Vec<u8>
         )
     };
 
-    println!("Debug enclave: make_request result len: {:?}", buffer.len());
-
     match result  {
         sgx_status_t::SGX_SUCCESS => {
-            return Some(buffer.to_vec());
+            let allocation = unsafe { allocation.assume_init() };
+            let result_slice = unsafe { slice::from_raw_parts(allocation.result_ptr, allocation.result_len)};
+            return Some(result_slice.to_vec());
         },
         _ => {
             println!("make_request failed: Reason: {:?}", result.as_str());
