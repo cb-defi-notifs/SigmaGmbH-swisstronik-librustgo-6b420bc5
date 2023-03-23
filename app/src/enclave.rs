@@ -8,6 +8,7 @@ use std::slice;
 use std::ptr;
 
 static ENCLAVE_FILE: &'static str = "enclave.signed.so";
+pub static mut ENCLAVE_ID: Option<sgx_types::sgx_enclave_id_t> = None;
 
 #[repr(C)]
 pub struct Allocation {
@@ -90,6 +91,20 @@ pub extern "C" fn ocall_query_raw(
         GoError::None => {
             let output = output.unwrap_or_default();
 
+            let enclave_eid = unsafe { ENCLAVE_ID.expect("Enclave should be already initialized") };
+            let mut allocation_result = std::mem::MaybeUninit::<Allocation>::uninit();
+
+            let res = unsafe {
+                ecall_allocate(
+                    enclave_eid, 
+                    allocation_result.as_mut_ptr(), 
+                    output.as_ptr(), 
+                    output.len(),
+                )
+            };
+            println!("Allocation result: {:?}", res.as_str());
+
+            // TODO: Replace with `ecall_allocate`
             unsafe {
                 ptr::copy_nonoverlapping(
                     output.as_ptr(), 

@@ -35,7 +35,7 @@ enclave {
             size_t request_len,
             [out, size=result_len] uint8_t* result,
             size_t result_len
-        );
+        ) allow(ecall_allocate);
 
         Allocation ocall_allocate(
             [in, size=len] const uint8_t* data,
