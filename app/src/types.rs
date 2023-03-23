@@ -1,4 +1,5 @@
 use crate::{UnmanagedVector, U8SliceView, errors::GoError};
+use std::marker::PhantomData;
 use sgx_types::*;
 
 #[repr(C)]
@@ -31,6 +32,15 @@ pub struct QueryResult {
     pub output: UnmanagedVector,
     pub error: GoError,
     pub error_message: UnmanagedVector,
+}
+
+#[repr(C)]
+#[allow(dead_code)]
+pub struct cache_t {}
+
+#[allow(dead_code)]
+pub struct Cache {
+    querier: PhantomData<GoQuerier>,
 }
 
 #[repr(C)]

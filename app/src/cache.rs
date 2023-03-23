@@ -1,4 +1,3 @@
-use std::marker::PhantomData;
 use std::panic::catch_unwind;
 
 use crate::memory::{ByteSliceView, UnmanagedVector};
@@ -11,24 +10,6 @@ use sgx_types::*;
 
 // store some common string for argument names
 pub const PB_REQUEST_ARG: &str = "pb_request";
-
-#[repr(C)]
-#[allow(dead_code)]
-pub struct cache_t {}
-
-#[allow(dead_code)]
-pub struct Cache {
-    querier: PhantomData<GoQuerier>,
-}
-
-pub fn to_cache(ptr: *mut cache_t) -> Option<&'static mut Cache> {
-    if ptr.is_null() {
-        None
-    } else {
-        let c = unsafe { &mut *(ptr as *mut Cache) };
-        Some(c)
-    }
-}
 
 #[no_mangle]
 pub extern "C" fn make_pb_request(
