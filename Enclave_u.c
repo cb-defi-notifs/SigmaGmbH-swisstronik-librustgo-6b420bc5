@@ -2,7 +2,7 @@
 #include <errno.h>
 
 typedef struct ms_handle_request_t {
-	HandleResult ms_retval;
+	ResultWithAllocation ms_retval;
 	void* ms_querier;
 	const uint8_t* ms_request;
 	size_t ms_len;
@@ -21,7 +21,7 @@ typedef struct ms_t_global_init_ecall_t {
 } ms_t_global_init_ecall_t;
 
 typedef struct ms_ocall_query_raw_t {
-	size_t ms_retval;
+	ResultWithAllocation ms_retval;
 	void* ms_querier;
 	const uint8_t* ms_request;
 	size_t ms_request_len;
@@ -1095,7 +1095,7 @@ static const struct {
 		(void*)Enclave_sgx_thread_set_multiple_untrusted_events_ocall,
 	}
 };
-sgx_status_t handle_request(sgx_enclave_id_t eid, HandleResult* retval, void* querier, const uint8_t* request, size_t len)
+sgx_status_t handle_request(sgx_enclave_id_t eid, ResultWithAllocation* retval, void* querier, const uint8_t* request, size_t len)
 {
 	sgx_status_t status;
 	ms_handle_request_t ms;

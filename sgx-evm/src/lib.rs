@@ -36,15 +36,15 @@ mod storage;
 pub const MAX_RESULT_LEN: usize = 4096;
 
 #[repr(C)]
-pub struct HandleResult {
+pub struct AllocationWithResult {
     pub result_ptr: *mut u8,
     pub result_len: usize,
     pub status: sgx_status_t
 }
 
-impl Default for HandleResult {
+impl Default for AllocationWithResult {
     fn default() -> Self {
-        HandleResult {
+        AllocationWithResult {
             result_ptr: std::ptr::null_mut(),
             result_len: 0,
             status: sgx_status_t::SGX_ERROR_UNEXPECTED,
@@ -78,14 +78,14 @@ pub extern "C" fn handle_request(
     querier: *mut GoQuerier,
     request_data: *const u8,
     len: usize,
-) -> HandleResult {
+) -> AllocationWithResult {
     let request_slice = unsafe { slice::from_raw_parts(request_data, len) };
 
     let ffi_request = match protobuf::parse_from_bytes::<FFIRequest>(request_slice) {
         Ok(ffi_request) => ffi_request,
         Err(err) => {
             println!("Got error during protobuf decoding: {:?}", err);
-            return HandleResult::default();
+            return AllocationWithResult::default();
         }
     };
 
@@ -130,7 +130,7 @@ pub extern "C" fn handle_request(
                 Ok(res) => res,
                 Err(err) => {
                     println!("Cannot encode protobuf result");
-                    return HandleResult::default();
+                    return AllocationWithResult::default();
                 }
             };
             
@@ -145,7 +145,7 @@ pub extern "C" fn handle_request(
             match sgx_result {
                 sgx_status_t::SGX_SUCCESS => {
                     let ocall_result = unsafe { ocall_result.assume_init() };
-                    return HandleResult {
+                    return AllocationWithResult {
                         result_ptr: ocall_result.result_ptr,
                         result_len: encoded_response.len(),
                         status: sgx_status_t::SGX_SUCCESS
@@ -153,13 +153,13 @@ pub extern "C" fn handle_request(
                 },
                 _ => {
                     println!("ocall_allocate failed: {:?}", sgx_result.as_str());
-                    return HandleResult::default();
+                    return AllocationWithResult::default();
                 }
             }
         }
         None => {
             println!("Got empty request during protobuf decoding");
-            return HandleResult::default();
+            return AllocationWithResult::default();
         }
     }
 }

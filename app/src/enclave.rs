@@ -16,16 +16,22 @@ pub struct Allocation {
 }
 
 #[repr(C)]
-pub struct HandleResult {
+pub struct AllocationWithResult {
     pub result_ptr: *mut u8,
     pub result_size: usize,
     pub status: sgx_status_t
 }
 
+impl Default for AllocationWithResult {
+    fn default() -> Self {
+        AllocationWithResult { result_ptr: std::ptr::null_mut(), result_size: 0usize, status: sgx_status_t::SGX_ERROR_UNEXPECTED }
+    }
+}
+
 extern "C" {
     pub fn handle_request(
         eid: sgx_enclave_id_t,
-        retval: *mut HandleResult,
+        retval: *mut AllocationWithResult,
         querier: *mut GoQuerier,
         request: *const u8,
         len: usize,
@@ -65,7 +71,7 @@ pub extern "C" fn ocall_query_raw(
     request_len: usize,
     result_ptr: *mut u8,
     _: usize
-) -> sgx_status_t {
+) -> AllocationWithResult {
     // Recover request and querier
     let request = unsafe { slice::from_raw_parts(request, request_len) };
     let querier = unsafe { &*querier };
@@ -102,18 +108,25 @@ pub extern "C" fn ocall_query_raw(
                     output.len(),
                 )
             };
-            println!("Allocation result: {:?}", res.as_str());
 
-            // TODO: Replace with `ecall_allocate`
-            unsafe {
-                ptr::copy_nonoverlapping(
-                    output.as_ptr(), 
-                    result_ptr, 
-                    output.len()
-                );
-            }
-
-            return sgx_status_t::SGX_SUCCESS;
+            match res {
+                sgx_status_t::SGX_SUCCESS => {
+                    let allocation_result = unsafe { allocation_result.assume_init() };
+                    return AllocationWithResult {
+                        result_ptr: allocation_result.result_ptr,
+                        result_size: output.len(),
+                        status: sgx_status_t::SGX_SUCCESS,
+                    };
+                },
+                _ => {
+                    println!("ecall_allocate failed. Reason: {:?}", res.as_str());
+                    return AllocationWithResult {
+                        result_ptr: std::ptr::null_mut(),
+                        result_size: 0usize,
+                        status: res,
+                    };
+                }
+            };
         },
         _ => {
             let err_msg = error_msg.unwrap_or_default();
@@ -122,7 +135,7 @@ pub extern "C" fn ocall_query_raw(
                 go_result,
                 String::from_utf8_lossy(&err_msg)
             );
-            return sgx_status_t::SGX_ERROR_UNEXPECTED;
+            return AllocationWithResult::default();
         }
     };
 }

@@ -4,7 +4,7 @@ use std::panic::catch_unwind;
 use crate::memory::{ByteSliceView, UnmanagedVector};
 use crate::querier::{GoQuerier};
 use crate::errors::{handle_c_error_default, Error};
-use crate::enclave::{self, HandleResult};
+use crate::enclave::{self, AllocationWithResult};
 
 use sgx_types::*;
 
@@ -55,7 +55,7 @@ pub extern "C" fn make_pb_request(
         // Prepare data for the enclave
         let request_vec = Vec::from(req_bytes);
         let mut querier = querier;
-        let mut handle_request_result = std::mem::MaybeUninit::<HandleResult>::uninit();
+        let mut handle_request_result = std::mem::MaybeUninit::<AllocationWithResult>::uninit();
 
         // Call the enclave
         let evm_res = unsafe { 
