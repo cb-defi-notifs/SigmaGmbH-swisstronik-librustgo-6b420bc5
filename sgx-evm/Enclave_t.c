@@ -51,8 +51,6 @@ typedef struct ms_ocall_query_raw_t {
 	void* ms_querier;
 	const uint8_t* ms_request;
 	size_t ms_request_len;
-	uint8_t* ms_result;
-	size_t ms_result_len;
 } ms_ocall_query_raw_t;
 
 typedef struct ms_ocall_allocate_t {
@@ -777,24 +775,19 @@ SGX_EXTERNC const struct {
 };
 
 
-sgx_status_t SGX_CDECL ocall_query_raw(ResultWithAllocation* retval, void* querier, const uint8_t* request, size_t request_len, uint8_t* result, size_t result_len)
+sgx_status_t SGX_CDECL ocall_query_raw(ResultWithAllocation* retval, void* querier, const uint8_t* request, size_t request_len)
 {
 	sgx_status_t status = SGX_SUCCESS;
 	size_t _len_request = request_len;
-	size_t _len_result = result_len;
 
 	ms_ocall_query_raw_t* ms = NULL;
 	size_t ocalloc_size = sizeof(ms_ocall_query_raw_t);
 	void *__tmp = NULL;
 
-	void *__tmp_result = NULL;
 
 	CHECK_ENCLAVE_POINTER(request, _len_request);
-	CHECK_ENCLAVE_POINTER(result, _len_result);
 
 	if (ADD_ASSIGN_OVERFLOW(ocalloc_size, (request != NULL) ? _len_request : 0))
-		return SGX_ERROR_INVALID_PARAMETER;
-	if (ADD_ASSIGN_OVERFLOW(ocalloc_size, (result != NULL) ? _len_result : 0))
 		return SGX_ERROR_INVALID_PARAMETER;
 
 	__tmp = sgx_ocalloc(ocalloc_size);
@@ -835,39 +828,11 @@ sgx_status_t SGX_CDECL ocall_query_raw(ResultWithAllocation* retval, void* queri
 		return SGX_ERROR_UNEXPECTED;
 	}
 
-	if (result != NULL) {
-		if (memcpy_verw_s(&ms->ms_result, sizeof(uint8_t*), &__tmp, sizeof(uint8_t*))) {
-			sgx_ocfree();
-			return SGX_ERROR_UNEXPECTED;
-		}
-		__tmp_result = __tmp;
-		if (_len_result % sizeof(*result) != 0) {
-			sgx_ocfree();
-			return SGX_ERROR_INVALID_PARAMETER;
-		}
-		memset_verw(__tmp_result, 0, _len_result);
-		__tmp = (void *)((size_t)__tmp + _len_result);
-		ocalloc_size -= _len_result;
-	} else {
-		ms->ms_result = NULL;
-	}
-
-	if (memcpy_verw_s(&ms->ms_result_len, sizeof(ms->ms_result_len), &result_len, sizeof(result_len))) {
-		sgx_ocfree();
-		return SGX_ERROR_UNEXPECTED;
-	}
-
 	status = sgx_ocall(0, ms);
 
 	if (status == SGX_SUCCESS) {
 		if (retval) {
 			if (memcpy_s((void*)retval, sizeof(*retval), &ms->ms_retval, sizeof(ms->ms_retval))) {
-				sgx_ocfree();
-				return SGX_ERROR_UNEXPECTED;
-			}
-		}
-		if (result) {
-			if (memcpy_s((void*)result, _len_result, __tmp_result, _len_result)) {
 				sgx_ocfree();
 				return SGX_ERROR_UNEXPECTED;
 			}

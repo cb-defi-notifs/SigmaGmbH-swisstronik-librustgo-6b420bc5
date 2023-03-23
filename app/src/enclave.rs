@@ -69,8 +69,6 @@ pub extern "C" fn ocall_query_raw(
     querier: *mut GoQuerier,
     request: *const u8,
     request_len: usize,
-    result_ptr: *mut u8,
-    _: usize
 ) -> AllocationWithResult {
     // Recover request and querier
     let request = unsafe { slice::from_raw_parts(request, request_len) };

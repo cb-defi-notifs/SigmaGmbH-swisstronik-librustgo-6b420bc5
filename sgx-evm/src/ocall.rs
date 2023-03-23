@@ -12,21 +12,18 @@ extern {
         querier: *mut GoQuerier, 
         request: *const u8, 
         len: usize,
-        result: *mut u8,
-        result_len: usize,
     ) -> sgx_status_t;
 
     #[no_mangle]
     pub fn ocall_allocate(
         ret_val: *mut Allocation,
         data: *const u8,
-        len: usize
+        len: usize,
     ) -> sgx_status_t;
 }
 
 pub fn make_request(querier: *mut GoQuerier, request: Vec<u8>) -> Option<Vec<u8>> {
     let mut allocation = std::mem::MaybeUninit::<AllocationWithResult>::uninit();
-    let mut buffer = [0u8; crate::MAX_RESULT_LEN];
 
     let mut result = unsafe {
         ocall_query_raw(
@@ -34,8 +31,6 @@ pub fn make_request(querier: *mut GoQuerier, request: Vec<u8>) -> Option<Vec<u8>
             querier, 
             request.as_ptr(), 
             request.len(),
-            &mut buffer as *mut u8,
-            crate::MAX_RESULT_LEN,
         )
     };
 
