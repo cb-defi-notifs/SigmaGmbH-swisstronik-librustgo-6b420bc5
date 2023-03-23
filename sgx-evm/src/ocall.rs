@@ -25,26 +25,27 @@ extern {
 
 pub fn make_request(querier: *mut GoQuerier, request: Vec<u8>) -> Option<Vec<u8>> {
     let mut ret_val = sgx_status_t::SGX_SUCCESS;
-    let mut result_buffer = Vec::<u8>::with_capacity(crate::MAX_RESULT_LEN);
+    let mut buffer = [0u8; crate::MAX_RESULT_LEN];
+
     let mut result = unsafe {
         ocall_query_raw(
             &mut ret_val, 
             querier, 
             request.as_ptr(), 
             request.len(),
-            result_buffer.as_mut_ptr(),
+            &mut buffer as *mut u8,
             crate::MAX_RESULT_LEN,
         )
     };
 
-    println!("Debug enclave: make_request result len: {:?}", result_buffer.len());
+    println!("Debug enclave: make_request result len: {:?}", buffer.len());
 
-    match result {
-        sgx_status_t::SGX_SUCCESS => {
-            return Some(result_buffer);
+    match (result, ret_val)  {
+        (sgx_status_t::SGX_SUCCESS, sgx_status_t::SGX_SUCCESS) => {
+            return Some(buffer.to_vec());
         },
-        _ => {
-            println!("make_request failed");
+        (_, _) => {
+            println!("make_request failed: system reason {:?}, returned: {:?}", result.as_str(), ret_val.as_str());
             return None;
         }
     };
