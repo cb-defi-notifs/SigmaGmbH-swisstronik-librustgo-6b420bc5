@@ -5,10 +5,12 @@ use crate::memory::{ByteSliceView, UnmanagedVector};
 use crate::querier::{GoQuerier};
 use crate::errors::{handle_c_error_default, Error};
 use crate::enclave::{self, HandleResult};
+
 use sgx_types::*;
 
 // store some common string for argument names
 pub const PB_REQUEST_ARG: &str = "pb_request";
+pub static mut ENCLAVE_ID: Option<sgx_types::sgx_enclave_id_t> = None;
 
 #[repr(C)]
 #[allow(dead_code)]
@@ -48,6 +50,8 @@ pub extern "C" fn make_pb_request(
                 return Err(Error::vm_err("Cannot initialize SGXVM enclave")) 
             },
         };
+        // Set enclave id to static variable to make it accessible across inner ecalls
+        unsafe { ENCLAVE_ID = Some(evm_enclave.geteid()) };
         
         // Prepare data for the enclave
         let request_vec = Vec::from(req_bytes);
@@ -67,8 +71,9 @@ pub extern "C" fn make_pb_request(
 
         let handle_request_result = unsafe { handle_request_result.assume_init() };
 
-        // Destory enclave after usage
+        // Destory enclave after usage and set enclave id to None
         evm_enclave.destroy();
+        unsafe { ENCLAVE_ID = None };
 
         // Parse execution result
         match handle_request_result.status {
