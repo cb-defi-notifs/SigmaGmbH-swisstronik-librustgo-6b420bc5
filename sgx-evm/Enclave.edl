@@ -13,6 +13,7 @@ enclave {
 
     struct Allocation {
         uint8_t* ptr;
+        size_t len;
     };
 
     trusted {

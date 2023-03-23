@@ -54,7 +54,8 @@ impl Default for AllocationWithResult {
 
 #[repr(C)]
 pub struct Allocation {
-    pub result_ptr: *mut u8
+    pub result_ptr: *mut u8,
+    pub result_size: usize,
 }
 
 #[no_mangle]
@@ -67,9 +68,10 @@ pub extern "C" fn ecall_allocate(
     let mut vector_copy = slice.to_vec();
 
     let ptr = vector_copy.as_mut_ptr();
-    std::mem::forget(vector_copy);
+    let size = vector_copy.len();
+    std::mem::forget(vector_copy); // TODO: Need to clean that memory
 
-    Allocation { result_ptr: ptr }
+    Allocation { result_ptr: ptr, result_size: size }
 }
 
 #[no_mangle]

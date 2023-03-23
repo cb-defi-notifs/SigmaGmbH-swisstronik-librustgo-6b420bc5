@@ -33,6 +33,7 @@ typedef struct ResultWithAllocation {
 #define _Allocation
 typedef struct Allocation {
 	uint8_t* ptr;
+	size_t len;
 } Allocation;
 #endif
 

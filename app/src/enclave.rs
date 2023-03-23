@@ -12,7 +12,8 @@ pub static mut ENCLAVE_ID: Option<sgx_types::sgx_enclave_id_t> = None;
 
 #[repr(C)]
 pub struct Allocation {
-    pub result_ptr: *mut u8
+    pub result_ptr: *mut u8,
+    pub result_len: usize,
 }
 
 #[repr(C)]
@@ -144,7 +145,8 @@ pub extern "C" fn ocall_allocate(data: *const u8, len: usize) -> Allocation {
     let mut vector_copy = slice.to_vec();
 
     let ptr = vector_copy.as_mut_ptr();
+    let len = vector_copy.len();
     std::mem::forget(vector_copy);
 
-    Allocation { result_ptr: ptr }
+    Allocation { result_ptr: ptr, result_len: len }
 }

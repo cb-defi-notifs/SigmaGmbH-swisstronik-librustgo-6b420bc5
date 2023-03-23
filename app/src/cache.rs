@@ -77,9 +77,8 @@ pub extern "C" fn make_pb_request(
         // Parse execution result
         match handle_request_result.status {
             sgx_status_t::SGX_SUCCESS => {
-                let data = unsafe { std::slice::from_raw_parts(handle_request_result.result_ptr, handle_request_result.result_size)};
-                return Ok(data.to_vec())
-                // TODO: drop result pointer: https://stackoverflow.com/questions/45306575/how-can-you-allocate-a-raw-mutable-pointer-in-stable-rust
+                let data = unsafe { Vec::from_raw_parts(handle_request_result.result_ptr, handle_request_result.result_size, handle_request_result.result_size) };
+                return Ok(data)
             },
             _ => {
                 println!("Call failed");
