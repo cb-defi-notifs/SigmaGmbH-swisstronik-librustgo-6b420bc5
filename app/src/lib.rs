@@ -6,9 +6,9 @@ extern crate thiserror;
 mod enclave;
 mod cache;
 mod memory;
-mod querier;
 mod version;
 mod errors;
+mod types;
 
 // We only interact with this crate via `extern "C"` interfaces, not those public
 // exports. There are no guarantees those exports are stable.

@@ -1,33 +1,13 @@
-use crate::querier::GoQuerier;
+use crate::types::{GoQuerier, AllocationWithResult, Allocation};
 use crate::memory::{UnmanagedVector, U8SliceView};
 use crate::errors::GoError;
 
 use sgx_types::*;
 use sgx_urts::SgxEnclave;
 use std::slice;
-use std::ptr;
 
 static ENCLAVE_FILE: &'static str = "enclave.signed.so";
 pub static mut ENCLAVE_ID: Option<sgx_types::sgx_enclave_id_t> = None;
-
-#[repr(C)]
-pub struct Allocation {
-    pub result_ptr: *mut u8,
-    pub result_len: usize,
-}
-
-#[repr(C)]
-pub struct AllocationWithResult {
-    pub result_ptr: *mut u8,
-    pub result_size: usize,
-    pub status: sgx_status_t
-}
-
-impl Default for AllocationWithResult {
-    fn default() -> Self {
-        AllocationWithResult { result_ptr: std::ptr::null_mut(), result_size: 0usize, status: sgx_status_t::SGX_ERROR_UNEXPECTED }
-    }
-}
 
 extern "C" {
     pub fn handle_request(
