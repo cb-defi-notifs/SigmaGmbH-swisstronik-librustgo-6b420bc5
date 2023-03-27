@@ -2,15 +2,46 @@
 #include <errno.h>
 
 typedef struct ms_handle_request_t {
+<<<<<<< HEAD
 	sgx_status_t ms_retval;
 } ms_handle_request_t;
 
+=======
+	ResultWithAllocation ms_retval;
+	void* ms_querier;
+	const uint8_t* ms_request;
+	size_t ms_len;
+} ms_handle_request_t;
+
+typedef struct ms_ecall_allocate_t {
+	Allocation ms_retval;
+	const uint8_t* ms_data;
+	size_t ms_len;
+} ms_ecall_allocate_t;
+
+>>>>>>> d2f05c6e201ad05dbf2ab68b005f5bf81eac77c2
 typedef struct ms_t_global_init_ecall_t {
 	uint64_t ms_id;
 	const uint8_t* ms_path;
 	size_t ms_len;
 } ms_t_global_init_ecall_t;
 
+<<<<<<< HEAD
+=======
+typedef struct ms_ocall_query_raw_t {
+	ResultWithAllocation ms_retval;
+	void* ms_querier;
+	const uint8_t* ms_request;
+	size_t ms_request_len;
+} ms_ocall_query_raw_t;
+
+typedef struct ms_ocall_allocate_t {
+	Allocation ms_retval;
+	const uint8_t* ms_data;
+	size_t ms_len;
+} ms_ocall_allocate_t;
+
+>>>>>>> d2f05c6e201ad05dbf2ab68b005f5bf81eac77c2
 typedef struct ms_u_thread_set_event_ocall_t {
 	int ms_retval;
 	int* ms_error;
@@ -114,6 +145,7 @@ typedef struct ms_u_pwritev64_ocall_t {
 	int64_t ms_offset;
 } ms_u_pwritev64_ocall_t;
 
+<<<<<<< HEAD
 typedef struct ms_u_sendfile_ocall_t {
 	size_t ms_retval;
 	int* ms_error;
@@ -145,6 +177,8 @@ typedef struct ms_u_splice_ocall_t {
 	unsigned int ms_flags;
 } ms_u_splice_ocall_t;
 
+=======
+>>>>>>> d2f05c6e201ad05dbf2ab68b005f5bf81eac77c2
 typedef struct ms_u_fcntl_arg0_ocall_t {
 	int ms_retval;
 	int* ms_error;
@@ -181,6 +215,7 @@ typedef struct ms_u_close_ocall_t {
 	int ms_fd;
 } ms_u_close_ocall_t;
 
+<<<<<<< HEAD
 typedef struct ms_u_isatty_ocall_t {
 	int ms_retval;
 	int* ms_error;
@@ -207,6 +242,8 @@ typedef struct ms_u_futimens_ocall_t {
 	const struct timespec* ms_times;
 } ms_u_futimens_ocall_t;
 
+=======
+>>>>>>> d2f05c6e201ad05dbf2ab68b005f5bf81eac77c2
 typedef struct ms_u_malloc_ocall_t {
 	void* ms_retval;
 	int* ms_error;
@@ -526,6 +563,25 @@ typedef struct ms_sgx_thread_set_multiple_untrusted_events_ocall_t {
 	size_t ms_total;
 } ms_sgx_thread_set_multiple_untrusted_events_ocall_t;
 
+<<<<<<< HEAD
+=======
+static sgx_status_t SGX_CDECL Enclave_ocall_query_raw(void* pms)
+{
+	ms_ocall_query_raw_t* ms = SGX_CAST(ms_ocall_query_raw_t*, pms);
+	ms->ms_retval = ocall_query_raw(ms->ms_querier, ms->ms_request, ms->ms_request_len);
+
+	return SGX_SUCCESS;
+}
+
+static sgx_status_t SGX_CDECL Enclave_ocall_allocate(void* pms)
+{
+	ms_ocall_allocate_t* ms = SGX_CAST(ms_ocall_allocate_t*, pms);
+	ms->ms_retval = ocall_allocate(ms->ms_data, ms->ms_len);
+
+	return SGX_SUCCESS;
+}
+
+>>>>>>> d2f05c6e201ad05dbf2ab68b005f5bf81eac77c2
 static sgx_status_t SGX_CDECL Enclave_u_thread_set_event_ocall(void* pms)
 {
 	ms_u_thread_set_event_ocall_t* ms = SGX_CAST(ms_u_thread_set_event_ocall_t*, pms);
@@ -630,6 +686,7 @@ static sgx_status_t SGX_CDECL Enclave_u_pwritev64_ocall(void* pms)
 	return SGX_SUCCESS;
 }
 
+<<<<<<< HEAD
 static sgx_status_t SGX_CDECL Enclave_u_sendfile_ocall(void* pms)
 {
 	ms_u_sendfile_ocall_t* ms = SGX_CAST(ms_u_sendfile_ocall_t*, pms);
@@ -654,6 +711,8 @@ static sgx_status_t SGX_CDECL Enclave_u_splice_ocall(void* pms)
 	return SGX_SUCCESS;
 }
 
+=======
+>>>>>>> d2f05c6e201ad05dbf2ab68b005f5bf81eac77c2
 static sgx_status_t SGX_CDECL Enclave_u_fcntl_arg0_ocall(void* pms)
 {
 	ms_u_fcntl_arg0_ocall_t* ms = SGX_CAST(ms_u_fcntl_arg0_ocall_t*, pms);
@@ -694,6 +753,7 @@ static sgx_status_t SGX_CDECL Enclave_u_close_ocall(void* pms)
 	return SGX_SUCCESS;
 }
 
+<<<<<<< HEAD
 static sgx_status_t SGX_CDECL Enclave_u_isatty_ocall(void* pms)
 {
 	ms_u_isatty_ocall_t* ms = SGX_CAST(ms_u_isatty_ocall_t*, pms);
@@ -726,6 +786,8 @@ static sgx_status_t SGX_CDECL Enclave_u_futimens_ocall(void* pms)
 	return SGX_SUCCESS;
 }
 
+=======
+>>>>>>> d2f05c6e201ad05dbf2ab68b005f5bf81eac77c2
 static sgx_status_t SGX_CDECL Enclave_u_malloc_ocall(void* pms)
 {
 	ms_u_malloc_ocall_t* ms = SGX_CAST(ms_u_malloc_ocall_t*, pms);
@@ -1096,10 +1158,19 @@ static sgx_status_t SGX_CDECL Enclave_sgx_thread_set_multiple_untrusted_events_o
 
 static const struct {
 	size_t nr_ocall;
+<<<<<<< HEAD
 	void * table[71];
 } ocall_table_Enclave = {
 	71,
 	{
+=======
+	void * table[66];
+} ocall_table_Enclave = {
+	66,
+	{
+		(void*)Enclave_ocall_query_raw,
+		(void*)Enclave_ocall_allocate,
+>>>>>>> d2f05c6e201ad05dbf2ab68b005f5bf81eac77c2
 		(void*)Enclave_u_thread_set_event_ocall,
 		(void*)Enclave_u_thread_wait_event_ocall,
 		(void*)Enclave_u_thread_set_multiple_events_ocall,
@@ -1113,18 +1184,24 @@ static const struct {
 		(void*)Enclave_u_pwrite64_ocall,
 		(void*)Enclave_u_writev_ocall,
 		(void*)Enclave_u_pwritev64_ocall,
+<<<<<<< HEAD
 		(void*)Enclave_u_sendfile_ocall,
 		(void*)Enclave_u_copy_file_range_ocall,
 		(void*)Enclave_u_splice_ocall,
+=======
+>>>>>>> d2f05c6e201ad05dbf2ab68b005f5bf81eac77c2
 		(void*)Enclave_u_fcntl_arg0_ocall,
 		(void*)Enclave_u_fcntl_arg1_ocall,
 		(void*)Enclave_u_ioctl_arg0_ocall,
 		(void*)Enclave_u_ioctl_arg1_ocall,
 		(void*)Enclave_u_close_ocall,
+<<<<<<< HEAD
 		(void*)Enclave_u_isatty_ocall,
 		(void*)Enclave_u_dup_ocall,
 		(void*)Enclave_u_eventfd_ocall,
 		(void*)Enclave_u_futimens_ocall,
+=======
+>>>>>>> d2f05c6e201ad05dbf2ab68b005f5bf81eac77c2
 		(void*)Enclave_u_malloc_ocall,
 		(void*)Enclave_u_free_ocall,
 		(void*)Enclave_u_mmap_ocall,
@@ -1173,15 +1250,39 @@ static const struct {
 		(void*)Enclave_sgx_thread_set_multiple_untrusted_events_ocall,
 	}
 };
+<<<<<<< HEAD
 sgx_status_t handle_request(sgx_enclave_id_t eid, sgx_status_t* retval)
 {
 	sgx_status_t status;
 	ms_handle_request_t ms;
+=======
+sgx_status_t handle_request(sgx_enclave_id_t eid, ResultWithAllocation* retval, void* querier, const uint8_t* request, size_t len)
+{
+	sgx_status_t status;
+	ms_handle_request_t ms;
+	ms.ms_querier = querier;
+	ms.ms_request = request;
+	ms.ms_len = len;
+>>>>>>> d2f05c6e201ad05dbf2ab68b005f5bf81eac77c2
 	status = sgx_ecall(eid, 0, &ocall_table_Enclave, &ms);
 	if (status == SGX_SUCCESS && retval) *retval = ms.ms_retval;
 	return status;
 }
 
+<<<<<<< HEAD
+=======
+sgx_status_t ecall_allocate(sgx_enclave_id_t eid, Allocation* retval, const uint8_t* data, size_t len)
+{
+	sgx_status_t status;
+	ms_ecall_allocate_t ms;
+	ms.ms_data = data;
+	ms.ms_len = len;
+	status = sgx_ecall(eid, 1, &ocall_table_Enclave, &ms);
+	if (status == SGX_SUCCESS && retval) *retval = ms.ms_retval;
+	return status;
+}
+
+>>>>>>> d2f05c6e201ad05dbf2ab68b005f5bf81eac77c2
 sgx_status_t t_global_init_ecall(sgx_enclave_id_t eid, uint64_t id, const uint8_t* path, size_t len)
 {
 	sgx_status_t status;
@@ -1189,14 +1290,22 @@ sgx_status_t t_global_init_ecall(sgx_enclave_id_t eid, uint64_t id, const uint8_
 	ms.ms_id = id;
 	ms.ms_path = path;
 	ms.ms_len = len;
+<<<<<<< HEAD
 	status = sgx_ecall(eid, 1, &ocall_table_Enclave, &ms);
+=======
+	status = sgx_ecall(eid, 2, &ocall_table_Enclave, &ms);
+>>>>>>> d2f05c6e201ad05dbf2ab68b005f5bf81eac77c2
 	return status;
 }
 
 sgx_status_t t_global_exit_ecall(sgx_enclave_id_t eid)
 {
 	sgx_status_t status;
+<<<<<<< HEAD
 	status = sgx_ecall(eid, 2, &ocall_table_Enclave, NULL);
+=======
+	status = sgx_ecall(eid, 3, &ocall_table_Enclave, NULL);
+>>>>>>> d2f05c6e201ad05dbf2ab68b005f5bf81eac77c2
 	return status;
 }
 

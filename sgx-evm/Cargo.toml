@@ -1,0 +1,30 @@
+[package]
+name = "sgx-evm"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "enclave"
+crate-type = ["staticlib"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+errno = { version = "0.2.8", default-features=false }
+thiserror-no-std = "2.0.2"
+hex = { version = "0.4.3", default-features=false }
+protobuf = { git = "https://github.com/mesalock-linux/rust-protobuf-sgx", branch = "v2.8" }
+sgxvm = { path = "./evm/sgxvm" }
+internal_types = { path = "./evm/internal_types" }
+
+sgx_types = { version = "1.1.5", git = "https://github.com/apache/teaclave-sgx-sdk.git", tag="v1.1.5" }
+sgx_tstd = { version = "1.1.5", git = "https://github.com/apache/teaclave-sgx-sdk.git", tag="v1.1.5" }
+sgx_trts = { version = "1.1.5", git = "https://github.com/apache/teaclave-sgx-sdk.git", tag="v1.1.5" }
+
+[patch."https://github.com/apache/teaclave-sgx-sdk.git"]
+sgx_tstd = { version = "1.1.5", git = "https://github.com/haerdib/incubator-teaclave-sgx-sdk", branch = "master"}
+sgx_trts = { version = "1.1.5", git = "https://github.com/haerdib/incubator-teaclave-sgx-sdk", branch = "master"}
+sgx_types = { version = "1.1.5", git = "https://github.com/haerdib/incubator-teaclave-sgx-sdk", branch = "master"}
+
+#[build-dependencies]
+#protoc-rust = { git = "https://github.com/mesalock-linux/rust-protobuf-sgx", branch = "v2.8", default-features=false }
