@@ -71,6 +71,7 @@ endef
 define wrapper_build
 	@cd sgx-wrapper && cargo build --release
 	@cp ./sgx-artifacts/bin/enclave.signed.so ./sgx-wrapper/target/release/enclave.signed.so
+	@rm Enclave_u*
 endef
 
 define go_build
