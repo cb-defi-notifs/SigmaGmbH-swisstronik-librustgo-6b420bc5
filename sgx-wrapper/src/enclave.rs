@@ -6,7 +6,7 @@ use sgx_types::*;
 use sgx_urts::SgxEnclave;
 use std::slice;
 
-static ENCLAVE_FILE: &'static str = "enclave.signed.so";
+static ENCLAVE_FILE: &'static str = "/tmp/enclave.signed.so";
 pub static mut ENCLAVE_ID: Option<sgx_types::sgx_enclave_id_t> = None;
 
 extern "C" {

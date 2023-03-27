@@ -70,13 +70,12 @@ endef
 
 define wrapper_build
 	@cd sgx-wrapper && cargo build --release
-	@cp ./sgx-artifacts/bin/enclave.signed.so ./sgx-wrapper/target/release/enclave.signed.so
+	@cp ./sgx-artifacts/bin/enclave.signed.so /tmp/enclave.signed.so
 	@rm Enclave_u*
 endef
 
 define go_build
 	@cp ./sgx-wrapper/target/release/libsgx_wrapper.so ./internal/api/libsgx_wrapper.x86_64.so
-	@cp ./sgx-artifacts/bin/enclave.signed.so ./enclave.signed.so
     @protoc --go_out=go_protobuf_gen --proto_path=sgx-evm/protobuf_contracts/ sgx-evm/protobuf_contracts/ffi.proto
 endef
 
