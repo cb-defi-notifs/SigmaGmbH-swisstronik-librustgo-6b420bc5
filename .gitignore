@@ -12,3 +12,6 @@ lib*.a
 /demo
 tmp
 a.out
+
+# other stuff
+.DS_Store
