@@ -33,6 +33,9 @@ mod protobuf_generated;
 mod querier;
 mod storage;
 mod encryption;
+mod remote_attestation;
+
+pub const MAX_RESULT_LEN: usize = 4096;
 
 #[repr(C)]
 pub struct AllocationWithResult {
