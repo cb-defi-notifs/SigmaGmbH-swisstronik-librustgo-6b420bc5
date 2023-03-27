@@ -8,8 +8,13 @@ fn main () {
 
     println!("cargo:rustc-link-search=native=/opt/intel/sgxsdk/lib64");
     match is_sim.as_ref() {
-        "SW" => println!("cargo:rustc-link-lib=dylib=sgx_urts_sim"),
-        "HW" => println!("cargo:rustc-link-lib=dylib=sgx_urts"),
-        _    => println!("cargo:rustc-link-lib=dylib=sgx_urts"), // Treat undefined as HW
+        "SW" => {
+            println!("cargo:rustc-link-lib=dylib=sgx_urts_sim");
+            println!("cargo:rustc-link-lib=dylib=sgx_uae_service_sim");
+        }
+        "HW" | _ => {
+            println!("cargo:rustc-link-lib=dylib=sgx_urts");
+            println!("cargo:rustc-link-lib=dylib=sgx_uae_service");
+        }
     }
 }
