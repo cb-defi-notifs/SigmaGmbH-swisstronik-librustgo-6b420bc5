@@ -64,7 +64,6 @@ impl Storage for FFIStorage {
                 }
             };
 
-            println!("get_account_code res: {:?}", decoded_result.code.len());
             return Some(decoded_result.code);
         } else {
             println!("Get account code failed. Empty response");
