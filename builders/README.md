@@ -2,7 +2,7 @@
 
 As this library is targetting go developers, we cannot assume a properly set up
 rust environment on their system. Further, when importing this library, there is no
-clean way to add a `libwasmvm.{so,dll,dylib}`. It needs to be committed with the
+clean way to add a `libsgx_wrapper.{so,dll,dylib}`. It needs to be committed with the
 tagged (go) release in order to be easily usable.
 
 The solution is to precompile the rust code into libraries for the major platforms
@@ -21,7 +21,7 @@ can do the cross-compilation.
 
 **Version 0012:**
 
-- Add cross-compilation setup to build `libwasmvm.x86_64.so` and `libwasmvm.aarch64.so`
+- Add cross-compilation setup to build `libsgx_wrapper.x86_64.so` and `libsgx_wrapper.aarch64.so`
   from the CentOS builder image.
 - Update Rust to 1.60.0.
 
@@ -31,7 +31,7 @@ can do the cross-compilation.
 
 **Version 0010:**
 
-- Add cross-compilation setup to build `libwasmvm_muslc.a` and `libwasmvm_muslc.aarch64.a`
+- Add cross-compilation setup to build `libsgx_wrapper_muslc.a` and `libsgx_wrapper_muslc.aarch64.a`
   from the alpine builder image.
 
 **Version 0009:**
@@ -69,7 +69,7 @@ can do the cross-compilation.
 
 **Version 0002:**
 
-- Update hardcoded library name from `libgo_cosmwasm` to `libwasmvm`.
+- Update hardcoded library name from `libgo_cosmwasm` to `libsgx_wrapper`.
 
 **Version 0001:**
 

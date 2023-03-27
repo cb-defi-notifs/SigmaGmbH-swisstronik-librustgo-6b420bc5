@@ -1,6 +1,6 @@
-//go:build windows && !sys_wasmvm
+//go:build windows && !sys_sgx_wrapper
 
 package api
 
-// #cgo LDFLAGS: -Wl,-rpath,${SRCDIR} -L${SRCDIR} -lwasmvm
+// #cgo LDFLAGS: -Wl,-rpath,${SRCDIR} -L${SRCDIR} -lsgx_wrapper
 import "C"

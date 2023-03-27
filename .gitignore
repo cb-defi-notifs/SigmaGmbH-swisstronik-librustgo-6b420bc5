@@ -1,4 +1,4 @@
-# Please also see libwasmvm/.gitignore for the Rust-specific ignored files.
+# Please also see sgx_wrapper/.gitignore for the Rust-specific ignored files.
 
 **/*.rs.bk
 *.iml
@@ -12,3 +12,6 @@ lib*.a
 /demo
 tmp
 a.out
+
+# other stuff
+.DS_Store

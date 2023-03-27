@@ -1,6 +1,6 @@
-//go:build sys_wasmvm
+//go:build sys_sgx_wrapper
 
 package api
 
-// #cgo LDFLAGS: -lwasmvm
+// #cgo LDFLAGS: -lsgx_wrapper
 import "C"
