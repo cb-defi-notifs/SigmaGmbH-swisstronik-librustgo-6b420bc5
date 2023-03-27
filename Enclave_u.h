@@ -10,10 +10,6 @@
 #include "time.h"
 #include "inc/stat.h"
 #include "sys/uio.h"
-<<<<<<< HEAD
-#include "time.h"
-=======
->>>>>>> d2f05c6e201ad05dbf2ab68b005f5bf81eac77c2
 #include "inc/stat.h"
 #include "inc/dirent.h"
 
@@ -25,8 +21,6 @@
 extern "C" {
 #endif
 
-<<<<<<< HEAD
-=======
 #ifndef _ResultWithAllocation
 #define _ResultWithAllocation
 typedef struct ResultWithAllocation {
@@ -52,7 +46,6 @@ ResultWithAllocation SGX_UBRIDGE(SGX_NOCONVENTION, ocall_query_raw, (void* queri
 #define OCALL_ALLOCATE_DEFINED__
 Allocation SGX_UBRIDGE(SGX_NOCONVENTION, ocall_allocate, (const uint8_t* data, size_t len));
 #endif
->>>>>>> d2f05c6e201ad05dbf2ab68b005f5bf81eac77c2
 #ifndef U_THREAD_SET_EVENT_OCALL_DEFINED__
 #define U_THREAD_SET_EVENT_OCALL_DEFINED__
 int SGX_UBRIDGE(SGX_NOCONVENTION, u_thread_set_event_ocall, (int* error, const void* tcs));
@@ -105,21 +98,6 @@ size_t SGX_UBRIDGE(SGX_NOCONVENTION, u_writev_ocall, (int* error, int fd, const 
 #define U_PWRITEV64_OCALL_DEFINED__
 size_t SGX_UBRIDGE(SGX_NOCONVENTION, u_pwritev64_ocall, (int* error, int fd, const struct iovec* iov, int iovcnt, int64_t offset));
 #endif
-<<<<<<< HEAD
-#ifndef U_SENDFILE_OCALL_DEFINED__
-#define U_SENDFILE_OCALL_DEFINED__
-size_t SGX_UBRIDGE(SGX_NOCONVENTION, u_sendfile_ocall, (int* error, int out_fd, int in_fd, int64_t* offset, size_t count));
-#endif
-#ifndef U_COPY_FILE_RANGE_OCALL_DEFINED__
-#define U_COPY_FILE_RANGE_OCALL_DEFINED__
-size_t SGX_UBRIDGE(SGX_NOCONVENTION, u_copy_file_range_ocall, (int* error, int fd_in, int64_t* off_in, int fd_out, int64_t* off_out, size_t len, unsigned int flags));
-#endif
-#ifndef U_SPLICE_OCALL_DEFINED__
-#define U_SPLICE_OCALL_DEFINED__
-size_t SGX_UBRIDGE(SGX_NOCONVENTION, u_splice_ocall, (int* error, int fd_in, int64_t* off_in, int fd_out, int64_t* off_out, size_t len, unsigned int flags));
-#endif
-=======
->>>>>>> d2f05c6e201ad05dbf2ab68b005f5bf81eac77c2
 #ifndef U_FCNTL_ARG0_OCALL_DEFINED__
 #define U_FCNTL_ARG0_OCALL_DEFINED__
 int SGX_UBRIDGE(SGX_NOCONVENTION, u_fcntl_arg0_ocall, (int* error, int fd, int cmd));
@@ -140,25 +118,6 @@ int SGX_UBRIDGE(SGX_NOCONVENTION, u_ioctl_arg1_ocall, (int* error, int fd, int r
 #define U_CLOSE_OCALL_DEFINED__
 int SGX_UBRIDGE(SGX_NOCONVENTION, u_close_ocall, (int* error, int fd));
 #endif
-<<<<<<< HEAD
-#ifndef U_ISATTY_OCALL_DEFINED__
-#define U_ISATTY_OCALL_DEFINED__
-int SGX_UBRIDGE(SGX_NOCONVENTION, u_isatty_ocall, (int* error, int fd));
-#endif
-#ifndef U_DUP_OCALL_DEFINED__
-#define U_DUP_OCALL_DEFINED__
-int SGX_UBRIDGE(SGX_NOCONVENTION, u_dup_ocall, (int* error, int oldfd));
-#endif
-#ifndef U_EVENTFD_OCALL_DEFINED__
-#define U_EVENTFD_OCALL_DEFINED__
-int SGX_UBRIDGE(SGX_NOCONVENTION, u_eventfd_ocall, (int* error, unsigned int initval, int flags));
-#endif
-#ifndef U_FUTIMENS_OCALL_DEFINED__
-#define U_FUTIMENS_OCALL_DEFINED__
-int SGX_UBRIDGE(SGX_NOCONVENTION, u_futimens_ocall, (int* error, int fd, const struct timespec* times));
-#endif
-=======
->>>>>>> d2f05c6e201ad05dbf2ab68b005f5bf81eac77c2
 #ifndef U_MALLOC_OCALL_DEFINED__
 #define U_MALLOC_OCALL_DEFINED__
 void* SGX_UBRIDGE(SGX_NOCONVENTION, u_malloc_ocall, (int* error, size_t size));
@@ -344,12 +303,8 @@ int SGX_UBRIDGE(SGX_CDECL, sgx_thread_setwait_untrusted_events_ocall, (const voi
 int SGX_UBRIDGE(SGX_CDECL, sgx_thread_set_multiple_untrusted_events_ocall, (const void** waiters, size_t total));
 #endif
 
-<<<<<<< HEAD
-sgx_status_t handle_request(sgx_enclave_id_t eid, sgx_status_t* retval);
-=======
 sgx_status_t handle_request(sgx_enclave_id_t eid, ResultWithAllocation* retval, void* querier, const uint8_t* request, size_t len);
 sgx_status_t ecall_allocate(sgx_enclave_id_t eid, Allocation* retval, const uint8_t* data, size_t len);
->>>>>>> d2f05c6e201ad05dbf2ab68b005f5bf81eac77c2
 sgx_status_t t_global_init_ecall(sgx_enclave_id_t eid, uint64_t id, const uint8_t* path, size_t len);
 sgx_status_t t_global_exit_ecall(sgx_enclave_id_t eid);
 

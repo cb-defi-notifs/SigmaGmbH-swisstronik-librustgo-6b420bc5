@@ -9,7 +9,6 @@
 #include "time.h"
 #include "inc/stat.h"
 #include "sys/uio.h"
-#include "time.h"
 #include "inc/stat.h"
 #include "inc/dirent.h"
 
@@ -21,10 +20,30 @@
 extern "C" {
 #endif
 
-sgx_status_t handle_request(void);
+#ifndef _ResultWithAllocation
+#define _ResultWithAllocation
+typedef struct ResultWithAllocation {
+	uint8_t* ptr;
+	size_t len;
+	sgx_status_t status;
+} ResultWithAllocation;
+#endif
+
+#ifndef _Allocation
+#define _Allocation
+typedef struct Allocation {
+	uint8_t* ptr;
+	size_t len;
+} Allocation;
+#endif
+
+ResultWithAllocation handle_request(void* querier, const uint8_t* request, size_t len);
+Allocation ecall_allocate(const uint8_t* data, size_t len);
 void t_global_init_ecall(uint64_t id, const uint8_t* path, size_t len);
 void t_global_exit_ecall(void);
 
+sgx_status_t SGX_CDECL ocall_query_raw(ResultWithAllocation* retval, void* querier, const uint8_t* request, size_t request_len);
+sgx_status_t SGX_CDECL ocall_allocate(Allocation* retval, const uint8_t* data, size_t len);
 sgx_status_t SGX_CDECL u_thread_set_event_ocall(int* retval, int* error, const void* tcs);
 sgx_status_t SGX_CDECL u_thread_wait_event_ocall(int* retval, int* error, const void* tcs, const struct timespec* timeout);
 sgx_status_t SGX_CDECL u_thread_set_multiple_events_ocall(int* retval, int* error, const void** tcss, int total);
@@ -38,18 +57,11 @@ sgx_status_t SGX_CDECL u_write_ocall(size_t* retval, int* error, int fd, const v
 sgx_status_t SGX_CDECL u_pwrite64_ocall(size_t* retval, int* error, int fd, const void* buf, size_t count, int64_t offset);
 sgx_status_t SGX_CDECL u_writev_ocall(size_t* retval, int* error, int fd, const struct iovec* iov, int iovcnt);
 sgx_status_t SGX_CDECL u_pwritev64_ocall(size_t* retval, int* error, int fd, const struct iovec* iov, int iovcnt, int64_t offset);
-sgx_status_t SGX_CDECL u_sendfile_ocall(size_t* retval, int* error, int out_fd, int in_fd, int64_t* offset, size_t count);
-sgx_status_t SGX_CDECL u_copy_file_range_ocall(size_t* retval, int* error, int fd_in, int64_t* off_in, int fd_out, int64_t* off_out, size_t len, unsigned int flags);
-sgx_status_t SGX_CDECL u_splice_ocall(size_t* retval, int* error, int fd_in, int64_t* off_in, int fd_out, int64_t* off_out, size_t len, unsigned int flags);
 sgx_status_t SGX_CDECL u_fcntl_arg0_ocall(int* retval, int* error, int fd, int cmd);
 sgx_status_t SGX_CDECL u_fcntl_arg1_ocall(int* retval, int* error, int fd, int cmd, int arg);
 sgx_status_t SGX_CDECL u_ioctl_arg0_ocall(int* retval, int* error, int fd, int request);
 sgx_status_t SGX_CDECL u_ioctl_arg1_ocall(int* retval, int* error, int fd, int request, int* arg);
 sgx_status_t SGX_CDECL u_close_ocall(int* retval, int* error, int fd);
-sgx_status_t SGX_CDECL u_isatty_ocall(int* retval, int* error, int fd);
-sgx_status_t SGX_CDECL u_dup_ocall(int* retval, int* error, int oldfd);
-sgx_status_t SGX_CDECL u_eventfd_ocall(int* retval, int* error, unsigned int initval, int flags);
-sgx_status_t SGX_CDECL u_futimens_ocall(int* retval, int* error, int fd, const struct timespec* times);
 sgx_status_t SGX_CDECL u_malloc_ocall(void** retval, int* error, size_t size);
 sgx_status_t SGX_CDECL u_free_ocall(void* p);
 sgx_status_t SGX_CDECL u_mmap_ocall(void** retval, int* error, void* start, size_t length, int prot, int flags, int fd, int64_t offset);
