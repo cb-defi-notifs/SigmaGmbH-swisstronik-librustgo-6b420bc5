@@ -7,7 +7,7 @@ use sgx_types::*;
 use std::vec::Vec;
 
 pub static DB_ENCRYPTION_PRIVATE_KEY: &str =
-    "8935f44e30b9f58916ff90a9328f10276014fcc1d756f7631d62aabeadb4772d";
+    "bf8fca698444afd8b4cd4e851cb58321192a6d8eab503bf17d8be249e767cf3dcc593d3ca83ef769fb22b281aa446c89b9b5d1ecf4f243c438b01896dba77e28";
 pub const NONCE_LEN: usize = 16;
 
 /// Encrypts provided message using AES-SIV

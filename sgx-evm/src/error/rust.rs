@@ -70,7 +70,7 @@ impl RustError {
     }
 
     pub fn decryption_err<S: ToString>(msg: S) -> Self {
-        RustError::EncryptionError {
+        RustError::DecryptionError {
             msg: msg.to_string(),
         }
     }
