@@ -32,8 +32,7 @@ mod ocall;
 mod protobuf_generated;
 mod querier;
 mod storage;
-
-pub const MAX_RESULT_LEN: usize = 4096;
+mod encryption;
 
 #[repr(C)]
 pub struct AllocationWithResult {
