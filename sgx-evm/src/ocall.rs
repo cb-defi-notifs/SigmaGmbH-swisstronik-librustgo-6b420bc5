@@ -6,7 +6,6 @@ use core::slice;
 use std::vec::Vec;
 
 extern {
-    #[no_mangle]
     pub fn ocall_query_raw(
         ret_val: *mut AllocationWithResult, 
         querier: *mut GoQuerier, 
@@ -14,7 +13,6 @@ extern {
         len: usize,
     ) -> sgx_status_t;
 
-    #[no_mangle]
     pub fn ocall_allocate(
         ret_val: *mut Allocation,
         data: *const u8,
