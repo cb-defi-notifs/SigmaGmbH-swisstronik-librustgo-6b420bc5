@@ -6,6 +6,8 @@ DEFAULT = help
 CC=clang
 CXX=clang++
 SGX_MODE ?= HW
+Trts_Library_Name = sgx_trts
+Service_Library_Name = sgx_tservice
 
 # ENCLAVE SETTINGS
 ifneq ($(SGX_MODE), HW)
@@ -68,7 +70,7 @@ endef
 define compile_unsigned_enclave
 	@echo "Compile into unsinged enclave"
 	@g++ ./sgx-evm/Enclave_t.o -o ./sgx-evm/enclave.unsigned.so -Wl,--no-undefined -nostdlib -nodefaultlibs -nostartfiles -L/opt/intel/sgxsdk/lib64 \
-		-Wl,--whole-archive -l$(Trts_Library_Name) -Wl,--no-whole-archive -Wl,--start-group -lsgx_tstdc -lsgx_tcxx -l$(Service_Library_Name) -lsgx_tcrypto -lsgx_urts -lpthread \
+		-Wl,--whole-archive -l$(Trts_Library_Name) -Wl,--no-whole-archive -Wl,--start-group -lsgx_tstdc -lsgx_tcxx -l$(Service_Library_Name) -lsgx_tcrypto -lpthread \
 		-L./sgx-artifacts/lib -lenclave -Wl,--end-group -Wl,--version-script=./sgx-evm/Enclave.lds -Wl,-z,relro,-z,now,-z,noexecstack -Wl,-Bstatic -Wl,-Bsymbolic \
 		-Wl,--no-undefined -Wl,-pie,-eenclave_entry -Wl,--export-dynamic -Wl,--gc-sections -Wl,--defsym,__ImageBase=0
 endef
@@ -123,3 +125,8 @@ run_go:
 	$(call wrapper_build)
 	$(call go_build)
 	@go run ./cmd/demo/main.go
+
+clean:
+	$(call sgx_clean)
+	@echo "Cleaning wrapper target"
+	@rm -r sgx-wrapper/target
