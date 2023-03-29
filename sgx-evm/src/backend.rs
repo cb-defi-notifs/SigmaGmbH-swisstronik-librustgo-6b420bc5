@@ -52,20 +52,23 @@ impl<'state> EvmBackend for FFIBackend<'state> {
 
     fn block_hash(&self, number: U256) -> H256 {
         let encoded_request = coder::encode_query_block_hash(number);
-        if let Some(result) = ocall::make_request(self.querier, encoded_request) {
-            // Decode protobuf
-            let decoded_result = match protobuf::parse_from_bytes::<ffi::QueryBlockHashResponse>(result.as_slice()) {
-                Ok(res) => res,
-                Err(err) => {
-                    println!("Cannot decode protobuf response: {:?}", err);
-                    return H256::default();
-                }
-            };
-            return H256::from_slice(decoded_result.hash.as_slice());
-        } else {
-            println!("Get block hash failed. Empty response");
-            return H256::default();
-        };
+        match ocall::make_request(self.querier, encoded_request) {
+            Some(result) => {
+                // Decode protobuf
+                let decoded_result = match protobuf::parse_from_bytes::<ffi::QueryBlockHashResponse>(result.as_slice()) {
+                    Ok(res) => res,
+                    Err(err) => {
+                        println!("Cannot decode protobuf response: {:?}", err);
+                        return H256::default();
+                    }
+                };
+                H256::from_slice(decoded_result.hash.as_slice())
+            },
+            None => {
+                println!("Get block hash failed. Empty response");
+                H256::default()
+            }
+        }
     }
 
     fn block_number(&self) -> U256 {
