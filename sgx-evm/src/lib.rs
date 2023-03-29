@@ -144,21 +144,21 @@ pub extern "C" fn handle_request(
             match sgx_result {
                 sgx_status_t::SGX_SUCCESS => {
                     let ocall_result = unsafe { ocall_result.assume_init() };
-                    return AllocationWithResult {
+                    AllocationWithResult {
                         result_ptr: ocall_result.result_ptr,
                         result_len: encoded_response.len(),
                         status: sgx_status_t::SGX_SUCCESS
-                    }; 
+                    }
                 },
                 _ => {
                     println!("ocall_allocate failed: {:?}", sgx_result.as_str());
-                    return AllocationWithResult::default();
+                    AllocationWithResult::default()
                 }
             }
         }
         None => {
             println!("Got empty request during protobuf decoding");
-            return AllocationWithResult::default();
+            AllocationWithResult::default()
         }
     }
 }
