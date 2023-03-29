@@ -8,6 +8,7 @@ use crate::protobuf_generated::ffi;
 use crate::querier::GoQuerier;
 use crate::ocall;
 use crate::coder;
+use crate::encryption;
 
 /// This struct allows us to obtain state from keeper
 /// that is located outside of Rust code
@@ -45,7 +46,21 @@ impl Storage for FFIStorage {
                     return None
                 }
             };
-            return Some(H256::from_slice(decoded_result.value.as_slice()));
+
+            // Decrypt result
+            if decoded_result.value.is_empty() {
+                return None;
+            }
+
+            let decrypted_result = match encryption::aes_decrypt(decoded_result.value) {
+                Ok(decrypted_result) => decrypted_result,
+                Err(err) => {
+                    println!("Cannot decrypt result. Reason: {:?}", err);
+                    return None;
+                }
+            };
+
+            return Some(H256::from_slice(&decrypted_result));
         } else {
             println!("Get account storage cell failed. Empty response");
             return None
@@ -127,7 +142,16 @@ impl Storage for FFIStorage {
     }
 
     fn insert_storage_cell(&mut self, key: H160, index: H256, value: H256) {
-        let encoded_request = coder::encode_insert_storage_cell(key, index, value);
+        // Encrypt value
+        let encrypted_value = match encryption::aes_encrypt(value.as_bytes()) {
+            Ok(encrypted_value) => encrypted_value,
+            Err(err) => {
+                println!("Cannot encrypt value. Reason: {:?}", err);
+                return;
+            }
+        };
+
+        let encoded_request = coder::encode_insert_storage_cell(key, index, encrypted_value);
         if let Some(result) = ocall::make_request(self.querier, encoded_request) {
             match protobuf::parse_from_bytes::<ffi::QueryInsertStorageCellResponse>(result.as_slice()) {
                 Err(err) => {

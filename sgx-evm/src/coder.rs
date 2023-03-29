@@ -70,12 +70,12 @@ pub fn encode_insert_account_code(account_address: H160, code: Vec<u8>) -> Vec<u
     cosmos_request.write_to_bytes().unwrap()
 }
 
-pub fn encode_insert_storage_cell(account_address: H160, index: H256, value: H256) -> Vec<u8> {
+pub fn encode_insert_storage_cell(account_address: H160, index: H256, value: Vec<u8>) -> Vec<u8> {
     let mut cosmos_request = ffi::CosmosRequest::new();
     let mut request = ffi::QueryInsertStorageCell::new();
     request.set_address(account_address.as_bytes().to_vec());
     request.set_index(index.as_bytes().to_vec());
-    request.set_value(value.as_bytes().to_vec());
+    request.set_value(value);
     cosmos_request.set_insertStorageCell(request);
     cosmos_request.write_to_bytes().unwrap()
 }

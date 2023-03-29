@@ -94,7 +94,7 @@ func (c MockedConnector) Query(request []byte) ([]byte, error) {
 	case *ffi.CosmosRequest_RemoveStorageCell:
 		ethAddress := common.BytesToAddress(request.RemoveStorageCell.Address)
 		println("[Go:Query] Remove storage cell: ", ethAddress.String())
-		if err := c.DB.InsertStorageCell(ethAddress, request.RemoveStorageCell.Index, common.Hash{}.Bytes()); err != nil {
+		if err := c.DB.RemoveStorageCell(ethAddress, request.RemoveStorageCell.Index); err != nil {
 			return nil, err
 		}
 		return proto.Marshal(&ffi.QueryRemoveStorageCellResponse{})

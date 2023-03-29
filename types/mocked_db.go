@@ -181,17 +181,11 @@ func (m MockedDB) GetStorageCell(address ethcommon.Address, key []byte) ([]byte,
 	}
 
 	if acct == nil {
-		// If account was not found, return default value (32 zero bytes)
-		return make([]byte, 32), nil
+		return nil, nil
 	}
 
 	hexKey := hex.EncodeToString(key)
-	value, found := acct.State[hexKey]
-
-	if !found {
-		// If account was not found, return default value (32 zero bytes)
-		return make([]byte, 32), nil
-	}
+	value, _ := acct.State[hexKey]
 
 	return value, nil
 }
@@ -210,4 +204,37 @@ func (m MockedDB) Contains(address ethcommon.Address) (bool, error) {
 func (m MockedDB) Delete(address ethcommon.Address) error {
 	txn := m.db.Txn(true)
 	return txn.Delete("account", Account{Address: address.String()})
+}
+
+func (m MockedDB) RemoveStorageCell(address ethcommon.Address, key []byte) error {
+	txn := m.db.Txn(true)
+
+	acct, err := m.GetAccount(address)
+	if err != nil {
+		return err
+	}
+
+	if acct == nil {
+		return errors.New("cannot remove storage cell. Account not found")
+	}
+
+	hexKey := hex.EncodeToString(key)
+	var stateMap = acct.State
+	if stateMap == nil {
+		stateMap = make(map[string][]byte)
+	}
+	delete(stateMap, hexKey)
+
+	updatedAcct := Account{
+		Address: acct.Address,
+		Balance: acct.Balance,
+		Nonce:   acct.Nonce,
+		Code:    acct.Code,
+		State:   stateMap,
+	}
+	if err := txn.Insert("account", &updatedAcct); err != nil {
+		return err
+	}
+	txn.Commit()
+	return nil
 }

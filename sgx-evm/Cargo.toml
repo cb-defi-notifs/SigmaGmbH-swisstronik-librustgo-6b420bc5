@@ -16,6 +16,7 @@ hex = { version = "0.4.3", default-features=false }
 protobuf = { git = "https://github.com/mesalock-linux/rust-protobuf-sgx", branch = "v2.8" }
 sgxvm = { path = "./evm/sgxvm" }
 internal_types = { path = "./evm/internal_types" }
+aes-siv = "0.7.0"
 
 sgx_types = { version = "1.1.5", git = "https://github.com/apache/teaclave-sgx-sdk.git", tag="v1.1.5" }
 sgx_tstd = { version = "1.1.5", git = "https://github.com/apache/teaclave-sgx-sdk.git", tag="v1.1.5" }
