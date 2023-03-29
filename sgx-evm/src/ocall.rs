@@ -2,7 +2,6 @@
 
 use crate::{querier::GoQuerier, Allocation, AllocationWithResult};
 use sgx_types::sgx_status_t;
-use core::slice;
 use std::vec::Vec;
 
 extern {

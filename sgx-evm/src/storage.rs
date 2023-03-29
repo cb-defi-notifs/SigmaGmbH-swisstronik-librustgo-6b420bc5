@@ -28,11 +28,11 @@ impl Storage for FFIStorage {
                     return false
                 }
             };
-            return decoded_result.contains;
+            decoded_result.contains
         } else {
             println!("Contains key failed. Empty response");
-            return false;
-        };
+            false
+        }
     }
 
     fn get_account_storage_cell(&self, key: &H160, index: &H256) -> Option<H256> {
@@ -60,10 +60,10 @@ impl Storage for FFIStorage {
                 }
             };
 
-            return Some(H256::from_slice(&decrypted_result));
+            Some(H256::from_slice(&decrypted_result))
         } else {
             println!("Get account storage cell failed. Empty response");
-            return None
+            None
         }
     }
 
@@ -79,10 +79,10 @@ impl Storage for FFIStorage {
                 }
             };
 
-            return Some(decoded_result.code);
+            Some(decoded_result.code)
         } else {
             println!("Get account code failed. Empty response");
-            return None
+            None
         }
     }
 
@@ -100,16 +100,17 @@ impl Storage for FFIStorage {
                     };
                 }
             };
-            return Basic {
+            
+            Basic {
                 balance: U256::from_big_endian(decoded_result.balance.as_slice()),
                 nonce: U256::from(decoded_result.nonce),
-            };
+            }
         } else {
             println!("Get account failed. Empty response");
-            return Basic {
+            Basic {
                 balance: U256::default(),
                 nonce: U256::default(),
-            };
+            }
         }
     }
 
