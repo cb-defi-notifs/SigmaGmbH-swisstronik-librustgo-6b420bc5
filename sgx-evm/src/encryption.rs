@@ -44,7 +44,7 @@ pub fn aes_encrypt(message: &[u8]) -> Result<Vec<u8>, Error> {
             let final_ciphertext = [nonce.as_slice(), ciphertext.as_slice()].concat();
             Ok(final_ciphertext.to_vec())    
         },
-        Err(err) => return Err(Error::encryption_err(err)),
+        Err(err) => Err(Error::encryption_err(err)),
     }
 }
 
@@ -69,6 +69,6 @@ pub fn aes_decrypt(ciphertext: Vec<u8>) -> Result<Vec<u8>, Error> {
     let ciphertext = &ciphertext[NONCE_LEN..];
     match cipher.decrypt(nonce, ciphertext) {
         Ok(message) => Ok(message),
-        Err(err) => return Err(Error::decryption_err(err)),
+        Err(err) => Err(Error::decryption_err(err)),
     }
 }
