@@ -1,7 +1,7 @@
-use crate::protobuf_generated::ffi::{NodePublicKeyResponse};
-use crate::{AllocationWithResult, Allocation};
-use crate::encryption;
 use protobuf::Message;
+use crate::protobuf_generated::ffi::NodePublicKeyResponse;
+use crate::AllocationWithResult;
+use crate::encryption;
 
 /// Handles incoming request for node public key
 pub fn handle_public_key_request() -> AllocationWithResult {
@@ -14,7 +14,7 @@ pub fn handle_public_key_request() -> AllocationWithResult {
             let encoded_response = match response.write_to_bytes() {
                 Ok(res) => res,
                 Err(err) => {
-                    println!("Cannot encode protobuf result");
+                    println!("Cannot encode protobuf result. Reason: {:?}", err);
                     return AllocationWithResult::default();
                 }
             };

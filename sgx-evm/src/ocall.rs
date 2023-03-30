@@ -40,7 +40,7 @@ extern "C" {
 pub fn make_request(querier: *mut GoQuerier, request: Vec<u8>) -> Option<Vec<u8>> {
     let mut allocation = std::mem::MaybeUninit::<AllocationWithResult>::uninit();
 
-    let mut result = unsafe {
+    let result = unsafe {
         ocall_query_raw(
             allocation.as_mut_ptr(),
             querier,

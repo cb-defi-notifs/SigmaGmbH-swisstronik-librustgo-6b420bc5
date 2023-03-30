@@ -9,8 +9,6 @@ use thiserror_no_std::Error;
 pub enum RustError {
     #[error("Cannot decode UTF8 bytes into string: {}", msg)]
     InvalidUtf8 { msg: String },
-    #[error("Error calling the VM: {}", msg)]
-    ProtobufDecodeError { msg: String },
     #[error("Encryption error: {}", msg)]
     EncryptionError { msg: String },
     #[error("Decryption error: {}", msg)]

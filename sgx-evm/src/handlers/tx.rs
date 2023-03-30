@@ -52,7 +52,7 @@ fn post_transaction_handling(execution_result: ExecutionResult) -> AllocationWit
     let encoded_response = match response.write_to_bytes() {
         Ok(res) => res,
         Err(err) => {
-            println!("Cannot encode protobuf result");
+            println!("Cannot encode protobuf result. Reason: {:?}", err);
             return AllocationWithResult::default();
         }
     };

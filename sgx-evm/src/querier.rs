@@ -25,10 +25,3 @@ pub struct Querier_vtable {
         *mut UnmanagedVector, // error message output
     ) -> i32,
 }
-
-#[repr(C)]
-pub struct QueryResult {
-    pub output: UnmanagedVector,
-    pub error: GoError,
-    pub error_message: UnmanagedVector,
-}
