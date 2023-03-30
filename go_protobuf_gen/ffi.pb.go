@@ -2058,6 +2058,93 @@ func (x *SGXVMCreateRequest) GetContext() *TransactionContext {
 	return nil
 }
 
+// Request to obtain node public key
+type NodePublicKeyRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *NodePublicKeyRequest) Reset() {
+	*x = NodePublicKeyRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[34]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *NodePublicKeyRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NodePublicKeyRequest) ProtoMessage() {}
+
+func (x *NodePublicKeyRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[34]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use NodePublicKeyRequest.ProtoReflect.Descriptor instead.
+func (*NodePublicKeyRequest) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{34}
+}
+
+// Response with node public key
+type NodePublicKeyResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	PublicKey []byte `protobuf:"bytes,1,opt,name=publicKey,proto3" json:"publicKey,omitempty"`
+}
+
+func (x *NodePublicKeyResponse) Reset() {
+	*x = NodePublicKeyResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_ffi_proto_msgTypes[35]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *NodePublicKeyResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NodePublicKeyResponse) ProtoMessage() {}
+
+func (x *NodePublicKeyResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_ffi_proto_msgTypes[35]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use NodePublicKeyResponse.ProtoReflect.Descriptor instead.
+func (*NodePublicKeyResponse) Descriptor() ([]byte, []int) {
+	return file_ffi_proto_rawDescGZIP(), []int{35}
+}
+
+func (x *NodePublicKeyResponse) GetPublicKey() []byte {
+	if x != nil {
+		return x.PublicKey
+	}
+	return nil
+}
+
 type FFIRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -2066,13 +2153,14 @@ type FFIRequest struct {
 	// Types that are assignable to Req:
 	//	*FFIRequest_CallRequest
 	//	*FFIRequest_CreateRequest
+	//	*FFIRequest_PublicKeyRequest
 	Req isFFIRequest_Req `protobuf_oneof:"req"`
 }
 
 func (x *FFIRequest) Reset() {
 	*x = FFIRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_ffi_proto_msgTypes[34]
+		mi := &file_ffi_proto_msgTypes[36]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -2085,7 +2173,7 @@ func (x *FFIRequest) String() string {
 func (*FFIRequest) ProtoMessage() {}
 
 func (x *FFIRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_ffi_proto_msgTypes[34]
+	mi := &file_ffi_proto_msgTypes[36]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2098,7 +2186,7 @@ func (x *FFIRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FFIRequest.ProtoReflect.Descriptor instead.
 func (*FFIRequest) Descriptor() ([]byte, []int) {
-	return file_ffi_proto_rawDescGZIP(), []int{34}
+	return file_ffi_proto_rawDescGZIP(), []int{36}
 }
 
 func (m *FFIRequest) GetReq() isFFIRequest_Req {
@@ -2122,6 +2210,13 @@ func (x *FFIRequest) GetCreateRequest() *SGXVMCreateRequest {
 	return nil
 }
 
+func (x *FFIRequest) GetPublicKeyRequest() *NodePublicKeyRequest {
+	if x, ok := x.GetReq().(*FFIRequest_PublicKeyRequest); ok {
+		return x.PublicKeyRequest
+	}
+	return nil
+}
+
 type isFFIRequest_Req interface {
 	isFFIRequest_Req()
 }
@@ -2134,9 +2229,15 @@ type FFIRequest_CreateRequest struct {
 	CreateRequest *SGXVMCreateRequest `protobuf:"bytes,2,opt,name=createRequest,proto3,oneof"`
 }
 
+type FFIRequest_PublicKeyRequest struct {
+	PublicKeyRequest *NodePublicKeyRequest `protobuf:"bytes,3,opt,name=publicKeyRequest,proto3,oneof"`
+}
+
 func (*FFIRequest_CallRequest) isFFIRequest_Req() {}
 
 func (*FFIRequest_CreateRequest) isFFIRequest_Req() {}
+
+func (*FFIRequest_PublicKeyRequest) isFFIRequest_Req() {}
 
 var File_ffi_proto protoreflect.FileDescriptor
 
@@ -2362,17 +2463,27 @@ var file_ffi_proto_rawDesc = []byte{
 	0x65, 0x78, 0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x66, 0x66, 0x69, 0x2e,
 	0x66, 0x66, 0x69, 0x2e, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x43,
 	0x6f, 0x6e, 0x74, 0x65, 0x78, 0x74, 0x52, 0x07, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x78, 0x74, 0x22,
-	0x97, 0x01, 0x0a, 0x0a, 0x46, 0x46, 0x49, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x3d,
-	0x0a, 0x0b, 0x63, 0x61, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x18, 0x01, 0x20,
-	0x01, 0x28, 0x0b, 0x32, 0x19, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x53, 0x47,
-	0x58, 0x56, 0x4d, 0x43, 0x61, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x48, 0x00,
-	0x52, 0x0b, 0x63, 0x61, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x43, 0x0a,
-	0x0d, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x18, 0x02,
-	0x20, 0x01, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x53,
-	0x47, 0x58, 0x56, 0x4d, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x48, 0x00, 0x52, 0x0d, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65,
-	0x73, 0x74, 0x42, 0x05, 0x0a, 0x03, 0x72, 0x65, 0x71, 0x42, 0x04, 0x5a, 0x02, 0x2e, 0x2f, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x16, 0x0a, 0x14, 0x4e, 0x6f, 0x64, 0x65, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x35, 0x0a, 0x15, 0x4e, 0x6f, 0x64, 0x65, 0x50,
+	0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x1c, 0x0a, 0x09, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x0c, 0x52, 0x09, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 0x22, 0xe4,
+	0x01, 0x0a, 0x0a, 0x46, 0x46, 0x49, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x3d, 0x0a,
+	0x0b, 0x63, 0x61, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x19, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x53, 0x47, 0x58,
+	0x56, 0x4d, 0x43, 0x61, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x48, 0x00, 0x52,
+	0x0b, 0x63, 0x61, 0x6c, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x43, 0x0a, 0x0d,
+	0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x53, 0x47,
+	0x58, 0x56, 0x4d, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x48, 0x00, 0x52, 0x0d, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x12, 0x4b, 0x0a, 0x10, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1d, 0x2e, 0x66, 0x66,
+	0x69, 0x2e, 0x66, 0x66, 0x69, 0x2e, 0x4e, 0x6f, 0x64, 0x65, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x63,
+	0x4b, 0x65, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x48, 0x00, 0x52, 0x10, 0x70, 0x75,
+	0x62, 0x6c, 0x69, 0x63, 0x4b, 0x65, 0x79, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x42, 0x05,
+	0x0a, 0x03, 0x72, 0x65, 0x71, 0x42, 0x04, 0x5a, 0x02, 0x2e, 0x2f, 0x62, 0x06, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x33,
 }
 
 var (
@@ -2387,7 +2498,7 @@ func file_ffi_proto_rawDescGZIP() []byte {
 	return file_ffi_proto_rawDescData
 }
 
-var file_ffi_proto_msgTypes = make([]protoimpl.MessageInfo, 35)
+var file_ffi_proto_msgTypes = make([]protoimpl.MessageInfo, 37)
 var file_ffi_proto_goTypes = []interface{}{
 	(*AccessListItem)(nil),                     // 0: ffi.ffi.AccessListItem
 	(*TransactionData)(nil),                    // 1: ffi.ffi.TransactionData
@@ -2423,7 +2534,9 @@ var file_ffi_proto_goTypes = []interface{}{
 	(*SGXVMCreateParams)(nil),                  // 31: ffi.ffi.SGXVMCreateParams
 	(*SGXVMCallRequest)(nil),                   // 32: ffi.ffi.SGXVMCallRequest
 	(*SGXVMCreateRequest)(nil),                 // 33: ffi.ffi.SGXVMCreateRequest
-	(*FFIRequest)(nil),                         // 34: ffi.ffi.FFIRequest
+	(*NodePublicKeyRequest)(nil),               // 34: ffi.ffi.NodePublicKeyRequest
+	(*NodePublicKeyResponse)(nil),              // 35: ffi.ffi.NodePublicKeyResponse
+	(*FFIRequest)(nil),                         // 36: ffi.ffi.FFIRequest
 }
 var file_ffi_proto_depIdxs = []int32{
 	0,  // 0: ffi.ffi.TransactionData.accessList:type_name -> ffi.ffi.AccessListItem
@@ -2450,11 +2563,12 @@ var file_ffi_proto_depIdxs = []int32{
 	2,  // 21: ffi.ffi.SGXVMCreateRequest.context:type_name -> ffi.ffi.TransactionContext
 	32, // 22: ffi.ffi.FFIRequest.callRequest:type_name -> ffi.ffi.SGXVMCallRequest
 	33, // 23: ffi.ffi.FFIRequest.createRequest:type_name -> ffi.ffi.SGXVMCreateRequest
-	24, // [24:24] is the sub-list for method output_type
-	24, // [24:24] is the sub-list for method input_type
-	24, // [24:24] is the sub-list for extension type_name
-	24, // [24:24] is the sub-list for extension extendee
-	0,  // [0:24] is the sub-list for field type_name
+	34, // 24: ffi.ffi.FFIRequest.publicKeyRequest:type_name -> ffi.ffi.NodePublicKeyRequest
+	25, // [25:25] is the sub-list for method output_type
+	25, // [25:25] is the sub-list for method input_type
+	25, // [25:25] is the sub-list for extension type_name
+	25, // [25:25] is the sub-list for extension extendee
+	0,  // [0:25] is the sub-list for field type_name
 }
 
 func init() { file_ffi_proto_init() }
@@ -2872,6 +2986,30 @@ func file_ffi_proto_init() {
 			}
 		}
 		file_ffi_proto_msgTypes[34].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*NodePublicKeyRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[35].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*NodePublicKeyResponse); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_ffi_proto_msgTypes[36].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*FFIRequest); i {
 			case 0:
 				return &v.state
@@ -2897,9 +3035,10 @@ func file_ffi_proto_init() {
 		(*CosmosRequest_RemoveStorage)(nil),
 		(*CosmosRequest_BlockHash)(nil),
 	}
-	file_ffi_proto_msgTypes[34].OneofWrappers = []interface{}{
+	file_ffi_proto_msgTypes[36].OneofWrappers = []interface{}{
 		(*FFIRequest_CallRequest)(nil),
 		(*FFIRequest_CreateRequest)(nil),
+		(*FFIRequest_PublicKeyRequest)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -2907,7 +3046,7 @@ func file_ffi_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_ffi_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   35,
+			NumMessages:   37,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

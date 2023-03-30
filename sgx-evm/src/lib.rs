@@ -22,7 +22,7 @@ use std::vec::Vec;
 // use crate::memory::{ByteSliceView, UnmanagedVector};
 use crate::protobuf_generated::ffi::{
     AccessListItem, FFIRequest, FFIRequest_oneof_req, HandleTransactionResponse, Log,
-    SGXVMCallRequest, SGXVMCreateRequest, Topic, TransactionContext as ProtoTransactionContext,
+    SGXVMCallRequest, SGXVMCreateRequest, Topic, TransactionContext as ProtoTransactionContext, NodePublicKeyResponse,
 };
 use crate::querier::GoQuerier;
 
@@ -113,7 +113,7 @@ pub extern "C" fn ecall_allocate(
 }
 
 #[no_mangle]
-/// Handles incoming protobuf-encoded request for transaction handling
+/// Handles incoming protobuf-encoded request
 pub extern "C" fn handle_request(
     querier: *mut GoQuerier,
     request_data: *const u8,
@@ -131,72 +131,120 @@ pub extern "C" fn handle_request(
 
     match ffi_request.req {
         Some(req) => {
-            let execution_result = match req {
+            match req {
                 FFIRequest_oneof_req::callRequest(data) => {
-                    handle_call_request(querier, data)
-                }
-                FFIRequest_oneof_req::createRequest(data) => {
-                    handle_create_request(querier, data)
-                }
-            };
-
-            let mut response = HandleTransactionResponse::new();
-            response.set_gas_used(execution_result.gas_used);
-            response.set_vm_error(execution_result.vm_error);
-            response.set_ret(execution_result.data);
-
-            // Convert logs into proper format
-            let converted_logs = execution_result
-                .logs
-                .into_iter()
-                .map(|log| {
-                    let mut proto_log = Log::new();
-                    proto_log.set_address(log.address.as_fixed_bytes().to_vec());
-                    proto_log.set_data(log.data);
-
-                    let converted_topics: Vec<Topic> =
-                        log.topics.into_iter().map(convert_topic_to_proto).collect();
-                    proto_log.set_topics(converted_topics.into());
-
-                    proto_log
-                })
-                .collect();
-
-            response.set_logs(converted_logs);
-
-            let encoded_response = match response.write_to_bytes() {
-                Ok(res) => res,
-                Err(err) => {
-                    println!("Cannot encode protobuf result");
-                    return AllocationWithResult::default();
-                }
-            };
-
-            let mut ocall_result = std::mem::MaybeUninit::<Allocation>::uninit();
-            let sgx_result = unsafe {
-                ocall::ocall_allocate(
-                    ocall_result.as_mut_ptr(),
-                    encoded_response.as_ptr(),
-                    encoded_response.len()
-                )
-            };
-            match sgx_result {
-                sgx_status_t::SGX_SUCCESS => {
-                    let ocall_result = unsafe { ocall_result.assume_init() };
-                    AllocationWithResult {
-                        result_ptr: ocall_result.result_ptr,
-                        result_len: encoded_response.len(),
-                        status: sgx_status_t::SGX_SUCCESS
-                    }
+                    let res = handle_call_request(querier, data);
+                    post_transaction_handling(res)
                 },
-                _ => {
-                    println!("ocall_allocate failed: {:?}", sgx_result.as_str());
-                    AllocationWithResult::default()
+                FFIRequest_oneof_req::createRequest(data) => {
+                    let res = handle_create_request(querier, data);
+                    post_transaction_handling(res)
+                },
+                FFIRequest_oneof_req::publicKeyRequest(_) => {
+                    let res = encryption::x25519_get_public_key();
+                    match res {
+                        Ok(res) => {
+                            let mut response = NodePublicKeyResponse::new();
+                            response.set_publicKey(res);
+
+                            let encoded_response = match response.write_to_bytes() {
+                                Ok(res) => res,
+                                Err(err) => {
+                                    println!("Cannot encode protobuf result");
+                                    return AllocationWithResult::default();
+                                }
+                            };
+                            
+                            let mut ocall_result = std::mem::MaybeUninit::<Allocation>::uninit();
+                            let sgx_result = unsafe { 
+                                ocall::ocall_allocate(
+                                    ocall_result.as_mut_ptr(),
+                                    encoded_response.as_ptr(),
+                                    encoded_response.len()
+                                ) 
+                            };
+                            match sgx_result {
+                                sgx_status_t::SGX_SUCCESS => {
+                                    let ocall_result = unsafe { ocall_result.assume_init() };
+                                    AllocationWithResult {
+                                        result_ptr: ocall_result.result_ptr,
+                                        result_len: encoded_response.len(),
+                                        status: sgx_status_t::SGX_SUCCESS
+                                    }
+                                },
+                                _ => {
+                                    println!("ocall_allocate failed: {:?}", sgx_result.as_str());
+                                    AllocationWithResult::default()
+                                }
+                            }
+                        },
+                        Err(err) => {
+                            println!("Cannot obtain node public key. Reason: {:?}", err);
+                            return AllocationWithResult::default();
+                        }
+                    }
                 }
             }
         }
         None => {
             println!("Got empty request during protobuf decoding");
+            AllocationWithResult::default()
+        }
+    }
+}
+
+fn post_transaction_handling(execution_result: ExecutionResult) -> AllocationWithResult {
+    let mut response = HandleTransactionResponse::new();
+    response.set_gas_used(execution_result.gas_used);
+    response.set_vm_error(execution_result.vm_error);
+    response.set_ret(execution_result.data);
+
+    // Convert logs into proper format
+    let converted_logs = execution_result
+        .logs
+        .into_iter()
+        .map(|log| {
+            let mut proto_log = Log::new();
+            proto_log.set_address(log.address.as_fixed_bytes().to_vec());
+            proto_log.set_data(log.data);
+
+            let converted_topics: Vec<Topic> =
+                log.topics.into_iter().map(convert_topic_to_proto).collect();
+            proto_log.set_topics(converted_topics.into());
+
+            proto_log
+        })
+        .collect();
+
+    response.set_logs(converted_logs);
+
+    let encoded_response = match response.write_to_bytes() {
+        Ok(res) => res,
+        Err(err) => {
+            println!("Cannot encode protobuf result");
+            return AllocationWithResult::default();
+        }
+    };
+    
+    let mut ocall_result = std::mem::MaybeUninit::<Allocation>::uninit();
+    let sgx_result = unsafe { 
+        ocall::ocall_allocate(
+            ocall_result.as_mut_ptr(),
+            encoded_response.as_ptr(),
+            encoded_response.len()
+        ) 
+    };
+    match sgx_result {
+        sgx_status_t::SGX_SUCCESS => {
+            let ocall_result = unsafe { ocall_result.assume_init() };
+            AllocationWithResult {
+                result_ptr: ocall_result.result_ptr,
+                result_len: encoded_response.len(),
+                status: sgx_status_t::SGX_SUCCESS
+            }
+        },
+        _ => {
+            println!("ocall_allocate failed: {:?}", sgx_result.as_str());
             AllocationWithResult::default()
         }
     }
