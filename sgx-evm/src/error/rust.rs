@@ -7,20 +7,9 @@ use thiserror_no_std::Error;
 
 #[derive(Error, Debug)]
 pub enum RustError {
-    #[error("Empty argument: {}", name)]
-    EmptyArg { name: String },
-    /// Whenever UTF-8 bytes cannot be decoded into a unicode string, e.g. in String::from_utf8 or str::from_utf8.
     #[error("Cannot decode UTF8 bytes into string: {}", msg)]
     InvalidUtf8 { msg: String },
-    #[error("Ran out of gas")]
-    OutOfGas {},
-    #[error("Caught panic")]
-    Panic {},
-    #[error("Null/Nil argument: {}", name)]
-    UnsetArg { name: String },
     #[error("Error calling the VM: {}", msg)]
-    VmErr { msg: String },
-    #[error("Error decoding protobuf: {}", msg)]
     ProtobufDecodeError { msg: String },
     #[error("Encryption error: {}", msg)]
     EncryptionError { msg: String },
@@ -31,38 +20,10 @@ pub enum RustError {
 }
 
 impl RustError {
-    pub fn empty_arg<T: Into<String>>(name: T) -> Self {
-        RustError::EmptyArg { name: name.into() }
-    }
-
     pub fn invalid_utf8<S: ToString>(msg: S) -> Self {
         RustError::InvalidUtf8 {
             msg: msg.to_string(),
         }
-    }
-
-    pub fn protobuf_decode<S: ToString>(msg: S) -> Self {
-        RustError::ProtobufDecodeError {
-            msg: msg.to_string(),
-        }
-    }
-
-    pub fn panic() -> Self {
-        RustError::Panic {}
-    }
-
-    pub fn unset_arg<T: Into<String>>(name: T) -> Self {
-        RustError::UnsetArg { name: name.into() }
-    }
-
-    pub fn vm_err<S: ToString>(msg: S) -> Self {
-        RustError::VmErr {
-            msg: msg.to_string(),
-        }
-    }
-
-    pub fn out_of_gas() -> Self {
-        RustError::OutOfGas {}
     }
 
     pub fn encryption_err<S: ToString>(msg: S) -> Self {
