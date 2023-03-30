@@ -26,6 +26,8 @@ pub enum RustError {
     EncryptionError { msg: String },
     #[error("Decryption error: {}", msg)]
     DecryptionError { msg: String },
+    #[error("Enclave error: {}", msg)]
+    EnclaveError { msg: String },
 }
 
 impl RustError {
@@ -71,6 +73,12 @@ impl RustError {
 
     pub fn decryption_err<S: ToString>(msg: S) -> Self {
         RustError::DecryptionError {
+            msg: msg.to_string(),
+        }
+    }
+
+    pub fn enclave_err<S: ToString>(msg: S) -> Self {
+        RustError::EnclaveError {
             msg: msg.to_string(),
         }
     }

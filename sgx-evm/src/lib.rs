@@ -67,6 +67,22 @@ pub struct Allocation {
 pub extern "C" fn ecall_get_node_public_key(
     buffer: *mut u8,
 ) -> sgx_status_t {
+    let public_key = match encryption::x25519_get_public_key() {
+        Ok(public_key) => public_key,
+        Err(err) => {
+            println!("Cannot obtain node public key. Reason: {:?}", err);
+            return sgx_status_t::SGX_ERROR_UNEXPECTED;
+        }
+    };
+
+    unsafe {
+        std::ptr::copy_nonoverlapping(
+            public_key.as_ptr(),
+            buffer, 
+            public_key.len()
+        );
+    }
+
     sgx_status_t::SGX_SUCCESS
 }
 

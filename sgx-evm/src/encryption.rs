@@ -3,7 +3,7 @@ use aes_siv::{
     aead::{Aead, KeyInit},
     Aes128SivAead, Nonce,
 };
-use x25519_dalek::{EphemeralSecret, PublicKey};
+use x25519_dalek::{StaticSecret, PublicKey};
 use sgx_types::*;
 use std::vec::Vec;
 
@@ -75,6 +75,18 @@ pub fn aes_decrypt(ciphertext: Vec<u8>) -> Result<Vec<u8>, Error> {
 }
 
 /// Returns x25519 public key generated from node private key
-pub fn x25519_get_public_key() -> Vec<u8> {
-    Vec::default()
+pub fn x25519_get_public_key() -> Result<Vec<u8>, Error> {
+    // Decode key
+    let key = match hex::decode(NODE_PRIVATE_KEY) {
+        Ok(key) => key,
+        Err(err) => return Err(Error::enclave_err(err)),
+    };
+
+    // Construct secret 
+    let key_bytes: [u8; 32] = key.try_into().unwrap();
+    let secret = StaticSecret::from(key_bytes);
+
+    // Derive public key
+    let public_key = PublicKey::from(&secret);
+    Ok(public_key.as_bytes().to_vec())
 }
