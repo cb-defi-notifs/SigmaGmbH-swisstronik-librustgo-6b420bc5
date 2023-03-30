@@ -1,7 +1,7 @@
-use crate::{AllocationWithResult, Allocation};
+use crate::AllocationWithResult;
 use crate::protobuf_generated::ffi::{
-    AccessListItem, FFIRequest, FFIRequest_oneof_req, HandleTransactionResponse, Log,
-    SGXVMCallRequest, SGXVMCreateRequest, Topic, TransactionContext as ProtoTransactionContext, NodePublicKeyResponse,
+    AccessListItem, HandleTransactionResponse, Log,
+    SGXVMCallRequest, SGXVMCreateRequest, Topic, TransactionContext as ProtoTransactionContext,
 };
 use protobuf::Message;
 use sgxvm::primitive_types::{H160, H256, U256};

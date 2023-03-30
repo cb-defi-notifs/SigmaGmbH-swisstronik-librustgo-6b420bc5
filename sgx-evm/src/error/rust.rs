@@ -1,8 +1,5 @@
-use crate::memory::UnmanagedVector;
-use errno::{set_errno, Errno};
 use std::string::String;
 use std::string::ToString;
-use std::vec::Vec;
 use thiserror_no_std::Error;
 
 #[derive(Error, Debug)]

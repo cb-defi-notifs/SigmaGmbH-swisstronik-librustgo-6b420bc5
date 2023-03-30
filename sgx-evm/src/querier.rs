@@ -1,5 +1,4 @@
 use crate::memory::{UnmanagedVector, U8SliceView};
-use crate::error::GoError;
 
 #[repr(C)]
 #[derive(Clone)]
