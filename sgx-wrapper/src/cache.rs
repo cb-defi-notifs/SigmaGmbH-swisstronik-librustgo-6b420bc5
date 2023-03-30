@@ -3,7 +3,6 @@ use std::panic::catch_unwind;
 use crate::memory::{ByteSliceView, UnmanagedVector};
 use crate::types::GoQuerier;
 use crate::errors::{handle_c_error_default, Error};
-use crate::enclave::{self};
 use crate::types::AllocationWithResult;
 
 use sgx_types::*;
@@ -24,7 +23,7 @@ pub extern "C" fn make_pb_request(
             .ok_or_else(|| Error::unset_arg(PB_REQUEST_ARG))?;
 
         // Initialize enclave
-        let evm_enclave = match enclave::init_enclave() {
+        let evm_enclave = match crate::enclave::init_enclave() {
             Ok(r) => {r},
             Err(err) => { 
                 println!("Got error: {:?}", err.as_str());
@@ -32,7 +31,7 @@ pub extern "C" fn make_pb_request(
             },
         };
         // Set enclave id to static variable to make it accessible across inner ecalls
-        unsafe { enclave::ENCLAVE_ID = Some(evm_enclave.geteid()) };
+        unsafe { crate::enclave::ENCLAVE_ID = Some(evm_enclave.geteid()) };
         
         // Prepare data for the enclave
         let request_vec = Vec::from(req_bytes);
@@ -41,7 +40,7 @@ pub extern "C" fn make_pb_request(
 
         // Call the enclave
         let evm_res = unsafe { 
-            enclave::handle_request(
+            crate::enclave::handle_request(
                 evm_enclave.geteid(), 
                 handle_request_result.as_mut_ptr(),
                 &mut querier as *mut GoQuerier,
@@ -54,7 +53,7 @@ pub extern "C" fn make_pb_request(
 
         // Destory enclave after usage and set enclave id to None
         evm_enclave.destroy();
-        unsafe { enclave::ENCLAVE_ID = None };
+        unsafe { crate::enclave::ENCLAVE_ID = None };
 
         // Parse execution result
         match handle_request_result.status {
