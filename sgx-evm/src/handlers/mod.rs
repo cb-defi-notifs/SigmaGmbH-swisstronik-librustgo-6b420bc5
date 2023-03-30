@@ -4,6 +4,7 @@ use sgx_types::sgx_status_t;
 use crate::ocall;
 
 pub mod tx;
+pub mod node;
 
 /// Allocates provided data outside of enclave
 pub fn allocate_inner(data: Vec<u8>) -> AllocationWithResult {

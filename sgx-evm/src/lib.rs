@@ -117,27 +117,7 @@ pub extern "C" fn handle_request(
                     handlers::tx::handle_create_request(querier, data)
                 },
                 FFIRequest_oneof_req::publicKeyRequest(_) => {
-                    let res = encryption::x25519_get_public_key();
-                    match res {
-                        Ok(res) => {
-                            let mut response = NodePublicKeyResponse::new();
-                            response.set_publicKey(res);
-
-                            let encoded_response = match response.write_to_bytes() {
-                                Ok(res) => res,
-                                Err(err) => {
-                                    println!("Cannot encode protobuf result");
-                                    return AllocationWithResult::default();
-                                }
-                            };
-                            
-                            handlers::allocate_inner(encoded_response)
-                        },
-                        Err(err) => {
-                            println!("Cannot obtain node public key. Reason: {:?}", err);
-                            return AllocationWithResult::default();
-                        }
-                    }
+                    handlers::node::handle_public_key_request()
                 }
             }
         }
