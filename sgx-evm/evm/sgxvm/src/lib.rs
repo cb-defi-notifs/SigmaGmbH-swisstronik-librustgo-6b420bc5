@@ -21,7 +21,6 @@ use crate::precompiles::EVMPrecompiles;
 pub mod backend;
 pub mod storage;
 
-mod errors;
 mod precompiles;
 
 /// Handles incoming request for calling some contract / funds transfer

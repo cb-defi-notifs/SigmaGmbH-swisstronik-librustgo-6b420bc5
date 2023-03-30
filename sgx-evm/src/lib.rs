@@ -8,13 +8,6 @@ extern crate rustls;
 extern crate sgx_types;
 use sgx_types::sgx_status_t;
 
-use internal_types::ExecutionResult;
-use protobuf::Message;
-use protobuf::RepeatedField;
-use sgxvm::primitive_types::{H160, H256, U256};
-use sgxvm::{self, Vicinity};
-// use std::panic::catch_unwind;
-// use std::ptr;
 use std::slice;
 use std::vec::Vec;
 
