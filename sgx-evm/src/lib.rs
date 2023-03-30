@@ -37,6 +37,7 @@ mod storage;
 mod encryption;
 mod attestation;
 mod key_manager;
+mod handlers;
 
 pub const MAX_RESULT_LEN: usize = 4096;
 
@@ -132,28 +133,7 @@ pub extern "C" fn handle_request(
                                 }
                             };
                             
-                            let mut ocall_result = std::mem::MaybeUninit::<Allocation>::uninit();
-                            let sgx_result = unsafe { 
-                                ocall::ocall_allocate(
-                                    ocall_result.as_mut_ptr(),
-                                    encoded_response.as_ptr(),
-                                    encoded_response.len()
-                                ) 
-                            };
-                            match sgx_result {
-                                sgx_status_t::SGX_SUCCESS => {
-                                    let ocall_result = unsafe { ocall_result.assume_init() };
-                                    AllocationWithResult {
-                                        result_ptr: ocall_result.result_ptr,
-                                        result_len: encoded_response.len(),
-                                        status: sgx_status_t::SGX_SUCCESS
-                                    }
-                                },
-                                _ => {
-                                    println!("ocall_allocate failed: {:?}", sgx_result.as_str());
-                                    AllocationWithResult::default()
-                                }
-                            }
+                            handlers::allocate_inner(encoded_response)
                         },
                         Err(err) => {
                             println!("Cannot obtain node public key. Reason: {:?}", err);
@@ -203,28 +183,7 @@ fn post_transaction_handling(execution_result: ExecutionResult) -> AllocationWit
         }
     };
     
-    let mut ocall_result = std::mem::MaybeUninit::<Allocation>::uninit();
-    let sgx_result = unsafe { 
-        ocall::ocall_allocate(
-            ocall_result.as_mut_ptr(),
-            encoded_response.as_ptr(),
-            encoded_response.len()
-        ) 
-    };
-    match sgx_result {
-        sgx_status_t::SGX_SUCCESS => {
-            let ocall_result = unsafe { ocall_result.assume_init() };
-            AllocationWithResult {
-                result_ptr: ocall_result.result_ptr,
-                result_len: encoded_response.len(),
-                status: sgx_status_t::SGX_SUCCESS
-            }
-        },
-        _ => {
-            println!("ocall_allocate failed: {:?}", sgx_result.as_str());
-            AllocationWithResult::default()
-        }
-    }
+    handlers::allocate_inner(encoded_response)
 }
 
 fn handle_call_request(querier: *mut GoQuerier, data: SGXVMCallRequest) -> ExecutionResult {
