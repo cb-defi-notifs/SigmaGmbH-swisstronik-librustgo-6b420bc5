@@ -263,6 +263,40 @@ func RequestSeed(addr string) error {
 	return nil
 }
 
+// GetNodePublicKey handles request for node public key
+func GetNodePublicKey() (*ffi.NodePublicKeyResponse, error) {
+	// Construct mocked querier
+	c := buildEmptyConnector()
+
+	// Create protobuf-encoded request
+	req := &ffi.FFIRequest{ Req: &ffi.FFIRequest_PublicKeyRequest {} }
+	reqBytes, err := proto.Marshal(req)
+	if err != nil {
+		log.Fatalln("Failed to encode req:", err)
+		return nil, err
+	}
+
+	// Pass request to Rust
+	d := makeView(reqBytes)
+	defer runtime.KeepAlive(reqBytes)
+
+	errmsg := newUnmanagedVector(nil)
+	ptr, err := C.make_pb_request(c, d, &errmsg) // TODO: Pass empty struct instead of nil
+	if err != nil {
+		return &ffi.NodePublicKeyResponse{}, errorWithMessage(err, errmsg)
+	}
+
+	// Recover returned value
+	executionResult := copyAndDestroyUnmanagedVector(ptr)
+	response := ffi.NodePublicKeyResponse{}
+	if err := proto.Unmarshal(executionResult, &response); err != nil {
+		log.Fatalln("Failed to decode node public key result:", err)
+		return nil, err
+	}
+
+	return &response, nil
+}
+
 // Call handles incoming call to contract or transfer of value
 func Call(
 	connector Connector,
@@ -296,6 +330,7 @@ func Call(
 	reqBytes, err := proto.Marshal(&req)
 	if err != nil {
 		log.Fatalln("Failed to encode req:", err)
+		return nil, err
 	}
 
 	// Pass request to Rust
@@ -313,6 +348,7 @@ func Call(
 	response := ffi.HandleTransactionResponse{}
 	if err := proto.Unmarshal(executionResult, &response); err != nil {
 		log.Fatalln("Failed to decode execution result:", err)
+		return nil, err
 	}
 
 	return &response, nil
@@ -350,6 +386,7 @@ func Create(
 	reqBytes, err := proto.Marshal(&req)
 	if err != nil {
 		log.Fatalln("Failed to encode req:", err)
+		return nil, err
 	}
 
 	// Pass request to Rust
@@ -367,6 +404,7 @@ func Create(
 	response := ffi.HandleTransactionResponse{}
 	if err := proto.Unmarshal(executionResult, &response); err != nil {
 		log.Fatalln("Failed to decode execution result:", err)
+		return nil, err
 	}
 
 	return &response, nil

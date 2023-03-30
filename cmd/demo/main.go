@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"encoding/hex"
 	"errors"
 	"github.com/SigmaGmbH/librustgo/internal/api"

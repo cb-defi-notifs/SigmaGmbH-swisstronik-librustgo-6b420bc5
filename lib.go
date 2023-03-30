@@ -56,6 +56,8 @@ type CosmosRequest_RemoveStorageCell = ffi.CosmosRequest_RemoveStorageCell
 type CosmosRequest_BlockHash = ffi.CosmosRequest_BlockHash
 
 type HandleTransactionResponse = ffi.HandleTransactionResponse
+type NodePublicKeyRequest = ffi.NodePublicKeyRequest
+type NodePublicKeyResponse = ffi.NodePublicKeyResponse
 
 // IsNodeInitialized checks if node was properly initialized and master key was sealed
 func IsNodeInitialized() (bool, error) {
@@ -116,6 +118,15 @@ func StartSeedServer(addr string) error {
 // Returns error if Remote Attestation was not passed or provided seed server address is not accessible
 func RequestSeed(addr string) error {
 	return api.RequestSeed(addr)
+}
+
+// GetNodePublicKey handles request for node public key
+func GetNodePublicKey() (*ffi.NodePublicKeyResponse, error) {
+	result, err := api.GetNodePublicKey()
+	if err != nil {
+		return &ffi.NodePublicKeyResponse{}, err
+	}
+	return result, nil
 }
 
 // Libsgx_wrapperVersion returns the version of the loaded library
