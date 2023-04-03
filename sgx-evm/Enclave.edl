@@ -6,6 +6,7 @@ enclave {
     from "sgx_net.edl" import *;
     from "sgx_time.edl" import *;
     from "sgx_tstdc.edl" import *;
+    from "sgx_tprotected_fs.edl" import *;
 
     include "sgx_quote.h"
 
@@ -21,6 +22,8 @@ enclave {
     };
 
     trusted {
+        public sgx_status_t ecall_init_seed_node();
+
         public ResultWithAllocation handle_request(
             [user_check] void* querier,
             [in, size=len] const uint8_t* request, 

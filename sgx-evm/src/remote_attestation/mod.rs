@@ -25,6 +25,15 @@ pub mod cert;
 pub mod hex;
 pub mod keychain;
 
+#[no_mangle]
+/// Initializes node with new seed
+pub unsafe extern "C" fn ecall_init_seed_node() -> sgx_status_t {
+    match keychain::new_node_seed() {
+        Ok(_) => sgx_status_t::SGX_SUCCESS,
+        Err(err) => err
+    }
+}
+
 fn parse_response_attn_report(resp: &[u8]) -> (String, String, String) {
     println!("parse_response_attn_report");
     let mut headers = [httparse::EMPTY_HEADER; 16];
