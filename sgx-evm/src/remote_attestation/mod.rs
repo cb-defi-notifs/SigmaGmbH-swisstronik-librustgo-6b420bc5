@@ -23,6 +23,7 @@ pub const CERTEXPIRYDAYS: i64 = 90i64;
 
 pub mod cert;
 pub mod hex;
+pub mod keychain;
 
 fn parse_response_attn_report(resp: &[u8]) -> (String, String, String) {
     println!("parse_response_attn_report");
