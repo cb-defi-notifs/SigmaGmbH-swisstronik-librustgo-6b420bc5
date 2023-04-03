@@ -11,6 +11,7 @@ use std::slice;
 static ENCLAVE_FILE: &'static str = "/tmp/enclave.signed.so";
 pub static mut ENCLAVE_ID: Option<sgx_types::sgx_enclave_id_t> = None;
 
+#[allow(dead_code)]
 extern "C" {
     pub fn handle_request(
         eid: sgx_enclave_id_t,
@@ -25,6 +26,18 @@ extern "C" {
         retval: *mut Allocation,
         data: *const u8,
         len: usize,
+    ) -> sgx_status_t;
+
+    pub fn ecall_init_seed_node(
+        eid: sgx_enclave_id_t,
+        retval: *mut sgx_status_t,
+    ) -> sgx_status_t;
+
+    pub fn ecall_create_attestation_report(
+        eid: sgx_enclave_id_t,
+        retval: *mut sgx_status_t,
+        api_key: *const u8,
+        api_key_len: usize,
     ) -> sgx_status_t;
 }
 

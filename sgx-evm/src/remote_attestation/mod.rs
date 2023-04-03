@@ -24,6 +24,7 @@ pub const CERTEXPIRYDAYS: i64 = 90i64;
 pub mod cert;
 pub mod hex;
 pub mod keychain;
+pub mod attestation;
 
 #[no_mangle]
 /// Initializes node with new seed
