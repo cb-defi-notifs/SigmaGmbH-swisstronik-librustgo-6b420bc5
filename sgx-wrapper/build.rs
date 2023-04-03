@@ -10,11 +10,15 @@ fn main () {
     match is_sim.as_ref() {
         "SW" => {
             println!("cargo:rustc-link-lib=dylib=sgx_urts_sim");
-            println!("cargo:rustc-link-lib=dylib=sgx_uae_service_sim");
+            println!("cargo:rustc-link-lib=dylib=sgx_epid_sim");
+            println!("cargo:rustc-link-lib=dylib=sgx_quote_ex_sim");
+            println!("cargo:rustc-link-lib=dylib=sgx_launch_sim");
         }
         "HW" | _ => {
             println!("cargo:rustc-link-lib=dylib=sgx_urts");
-            println!("cargo:rustc-link-lib=dylib=sgx_uae_service");
+            println!("cargo:rustc-link-lib=dylib=sgx_epid");
+            println!("cargo:rustc-link-lib=dylib=sgx_quote_ex");
+            println!("cargo:rustc-link-lib=dylib=sgx_launch");
         }
     }
 }
