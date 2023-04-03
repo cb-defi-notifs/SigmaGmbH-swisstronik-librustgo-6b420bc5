@@ -24,6 +24,11 @@ enclave {
     trusted {
         public sgx_status_t ecall_init_seed_node();
 
+        public sgx_status_t ecall_create_attestation_report(
+            [in, count=api_key_len] const uint8_t* api_key,
+            uint32_t api_key_len
+        );
+
         public ResultWithAllocation handle_request(
             [user_check] void* querier,
             [in, size=len] const uint8_t* request, 
