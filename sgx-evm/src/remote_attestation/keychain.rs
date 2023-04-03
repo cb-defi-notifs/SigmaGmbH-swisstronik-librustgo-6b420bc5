@@ -63,8 +63,20 @@ pub unsafe fn new_node_seed() -> Result<(), sgx_status_t> {
     }
 }
 
+pub struct RegistrationKey {
+    inner: [u8; REG_SIZE]
+}
+
+impl RegistrationKey {
+    /// Returns x25519 public key for this registration key
+    pub fn public_key(&self) -> x25519_dalek::PublicKey {
+        let secret = x25519_dalek::StaticSecret::from(self.inner);
+        x25519_dalek::PublicKey::from(&secret)
+    }
+}
+
 /// Generates new registration key and seals it to the file
-pub unsafe fn new_registration_key() -> Result<Vec<u8>, sgx_status_t> {
+pub unsafe fn new_registration_key() -> Result<RegistrationKey, sgx_status_t> {
     // Generate random seed
     let mut buffer = [0u8; 32];
     let res = sgx_read_rand(&mut buffer as *mut u8, REG_SIZE);
@@ -87,7 +99,7 @@ pub unsafe fn new_registration_key() -> Result<Vec<u8>, sgx_status_t> {
 
     // Write to the file
     match file.write(&buffer) {
-        Ok(_) => Ok(buffer.to_vec()),
+        Ok(_) => Ok(RegistrationKey { inner: buffer }),
         Err(err) => {
             println!("Cannot write registration key. Reason: {:?}", err);
             Err(sgx_status_t::SGX_ERROR_UNEXPECTED)
@@ -96,7 +108,7 @@ pub unsafe fn new_registration_key() -> Result<Vec<u8>, sgx_status_t> {
 }
 
 /// Returns node seed. If file with node seed was not found, will return SGX_ERROR_UNEXPECTED
-pub unsafe fn get_registration_key() -> Result<Vec<u8>, sgx_status_t> {
+pub unsafe fn get_registration_key() -> Result<RegistrationKey, sgx_status_t> {
     // Open file with node seed
     let mut file = match SgxFile::open(REG_FILENAME) {
         Ok(file) => file,
@@ -109,7 +121,7 @@ pub unsafe fn get_registration_key() -> Result<Vec<u8>, sgx_status_t> {
     // Prepare buffer for seed and read it from file
     let mut buffer = [0u8; REG_SIZE];
     match file.read(&mut buffer) {
-        Ok(_) => Ok(buffer.to_vec()),
+        Ok(_) => Ok(RegistrationKey { inner: buffer }),
         Err(err) => {
             println!("Cannot read file with registration key. Reason: {:?}", err);
             Err(sgx_status_t::SGX_ERROR_UNEXPECTED)

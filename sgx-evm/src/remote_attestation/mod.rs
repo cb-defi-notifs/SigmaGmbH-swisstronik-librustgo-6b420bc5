@@ -25,6 +25,7 @@ pub mod cert;
 pub mod hex;
 pub mod keychain;
 pub mod attestation;
+pub mod report;
 
 #[no_mangle]
 /// Initializes node with new seed
