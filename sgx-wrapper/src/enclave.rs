@@ -1,12 +1,16 @@
 use crate::errors::GoError;
 use crate::memory::{U8SliceView, UnmanagedVector, ByteSliceView};
 use crate::types::{Allocation, AllocationWithResult, GoQuerier};
+use crate::errors::{handle_c_error_default, Error};
+use crate::protobuf_generated::{self, node};
 
 use sgx_types::*;
 use sgx_urts::SgxEnclave;
 use std::net::{SocketAddr, TcpStream};
 use std::os::unix::io::IntoRawFd;
 use std::slice;
+use std::panic::catch_unwind;
+use protobuf::Message;
 
 static ENCLAVE_FILE: &'static str = "/tmp/enclave.signed.so";
 pub static mut ENCLAVE_ID: Option<sgx_types::sgx_enclave_id_t> = None;
@@ -65,6 +69,107 @@ pub unsafe extern "C" fn handle_initialization_request(
     request: ByteSliceView,
     error_msg: Option<&mut UnmanagedVector>,
 ) -> UnmanagedVector {
-    println!("Trying to initialize node");
-    UnmanagedVector::new(None)
+    let r = catch_unwind(|| {
+        // Check if request is correct
+        let req_bytes = request
+            .read()
+            .ok_or_else(|| Error::unset_arg(crate::cache::PB_REQUEST_ARG))?;
+
+        // Initialize enclave
+        let evm_enclave = match crate::enclave::init_enclave() {
+            Ok(r) => {r},
+            Err(err) => { 
+                println!("Got error: {:?}", err.as_str());
+                return Err(Error::vm_err("Cannot initialize SGXVM enclave")) 
+            },
+        };
+        // Set enclave id to static variable to make it accessible across inner ecalls
+        crate::enclave::ENCLAVE_ID = Some(evm_enclave.geteid());
+
+        let request = match protobuf::parse_from_bytes::<node::SetupRequest>(req_bytes) {
+            Ok(request) => request,
+            Err(e) => {
+                return Err(Error::protobuf_decode(e.to_string()));
+            }
+        };
+
+        let result = match request.req {
+            Some(req) => {
+                match req {
+                    node::SetupRequest_oneof_req::setupSeedNode(req) => {
+                        let mut retval = sgx_status_t::SGX_SUCCESS;
+                        let res = ecall_init_seed_node(evm_enclave.geteid(), &mut retval);
+                        
+                        match res {
+                            sgx_status_t::SGX_SUCCESS => {},
+                            _ => { 
+                                return Err(Error::enclave_error(res.as_str()));
+                            }
+                        };
+
+                        match retval {
+                            sgx_status_t::SGX_SUCCESS => {},
+                            _ => { 
+                                return Err(Error::enclave_error(res.as_str()));
+                            }
+                        }
+
+                        // Create response, convert it to bytes and return
+                        let mut response = node::SetupSeedNodeRequest::new();
+                        let response_bytes = match response.write_to_bytes() {
+                            Ok(res) => res,
+                            Err(_) => {
+                                return Err(Error::protobuf_decode("Response encoding failed"));
+                            }
+                        };
+
+                        Ok(response_bytes)
+                    },
+                    node::SetupRequest_oneof_req::setupRegularNode(req) => {
+                        let mut retval = sgx_status_t::SGX_SUCCESS;
+                        let res = ecall_init_node(evm_enclave.geteid(), &mut retval);
+                        
+                        match res {
+                            sgx_status_t::SGX_SUCCESS => {},
+                            _ => { 
+                                return Err(Error::enclave_error(res.as_str()));
+                            }
+                        };
+
+                        match retval {
+                            sgx_status_t::SGX_SUCCESS => {},
+                            _ => { 
+                                return Err(Error::enclave_error(res.as_str()));
+                            }
+                        }
+
+                        // Create response, convert it to bytes and return
+                        let mut response = node::SetupRegularNodeResponse::new();
+                        let response_bytes = match response.write_to_bytes() {
+                            Ok(res) => res,
+                            Err(_) => {
+                                return Err(Error::protobuf_decode("Response encoding failed"));
+                            }
+                        };
+
+                        Ok(response_bytes)
+                    }
+                } 
+            },
+            None => {
+                Err(Error::protobuf_decode("Request unwrapping failed"))
+            }
+        };
+
+        // Destroy enclave after usage and set enclave id to None
+        evm_enclave.destroy();
+        crate::enclave::ENCLAVE_ID = None;
+
+        // TODO: Decode protobuf
+        result
+    })
+    .unwrap_or_else(|_| Err(Error::panic()));
+
+    let data = handle_c_error_default(r, error_msg);
+    UnmanagedVector::new(Some(data))
 }

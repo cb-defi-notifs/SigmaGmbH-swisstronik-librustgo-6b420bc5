@@ -2,6 +2,7 @@ extern crate sgx_types;
 extern crate sgx_urts;
 extern crate errno;
 extern crate thiserror;
+extern crate protobuf;
 
 mod enclave;
 mod cache;
@@ -10,6 +11,7 @@ mod version;
 mod errors;
 mod types;
 mod ocall;
+mod protobuf_generated;
 
 // We only interact with this crate via `extern "C"` interfaces, not those public
 // exports. There are no guarantees those exports are stable.
