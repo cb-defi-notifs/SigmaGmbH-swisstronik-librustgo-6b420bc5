@@ -9,6 +9,7 @@ mod memory;
 mod version;
 mod errors;
 mod types;
+mod ocall;
 
 // We only interact with this crate via `extern "C"` interfaces, not those public
 // exports. There are no guarantees those exports are stable.
