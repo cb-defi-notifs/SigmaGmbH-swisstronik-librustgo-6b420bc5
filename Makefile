@@ -111,7 +111,7 @@ sgx:
 	$(call sgx_build)
 	@echo "Intel SGX enclave built and signed"
 
-build_app:
+build_wrapper:
 	$(call sgx_build)
 	$(call wrapper_build)
 
