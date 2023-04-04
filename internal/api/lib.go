@@ -35,6 +35,16 @@ type cu8_ptr = *C.uint8_t
 // Connector is our custom connector
 type Connector = types.Connector
 
+// SetupSeedNode handles initialization of seed node which will share seed with other nodes
+func SetupSeedNode() {
+	C.handle_initialization_request()
+}
+
+// SetupRegularNode handles initialization of regular node which will request seed from seed node 
+func SetupRegularNode() {
+	C.handle_initialization_request()
+}
+
 // Call handles incoming call to contract or transfer of value
 func Call(
 	connector Connector,

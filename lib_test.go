@@ -125,4 +125,5 @@ func TestCall(t *testing.T) {
 
 func TestNodeAttestation(t *testing.T) {
 	println("Initialize seed node")
+	api.SetupSeedNode()
 }

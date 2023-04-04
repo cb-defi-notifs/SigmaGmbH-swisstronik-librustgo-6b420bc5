@@ -91,6 +91,14 @@ func Create(
 	return executionResult, nil
 }
 
+func SetupSeedNode() {
+	api.SetupSeedNode()
+}
+
+func SetupRegularNode() {
+	api.SetupRegularNode()
+}
+
 // Libsgx_wrapperVersion returns the version of the loaded library
 // at runtime. This can be used for debugging to verify the loaded version
 // matches the expected version.

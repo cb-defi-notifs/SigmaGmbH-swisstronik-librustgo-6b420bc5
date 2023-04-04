@@ -1,5 +1,5 @@
 use crate::errors::GoError;
-use crate::memory::{U8SliceView, UnmanagedVector};
+use crate::memory::{U8SliceView, UnmanagedVector, ByteSliceView};
 use crate::types::{Allocation, AllocationWithResult, GoQuerier};
 
 use sgx_types::*;
@@ -56,4 +56,9 @@ pub fn init_enclave() -> SgxResult<SgxEnclave> {
         &mut launch_token_updated,
         &mut misc_attr,
     )
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn handle_initialization_request() {
+    println!("Trying to initialize node");
 }

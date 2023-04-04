@@ -220,6 +220,8 @@ typedef struct ByteSliceView {
   uintptr_t len;
 } ByteSliceView;
 
+void handle_initialization_request(void);
+
 struct UnmanagedVector make_pb_request(struct GoQuerier querier,
                                        struct ByteSliceView request,
                                        struct UnmanagedVector *error_msg);
