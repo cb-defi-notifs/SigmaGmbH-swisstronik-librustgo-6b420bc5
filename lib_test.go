@@ -124,5 +124,5 @@ func TestCall(t *testing.T) {
 }
 
 func TestNodeAttestation(t *testing.T) {
-	println("Test node attestation")
+	println("Initialize seed node")
 }
