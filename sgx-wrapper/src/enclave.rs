@@ -165,7 +165,6 @@ pub unsafe extern "C" fn handle_initialization_request(
         evm_enclave.destroy();
         crate::enclave::ENCLAVE_ID = None;
 
-        // TODO: Decode protobuf
         result
     })
     .unwrap_or_else(|_| Err(Error::panic()));
