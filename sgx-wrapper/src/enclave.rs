@@ -59,6 +59,8 @@ pub fn init_enclave() -> SgxResult<SgxEnclave> {
 }
 
 #[no_mangle]
+/// Handles all incoming protobuf-encoded requests related to node setup
+/// such as generating of attestation certificate, keys, etc.
 pub unsafe extern "C" fn handle_initialization_request() {
     println!("Trying to initialize node");
 }

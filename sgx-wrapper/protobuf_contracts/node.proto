@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package node.node;
+
+option go_package = "./";
+
+message SetupSeedNodeRequest {}
+
+message SetupSeedNodeResponse {}
+
+message SetupRegularNodeRequest {}
+
+message SetupRegularNodeResponse {}

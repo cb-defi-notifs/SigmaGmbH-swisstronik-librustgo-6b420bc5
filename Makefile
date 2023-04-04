@@ -31,9 +31,14 @@ define sgx_clean
 endef
 
 define compile_protobuf
-	@echo "Compiling protobuf files"
+	@echo "Compiling protobuf files for enclave"
     protoc --rust_out sgx-evm/src/protobuf_generated/ ./sgx-evm/protobuf_contracts/ffi.proto
     sed -i -e 's/use protobuf::Message as/\n\nuse std::prelude::v1::*;\nuse protobuf::Message as/g' ./sgx-evm/src/protobuf_generated/ffi.rs
+endef
+
+define compile_wrapper_protobuf
+	@echo "Compiling protobuf files for wrapper"
+    protoc --rust_out sgx-wrapper/src/protobuf_generated/ ./sgx-wrapper/protobuf_contracts/node.proto
 endef
 
 define compile_enclave_rust
@@ -81,6 +86,7 @@ define sign_enclave
 endef
 
 define wrapper_build
+	$(call compile_wrapper_protobuf)
 	@cd sgx-wrapper && cargo build --release
 	@cp ./sgx-artifacts/bin/enclave.signed.so /tmp/enclave.signed.so
 	@rm Enclave_u*

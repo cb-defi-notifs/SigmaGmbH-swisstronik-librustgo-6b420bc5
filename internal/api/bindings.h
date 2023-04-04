@@ -220,6 +220,10 @@ typedef struct ByteSliceView {
   uintptr_t len;
 } ByteSliceView;
 
+/**
+ * Handles all incoming protobuf-encoded requests related to node setup
+ * such as generating of attestation certificate, keys, etc.
+ */
 void handle_initialization_request(void);
 
 struct UnmanagedVector make_pb_request(struct GoQuerier querier,
