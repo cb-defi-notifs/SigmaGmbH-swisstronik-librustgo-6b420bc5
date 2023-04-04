@@ -122,3 +122,7 @@ func TestCall(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestNodeAttestation(t *testing.T) {
+	println("Test node attestation")
+}
