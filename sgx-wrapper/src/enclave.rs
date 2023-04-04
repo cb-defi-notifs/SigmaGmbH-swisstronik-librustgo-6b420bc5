@@ -33,11 +33,9 @@ extern "C" {
         retval: *mut sgx_status_t,
     ) -> sgx_status_t;
 
-    pub fn ecall_create_attestation_report(
+    pub fn ecall_init_node(
         eid: sgx_enclave_id_t,
         retval: *mut sgx_status_t,
-        api_key: *const u8,
-        api_key_len: usize,
     ) -> sgx_status_t;
 }
 
