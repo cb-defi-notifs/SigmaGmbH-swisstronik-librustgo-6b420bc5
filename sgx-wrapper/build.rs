@@ -5,7 +5,6 @@ fn main () {
     let crate_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
 
     let generated = cbindgen::generate(crate_dir).expect("Unable to generate bindings");
-    generated.write_to_file("bindings.h");
     generated.write_to_file("../internal/api/bindings.h");
 
     let is_sim = env::var("SGX_MODE").unwrap_or_else(|_| "HW".to_string());
