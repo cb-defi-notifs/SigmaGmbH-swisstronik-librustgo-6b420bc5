@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-func TestCreate(t *testing.T) {
+func CreateTest(t *testing.T) {
 	db := types.CreateMockedDatabase()
 	from := common.HexToAddress("0x690b9a9e9aa1c9db991c7721a92d351db4fac990")
 
@@ -48,7 +48,7 @@ func TestCreate(t *testing.T) {
 	}
 }
 
-func TestCall(t *testing.T) {
+func CallTest(t *testing.T) {
 	db := types.CreateMockedDatabase()
 	from := common.HexToAddress("0x690b9a9e9aa1c9db991c7721a92d351db4fac990")
 	to := common.HexToAddress("0xad60cdbe1d3ceb5f67074303f99ac95af082784d")
@@ -123,7 +123,11 @@ func TestCall(t *testing.T) {
 	}
 }
 
-func TestNodeAttestation(t *testing.T) {
-	println("Initialize seed node")
+func TestInteraction(t *testing.T) {
 	api.SetupSeedNode()
+	api.SetupRegularNode()
+
+	// Call other tests
+	CallTest(t)
+	CreateTest(t)
 }
