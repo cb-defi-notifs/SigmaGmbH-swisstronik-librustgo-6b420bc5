@@ -61,6 +61,10 @@ pub fn init_enclave() -> SgxResult<SgxEnclave> {
 #[no_mangle]
 /// Handles all incoming protobuf-encoded requests related to node setup
 /// such as generating of attestation certificate, keys, etc.
-pub unsafe extern "C" fn handle_initialization_request() {
+pub unsafe extern "C" fn handle_initialization_request(
+    request: ByteSliceView,
+    error_msg: Option<&mut UnmanagedVector>,
+) -> UnmanagedVector {
     println!("Trying to initialize node");
+    UnmanagedVector::new(None)
 }

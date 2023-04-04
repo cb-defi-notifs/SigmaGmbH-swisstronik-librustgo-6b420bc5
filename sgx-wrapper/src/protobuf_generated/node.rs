@@ -530,17 +530,320 @@ impl ::protobuf::reflect::ProtobufValue for SetupRegularNodeResponse {
     }
 }
 
+#[derive(PartialEq,Clone,Default)]
+pub struct SetupRequest {
+    // message oneof groups
+    pub req: ::std::option::Option<SetupRequest_oneof_req>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a SetupRequest {
+    fn default() -> &'a SetupRequest {
+        <SetupRequest as ::protobuf::Message>::default_instance()
+    }
+}
+
+#[derive(Clone,PartialEq,Debug)]
+pub enum SetupRequest_oneof_req {
+    setupSeedNode(SetupSeedNodeRequest),
+    setupRegularNode(SetupRegularNodeRequest),
+}
+
+impl SetupRequest {
+    pub fn new() -> SetupRequest {
+        ::std::default::Default::default()
+    }
+
+    // .node.node.SetupSeedNodeRequest setupSeedNode = 1;
+
+
+    pub fn get_setupSeedNode(&self) -> &SetupSeedNodeRequest {
+        match self.req {
+            ::std::option::Option::Some(SetupRequest_oneof_req::setupSeedNode(ref v)) => v,
+            _ => SetupSeedNodeRequest::default_instance(),
+        }
+    }
+    pub fn clear_setupSeedNode(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_setupSeedNode(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(SetupRequest_oneof_req::setupSeedNode(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_setupSeedNode(&mut self, v: SetupSeedNodeRequest) {
+        self.req = ::std::option::Option::Some(SetupRequest_oneof_req::setupSeedNode(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_setupSeedNode(&mut self) -> &mut SetupSeedNodeRequest {
+        if let ::std::option::Option::Some(SetupRequest_oneof_req::setupSeedNode(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(SetupRequest_oneof_req::setupSeedNode(SetupSeedNodeRequest::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(SetupRequest_oneof_req::setupSeedNode(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_setupSeedNode(&mut self) -> SetupSeedNodeRequest {
+        if self.has_setupSeedNode() {
+            match self.req.take() {
+                ::std::option::Option::Some(SetupRequest_oneof_req::setupSeedNode(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            SetupSeedNodeRequest::new()
+        }
+    }
+
+    // .node.node.SetupRegularNodeRequest setupRegularNode = 2;
+
+
+    pub fn get_setupRegularNode(&self) -> &SetupRegularNodeRequest {
+        match self.req {
+            ::std::option::Option::Some(SetupRequest_oneof_req::setupRegularNode(ref v)) => v,
+            _ => SetupRegularNodeRequest::default_instance(),
+        }
+    }
+    pub fn clear_setupRegularNode(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_setupRegularNode(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(SetupRequest_oneof_req::setupRegularNode(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_setupRegularNode(&mut self, v: SetupRegularNodeRequest) {
+        self.req = ::std::option::Option::Some(SetupRequest_oneof_req::setupRegularNode(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_setupRegularNode(&mut self) -> &mut SetupRegularNodeRequest {
+        if let ::std::option::Option::Some(SetupRequest_oneof_req::setupRegularNode(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(SetupRequest_oneof_req::setupRegularNode(SetupRegularNodeRequest::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(SetupRequest_oneof_req::setupRegularNode(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_setupRegularNode(&mut self) -> SetupRegularNodeRequest {
+        if self.has_setupRegularNode() {
+            match self.req.take() {
+                ::std::option::Option::Some(SetupRequest_oneof_req::setupRegularNode(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            SetupRegularNodeRequest::new()
+        }
+    }
+}
+
+impl ::protobuf::Message for SetupRequest {
+    fn is_initialized(&self) -> bool {
+        if let Some(SetupRequest_oneof_req::setupSeedNode(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(SetupRequest_oneof_req::setupRegularNode(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(SetupRequest_oneof_req::setupSeedNode(is.read_message()?));
+                },
+                2 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(SetupRequest_oneof_req::setupRegularNode(is.read_message()?));
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if let ::std::option::Option::Some(ref v) = self.req {
+            match v {
+                &SetupRequest_oneof_req::setupSeedNode(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+                &SetupRequest_oneof_req::setupRegularNode(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
+            };
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if let ::std::option::Option::Some(ref v) = self.req {
+            match v {
+                &SetupRequest_oneof_req::setupSeedNode(ref v) => {
+                    os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &SetupRequest_oneof_req::setupRegularNode(ref v) => {
+                    os.write_tag(2, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+            };
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> SetupRequest {
+        SetupRequest::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static mut descriptor: ::protobuf::lazy::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const ::protobuf::reflect::MessageDescriptor,
+        };
+        unsafe {
+            descriptor.get(|| {
+                let mut fields = ::std::vec::Vec::new();
+                fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, SetupSeedNodeRequest>(
+                    "setupSeedNode",
+                    SetupRequest::has_setupSeedNode,
+                    SetupRequest::get_setupSeedNode,
+                ));
+                fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, SetupRegularNodeRequest>(
+                    "setupRegularNode",
+                    SetupRequest::has_setupRegularNode,
+                    SetupRequest::get_setupRegularNode,
+                ));
+                ::protobuf::reflect::MessageDescriptor::new::<SetupRequest>(
+                    "SetupRequest",
+                    fields,
+                    file_descriptor_proto()
+                )
+            })
+        }
+    }
+
+    fn default_instance() -> &'static SetupRequest {
+        static mut instance: ::protobuf::lazy::Lazy<SetupRequest> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const SetupRequest,
+        };
+        unsafe {
+            instance.get(SetupRequest::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for SetupRequest {
+    fn clear(&mut self) {
+        self.req = ::std::option::Option::None;
+        self.req = ::std::option::Option::None;
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for SetupRequest {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for SetupRequest {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
 static file_descriptor_proto_data: &'static [u8] = b"\
     \n)sgx-wrapper/protobuf_contracts/node.proto\x12\tnode.node\"\x16\n\x14S\
     etupSeedNodeRequest\"\x17\n\x15SetupSeedNodeResponse\"\x19\n\x17SetupReg\
-    ularNodeRequest\"\x1a\n\x18SetupRegularNodeResponseB\x04Z\x02./J\x8d\x01\
-    \n\x06\x12\x04\0\0\x0c#\n\x08\n\x01\x0c\x12\x03\0\0\x12\n\x08\n\x01\x02\
-    \x12\x03\x02\0\x12\n\x08\n\x01\x08\x12\x03\x04\0\x19\n\t\n\x02\x08\x0b\
-    \x12\x03\x04\0\x19\n\t\n\x02\x04\0\x12\x03\x06\0\x1f\n\n\n\x03\x04\0\x01\
-    \x12\x03\x06\x08\x1c\n\t\n\x02\x04\x01\x12\x03\x08\0\x20\n\n\n\x03\x04\
-    \x01\x01\x12\x03\x08\x08\x1d\n\t\n\x02\x04\x02\x12\x03\n\0\"\n\n\n\x03\
-    \x04\x02\x01\x12\x03\n\x08\x1f\n\t\n\x02\x04\x03\x12\x03\x0c\0#\n\n\n\
-    \x03\x04\x03\x01\x12\x03\x0c\x08\x20b\x06proto3\
+    ularNodeRequest\"\x1a\n\x18SetupRegularNodeResponse\"\xb0\x01\n\x0cSetup\
+    Request\x12G\n\rsetupSeedNode\x18\x01\x20\x01(\x0b2\x1f.node.node.SetupS\
+    eedNodeRequestH\0R\rsetupSeedNode\x12P\n\x10setupRegularNode\x18\x02\x20\
+    \x01(\x0b2\".node.node.SetupRegularNodeRequestH\0R\x10setupRegularNodeB\
+    \x05\n\x03reqB\x04Z\x02./J\xaf\x02\n\x06\x12\x04\0\0\x13\x01\n\x08\n\x01\
+    \x0c\x12\x03\0\0\x12\n\x08\n\x01\x02\x12\x03\x02\0\x12\n\x08\n\x01\x08\
+    \x12\x03\x04\0\x19\n\t\n\x02\x08\x0b\x12\x03\x04\0\x19\n\t\n\x02\x04\0\
+    \x12\x03\x06\0\x1f\n\n\n\x03\x04\0\x01\x12\x03\x06\x08\x1c\n\t\n\x02\x04\
+    \x01\x12\x03\x08\0\x20\n\n\n\x03\x04\x01\x01\x12\x03\x08\x08\x1d\n\t\n\
+    \x02\x04\x02\x12\x03\n\0\"\n\n\n\x03\x04\x02\x01\x12\x03\n\x08\x1f\n\t\n\
+    \x02\x04\x03\x12\x03\x0c\0#\n\n\n\x03\x04\x03\x01\x12\x03\x0c\x08\x20\n\
+    \n\n\x02\x04\x04\x12\x04\x0e\0\x13\x01\n\n\n\x03\x04\x04\x01\x12\x03\x0e\
+    \x08\x14\n\x0c\n\x04\x04\x04\x08\0\x12\x04\x0f\x04\x12\x05\n\x0c\n\x05\
+    \x04\x04\x08\0\x01\x12\x03\x0f\n\r\n\x0b\n\x04\x04\x04\x02\0\x12\x03\x10\
+    \x08/\n\x0c\n\x05\x04\x04\x02\0\x06\x12\x03\x10\x08\x1c\n\x0c\n\x05\x04\
+    \x04\x02\0\x01\x12\x03\x10\x1d*\n\x0c\n\x05\x04\x04\x02\0\x03\x12\x03\
+    \x10-.\n\x0b\n\x04\x04\x04\x02\x01\x12\x03\x11\x085\n\x0c\n\x05\x04\x04\
+    \x02\x01\x06\x12\x03\x11\x08\x1f\n\x0c\n\x05\x04\x04\x02\x01\x01\x12\x03\
+    \x11\x200\n\x0c\n\x05\x04\x04\x02\x01\x03\x12\x03\x1134b\x06proto3\
 ";
 
 static mut file_descriptor_proto_lazy: ::protobuf::lazy::Lazy<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::lazy::Lazy {

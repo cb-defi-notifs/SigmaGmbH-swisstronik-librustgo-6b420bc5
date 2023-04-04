@@ -11,3 +11,10 @@ message SetupSeedNodeResponse {}
 message SetupRegularNodeRequest {}
 
 message SetupRegularNodeResponse {}
+
+message SetupRequest {
+    oneof req {
+        SetupSeedNodeRequest setupSeedNode = 1;
+        SetupRegularNodeRequest setupRegularNode = 2;
+    }
+}

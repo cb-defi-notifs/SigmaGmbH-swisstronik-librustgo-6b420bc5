@@ -37,12 +37,42 @@ type Connector = types.Connector
 
 // SetupSeedNode handles initialization of seed node which will share seed with other nodes
 func SetupSeedNode() {
-	C.handle_initialization_request()
+	// Create protobuf encoded request
+	req := ffi.SetupRequest{Req: &ffi.SetupRequest_SetupSeedNode{
+		SetupSeedNode: &ffi.SetupSeedNodeRequest{},
+	}}
+	reqBytes, err := proto.Marshal(&req)
+	if err != nil {
+		log.Fatalln("Failed to encode req:", err)
+	}
+
+	// Pass request to Rust
+	d := makeView(reqBytes)
+	defer runtime.KeepAlive(reqBytes)
+
+	errmsg := newUnmanagedVector(nil)
+
+	_ = C.handle_initialization_request(d, &errmsg)
 }
 
 // SetupRegularNode handles initialization of regular node which will request seed from seed node 
 func SetupRegularNode() {
-	C.handle_initialization_request()
+	// Create protobuf encoded request
+	req := ffi.SetupRequest{Req: &ffi.SetupRequest_SetupRegularNode{
+		SetupRegularNode: &ffi.SetupRegularNodeRequest{},
+	}}
+	reqBytes, err := proto.Marshal(&req)
+	if err != nil {
+		log.Fatalln("Failed to encode req:", err)
+	}
+
+	// Pass request to Rust
+	d := makeView(reqBytes)
+	defer runtime.KeepAlive(reqBytes)
+
+	errmsg := newUnmanagedVector(nil)
+
+	_ = C.handle_initialization_request(d, &errmsg)
 }
 
 // Call handles incoming call to contract or transfer of value
