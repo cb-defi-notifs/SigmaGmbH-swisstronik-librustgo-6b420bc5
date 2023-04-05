@@ -2,6 +2,7 @@
 
 #[macro_use]
 extern crate sgx_tstd as std;
+extern crate rustls;
 
 extern crate sgx_types;
 use sgx_types::sgx_status_t;
