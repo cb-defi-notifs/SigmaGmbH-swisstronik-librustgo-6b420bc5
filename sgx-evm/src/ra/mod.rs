@@ -4,6 +4,8 @@ use std::slice;
 
 pub mod keychain;
 pub mod seed_server;
+pub mod cert;
+pub mod hex;
 
 #[no_mangle]
 /// Handles initialization of a new seed node. 
