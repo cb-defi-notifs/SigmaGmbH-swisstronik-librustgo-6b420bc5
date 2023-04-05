@@ -123,9 +123,6 @@ func _TestCall(t *testing.T) {
 	}
 }
 
-func TestRA(t *testing.T) {
-	api.SetupSeedNode()
-
-	apiKey := []byte("c18ebc1af88548f1942c7bf40e0c8e89")
-	api.CreateAttestationReport(apiKey)
+func TestSeedServerStart(t *testing.T) {
+	api.StartSeedServer()
 }

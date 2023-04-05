@@ -700,6 +700,258 @@ impl ::protobuf::reflect::ProtobufValue for CreateAttestationReportRequest {
 }
 
 #[derive(PartialEq,Clone,Default)]
+pub struct StartSeedServerRequest {
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a StartSeedServerRequest {
+    fn default() -> &'a StartSeedServerRequest {
+        <StartSeedServerRequest as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl StartSeedServerRequest {
+    pub fn new() -> StartSeedServerRequest {
+        ::std::default::Default::default()
+    }
+}
+
+impl ::protobuf::Message for StartSeedServerRequest {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> StartSeedServerRequest {
+        StartSeedServerRequest::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static mut descriptor: ::protobuf::lazy::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const ::protobuf::reflect::MessageDescriptor,
+        };
+        unsafe {
+            descriptor.get(|| {
+                let fields = ::std::vec::Vec::new();
+                ::protobuf::reflect::MessageDescriptor::new::<StartSeedServerRequest>(
+                    "StartSeedServerRequest",
+                    fields,
+                    file_descriptor_proto()
+                )
+            })
+        }
+    }
+
+    fn default_instance() -> &'static StartSeedServerRequest {
+        static mut instance: ::protobuf::lazy::Lazy<StartSeedServerRequest> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const StartSeedServerRequest,
+        };
+        unsafe {
+            instance.get(StartSeedServerRequest::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for StartSeedServerRequest {
+    fn clear(&mut self) {
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for StartSeedServerRequest {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for StartSeedServerRequest {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct StartSeedServerResponse {
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a StartSeedServerResponse {
+    fn default() -> &'a StartSeedServerResponse {
+        <StartSeedServerResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl StartSeedServerResponse {
+    pub fn new() -> StartSeedServerResponse {
+        ::std::default::Default::default()
+    }
+}
+
+impl ::protobuf::Message for StartSeedServerResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> StartSeedServerResponse {
+        StartSeedServerResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static mut descriptor: ::protobuf::lazy::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const ::protobuf::reflect::MessageDescriptor,
+        };
+        unsafe {
+            descriptor.get(|| {
+                let fields = ::std::vec::Vec::new();
+                ::protobuf::reflect::MessageDescriptor::new::<StartSeedServerResponse>(
+                    "StartSeedServerResponse",
+                    fields,
+                    file_descriptor_proto()
+                )
+            })
+        }
+    }
+
+    fn default_instance() -> &'static StartSeedServerResponse {
+        static mut instance: ::protobuf::lazy::Lazy<StartSeedServerResponse> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const StartSeedServerResponse,
+        };
+        unsafe {
+            instance.get(StartSeedServerResponse::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for StartSeedServerResponse {
+    fn clear(&mut self) {
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for StartSeedServerResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for StartSeedServerResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
 pub struct CreateAttestationReportResponse {
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
@@ -845,6 +1097,7 @@ pub enum SetupRequest_oneof_req {
     setupSeedNode(SetupSeedNodeRequest),
     setupRegularNode(SetupRegularNodeRequest),
     createAttestationReport(CreateAttestationReportRequest),
+    startSeedServer(StartSeedServerRequest),
 }
 
 impl SetupRequest {
@@ -998,6 +1251,55 @@ impl SetupRequest {
             CreateAttestationReportRequest::new()
         }
     }
+
+    // .node.node.StartSeedServerRequest startSeedServer = 4;
+
+
+    pub fn get_startSeedServer(&self) -> &StartSeedServerRequest {
+        match self.req {
+            ::std::option::Option::Some(SetupRequest_oneof_req::startSeedServer(ref v)) => v,
+            _ => StartSeedServerRequest::default_instance(),
+        }
+    }
+    pub fn clear_startSeedServer(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_startSeedServer(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(SetupRequest_oneof_req::startSeedServer(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_startSeedServer(&mut self, v: StartSeedServerRequest) {
+        self.req = ::std::option::Option::Some(SetupRequest_oneof_req::startSeedServer(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_startSeedServer(&mut self) -> &mut StartSeedServerRequest {
+        if let ::std::option::Option::Some(SetupRequest_oneof_req::startSeedServer(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(SetupRequest_oneof_req::startSeedServer(StartSeedServerRequest::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(SetupRequest_oneof_req::startSeedServer(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_startSeedServer(&mut self) -> StartSeedServerRequest {
+        if self.has_startSeedServer() {
+            match self.req.take() {
+                ::std::option::Option::Some(SetupRequest_oneof_req::startSeedServer(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            StartSeedServerRequest::new()
+        }
+    }
 }
 
 impl ::protobuf::Message for SetupRequest {
@@ -1013,6 +1315,11 @@ impl ::protobuf::Message for SetupRequest {
             }
         }
         if let Some(SetupRequest_oneof_req::createAttestationReport(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(SetupRequest_oneof_req::startSeedServer(ref v)) = self.req {
             if !v.is_initialized() {
                 return false;
             }
@@ -1042,6 +1349,12 @@ impl ::protobuf::Message for SetupRequest {
                     }
                     self.req = ::std::option::Option::Some(SetupRequest_oneof_req::createAttestationReport(is.read_message()?));
                 },
+                4 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(SetupRequest_oneof_req::startSeedServer(is.read_message()?));
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -1068,6 +1381,10 @@ impl ::protobuf::Message for SetupRequest {
                     let len = v.compute_size();
                     my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
                 },
+                &SetupRequest_oneof_req::startSeedServer(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
             };
         }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
@@ -1090,6 +1407,11 @@ impl ::protobuf::Message for SetupRequest {
                 },
                 &SetupRequest_oneof_req::createAttestationReport(ref v) => {
                     os.write_tag(3, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &SetupRequest_oneof_req::startSeedServer(ref v) => {
+                    os.write_tag(4, ::protobuf::wire_format::WireTypeLengthDelimited)?;
                     os.write_raw_varint32(v.get_cached_size())?;
                     v.write_to_with_cached_sizes(os)?;
                 },
@@ -1152,6 +1474,11 @@ impl ::protobuf::Message for SetupRequest {
                     SetupRequest::has_createAttestationReport,
                     SetupRequest::get_createAttestationReport,
                 ));
+                fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, StartSeedServerRequest>(
+                    "startSeedServer",
+                    SetupRequest::has_startSeedServer,
+                    SetupRequest::get_startSeedServer,
+                ));
                 ::protobuf::reflect::MessageDescriptor::new::<SetupRequest>(
                     "SetupRequest",
                     fields,
@@ -1177,6 +1504,7 @@ impl ::protobuf::Clear for SetupRequest {
         self.req = ::std::option::Option::None;
         self.req = ::std::option::Option::None;
         self.req = ::std::option::Option::None;
+        self.req = ::std::option::Option::None;
         self.unknown_fields.clear();
     }
 }
@@ -1198,35 +1526,42 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     etupSeedNodeRequest\"\x17\n\x15SetupSeedNodeResponse\"\x19\n\x17SetupReg\
     ularNodeRequest\"\x1a\n\x18SetupRegularNodeResponse\"8\n\x1eCreateAttest\
     ationReportRequest\x12\x16\n\x06apiKey\x18\x01\x20\x01(\x0cR\x06apiKey\"\
-    !\n\x1fCreateAttestationReportResponse\"\x97\x02\n\x0cSetupRequest\x12G\
-    \n\rsetupSeedNode\x18\x01\x20\x01(\x0b2\x1f.node.node.SetupSeedNodeReque\
-    stH\0R\rsetupSeedNode\x12P\n\x10setupRegularNode\x18\x02\x20\x01(\x0b2\"\
-    .node.node.SetupRegularNodeRequestH\0R\x10setupRegularNode\x12e\n\x17cre\
-    ateAttestationReport\x18\x03\x20\x01(\x0b2).node.node.CreateAttestationR\
-    eportRequestH\0R\x17createAttestationReportB\x05\n\x03reqB\x04Z\x02./J\
-    \xcc\x03\n\x06\x12\x04\0\0\x1a\x01\n\x08\n\x01\x0c\x12\x03\0\0\x12\n\x08\
-    \n\x01\x02\x12\x03\x02\0\x12\n\x08\n\x01\x08\x12\x03\x04\0\x19\n\t\n\x02\
-    \x08\x0b\x12\x03\x04\0\x19\n\t\n\x02\x04\0\x12\x03\x06\0\x1f\n\n\n\x03\
-    \x04\0\x01\x12\x03\x06\x08\x1c\n\t\n\x02\x04\x01\x12\x03\x08\0\x20\n\n\n\
-    \x03\x04\x01\x01\x12\x03\x08\x08\x1d\n\t\n\x02\x04\x02\x12\x03\n\0\"\n\n\
-    \n\x03\x04\x02\x01\x12\x03\n\x08\x1f\n\t\n\x02\x04\x03\x12\x03\x0c\0#\n\
-    \n\n\x03\x04\x03\x01\x12\x03\x0c\x08\x20\n\n\n\x02\x04\x04\x12\x04\x0e\0\
-    \x10\x01\n\n\n\x03\x04\x04\x01\x12\x03\x0e\x08&\n\x0b\n\x04\x04\x04\x02\
-    \0\x12\x03\x0f\x04\x15\n\x0c\n\x05\x04\x04\x02\0\x05\x12\x03\x0f\x04\t\n\
-    \x0c\n\x05\x04\x04\x02\0\x01\x12\x03\x0f\n\x10\n\x0c\n\x05\x04\x04\x02\0\
-    \x03\x12\x03\x0f\x13\x14\n\t\n\x02\x04\x05\x12\x03\x12\0*\n\n\n\x03\x04\
-    \x05\x01\x12\x03\x12\x08'\n\n\n\x02\x04\x06\x12\x04\x14\0\x1a\x01\n\n\n\
-    \x03\x04\x06\x01\x12\x03\x14\x08\x14\n\x0c\n\x04\x04\x06\x08\0\x12\x04\
-    \x15\x04\x19\x05\n\x0c\n\x05\x04\x06\x08\0\x01\x12\x03\x15\n\r\n\x0b\n\
-    \x04\x04\x06\x02\0\x12\x03\x16\x08/\n\x0c\n\x05\x04\x06\x02\0\x06\x12\
-    \x03\x16\x08\x1c\n\x0c\n\x05\x04\x06\x02\0\x01\x12\x03\x16\x1d*\n\x0c\n\
-    \x05\x04\x06\x02\0\x03\x12\x03\x16-.\n\x0b\n\x04\x04\x06\x02\x01\x12\x03\
-    \x17\x085\n\x0c\n\x05\x04\x06\x02\x01\x06\x12\x03\x17\x08\x1f\n\x0c\n\
-    \x05\x04\x06\x02\x01\x01\x12\x03\x17\x200\n\x0c\n\x05\x04\x06\x02\x01\
-    \x03\x12\x03\x1734\n\x0b\n\x04\x04\x06\x02\x02\x12\x03\x18\x08C\n\x0c\n\
-    \x05\x04\x06\x02\x02\x06\x12\x03\x18\x08&\n\x0c\n\x05\x04\x06\x02\x02\
-    \x01\x12\x03\x18'>\n\x0c\n\x05\x04\x06\x02\x02\x03\x12\x03\x18ABb\x06pro\
-    to3\
+    \x18\n\x16StartSeedServerRequest\"\x19\n\x17StartSeedServerResponse\"!\n\
+    \x1fCreateAttestationReportResponse\"\xe6\x02\n\x0cSetupRequest\x12G\n\r\
+    setupSeedNode\x18\x01\x20\x01(\x0b2\x1f.node.node.SetupSeedNodeRequestH\
+    \0R\rsetupSeedNode\x12P\n\x10setupRegularNode\x18\x02\x20\x01(\x0b2\".no\
+    de.node.SetupRegularNodeRequestH\0R\x10setupRegularNode\x12e\n\x17create\
+    AttestationReport\x18\x03\x20\x01(\x0b2).node.node.CreateAttestationRepo\
+    rtRequestH\0R\x17createAttestationReport\x12M\n\x0fstartSeedServer\x18\
+    \x04\x20\x01(\x0b2!.node.node.StartSeedServerRequestH\0R\x0fstartSeedSer\
+    verB\x05\n\x03reqB\x04Z\x02./J\xb1\x04\n\x06\x12\x04\0\0\x1f\x01\n\x08\n\
+    \x01\x0c\x12\x03\0\0\x12\n\x08\n\x01\x02\x12\x03\x02\0\x12\n\x08\n\x01\
+    \x08\x12\x03\x04\0\x19\n\t\n\x02\x08\x0b\x12\x03\x04\0\x19\n\t\n\x02\x04\
+    \0\x12\x03\x06\0\x1f\n\n\n\x03\x04\0\x01\x12\x03\x06\x08\x1c\n\t\n\x02\
+    \x04\x01\x12\x03\x08\0\x20\n\n\n\x03\x04\x01\x01\x12\x03\x08\x08\x1d\n\t\
+    \n\x02\x04\x02\x12\x03\n\0\"\n\n\n\x03\x04\x02\x01\x12\x03\n\x08\x1f\n\t\
+    \n\x02\x04\x03\x12\x03\x0c\0#\n\n\n\x03\x04\x03\x01\x12\x03\x0c\x08\x20\
+    \n\n\n\x02\x04\x04\x12\x04\x0e\0\x10\x01\n\n\n\x03\x04\x04\x01\x12\x03\
+    \x0e\x08&\n\x0b\n\x04\x04\x04\x02\0\x12\x03\x0f\x04\x15\n\x0c\n\x05\x04\
+    \x04\x02\0\x05\x12\x03\x0f\x04\t\n\x0c\n\x05\x04\x04\x02\0\x01\x12\x03\
+    \x0f\n\x10\n\x0c\n\x05\x04\x04\x02\0\x03\x12\x03\x0f\x13\x14\n\t\n\x02\
+    \x04\x05\x12\x03\x12\0!\n\n\n\x03\x04\x05\x01\x12\x03\x12\x08\x1e\n\t\n\
+    \x02\x04\x06\x12\x03\x14\0\"\n\n\n\x03\x04\x06\x01\x12\x03\x14\x08\x1f\n\
+    \t\n\x02\x04\x07\x12\x03\x16\0*\n\n\n\x03\x04\x07\x01\x12\x03\x16\x08'\n\
+    \n\n\x02\x04\x08\x12\x04\x18\0\x1f\x01\n\n\n\x03\x04\x08\x01\x12\x03\x18\
+    \x08\x14\n\x0c\n\x04\x04\x08\x08\0\x12\x04\x19\x04\x1e\x05\n\x0c\n\x05\
+    \x04\x08\x08\0\x01\x12\x03\x19\n\r\n\x0b\n\x04\x04\x08\x02\0\x12\x03\x1a\
+    \x08/\n\x0c\n\x05\x04\x08\x02\0\x06\x12\x03\x1a\x08\x1c\n\x0c\n\x05\x04\
+    \x08\x02\0\x01\x12\x03\x1a\x1d*\n\x0c\n\x05\x04\x08\x02\0\x03\x12\x03\
+    \x1a-.\n\x0b\n\x04\x04\x08\x02\x01\x12\x03\x1b\x085\n\x0c\n\x05\x04\x08\
+    \x02\x01\x06\x12\x03\x1b\x08\x1f\n\x0c\n\x05\x04\x08\x02\x01\x01\x12\x03\
+    \x1b\x200\n\x0c\n\x05\x04\x08\x02\x01\x03\x12\x03\x1b34\n\x0b\n\x04\x04\
+    \x08\x02\x02\x12\x03\x1c\x08C\n\x0c\n\x05\x04\x08\x02\x02\x06\x12\x03\
+    \x1c\x08&\n\x0c\n\x05\x04\x08\x02\x02\x01\x12\x03\x1c'>\n\x0c\n\x05\x04\
+    \x08\x02\x02\x03\x12\x03\x1cAB\n\x0b\n\x04\x04\x08\x02\x03\x12\x03\x1d\
+    \x083\n\x0c\n\x05\x04\x08\x02\x03\x06\x12\x03\x1d\x08\x1e\n\x0c\n\x05\
+    \x04\x08\x02\x03\x01\x12\x03\x1d\x1f.\n\x0c\n\x05\x04\x08\x02\x03\x03\
+    \x12\x03\x1d12b\x06proto3\
 ";
 
 static mut file_descriptor_proto_lazy: ::protobuf::lazy::Lazy<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::lazy::Lazy {

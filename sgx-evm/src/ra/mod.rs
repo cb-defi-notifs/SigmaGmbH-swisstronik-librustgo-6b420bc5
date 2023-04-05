@@ -3,9 +3,11 @@ use sgx_types::*;
 use std::slice;
 
 pub mod keychain;
+pub mod seed_server;
 
 #[no_mangle]
-/// Initializes seed node
+/// Handles initialization of a new seed node. 
+/// If seed is already sealed, it will reset it
 pub unsafe extern "C" fn ecall_init_seed_node() -> sgx_status_t {
     println!("Start seed node");
     match keychain::new_node_seed() {

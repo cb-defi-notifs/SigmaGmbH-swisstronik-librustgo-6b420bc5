@@ -16,6 +16,10 @@ message CreateAttestationReportRequest {
     bytes apiKey = 1;
 }
 
+message StartSeedServerRequest {}
+
+message StartSeedServerResponse {}
+
 message CreateAttestationReportResponse {}
 
 message SetupRequest {
@@ -23,5 +27,6 @@ message SetupRequest {
         SetupSeedNodeRequest setupSeedNode = 1;
         SetupRegularNodeRequest setupRegularNode = 2;
         CreateAttestationReportRequest createAttestationReport = 3;
+        StartSeedServerRequest startSeedServer = 4;
     }
 }
