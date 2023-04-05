@@ -75,6 +75,33 @@ func SetupRegularNode() {
 	_ = C.handle_initialization_request(d, &errmsg)
 }
 
+// SetupRegularNode handles initialization of regular node which will request seed from seed node 
+func CreateAttestationReport(apiKey []byte) {
+	if len(apiKey) != 32 {
+		log.Fatalln("Wrong api key size")
+		return
+	}
+
+	// Create protobuf encoded request
+	req := ffi.SetupRequest{Req: &ffi.SetupRequest_CreateAttestationReport{
+		CreateAttestationReport: &ffi.CreateAttestationReportRequest{
+			ApiKey: apiKey,
+		},
+	}}
+	reqBytes, err := proto.Marshal(&req)
+	if err != nil {
+		log.Fatalln("Failed to encode req:", err)
+	}
+
+	// Pass request to Rust
+	d := makeView(reqBytes)
+	defer runtime.KeepAlive(reqBytes)
+
+	errmsg := newUnmanagedVector(nil)
+
+	_ = C.handle_initialization_request(d, &errmsg)
+}
+
 // Call handles incoming call to contract or transfer of value
 func Call(
 	connector Connector,

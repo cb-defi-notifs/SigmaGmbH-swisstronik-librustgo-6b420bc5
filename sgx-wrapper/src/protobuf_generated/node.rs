@@ -531,6 +531,301 @@ impl ::protobuf::reflect::ProtobufValue for SetupRegularNodeResponse {
 }
 
 #[derive(PartialEq,Clone,Default)]
+pub struct CreateAttestationReportRequest {
+    // message fields
+    pub apiKey: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a CreateAttestationReportRequest {
+    fn default() -> &'a CreateAttestationReportRequest {
+        <CreateAttestationReportRequest as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl CreateAttestationReportRequest {
+    pub fn new() -> CreateAttestationReportRequest {
+        ::std::default::Default::default()
+    }
+
+    // bytes apiKey = 1;
+
+
+    pub fn get_apiKey(&self) -> &[u8] {
+        &self.apiKey
+    }
+    pub fn clear_apiKey(&mut self) {
+        self.apiKey.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_apiKey(&mut self, v: ::std::vec::Vec<u8>) {
+        self.apiKey = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_apiKey(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.apiKey
+    }
+
+    // Take field
+    pub fn take_apiKey(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.apiKey, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for CreateAttestationReportRequest {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.apiKey)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.apiKey.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.apiKey);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.apiKey.is_empty() {
+            os.write_bytes(1, &self.apiKey)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> CreateAttestationReportRequest {
+        CreateAttestationReportRequest::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static mut descriptor: ::protobuf::lazy::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const ::protobuf::reflect::MessageDescriptor,
+        };
+        unsafe {
+            descriptor.get(|| {
+                let mut fields = ::std::vec::Vec::new();
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                    "apiKey",
+                    |m: &CreateAttestationReportRequest| { &m.apiKey },
+                    |m: &mut CreateAttestationReportRequest| { &mut m.apiKey },
+                ));
+                ::protobuf::reflect::MessageDescriptor::new::<CreateAttestationReportRequest>(
+                    "CreateAttestationReportRequest",
+                    fields,
+                    file_descriptor_proto()
+                )
+            })
+        }
+    }
+
+    fn default_instance() -> &'static CreateAttestationReportRequest {
+        static mut instance: ::protobuf::lazy::Lazy<CreateAttestationReportRequest> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const CreateAttestationReportRequest,
+        };
+        unsafe {
+            instance.get(CreateAttestationReportRequest::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for CreateAttestationReportRequest {
+    fn clear(&mut self) {
+        self.apiKey.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for CreateAttestationReportRequest {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for CreateAttestationReportRequest {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct CreateAttestationReportResponse {
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a CreateAttestationReportResponse {
+    fn default() -> &'a CreateAttestationReportResponse {
+        <CreateAttestationReportResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl CreateAttestationReportResponse {
+    pub fn new() -> CreateAttestationReportResponse {
+        ::std::default::Default::default()
+    }
+}
+
+impl ::protobuf::Message for CreateAttestationReportResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> CreateAttestationReportResponse {
+        CreateAttestationReportResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static mut descriptor: ::protobuf::lazy::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const ::protobuf::reflect::MessageDescriptor,
+        };
+        unsafe {
+            descriptor.get(|| {
+                let fields = ::std::vec::Vec::new();
+                ::protobuf::reflect::MessageDescriptor::new::<CreateAttestationReportResponse>(
+                    "CreateAttestationReportResponse",
+                    fields,
+                    file_descriptor_proto()
+                )
+            })
+        }
+    }
+
+    fn default_instance() -> &'static CreateAttestationReportResponse {
+        static mut instance: ::protobuf::lazy::Lazy<CreateAttestationReportResponse> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const CreateAttestationReportResponse,
+        };
+        unsafe {
+            instance.get(CreateAttestationReportResponse::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for CreateAttestationReportResponse {
+    fn clear(&mut self) {
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for CreateAttestationReportResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for CreateAttestationReportResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
 pub struct SetupRequest {
     // message oneof groups
     pub req: ::std::option::Option<SetupRequest_oneof_req>,
@@ -549,6 +844,7 @@ impl<'a> ::std::default::Default for &'a SetupRequest {
 pub enum SetupRequest_oneof_req {
     setupSeedNode(SetupSeedNodeRequest),
     setupRegularNode(SetupRegularNodeRequest),
+    createAttestationReport(CreateAttestationReportRequest),
 }
 
 impl SetupRequest {
@@ -653,6 +949,55 @@ impl SetupRequest {
             SetupRegularNodeRequest::new()
         }
     }
+
+    // .node.node.CreateAttestationReportRequest createAttestationReport = 3;
+
+
+    pub fn get_createAttestationReport(&self) -> &CreateAttestationReportRequest {
+        match self.req {
+            ::std::option::Option::Some(SetupRequest_oneof_req::createAttestationReport(ref v)) => v,
+            _ => CreateAttestationReportRequest::default_instance(),
+        }
+    }
+    pub fn clear_createAttestationReport(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_createAttestationReport(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(SetupRequest_oneof_req::createAttestationReport(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_createAttestationReport(&mut self, v: CreateAttestationReportRequest) {
+        self.req = ::std::option::Option::Some(SetupRequest_oneof_req::createAttestationReport(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_createAttestationReport(&mut self) -> &mut CreateAttestationReportRequest {
+        if let ::std::option::Option::Some(SetupRequest_oneof_req::createAttestationReport(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(SetupRequest_oneof_req::createAttestationReport(CreateAttestationReportRequest::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(SetupRequest_oneof_req::createAttestationReport(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_createAttestationReport(&mut self) -> CreateAttestationReportRequest {
+        if self.has_createAttestationReport() {
+            match self.req.take() {
+                ::std::option::Option::Some(SetupRequest_oneof_req::createAttestationReport(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            CreateAttestationReportRequest::new()
+        }
+    }
 }
 
 impl ::protobuf::Message for SetupRequest {
@@ -663,6 +1008,11 @@ impl ::protobuf::Message for SetupRequest {
             }
         }
         if let Some(SetupRequest_oneof_req::setupRegularNode(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(SetupRequest_oneof_req::createAttestationReport(ref v)) = self.req {
             if !v.is_initialized() {
                 return false;
             }
@@ -686,6 +1036,12 @@ impl ::protobuf::Message for SetupRequest {
                     }
                     self.req = ::std::option::Option::Some(SetupRequest_oneof_req::setupRegularNode(is.read_message()?));
                 },
+                3 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(SetupRequest_oneof_req::createAttestationReport(is.read_message()?));
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -708,6 +1064,10 @@ impl ::protobuf::Message for SetupRequest {
                     let len = v.compute_size();
                     my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
                 },
+                &SetupRequest_oneof_req::createAttestationReport(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
             };
         }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
@@ -725,6 +1085,11 @@ impl ::protobuf::Message for SetupRequest {
                 },
                 &SetupRequest_oneof_req::setupRegularNode(ref v) => {
                     os.write_tag(2, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &SetupRequest_oneof_req::createAttestationReport(ref v) => {
+                    os.write_tag(3, ::protobuf::wire_format::WireTypeLengthDelimited)?;
                     os.write_raw_varint32(v.get_cached_size())?;
                     v.write_to_with_cached_sizes(os)?;
                 },
@@ -782,6 +1147,11 @@ impl ::protobuf::Message for SetupRequest {
                     SetupRequest::has_setupRegularNode,
                     SetupRequest::get_setupRegularNode,
                 ));
+                fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, CreateAttestationReportRequest>(
+                    "createAttestationReport",
+                    SetupRequest::has_createAttestationReport,
+                    SetupRequest::get_createAttestationReport,
+                ));
                 ::protobuf::reflect::MessageDescriptor::new::<SetupRequest>(
                     "SetupRequest",
                     fields,
@@ -806,6 +1176,7 @@ impl ::protobuf::Clear for SetupRequest {
     fn clear(&mut self) {
         self.req = ::std::option::Option::None;
         self.req = ::std::option::Option::None;
+        self.req = ::std::option::Option::None;
         self.unknown_fields.clear();
     }
 }
@@ -825,25 +1196,37 @@ impl ::protobuf::reflect::ProtobufValue for SetupRequest {
 static file_descriptor_proto_data: &'static [u8] = b"\
     \n)sgx-wrapper/protobuf_contracts/node.proto\x12\tnode.node\"\x16\n\x14S\
     etupSeedNodeRequest\"\x17\n\x15SetupSeedNodeResponse\"\x19\n\x17SetupReg\
-    ularNodeRequest\"\x1a\n\x18SetupRegularNodeResponse\"\xb0\x01\n\x0cSetup\
-    Request\x12G\n\rsetupSeedNode\x18\x01\x20\x01(\x0b2\x1f.node.node.SetupS\
-    eedNodeRequestH\0R\rsetupSeedNode\x12P\n\x10setupRegularNode\x18\x02\x20\
-    \x01(\x0b2\".node.node.SetupRegularNodeRequestH\0R\x10setupRegularNodeB\
-    \x05\n\x03reqB\x04Z\x02./J\xaf\x02\n\x06\x12\x04\0\0\x13\x01\n\x08\n\x01\
-    \x0c\x12\x03\0\0\x12\n\x08\n\x01\x02\x12\x03\x02\0\x12\n\x08\n\x01\x08\
-    \x12\x03\x04\0\x19\n\t\n\x02\x08\x0b\x12\x03\x04\0\x19\n\t\n\x02\x04\0\
-    \x12\x03\x06\0\x1f\n\n\n\x03\x04\0\x01\x12\x03\x06\x08\x1c\n\t\n\x02\x04\
-    \x01\x12\x03\x08\0\x20\n\n\n\x03\x04\x01\x01\x12\x03\x08\x08\x1d\n\t\n\
-    \x02\x04\x02\x12\x03\n\0\"\n\n\n\x03\x04\x02\x01\x12\x03\n\x08\x1f\n\t\n\
-    \x02\x04\x03\x12\x03\x0c\0#\n\n\n\x03\x04\x03\x01\x12\x03\x0c\x08\x20\n\
-    \n\n\x02\x04\x04\x12\x04\x0e\0\x13\x01\n\n\n\x03\x04\x04\x01\x12\x03\x0e\
-    \x08\x14\n\x0c\n\x04\x04\x04\x08\0\x12\x04\x0f\x04\x12\x05\n\x0c\n\x05\
-    \x04\x04\x08\0\x01\x12\x03\x0f\n\r\n\x0b\n\x04\x04\x04\x02\0\x12\x03\x10\
-    \x08/\n\x0c\n\x05\x04\x04\x02\0\x06\x12\x03\x10\x08\x1c\n\x0c\n\x05\x04\
-    \x04\x02\0\x01\x12\x03\x10\x1d*\n\x0c\n\x05\x04\x04\x02\0\x03\x12\x03\
-    \x10-.\n\x0b\n\x04\x04\x04\x02\x01\x12\x03\x11\x085\n\x0c\n\x05\x04\x04\
-    \x02\x01\x06\x12\x03\x11\x08\x1f\n\x0c\n\x05\x04\x04\x02\x01\x01\x12\x03\
-    \x11\x200\n\x0c\n\x05\x04\x04\x02\x01\x03\x12\x03\x1134b\x06proto3\
+    ularNodeRequest\"\x1a\n\x18SetupRegularNodeResponse\"8\n\x1eCreateAttest\
+    ationReportRequest\x12\x16\n\x06apiKey\x18\x01\x20\x01(\x0cR\x06apiKey\"\
+    !\n\x1fCreateAttestationReportResponse\"\x97\x02\n\x0cSetupRequest\x12G\
+    \n\rsetupSeedNode\x18\x01\x20\x01(\x0b2\x1f.node.node.SetupSeedNodeReque\
+    stH\0R\rsetupSeedNode\x12P\n\x10setupRegularNode\x18\x02\x20\x01(\x0b2\"\
+    .node.node.SetupRegularNodeRequestH\0R\x10setupRegularNode\x12e\n\x17cre\
+    ateAttestationReport\x18\x03\x20\x01(\x0b2).node.node.CreateAttestationR\
+    eportRequestH\0R\x17createAttestationReportB\x05\n\x03reqB\x04Z\x02./J\
+    \xcc\x03\n\x06\x12\x04\0\0\x1a\x01\n\x08\n\x01\x0c\x12\x03\0\0\x12\n\x08\
+    \n\x01\x02\x12\x03\x02\0\x12\n\x08\n\x01\x08\x12\x03\x04\0\x19\n\t\n\x02\
+    \x08\x0b\x12\x03\x04\0\x19\n\t\n\x02\x04\0\x12\x03\x06\0\x1f\n\n\n\x03\
+    \x04\0\x01\x12\x03\x06\x08\x1c\n\t\n\x02\x04\x01\x12\x03\x08\0\x20\n\n\n\
+    \x03\x04\x01\x01\x12\x03\x08\x08\x1d\n\t\n\x02\x04\x02\x12\x03\n\0\"\n\n\
+    \n\x03\x04\x02\x01\x12\x03\n\x08\x1f\n\t\n\x02\x04\x03\x12\x03\x0c\0#\n\
+    \n\n\x03\x04\x03\x01\x12\x03\x0c\x08\x20\n\n\n\x02\x04\x04\x12\x04\x0e\0\
+    \x10\x01\n\n\n\x03\x04\x04\x01\x12\x03\x0e\x08&\n\x0b\n\x04\x04\x04\x02\
+    \0\x12\x03\x0f\x04\x15\n\x0c\n\x05\x04\x04\x02\0\x05\x12\x03\x0f\x04\t\n\
+    \x0c\n\x05\x04\x04\x02\0\x01\x12\x03\x0f\n\x10\n\x0c\n\x05\x04\x04\x02\0\
+    \x03\x12\x03\x0f\x13\x14\n\t\n\x02\x04\x05\x12\x03\x12\0*\n\n\n\x03\x04\
+    \x05\x01\x12\x03\x12\x08'\n\n\n\x02\x04\x06\x12\x04\x14\0\x1a\x01\n\n\n\
+    \x03\x04\x06\x01\x12\x03\x14\x08\x14\n\x0c\n\x04\x04\x06\x08\0\x12\x04\
+    \x15\x04\x19\x05\n\x0c\n\x05\x04\x06\x08\0\x01\x12\x03\x15\n\r\n\x0b\n\
+    \x04\x04\x06\x02\0\x12\x03\x16\x08/\n\x0c\n\x05\x04\x06\x02\0\x06\x12\
+    \x03\x16\x08\x1c\n\x0c\n\x05\x04\x06\x02\0\x01\x12\x03\x16\x1d*\n\x0c\n\
+    \x05\x04\x06\x02\0\x03\x12\x03\x16-.\n\x0b\n\x04\x04\x06\x02\x01\x12\x03\
+    \x17\x085\n\x0c\n\x05\x04\x06\x02\x01\x06\x12\x03\x17\x08\x1f\n\x0c\n\
+    \x05\x04\x06\x02\x01\x01\x12\x03\x17\x200\n\x0c\n\x05\x04\x06\x02\x01\
+    \x03\x12\x03\x1734\n\x0b\n\x04\x04\x06\x02\x02\x12\x03\x18\x08C\n\x0c\n\
+    \x05\x04\x06\x02\x02\x06\x12\x03\x18\x08&\n\x0c\n\x05\x04\x06\x02\x02\
+    \x01\x12\x03\x18'>\n\x0c\n\x05\x04\x06\x02\x02\x03\x12\x03\x18ABb\x06pro\
+    to3\
 ";
 
 static mut file_descriptor_proto_lazy: ::protobuf::lazy::Lazy<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::lazy::Lazy {

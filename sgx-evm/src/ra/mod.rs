@@ -19,3 +19,10 @@ pub unsafe extern "C" fn ecall_init_node() -> sgx_status_t {
     println!("Start regular node");
     sgx_status_t::SGX_SUCCESS
 }
+
+#[no_mangle]
+/// Creates attestation certificate and saves it to unprotected memory
+pub unsafe extern "C" fn ecall_create_report(api_key: *const u8) -> sgx_status_t {
+    println!("Creating attestation report");
+    sgx_status_t::SGX_SUCCESS
+}

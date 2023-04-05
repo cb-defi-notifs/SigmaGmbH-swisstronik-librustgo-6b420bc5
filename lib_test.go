@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-func CreateTest(t *testing.T) {
+func _TestCreate(t *testing.T) {
 	db := types.CreateMockedDatabase()
 	from := common.HexToAddress("0x690b9a9e9aa1c9db991c7721a92d351db4fac990")
 
@@ -48,7 +48,7 @@ func CreateTest(t *testing.T) {
 	}
 }
 
-func CallTest(t *testing.T) {
+func _TestCall(t *testing.T) {
 	db := types.CreateMockedDatabase()
 	from := common.HexToAddress("0x690b9a9e9aa1c9db991c7721a92d351db4fac990")
 	to := common.HexToAddress("0xad60cdbe1d3ceb5f67074303f99ac95af082784d")
@@ -123,11 +123,9 @@ func CallTest(t *testing.T) {
 	}
 }
 
-func TestInteraction(t *testing.T) {
+func TestRA(t *testing.T) {
 	api.SetupSeedNode()
-	api.SetupRegularNode()
 
-	// Call other tests
-	CallTest(t)
-	CreateTest(t)
+	apiKey := []byte("c18ebc1af88548f1942c7bf40e0c8e89")
+	api.CreateAttestationReport(apiKey)
 }

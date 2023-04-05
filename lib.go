@@ -99,6 +99,10 @@ func SetupRegularNode() {
 	api.SetupRegularNode()
 }
 
+func CreateAttestationReport(apiKey []byte) {
+	api.CreateAttestationReport(apiKey)
+}
+
 // Libsgx_wrapperVersion returns the version of the loaded library
 // at runtime. This can be used for debugging to verify the loaded version
 // matches the expected version.

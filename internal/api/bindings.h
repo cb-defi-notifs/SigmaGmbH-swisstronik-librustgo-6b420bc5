@@ -9,6 +9,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#define API_KEY_SIZE 32
+
 enum ErrnoValue {
   ErrnoValue_Success = 0,
   ErrnoValue_Other = 1,

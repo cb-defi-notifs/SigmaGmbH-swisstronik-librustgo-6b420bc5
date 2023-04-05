@@ -26,6 +26,8 @@ enclave {
 
         public sgx_status_t ecall_init_node();
 
+        public sgx_status_t ecall_create_report([in] uint8_t api_key[32]);
+
         public ResultWithAllocation handle_request(
             [user_check] void* querier,
             [in, size=len] const uint8_t* request, 
