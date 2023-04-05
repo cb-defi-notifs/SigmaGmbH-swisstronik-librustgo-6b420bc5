@@ -64,6 +64,7 @@ exclude = [
     "ecall_init_node",
     "ecall_create_report",
     "ecall_start_seed_server",
+    "ecall_request_seed",
     "ocall_query_raw",
     "ocall_allocate",
     "ocall_sgx_init_quote",

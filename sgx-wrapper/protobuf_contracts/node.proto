@@ -20,6 +20,10 @@ message StartSeedServerRequest {}
 
 message StartSeedServerResponse {}
 
+message NodeSeedRequest {}
+
+message NodeSeedResponse {}
+
 message CreateAttestationReportResponse {}
 
 message SetupRequest {
@@ -28,5 +32,6 @@ message SetupRequest {
         SetupRegularNodeRequest setupRegularNode = 2;
         CreateAttestationReportRequest createAttestationReport = 3;
         StartSeedServerRequest startSeedServer = 4;
+        NodeSeedRequest nodeSeed = 5;
     }
 }

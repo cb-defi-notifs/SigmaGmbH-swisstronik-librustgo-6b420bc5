@@ -952,6 +952,258 @@ impl ::protobuf::reflect::ProtobufValue for StartSeedServerResponse {
 }
 
 #[derive(PartialEq,Clone,Default)]
+pub struct NodeSeedRequest {
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a NodeSeedRequest {
+    fn default() -> &'a NodeSeedRequest {
+        <NodeSeedRequest as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl NodeSeedRequest {
+    pub fn new() -> NodeSeedRequest {
+        ::std::default::Default::default()
+    }
+}
+
+impl ::protobuf::Message for NodeSeedRequest {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> NodeSeedRequest {
+        NodeSeedRequest::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static mut descriptor: ::protobuf::lazy::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const ::protobuf::reflect::MessageDescriptor,
+        };
+        unsafe {
+            descriptor.get(|| {
+                let fields = ::std::vec::Vec::new();
+                ::protobuf::reflect::MessageDescriptor::new::<NodeSeedRequest>(
+                    "NodeSeedRequest",
+                    fields,
+                    file_descriptor_proto()
+                )
+            })
+        }
+    }
+
+    fn default_instance() -> &'static NodeSeedRequest {
+        static mut instance: ::protobuf::lazy::Lazy<NodeSeedRequest> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const NodeSeedRequest,
+        };
+        unsafe {
+            instance.get(NodeSeedRequest::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for NodeSeedRequest {
+    fn clear(&mut self) {
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for NodeSeedRequest {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for NodeSeedRequest {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct NodeSeedResponse {
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a NodeSeedResponse {
+    fn default() -> &'a NodeSeedResponse {
+        <NodeSeedResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl NodeSeedResponse {
+    pub fn new() -> NodeSeedResponse {
+        ::std::default::Default::default()
+    }
+}
+
+impl ::protobuf::Message for NodeSeedResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> NodeSeedResponse {
+        NodeSeedResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static mut descriptor: ::protobuf::lazy::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const ::protobuf::reflect::MessageDescriptor,
+        };
+        unsafe {
+            descriptor.get(|| {
+                let fields = ::std::vec::Vec::new();
+                ::protobuf::reflect::MessageDescriptor::new::<NodeSeedResponse>(
+                    "NodeSeedResponse",
+                    fields,
+                    file_descriptor_proto()
+                )
+            })
+        }
+    }
+
+    fn default_instance() -> &'static NodeSeedResponse {
+        static mut instance: ::protobuf::lazy::Lazy<NodeSeedResponse> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const NodeSeedResponse,
+        };
+        unsafe {
+            instance.get(NodeSeedResponse::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for NodeSeedResponse {
+    fn clear(&mut self) {
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for NodeSeedResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for NodeSeedResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
 pub struct CreateAttestationReportResponse {
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
@@ -1098,6 +1350,7 @@ pub enum SetupRequest_oneof_req {
     setupRegularNode(SetupRegularNodeRequest),
     createAttestationReport(CreateAttestationReportRequest),
     startSeedServer(StartSeedServerRequest),
+    nodeSeed(NodeSeedRequest),
 }
 
 impl SetupRequest {
@@ -1300,6 +1553,55 @@ impl SetupRequest {
             StartSeedServerRequest::new()
         }
     }
+
+    // .node.node.NodeSeedRequest nodeSeed = 5;
+
+
+    pub fn get_nodeSeed(&self) -> &NodeSeedRequest {
+        match self.req {
+            ::std::option::Option::Some(SetupRequest_oneof_req::nodeSeed(ref v)) => v,
+            _ => NodeSeedRequest::default_instance(),
+        }
+    }
+    pub fn clear_nodeSeed(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_nodeSeed(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(SetupRequest_oneof_req::nodeSeed(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_nodeSeed(&mut self, v: NodeSeedRequest) {
+        self.req = ::std::option::Option::Some(SetupRequest_oneof_req::nodeSeed(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_nodeSeed(&mut self) -> &mut NodeSeedRequest {
+        if let ::std::option::Option::Some(SetupRequest_oneof_req::nodeSeed(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(SetupRequest_oneof_req::nodeSeed(NodeSeedRequest::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(SetupRequest_oneof_req::nodeSeed(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_nodeSeed(&mut self) -> NodeSeedRequest {
+        if self.has_nodeSeed() {
+            match self.req.take() {
+                ::std::option::Option::Some(SetupRequest_oneof_req::nodeSeed(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            NodeSeedRequest::new()
+        }
+    }
 }
 
 impl ::protobuf::Message for SetupRequest {
@@ -1320,6 +1622,11 @@ impl ::protobuf::Message for SetupRequest {
             }
         }
         if let Some(SetupRequest_oneof_req::startSeedServer(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(SetupRequest_oneof_req::nodeSeed(ref v)) = self.req {
             if !v.is_initialized() {
                 return false;
             }
@@ -1355,6 +1662,12 @@ impl ::protobuf::Message for SetupRequest {
                     }
                     self.req = ::std::option::Option::Some(SetupRequest_oneof_req::startSeedServer(is.read_message()?));
                 },
+                5 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(SetupRequest_oneof_req::nodeSeed(is.read_message()?));
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -1385,6 +1698,10 @@ impl ::protobuf::Message for SetupRequest {
                     let len = v.compute_size();
                     my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
                 },
+                &SetupRequest_oneof_req::nodeSeed(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
             };
         }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
@@ -1412,6 +1729,11 @@ impl ::protobuf::Message for SetupRequest {
                 },
                 &SetupRequest_oneof_req::startSeedServer(ref v) => {
                     os.write_tag(4, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &SetupRequest_oneof_req::nodeSeed(ref v) => {
+                    os.write_tag(5, ::protobuf::wire_format::WireTypeLengthDelimited)?;
                     os.write_raw_varint32(v.get_cached_size())?;
                     v.write_to_with_cached_sizes(os)?;
                 },
@@ -1479,6 +1801,11 @@ impl ::protobuf::Message for SetupRequest {
                     SetupRequest::has_startSeedServer,
                     SetupRequest::get_startSeedServer,
                 ));
+                fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, NodeSeedRequest>(
+                    "nodeSeed",
+                    SetupRequest::has_nodeSeed,
+                    SetupRequest::get_nodeSeed,
+                ));
                 ::protobuf::reflect::MessageDescriptor::new::<SetupRequest>(
                     "SetupRequest",
                     fields,
@@ -1505,6 +1832,7 @@ impl ::protobuf::Clear for SetupRequest {
         self.req = ::std::option::Option::None;
         self.req = ::std::option::Option::None;
         self.req = ::std::option::Option::None;
+        self.req = ::std::option::Option::None;
         self.unknown_fields.clear();
     }
 }
@@ -1526,16 +1854,18 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     etupSeedNodeRequest\"\x17\n\x15SetupSeedNodeResponse\"\x19\n\x17SetupReg\
     ularNodeRequest\"\x1a\n\x18SetupRegularNodeResponse\"8\n\x1eCreateAttest\
     ationReportRequest\x12\x16\n\x06apiKey\x18\x01\x20\x01(\x0cR\x06apiKey\"\
-    \x18\n\x16StartSeedServerRequest\"\x19\n\x17StartSeedServerResponse\"!\n\
-    \x1fCreateAttestationReportResponse\"\xe6\x02\n\x0cSetupRequest\x12G\n\r\
-    setupSeedNode\x18\x01\x20\x01(\x0b2\x1f.node.node.SetupSeedNodeRequestH\
-    \0R\rsetupSeedNode\x12P\n\x10setupRegularNode\x18\x02\x20\x01(\x0b2\".no\
-    de.node.SetupRegularNodeRequestH\0R\x10setupRegularNode\x12e\n\x17create\
-    AttestationReport\x18\x03\x20\x01(\x0b2).node.node.CreateAttestationRepo\
-    rtRequestH\0R\x17createAttestationReport\x12M\n\x0fstartSeedServer\x18\
-    \x04\x20\x01(\x0b2!.node.node.StartSeedServerRequestH\0R\x0fstartSeedSer\
-    verB\x05\n\x03reqB\x04Z\x02./J\xb1\x04\n\x06\x12\x04\0\0\x1f\x01\n\x08\n\
-    \x01\x0c\x12\x03\0\0\x12\n\x08\n\x01\x02\x12\x03\x02\0\x12\n\x08\n\x01\
+    \x18\n\x16StartSeedServerRequest\"\x19\n\x17StartSeedServerResponse\"\
+    \x11\n\x0fNodeSeedRequest\"\x12\n\x10NodeSeedResponse\"!\n\x1fCreateAtte\
+    stationReportResponse\"\xa0\x03\n\x0cSetupRequest\x12G\n\rsetupSeedNode\
+    \x18\x01\x20\x01(\x0b2\x1f.node.node.SetupSeedNodeRequestH\0R\rsetupSeed\
+    Node\x12P\n\x10setupRegularNode\x18\x02\x20\x01(\x0b2\".node.node.SetupR\
+    egularNodeRequestH\0R\x10setupRegularNode\x12e\n\x17createAttestationRep\
+    ort\x18\x03\x20\x01(\x0b2).node.node.CreateAttestationReportRequestH\0R\
+    \x17createAttestationReport\x12M\n\x0fstartSeedServer\x18\x04\x20\x01(\
+    \x0b2!.node.node.StartSeedServerRequestH\0R\x0fstartSeedServer\x128\n\
+    \x08nodeSeed\x18\x05\x20\x01(\x0b2\x1a.node.node.NodeSeedRequestH\0R\x08\
+    nodeSeedB\x05\n\x03reqB\x04Z\x02./J\x96\x05\n\x06\x12\x04\0\0$\x01\n\x08\
+    \n\x01\x0c\x12\x03\0\0\x12\n\x08\n\x01\x02\x12\x03\x02\0\x12\n\x08\n\x01\
     \x08\x12\x03\x04\0\x19\n\t\n\x02\x08\x0b\x12\x03\x04\0\x19\n\t\n\x02\x04\
     \0\x12\x03\x06\0\x1f\n\n\n\x03\x04\0\x01\x12\x03\x06\x08\x1c\n\t\n\x02\
     \x04\x01\x12\x03\x08\0\x20\n\n\n\x03\x04\x01\x01\x12\x03\x08\x08\x1d\n\t\
@@ -1547,21 +1877,25 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x0f\n\x10\n\x0c\n\x05\x04\x04\x02\0\x03\x12\x03\x0f\x13\x14\n\t\n\x02\
     \x04\x05\x12\x03\x12\0!\n\n\n\x03\x04\x05\x01\x12\x03\x12\x08\x1e\n\t\n\
     \x02\x04\x06\x12\x03\x14\0\"\n\n\n\x03\x04\x06\x01\x12\x03\x14\x08\x1f\n\
-    \t\n\x02\x04\x07\x12\x03\x16\0*\n\n\n\x03\x04\x07\x01\x12\x03\x16\x08'\n\
-    \n\n\x02\x04\x08\x12\x04\x18\0\x1f\x01\n\n\n\x03\x04\x08\x01\x12\x03\x18\
-    \x08\x14\n\x0c\n\x04\x04\x08\x08\0\x12\x04\x19\x04\x1e\x05\n\x0c\n\x05\
-    \x04\x08\x08\0\x01\x12\x03\x19\n\r\n\x0b\n\x04\x04\x08\x02\0\x12\x03\x1a\
-    \x08/\n\x0c\n\x05\x04\x08\x02\0\x06\x12\x03\x1a\x08\x1c\n\x0c\n\x05\x04\
-    \x08\x02\0\x01\x12\x03\x1a\x1d*\n\x0c\n\x05\x04\x08\x02\0\x03\x12\x03\
-    \x1a-.\n\x0b\n\x04\x04\x08\x02\x01\x12\x03\x1b\x085\n\x0c\n\x05\x04\x08\
-    \x02\x01\x06\x12\x03\x1b\x08\x1f\n\x0c\n\x05\x04\x08\x02\x01\x01\x12\x03\
-    \x1b\x200\n\x0c\n\x05\x04\x08\x02\x01\x03\x12\x03\x1b34\n\x0b\n\x04\x04\
-    \x08\x02\x02\x12\x03\x1c\x08C\n\x0c\n\x05\x04\x08\x02\x02\x06\x12\x03\
-    \x1c\x08&\n\x0c\n\x05\x04\x08\x02\x02\x01\x12\x03\x1c'>\n\x0c\n\x05\x04\
-    \x08\x02\x02\x03\x12\x03\x1cAB\n\x0b\n\x04\x04\x08\x02\x03\x12\x03\x1d\
-    \x083\n\x0c\n\x05\x04\x08\x02\x03\x06\x12\x03\x1d\x08\x1e\n\x0c\n\x05\
-    \x04\x08\x02\x03\x01\x12\x03\x1d\x1f.\n\x0c\n\x05\x04\x08\x02\x03\x03\
-    \x12\x03\x1d12b\x06proto3\
+    \t\n\x02\x04\x07\x12\x03\x16\0\x1a\n\n\n\x03\x04\x07\x01\x12\x03\x16\x08\
+    \x17\n\t\n\x02\x04\x08\x12\x03\x18\0\x1b\n\n\n\x03\x04\x08\x01\x12\x03\
+    \x18\x08\x18\n\t\n\x02\x04\t\x12\x03\x1a\0*\n\n\n\x03\x04\t\x01\x12\x03\
+    \x1a\x08'\n\n\n\x02\x04\n\x12\x04\x1c\0$\x01\n\n\n\x03\x04\n\x01\x12\x03\
+    \x1c\x08\x14\n\x0c\n\x04\x04\n\x08\0\x12\x04\x1d\x04#\x05\n\x0c\n\x05\
+    \x04\n\x08\0\x01\x12\x03\x1d\n\r\n\x0b\n\x04\x04\n\x02\0\x12\x03\x1e\x08\
+    /\n\x0c\n\x05\x04\n\x02\0\x06\x12\x03\x1e\x08\x1c\n\x0c\n\x05\x04\n\x02\
+    \0\x01\x12\x03\x1e\x1d*\n\x0c\n\x05\x04\n\x02\0\x03\x12\x03\x1e-.\n\x0b\
+    \n\x04\x04\n\x02\x01\x12\x03\x1f\x085\n\x0c\n\x05\x04\n\x02\x01\x06\x12\
+    \x03\x1f\x08\x1f\n\x0c\n\x05\x04\n\x02\x01\x01\x12\x03\x1f\x200\n\x0c\n\
+    \x05\x04\n\x02\x01\x03\x12\x03\x1f34\n\x0b\n\x04\x04\n\x02\x02\x12\x03\
+    \x20\x08C\n\x0c\n\x05\x04\n\x02\x02\x06\x12\x03\x20\x08&\n\x0c\n\x05\x04\
+    \n\x02\x02\x01\x12\x03\x20'>\n\x0c\n\x05\x04\n\x02\x02\x03\x12\x03\x20AB\
+    \n\x0b\n\x04\x04\n\x02\x03\x12\x03!\x083\n\x0c\n\x05\x04\n\x02\x03\x06\
+    \x12\x03!\x08\x1e\n\x0c\n\x05\x04\n\x02\x03\x01\x12\x03!\x1f.\n\x0c\n\
+    \x05\x04\n\x02\x03\x03\x12\x03!12\n\x0b\n\x04\x04\n\x02\x04\x12\x03\"\
+    \x08%\n\x0c\n\x05\x04\n\x02\x04\x06\x12\x03\"\x08\x17\n\x0c\n\x05\x04\n\
+    \x02\x04\x01\x12\x03\"\x18\x20\n\x0c\n\x05\x04\n\x02\x04\x03\x12\x03\"#$\
+    b\x06proto3\
 ";
 
 static mut file_descriptor_proto_lazy: ::protobuf::lazy::Lazy<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::lazy::Lazy {

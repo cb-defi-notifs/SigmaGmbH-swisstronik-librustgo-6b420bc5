@@ -126,3 +126,7 @@ func _TestCall(t *testing.T) {
 func TestSeedServerStart(t *testing.T) {
 	api.StartSeedServer()
 }
+
+func TestSeedRequest(t *testing.T) {
+	api.RequestSeed()
+}

@@ -102,11 +102,31 @@ func CreateAttestationReport(apiKey []byte) {
 	_ = C.handle_initialization_request(d, &errmsg)
 }
 
-// SetupRegularNode handles initialization of regular node which will request seed from seed node 
+// StartSeedServer handles initialization of seed server
 func StartSeedServer() {
 	// Create protobuf encoded request
 	req := ffi.SetupRequest{Req: &ffi.SetupRequest_StartSeedServer{
 		StartSeedServer: &ffi.StartSeedServerRequest{},
+	}}
+	reqBytes, err := proto.Marshal(&req)
+	if err != nil {
+		log.Fatalln("Failed to encode req:", err)
+	}
+
+	// Pass request to Rust
+	d := makeView(reqBytes)
+	defer runtime.KeepAlive(reqBytes)
+
+	errmsg := newUnmanagedVector(nil)
+
+	_ = C.handle_initialization_request(d, &errmsg)
+}
+
+// RequestSeed handles request of seed from seed server
+func RequestSeed() {
+	// Create protobuf encoded request
+	req := ffi.SetupRequest{Req: &ffi.SetupRequest_NodeSeed{
+		NodeSeed: &ffi.NodeSeedRequest{},
 	}}
 	reqBytes, err := proto.Marshal(&req)
 	if err != nil {
