@@ -12,6 +12,12 @@ message SetupRegularNodeRequest {}
 
 message SetupRegularNodeResponse {}
 
+message CreateAttestationReportRequest {
+    bytes apiKey = 1;
+}
+
+message CreateAttestationReportResponse {}
+
 message SetupRequest {
     oneof req {
         SetupSeedNodeRequest setupSeedNode = 1;
