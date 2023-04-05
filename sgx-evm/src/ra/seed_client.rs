@@ -18,15 +18,10 @@ use std::untrusted::fs;
 use std::vec::Vec;
 
 #[no_mangle]
-pub unsafe extern "C" fn ecall_start_seed_server(
-    socket_fd: c_int,
-    sign_type: sgx_quote_sign_type_t,
-) {
-    println!("Starting seed server...");
-
+pub extern "C" fn ecall_request_seed(socket_fd: c_int, sign_type: sgx_quote_sign_type_t) {
     // Generate Keypair
     let ecc_handle = SgxEccHandle::new();
-    let _result = ecc_handle.open();
+    ecc_handle.open().unwrap();
     let (prv_k, pub_k) = ecc_handle.create_key_pair().unwrap();
 
     let (attn_report, sig, cert) = match super::utils::create_attestation_report(&pub_k, sign_type)
@@ -39,6 +34,7 @@ pub unsafe extern "C" fn ecall_start_seed_server(
     };
 
     let payload = attn_report + "|" + &sig + "|" + &cert;
+
     let (key_der, cert_der) = match super::cert::gen_ecc_cert(payload, &prv_k, &pub_k, &ecc_handle)
     {
         Ok(r) => r,
@@ -47,28 +43,35 @@ pub unsafe extern "C" fn ecall_start_seed_server(
             return;
         }
     };
-    let _result = ecc_handle.close();
+    ecc_handle.close().unwrap();
 
-    let mut cfg = rustls::ServerConfig::new(Arc::new(super::utils::ClientAuth::new(true)));
+    let mut cfg = rustls::ClientConfig::new();
     let mut certs = Vec::new();
     certs.push(rustls::Certificate(cert_der));
     let privkey = rustls::PrivateKey(key_der);
 
-    cfg.set_single_cert_with_ocsp_and_sct(certs, privkey, vec![], vec![])
-        .unwrap();
+    cfg.set_single_client_cert(certs, privkey).unwrap();
+    cfg.dangerous()
+        .set_certificate_verifier(Arc::new(super::utils::ServerAuth::new(true)));
+    cfg.versions.clear();
+    cfg.versions.push(rustls::ProtocolVersion::TLSv1_2);
 
-    let mut sess = rustls::ServerSession::new(&Arc::new(cfg));
+    let dns_name = webpki::DNSNameRef::try_from_ascii_str("localhost").unwrap();
+    let mut sess = rustls::ClientSession::new(&Arc::new(cfg), dns_name);
     let mut conn = TcpStream::new(socket_fd).unwrap();
 
     let mut tls = rustls::Stream::new(&mut sess, &mut conn);
-    let mut plaintext = [0u8; 1024]; //Vec::new();
-    match tls.read(&mut plaintext) {
-        Ok(_) => println!("Client said: {}", str::from_utf8(&plaintext).unwrap()),
-        Err(e) => {
-            println!("Error in read_to_end: {:?}", e);
-            return;
-        }
-    };
 
-    tls.write("hello back".as_bytes()).unwrap();
+    tls.write("hello".as_bytes()).unwrap();
+
+    let mut plaintext = Vec::new();
+    match tls.read_to_end(&mut plaintext) {
+        Ok(_) => {
+            println!("Server replied: {}", str::from_utf8(&plaintext).unwrap());
+        }
+        Err(ref err) if err.kind() == io::ErrorKind::ConnectionAborted => {
+            println!("EOF (tls)");
+        }
+        Err(e) => println!("Error in read_to_end: {:?}", e),
+    }
 }

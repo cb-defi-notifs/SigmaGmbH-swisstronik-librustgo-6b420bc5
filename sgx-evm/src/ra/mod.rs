@@ -5,6 +5,7 @@ pub mod cert;
 pub mod hex;
 pub mod keychain;
 pub mod seed_server;
+pub mod seed_client;
 pub mod utils;
 
 pub const DEV_HOSTNAME: &'static str = "api.trustedservices.intel.com";

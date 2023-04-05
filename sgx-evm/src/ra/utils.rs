@@ -263,8 +263,9 @@ pub fn create_attestation_report(
     // (1.5) get sigrl
     let mut ias_sock: i32 = 0;
 
-    let res =
-        unsafe { crate::ocall::ocall_get_ias_socket(&mut rt as *mut sgx_status_t, &mut ias_sock as *mut i32) };
+    let res = unsafe {
+        crate::ocall::ocall_get_ias_socket(&mut rt as *mut sgx_status_t, &mut ias_sock as *mut i32)
+    };
 
     if res != sgx_status_t::SGX_SUCCESS {
         return Err(res);
@@ -412,8 +413,9 @@ pub fn create_attestation_report(
     }
 
     let quote_vec: Vec<u8> = return_quote_buf[..quote_len as usize].to_vec();
-    let res =
-        unsafe { crate::ocall::ocall_get_ias_socket(&mut rt as *mut sgx_status_t, &mut ias_sock as *mut i32) };
+    let res = unsafe {
+        crate::ocall::ocall_get_ias_socket(&mut rt as *mut sgx_status_t, &mut ias_sock as *mut i32)
+    };
 
     if res != sgx_status_t::SGX_SUCCESS {
         return Err(res);
@@ -445,4 +447,99 @@ fn get_ias_api_key() -> String {
         .expect("cannot read the ias key file");
 
     key.trim_end().to_owned()
+}
+
+pub struct ClientAuth {
+    outdated_ok: bool,
+}
+
+impl ClientAuth {
+    pub fn new(outdated_ok: bool) -> ClientAuth {
+        ClientAuth {
+            outdated_ok: outdated_ok,
+        }
+    }
+}
+
+impl rustls::ClientCertVerifier for ClientAuth {
+    fn client_auth_root_subjects(
+        &self,
+        _sni: Option<&webpki::DNSName>,
+    ) -> Option<rustls::DistinguishedNames> {
+        Some(rustls::DistinguishedNames::new())
+    }
+
+    fn verify_client_cert(
+        &self,
+        _certs: &[rustls::Certificate],
+        _sni: Option<&webpki::DNSName>,
+    ) -> Result<rustls::ClientCertVerified, rustls::TLSError> {
+        println!("client cert: {:?}", _certs);
+        // This call will automatically verify cert is properly signed
+        match super::cert::verify_mra_cert(&_certs[0].0) {
+            Ok(()) => {
+                return Ok(rustls::ClientCertVerified::assertion());
+            }
+            Err(sgx_status_t::SGX_ERROR_UPDATE_NEEDED) => {
+                if self.outdated_ok {
+                    println!("outdated_ok is set, overriding outdated error");
+                    return Ok(rustls::ClientCertVerified::assertion());
+                } else {
+                    return Err(rustls::TLSError::WebPKIError(
+                        webpki::Error::ExtensionValueInvalid,
+                    ));
+                }
+            }
+            Err(_) => {
+                return Err(rustls::TLSError::WebPKIError(
+                    webpki::Error::ExtensionValueInvalid,
+                ));
+            }
+        }
+    }
+}
+
+pub struct ServerAuth {
+    outdated_ok: bool,
+}
+
+impl ServerAuth {
+    pub fn new(outdated_ok: bool) -> ServerAuth {
+        ServerAuth {
+            outdated_ok: outdated_ok,
+        }
+    }
+}
+
+impl rustls::ServerCertVerifier for ServerAuth {
+    fn verify_server_cert(
+        &self,
+        _roots: &rustls::RootCertStore,
+        _certs: &[rustls::Certificate],
+        _hostname: webpki::DNSNameRef,
+        _ocsp: &[u8],
+    ) -> Result<rustls::ServerCertVerified, rustls::TLSError> {
+        println!("server cert: {:?}", _certs);
+        // This call will automatically verify cert is properly signed
+        match super::cert::verify_mra_cert(&_certs[0].0) {
+            Ok(()) => {
+                return Ok(rustls::ServerCertVerified::assertion());
+            }
+            Err(sgx_status_t::SGX_ERROR_UPDATE_NEEDED) => {
+                if self.outdated_ok {
+                    println!("outdated_ok is set, overriding outdated error");
+                    return Ok(rustls::ServerCertVerified::assertion());
+                } else {
+                    return Err(rustls::TLSError::WebPKIError(
+                        webpki::Error::ExtensionValueInvalid,
+                    ));
+                }
+            }
+            Err(_) => {
+                return Err(rustls::TLSError::WebPKIError(
+                    webpki::Error::ExtensionValueInvalid,
+                ));
+            }
+        }
+    }
 }
