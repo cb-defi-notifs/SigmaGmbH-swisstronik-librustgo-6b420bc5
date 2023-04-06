@@ -7,10 +7,16 @@ import "C"
 import (
 	"fmt"
 	ethcommon "github.com/ethereum/go-ethereum/common"
+	"golang.org/x/net/netutil"
 	"google.golang.org/protobuf/proto"
 	"log"
+	"net"
+	"net/http"
 	"runtime"
 	"time"
+
+	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 
 	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
 	"github.com/SigmaGmbH/librustgo/types"
@@ -106,22 +112,57 @@ func CreateAttestationReport(apiKey []byte) {
 func StartSeedServer(
 	addr string,
 	readHeaderTimeout, readTimeout, writeTimeout, idleTimeout time.Duration,
-) {
-	//// TODO: Start seed server
-	//httpSrv := &http.Server{
-	//	Addr:              config.JSONRPC.Address,
-	//	Handler:           handlerWithCors.Handler(r),
-	//	ReadHeaderTimeout: readHeaderTimeout,
-	//	ReadTimeout:       readTimeout,
-	//	WriteTimeout:      writeTimeout,
-	//	IdleTimeout:       idleTimeout,
-	//}
-	//httpSrvDone := make(chan struct{}, 1)
-	//
-	//ln, err := Listen(httpSrv.Addr, config)
-	//if err != nil {
-	//	return nil, nil, err
-	//}
+	allowUnsafeCORS bool,
+	maxOpenConnections int,
+) (*http.Server, chan struct{}, error) {
+
+	r := mux.NewRouter()
+	r.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
+		// TODO: Handle incoming connection
+	}).Methods("POST")
+
+	handlerWithCors := cors.Default()
+	if allowUnsafeCORS {
+		handlerWithCors = cors.AllowAll()
+	}
+
+	httpSrv := &http.Server{
+		Addr:              addr,
+		Handler:           handlerWithCors.Handler(r),
+		ReadHeaderTimeout: readHeaderTimeout,
+		ReadTimeout:       readTimeout,
+		WriteTimeout:      writeTimeout,
+		IdleTimeout:       idleTimeout,
+	}
+	httpSrvDone := make(chan struct{}, 1)
+
+	ln, err := Listen(httpSrv.Addr, maxOpenConnections)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	errCh := make(chan error)
+	go func() {
+		fmt.Println("Starting seed server at: ", addr)
+		if err := httpSrv.Serve(ln); err != nil {
+			if err == http.ErrServerClosed {
+				close(httpSrvDone)
+				return
+			}
+
+			fmt.Println("Failed to start seed server. Reason: ", err.Error())
+			errCh <- err
+		}
+	}()
+
+	select {
+	case err := <-errCh:
+		fmt.Println("Failed to boot seed server. Reason: ", err.Error())
+		return nil, nil, err
+	case <-time.After(5 * time.Second): // assume seed server started successfully
+	}
+
+	return httpSrv, httpSrvDone, nil
 
 	// // Create protobuf encoded request
 	// req := ffi.SetupRequest{Req: &ffi.SetupRequest_StartSeedServer{
@@ -139,6 +180,22 @@ func StartSeedServer(
 	// errmsg := NewUnmanagedVector(nil)
 
 	// _ = C.handle_initialization_request(d, &errmsg)
+}
+
+// Listen starts a net.Listener on the tcp network on the given address.
+// If there is a specified MaxOpenConnections in the config, it will also set the limitListener.
+func Listen(addr string, maxOpenConnections int) (net.Listener, error) {
+	if addr == "" {
+		addr = ":http"
+	}
+	ln, err := net.Listen("tcp", addr)
+	if err != nil {
+		return nil, err
+	}
+	if maxOpenConnections > 0 {
+		ln = netutil.LimitListener(ln, maxOpenConnections)
+	}
+	return ln, err
 }
 
 // RequestSeed handles request of seed from seed server
