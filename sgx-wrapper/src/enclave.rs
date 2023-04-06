@@ -209,50 +209,32 @@ pub unsafe extern "C" fn handle_initialization_request(
                     node::SetupRequest_oneof_req::startSeedServer(req) => {
                         println!("SGX_WRAPPER: starting seed server");
                         let sign_type = sgx_quote_sign_type_t::SGX_LINKABLE_SIGNATURE;
-                        let listener = TcpListener::bind("0.0.0.0:3443").unwrap();
-                        match listener.accept() {
-                            Ok((socket, addr)) => {
-                                println!("Got new connection {:?}", addr);
-                                let res = ecall_start_seed_server(
-                                    evm_enclave.geteid(),
-                                    socket.as_raw_fd(),
-                                    sign_type,
-                                );
+                        let res = ecall_start_seed_server(evm_enclave.geteid(), req.fd, sign_type);
 
-                                match res {
-                                    sgx_status_t::SGX_SUCCESS => {}
-                                    _ => {
-                                        return Err(Error::enclave_error(res.as_str()));
-                                    }
-                                };
-
-                                // Create response, convert it to bytes and return
-                                let mut response = node::StartSeedServerResponse::new();
-                                let response_bytes = match response.write_to_bytes() {
-                                    Ok(res) => res,
-                                    Err(_) => {
-                                        return Err(Error::protobuf_decode(
-                                            "Response encoding failed",
-                                        ));
-                                    }
-                                };
-
-                                Ok(response_bytes)
+                        match res {
+                            sgx_status_t::SGX_SUCCESS => {}
+                            _ => {
+                                return Err(Error::enclave_error(res.as_str()));
                             }
-                            Err(e) => Err(Error::enclave_error(
-                                "Cannot establish connection with client",
-                            )),
-                        }
+                        };
+
+                        // Create response, convert it to bytes and return
+                        let mut response = node::StartSeedServerResponse::new();
+                        let response_bytes = match response.write_to_bytes() {
+                            Ok(res) => res,
+                            Err(_) => {
+                                return Err(Error::protobuf_decode("Response encoding failed"));
+                            }
+                        };
+
+                        Ok(response_bytes)
                     }
                     node::SetupRequest_oneof_req::nodeSeed(req) => {
                         println!("Trying to get seed...");
                         let socket = TcpStream::connect("localhost:3443").unwrap();
                         let sign_type = sgx_quote_sign_type_t::SGX_LINKABLE_SIGNATURE;
-                        let res = ecall_request_seed(
-                            evm_enclave.geteid(), 
-                            socket.as_raw_fd(), 
-                            sign_type
-                        );
+                        let res =
+                            ecall_request_seed(evm_enclave.geteid(), socket.as_raw_fd(), sign_type);
 
                         match res {
                             sgx_status_t::SGX_SUCCESS => {}

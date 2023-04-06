@@ -16,7 +16,9 @@ message CreateAttestationReportRequest {
     bytes apiKey = 1;
 }
 
-message StartSeedServerRequest {}
+message StartSeedServerRequest {
+    int32 fd = 1;
+}
 
 message StartSeedServerResponse {}
 
