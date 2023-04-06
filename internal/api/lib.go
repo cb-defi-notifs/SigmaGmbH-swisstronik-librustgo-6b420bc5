@@ -10,6 +10,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"log"
 	"runtime"
+	"time"
 
 	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
 	"github.com/SigmaGmbH/librustgo/types"
@@ -47,15 +48,15 @@ func SetupSeedNode() {
 	}
 
 	// Pass request to Rust
-	d := makeView(reqBytes)
+	d := MakeView(reqBytes)
 	defer runtime.KeepAlive(reqBytes)
 
-	errmsg := newUnmanagedVector(nil)
+	errmsg := NewUnmanagedVector(nil)
 
 	_ = C.handle_initialization_request(d, &errmsg)
 }
 
-// SetupRegularNode handles initialization of regular node which will request seed from seed node 
+// SetupRegularNode handles initialization of regular node which will request seed from seed node
 func SetupRegularNode() {
 	// Create protobuf encoded request
 	req := ffi.SetupRequest{Req: &ffi.SetupRequest_SetupRegularNode{
@@ -67,15 +68,14 @@ func SetupRegularNode() {
 	}
 
 	// Pass request to Rust
-	d := makeView(reqBytes)
+	d := MakeView(reqBytes)
 	defer runtime.KeepAlive(reqBytes)
 
-	errmsg := newUnmanagedVector(nil)
+	errmsg := NewUnmanagedVector(nil)
 
 	_ = C.handle_initialization_request(d, &errmsg)
 }
 
-// SetupRegularNode handles initialization of regular node which will request seed from seed node 
 func CreateAttestationReport(apiKey []byte) {
 	if len(apiKey) != 32 {
 		log.Fatalln("Wrong api key size")
@@ -94,32 +94,51 @@ func CreateAttestationReport(apiKey []byte) {
 	}
 
 	// Pass request to Rust
-	d := makeView(reqBytes)
+	d := MakeView(reqBytes)
 	defer runtime.KeepAlive(reqBytes)
 
-	errmsg := newUnmanagedVector(nil)
+	errmsg := NewUnmanagedVector(nil)
 
 	_ = C.handle_initialization_request(d, &errmsg)
 }
 
 // StartSeedServer handles initialization of seed server
-func StartSeedServer() {
-	// Create protobuf encoded request
-	req := ffi.SetupRequest{Req: &ffi.SetupRequest_StartSeedServer{
-		StartSeedServer: &ffi.StartSeedServerRequest{},
-	}}
-	reqBytes, err := proto.Marshal(&req)
-	if err != nil {
-		log.Fatalln("Failed to encode req:", err)
-	}
+func StartSeedServer(
+	addr string,
+	readHeaderTimeout, readTimeout, writeTimeout, idleTimeout time.Duration,
+) {
+	//// TODO: Start seed server
+	//httpSrv := &http.Server{
+	//	Addr:              config.JSONRPC.Address,
+	//	Handler:           handlerWithCors.Handler(r),
+	//	ReadHeaderTimeout: readHeaderTimeout,
+	//	ReadTimeout:       readTimeout,
+	//	WriteTimeout:      writeTimeout,
+	//	IdleTimeout:       idleTimeout,
+	//}
+	//httpSrvDone := make(chan struct{}, 1)
+	//
+	//ln, err := Listen(httpSrv.Addr, config)
+	//if err != nil {
+	//	return nil, nil, err
+	//}
 
-	// Pass request to Rust
-	d := makeView(reqBytes)
-	defer runtime.KeepAlive(reqBytes)
+	// // Create protobuf encoded request
+	// req := ffi.SetupRequest{Req: &ffi.SetupRequest_StartSeedServer{
+	// 	StartSeedServer: &ffi.StartSeedServerRequest{},
+	// }}
+	// reqBytes, err := proto.Marshal(&req)
+	// if err != nil {
+	// 	log.Fatalln("Failed to encode req:", err)
+	// }
 
-	errmsg := newUnmanagedVector(nil)
+	// // Pass request to Rust
+	// d := MakeView(reqBytes)
+	// defer runtime.KeepAlive(reqBytes)
 
-	_ = C.handle_initialization_request(d, &errmsg)
+	// errmsg := NewUnmanagedVector(nil)
+
+	// _ = C.handle_initialization_request(d, &errmsg)
 }
 
 // RequestSeed handles request of seed from seed server
@@ -134,10 +153,10 @@ func RequestSeed() {
 	}
 
 	// Pass request to Rust
-	d := makeView(reqBytes)
+	d := MakeView(reqBytes)
 	defer runtime.KeepAlive(reqBytes)
 
-	errmsg := newUnmanagedVector(nil)
+	errmsg := NewUnmanagedVector(nil)
 
 	_ = C.handle_initialization_request(d, &errmsg)
 }
@@ -152,7 +171,7 @@ func Call(
 	commit bool,
 ) (*ffi.HandleTransactionResponse, error) {
 	// Construct mocked querier
-	c := buildConnector(connector)
+	c := BuildConnector(connector)
 
 	// Create protobuf-encoded transaction data
 	params := &ffi.SGXVMCallParams{
@@ -178,17 +197,17 @@ func Call(
 	}
 
 	// Pass request to Rust
-	d := makeView(reqBytes)
+	d := MakeView(reqBytes)
 	defer runtime.KeepAlive(reqBytes)
 
-	errmsg := newUnmanagedVector(nil)
+	errmsg := NewUnmanagedVector(nil)
 	ptr, err := C.make_pb_request(c, d, &errmsg)
 	if err != nil {
-		return &ffi.HandleTransactionResponse{}, errorWithMessage(err, errmsg)
+		return &ffi.HandleTransactionResponse{}, ErrorWithMessage(err, errmsg)
 	}
 
 	// Recover returned value
-	executionResult := copyAndDestroyUnmanagedVector(ptr)
+	executionResult := CopyAndDestroyUnmanagedVector(ptr)
 	response := ffi.HandleTransactionResponse{}
 	if err := proto.Unmarshal(executionResult, &response); err != nil {
 		log.Fatalln("Failed to decode execution result:", err)
@@ -207,7 +226,7 @@ func Create(
 	commit bool,
 ) (*ffi.HandleTransactionResponse, error) {
 	// Construct mocked querier
-	c := buildConnector(connector)
+	c := BuildConnector(connector)
 
 	// Create protobuf-encoded transaction data
 	params := &ffi.SGXVMCreateParams{
@@ -232,17 +251,17 @@ func Create(
 	}
 
 	// Pass request to Rust
-	d := makeView(reqBytes)
+	d := MakeView(reqBytes)
 	defer runtime.KeepAlive(reqBytes)
 
-	errmsg := newUnmanagedVector(nil)
+	errmsg := NewUnmanagedVector(nil)
 	ptr, err := C.make_pb_request(c, d, &errmsg)
 	if err != nil {
-		return &ffi.HandleTransactionResponse{}, errorWithMessage(err, errmsg)
+		return &ffi.HandleTransactionResponse{}, ErrorWithMessage(err, errmsg)
 	}
 
 	// Recover returned value
-	executionResult := copyAndDestroyUnmanagedVector(ptr)
+	executionResult := CopyAndDestroyUnmanagedVector(ptr)
 	response := ffi.HandleTransactionResponse{}
 	if err := proto.Unmarshal(executionResult, &response); err != nil {
 		log.Fatalln("Failed to decode execution result:", err)
@@ -276,8 +295,8 @@ func convertAccessListStorageSlots(slots []ethcommon.Hash) [][]byte {
 
 /**** To error module ***/
 
-func errorWithMessage(err error, b C.UnmanagedVector) error {
-	msg := copyAndDestroyUnmanagedVector(b)
+func ErrorWithMessage(err error, b C.UnmanagedVector) error {
+	msg := CopyAndDestroyUnmanagedVector(b)
 	if msg == nil {
 		return err
 	}

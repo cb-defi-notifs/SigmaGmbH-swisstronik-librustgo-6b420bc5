@@ -7,10 +7,10 @@ import "C"
 
 import "unsafe"
 
-// makeView creates a view into the given byte slice what allows Rust code to read it.
+// MakeView creates a view into the given byte slice what allows Rust code to read it.
 // The byte slice is managed by Go and will be garbage collected. Use runtime.KeepAlive
 // to ensure the byte slice lives long enough.
-func makeView(s []byte) C.ByteSliceView {
+func MakeView(s []byte) C.ByteSliceView {
 	if s == nil {
 		return C.ByteSliceView{is_nil: true, ptr: cu8_ptr(nil), len: cusize(0)}
 	}
@@ -29,8 +29,8 @@ func makeView(s []byte) C.ByteSliceView {
 	}
 }
 
-// Creates a C.UnmanagedVector, which cannot be done in test files directly
-func constructUnmanagedVector(is_none cbool, ptr cu8_ptr, len cusize, cap cusize) C.UnmanagedVector {
+// ConstructUnmanagedVector creates a C.UnmanagedVector, which cannot be done in test files directly
+func ConstructUnmanagedVector(is_none cbool, ptr cu8_ptr, len cusize, cap cusize) C.UnmanagedVector {
 	return C.UnmanagedVector{
 		is_none: is_none,
 		ptr:     ptr,
@@ -39,7 +39,7 @@ func constructUnmanagedVector(is_none cbool, ptr cu8_ptr, len cusize, cap cusize
 	}
 }
 
-func newUnmanagedVector(data []byte) C.UnmanagedVector {
+func NewUnmanagedVector(data []byte) C.UnmanagedVector {
 	if data == nil {
 		return C.new_unmanaged_vector(cbool(true), cu8_ptr(nil), cusize(0))
 	} else if len(data) == 0 {
@@ -54,7 +54,7 @@ func newUnmanagedVector(data []byte) C.UnmanagedVector {
 	}
 }
 
-func copyAndDestroyUnmanagedVector(v C.UnmanagedVector) []byte {
+func CopyAndDestroyUnmanagedVector(v C.UnmanagedVector) []byte {
 	var out []byte
 	if v.is_none {
 		out = nil
@@ -69,9 +69,9 @@ func copyAndDestroyUnmanagedVector(v C.UnmanagedVector) []byte {
 	return out
 }
 
-// copyU8Slice copies the contents of an Option<&[u8]> that was allocated on the Rust side.
+// CopyU8Slice copies the contents of an Option<&[u8]> that was allocated on the Rust side.
 // Returns nil if and only if the source is None.
-func copyU8Slice(view C.U8SliceView) []byte {
+func CopyU8Slice(view C.U8SliceView) []byte {
 	if view.is_none {
 		return nil
 	}
