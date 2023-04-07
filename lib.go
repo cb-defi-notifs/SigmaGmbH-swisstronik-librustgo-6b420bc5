@@ -113,8 +113,8 @@ func StartSeedServer(
 	api.StartSeedServer(addr, readHeaderTimeout, readTimeout, writeTimeout, idleTimeout, allowUnsafeCORS, maxOpenConnections)
 }
 
-func RequestSeed() {
-	api.RequestSeed()
+func RequestSeed(addr string) {
+	api.RequestSeed(addr)
 }
 
 // Libsgx_wrapperVersion returns the version of the loaded library

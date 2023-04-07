@@ -219,7 +219,7 @@ pub unsafe extern "C" fn handle_initialization_request(
                         };
 
                         // Create response, convert it to bytes and return
-                        let mut response = node::StartSeedServerResponse::new();
+                        let response = node::StartSeedServerResponse::new();
                         let response_bytes = match response.write_to_bytes() {
                             Ok(res) => res,
                             Err(_) => {
@@ -230,11 +230,11 @@ pub unsafe extern "C" fn handle_initialization_request(
                         Ok(response_bytes)
                     }
                     node::SetupRequest_oneof_req::nodeSeed(req) => {
-                        println!("Trying to get seed...");
+                        println!("SGX_WRAPPER: trying to request seed");
                         let socket = TcpStream::connect("localhost:3443").unwrap();
                         let sign_type = sgx_quote_sign_type_t::SGX_LINKABLE_SIGNATURE;
                         let res =
-                            ecall_request_seed(evm_enclave.geteid(), socket.as_raw_fd(), sign_type);
+                            ecall_request_seed(evm_enclave.geteid(), req.fd, sign_type);
 
                         match res {
                             sgx_status_t::SGX_SUCCESS => {}

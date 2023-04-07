@@ -22,7 +22,9 @@ message StartSeedServerRequest {
 
 message StartSeedServerResponse {}
 
-message NodeSeedRequest {}
+message NodeSeedRequest {
+    int32 fd = 1;
+}
 
 message NodeSeedResponse {}
 

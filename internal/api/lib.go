@@ -211,14 +211,31 @@ func Listen(addr string, maxOpenConnections int) (net.Listener, error) {
 }
 
 // RequestSeed handles request of seed from seed server
-func RequestSeed() {
+func RequestSeed(addr string) error {
+
+	// TODO: Establish connection to seed server
+	conn, err := net.Dial("tcp", addr)
+	if err != nil {
+		fmt.Println("Cannot establish connection with seed server. Reason: ", err.Error())
+		return err
+	}
+
+	file, err := conn.(*net.TCPConn).File()
+	if err != nil {
+		fmt.Println("Cannot get access to the connection. Reason: ", err.Error())
+		return err
+	}
+
 	// Create protobuf encoded request
 	req := ffi.SetupRequest{Req: &ffi.SetupRequest_NodeSeed{
-		NodeSeed: &ffi.NodeSeedRequest{},
+		NodeSeed: &ffi.NodeSeedRequest{
+			Fd: int32(file.Fd()),
+		},
 	}}
 	reqBytes, err := proto.Marshal(&req)
 	if err != nil {
 		log.Fatalln("Failed to encode req:", err)
+		return err
 	}
 
 	// Pass request to Rust
@@ -228,6 +245,8 @@ func RequestSeed() {
 	errmsg := NewUnmanagedVector(nil)
 
 	_ = C.handle_initialization_request(d, &errmsg)
+
+	return nil
 }
 
 // Call handles incoming call to contract or transfer of value
