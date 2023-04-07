@@ -17,7 +17,7 @@ use std::untrusted::fs;
 use std::vec::Vec;
 
 fn parse_response_attn_report(resp: &[u8]) -> SgxResult<(String, String, String)> {
-    println!("parse_response_attn_report");
+    println!("[Attestation] parse_response_attn_report");
     let mut headers = [httparse::EMPTY_HEADER; 16];
     let mut respp = httparse::Response::new(&mut headers);
     let result = respp.parse(resp);
@@ -97,7 +97,7 @@ fn parse_response_attn_report(resp: &[u8]) -> SgxResult<(String, String, String)
 }
 
 fn parse_response_sigrl(resp: &[u8]) -> Vec<u8> {
-    println!("parse_response_sigrl");
+    println!("[Attestation] parse_response_sigrl");
     let mut headers = [httparse::EMPTY_HEADER; 16];
     let mut respp = httparse::Response::new(&mut headers);
     let result = respp.parse(resp);
@@ -153,7 +153,7 @@ pub fn make_ias_client_config() -> rustls::ClientConfig {
 }
 
 pub fn get_sigrl_from_intel(fd: c_int, gid: u32) -> Vec<u8> {
-    println!("get_sigrl_from_intel fd = {:?}", fd);
+    println!("[Attestation] get_sigrl_from_intel fd = {:?}", fd);
     let config = make_ias_client_config();
     //let sigrl_arg = SigRLArg { group_id : gid };
     //let sigrl_req = sigrl_arg.to_httpreq();
@@ -193,7 +193,7 @@ pub fn get_sigrl_from_intel(fd: c_int, gid: u32) -> Vec<u8> {
 
 // TODO: support pse
 pub fn get_report_from_intel(fd: c_int, quote: Vec<u8>) -> SgxResult<(String, String, String)> {
-    println!("get_report_from_intel fd = {:?}", fd);
+    println!("[Attestation] get_report_from_intel fd = {:?}", fd);
     let config = make_ias_client_config();
     let encoded_quote = base64::encode(&quote[..]);
     let encoded_json = format!("{{\"isvEnclaveQuote\":\"{}\"}}\r\n", encoded_quote);
@@ -438,12 +438,12 @@ pub fn create_attestation_report(
 }
 
 fn load_spid(filename: &str) -> sgx_spid_t {
-    let spid = "99B0322C2FA6DD4C4D1D2B0BA00B5974";
+    let spid = "472D87732579A170FAD0E1457A787131";
     super::hex::decode_spid(spid)
 }
 
 fn get_ias_api_key() -> String {
-    let key = "c18ebc1af88548f1942c7bf40e0c8e89";
+    let key = "27540ef18c744002adf98804c3580ed8";
     key.trim_end().to_owned()
 }
 
