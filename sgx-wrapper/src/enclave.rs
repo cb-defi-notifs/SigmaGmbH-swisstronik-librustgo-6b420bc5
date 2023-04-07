@@ -231,7 +231,6 @@ pub unsafe extern "C" fn handle_initialization_request(
                     }
                     node::SetupRequest_oneof_req::nodeSeed(req) => {
                         println!("SGX_WRAPPER: trying to request seed");
-                        let socket = TcpStream::connect("localhost:3443").unwrap();
                         let sign_type = sgx_quote_sign_type_t::SGX_LINKABLE_SIGNATURE;
                         let res =
                             ecall_request_seed(evm_enclave.geteid(), req.fd, sign_type);

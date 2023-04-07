@@ -430,22 +430,12 @@ pub fn create_attestation_report(
 }
 
 fn load_spid(filename: &str) -> sgx_spid_t {
-    let mut spidfile = fs::File::open(filename).expect("cannot open spid file");
-    let mut contents = String::new();
-    spidfile
-        .read_to_string(&mut contents)
-        .expect("cannot read the spid file");
-
-    super::hex::decode_spid(&contents)
+    let spid = "99B0322C2FA6DD4C4D1D2B0BA00B5974";
+    super::hex::decode_spid(spid)
 }
 
 fn get_ias_api_key() -> String {
-    let mut keyfile = fs::File::open("key.txt").expect("cannot open ias key file");
-    let mut key = String::new();
-    keyfile
-        .read_to_string(&mut key)
-        .expect("cannot read the ias key file");
-
+    let key = "c18ebc1af88548f1942c7bf40e0c8e89";
     key.trim_end().to_owned()
 }
 
