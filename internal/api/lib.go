@@ -7,6 +7,8 @@ import "C"
 import (
 	"fmt"
 	ethcommon "github.com/ethereum/go-ethereum/common"
+	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 	"golang.org/x/net/netutil"
 	"google.golang.org/protobuf/proto"
 	"log"
@@ -14,9 +16,6 @@ import (
 	"net/http"
 	"runtime"
 	"time"
-
-	"github.com/gorilla/mux"
-	"github.com/rs/cors"
 
 	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
 	"github.com/SigmaGmbH/librustgo/types"
@@ -115,16 +114,46 @@ func StartSeedServer(
 	allowUnsafeCORS bool,
 	maxOpenConnections int,
 ) (*http.Server, chan struct{}, error) {
-
-	r := mux.NewRouter()
-	r.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		// TODO: Handle incoming connection
-	}).Methods("POST")
-
 	handlerWithCors := cors.Default()
 	if allowUnsafeCORS {
 		handlerWithCors = cors.AllowAll()
 	}
+
+	r := mux.NewRouter()
+	r.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
+		h := writer.(http.Hijacker)
+		conn, _, err := h.Hijack()
+		if err != nil {
+			fmt.Println("Cannot get access to the connection. Reason: ", err.Error())
+			writer.WriteHeader(500)
+		}
+
+		file, err := conn.(*net.TCPConn).File()
+		if err != nil {
+			fmt.Println("Cannot get access to the connection. Reason: ", err.Error())
+			writer.WriteHeader(500)
+		}
+
+		// Create protobuf encoded request
+		req := ffi.SetupRequest{Req: &ffi.SetupRequest_StartSeedServer{
+			StartSeedServer: &ffi.StartSeedServerRequest{
+				Fd: int32(file.Fd()),
+			},
+		}}
+		reqBytes, err := proto.Marshal(&req)
+		if err != nil {
+			log.Fatalln("Failed to encode req:", err)
+		}
+
+		// Pass request to Rust
+		d := MakeView(reqBytes)
+		defer runtime.KeepAlive(reqBytes)
+
+		errmsg := NewUnmanagedVector(nil)
+
+		_ = C.handle_initialization_request(d, &errmsg)
+		conn.Close()
+	}).Methods("POST")
 
 	httpSrv := &http.Server{
 		Addr:              addr,
@@ -163,23 +192,6 @@ func StartSeedServer(
 	}
 
 	return httpSrv, httpSrvDone, nil
-
-	// // Create protobuf encoded request
-	// req := ffi.SetupRequest{Req: &ffi.SetupRequest_StartSeedServer{
-	// 	StartSeedServer: &ffi.StartSeedServerRequest{},
-	// }}
-	// reqBytes, err := proto.Marshal(&req)
-	// if err != nil {
-	// 	log.Fatalln("Failed to encode req:", err)
-	// }
-
-	// // Pass request to Rust
-	// d := MakeView(reqBytes)
-	// defer runtime.KeepAlive(reqBytes)
-
-	// errmsg := NewUnmanagedVector(nil)
-
-	// _ = C.handle_initialization_request(d, &errmsg)
 }
 
 // Listen starts a net.Listener on the tcp network on the given address.

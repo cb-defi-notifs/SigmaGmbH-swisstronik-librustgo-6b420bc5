@@ -3,6 +3,7 @@ package librustgo
 import (
 	"github.com/SigmaGmbH/librustgo/internal/api"
 	"github.com/SigmaGmbH/librustgo/types"
+	"time"
 
 	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
@@ -103,8 +104,13 @@ func CreateAttestationReport(apiKey []byte) {
 	api.CreateAttestationReport(apiKey)
 }
 
-func StartSeedServer() {
-	api.StartSeedServer()
+func StartSeedServer(
+	addr string,
+	readHeaderTimeout, readTimeout, writeTimeout, idleTimeout time.Duration,
+	allowUnsafeCORS bool,
+	maxOpenConnections int,
+) {
+	api.StartSeedServer(addr, readHeaderTimeout, readTimeout, writeTimeout, idleTimeout, allowUnsafeCORS, maxOpenConnections)
 }
 
 func RequestSeed() {

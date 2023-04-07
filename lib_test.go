@@ -7,6 +7,7 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 	"math/big"
 	"testing"
+	"time"
 )
 
 func _TestCreate(t *testing.T) {
@@ -124,7 +125,12 @@ func _TestCall(t *testing.T) {
 }
 
 func TestSeedServerStart(t *testing.T) {
-	api.StartSeedServer()
+	addr := "127.0.0.1:8999"
+	defaultTimeout := 10 * time.Second
+	_, _, err := api.StartSeedServer(addr, defaultTimeout, defaultTimeout, defaultTimeout, defaultTimeout, true, 50)
+	if err != nil {
+		t.Fail()
+	}
 }
 
 func TestSeedRequest(t *testing.T) {
