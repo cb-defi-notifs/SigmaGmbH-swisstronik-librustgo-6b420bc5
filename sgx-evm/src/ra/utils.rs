@@ -16,33 +16,40 @@ use std::sync::Arc;
 use std::untrusted::fs;
 use std::vec::Vec;
 
-fn parse_response_attn_report(resp: &[u8]) -> (String, String, String) {
+fn parse_response_attn_report(resp: &[u8]) -> SgxResult<(String, String, String)> {
     println!("parse_response_attn_report");
     let mut headers = [httparse::EMPTY_HEADER; 16];
     let mut respp = httparse::Response::new(&mut headers);
     let result = respp.parse(resp);
     println!("parse result {:?}", result);
 
-    let msg: &'static str;
-
     match respp.code {
-        Some(200) => msg = "OK Operation Successful",
-        Some(401) => msg = "Unauthorized Failed to authenticate or authorize request.",
-        Some(404) => msg = "Not Found GID does not refer to a valid EPID group ID.",
-        Some(500) => msg = "Internal error occurred",
+        Some(200) => { println!("Correct response"); },
+        Some(401) => {
+            println!("Unauthorized Failed to authenticate or authorize request.");
+            return Err(sgx_status_t::SGX_ERROR_INVALID_ENCLAVE);
+        },
+        Some(404) => {
+            println!("Not Found GID does not refer to a valid EPID group ID.");
+            return Err(sgx_status_t::SGX_ERROR_INVALID_ENCLAVE);
+        },
+        Some(500) => {
+            println!("Internal error occurred");
+            return Err(sgx_status_t::SGX_ERROR_UNEXPECTED);
+        },
         Some(503) => {
-            msg = "Service is currently not able to process the request (due to
+            println!("Service is currently not able to process the request (due to
             a temporary overloading or maintenance). This is a
             temporary state – the same request can be repeated after
-            some time. "
+            some time. ");
+            return Err(sgx_status_t::SGX_ERROR_UNEXPECTED);
         }
         _ => {
-            println!("DBG:{}", respp.code.unwrap());
-            msg = "Unknown error occured"
+            println!("response from IAS server :{} - unknown error or response code", respp.code.unwrap());
+            return Err(sgx_status_t::SGX_ERROR_UNEXPECTED);
         }
-    }
+    };
 
-    println!("{}", msg);
     let mut len_num: u32 = 0;
 
     let mut sig = String::new();
@@ -69,7 +76,13 @@ fn parse_response_attn_report(resp: &[u8]) -> (String, String, String) {
     // Remove %0A from cert, and only obtain the signing cert
     cert = cert.replace("%0A", "");
     cert = super::cert::percent_decode(cert);
+
     let v: Vec<&str> = cert.split("-----").collect();
+    if v.len() < 3 {
+        println!("Error decoding response from IAS server");
+        return Err(sgx_status_t::SGX_ERROR_UNEXPECTED);
+    }
+
     let sig_cert = v[2].to_string();
 
     if len_num != 0 {
@@ -80,7 +93,7 @@ fn parse_response_attn_report(resp: &[u8]) -> (String, String, String) {
     }
 
     // len_num == 0
-    (attn_report, sig, sig_cert)
+    Ok((attn_report, sig, sig_cert))
 }
 
 fn parse_response_sigrl(resp: &[u8]) -> Vec<u8> {
@@ -179,7 +192,7 @@ pub fn get_sigrl_from_intel(fd: c_int, gid: u32) -> Vec<u8> {
 }
 
 // TODO: support pse
-pub fn get_report_from_intel(fd: c_int, quote: Vec<u8>) -> (String, String, String) {
+pub fn get_report_from_intel(fd: c_int, quote: Vec<u8>) -> SgxResult<(String, String, String)> {
     println!("get_report_from_intel fd = {:?}", fd);
     let config = make_ias_client_config();
     let encoded_quote = base64::encode(&quote[..]);
@@ -210,9 +223,7 @@ pub fn get_report_from_intel(fd: c_int, quote: Vec<u8>) -> (String, String, Stri
 
     println!("resp_string = {}", resp_string);
 
-    let (attn_report, sig, cert) = parse_response_attn_report(&plaintext);
-
-    (attn_report, sig, cert)
+    parse_response_attn_report(&plaintext)
 }
 
 fn as_u32_le(array: &[u8; 4]) -> u32 {
@@ -226,7 +237,7 @@ fn as_u32_le(array: &[u8; 4]) -> u32 {
 pub fn create_attestation_report(
     pub_k: &sgx_ec256_public_t,
     sign_type: sgx_quote_sign_type_t,
-) -> Result<(String, String, String), sgx_status_t> {
+) -> SgxResult<(String, String, String)> {
     // Workflow:
     // (1) ocall to get the target_info structure (ti) and epid group id (eg)
     // (1.5) get sigrl
@@ -423,8 +434,7 @@ pub fn create_attestation_report(
         return Err(rt);
     }
 
-    let (attn_report, sig, cert) = get_report_from_intel(ias_sock, quote_vec);
-    Ok((attn_report, sig, cert))
+    get_report_from_intel(ias_sock, quote_vec)
 }
 
 fn load_spid(filename: &str) -> sgx_spid_t {
