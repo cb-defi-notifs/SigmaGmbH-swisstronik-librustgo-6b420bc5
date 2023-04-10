@@ -1092,6 +1092,7 @@ name = "serde"
 version = "1.0.118"
 source = "git+https://github.com/mesalock-linux/serde-sgx#db0226f1d5d70fca6b96af2c285851502204e21c"
 dependencies = [
+ "serde_derive 1.0.118",
  "sgx_tstd",
 ]
 
@@ -1101,7 +1102,17 @@ version = "1.0.156"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "314b5b092c0ade17c00142951e50ced110ec27cea304b1037c6969246c2469a4"
 dependencies = [
- "serde_derive",
+ "serde_derive 1.0.156",
+]
+
+[[package]]
+name = "serde_derive"
+version = "1.0.118"
+source = "git+https://github.com/mesalock-linux/serde-sgx#db0226f1d5d70fca6b96af2c285851502204e21c"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -1143,6 +1154,7 @@ dependencies = [
  "num-bigint 0.2.5",
  "protobuf",
  "rustls",
+ "serde 1.0.118",
  "serde_json",
  "sgx_rand",
  "sgx_tcrypto",
@@ -1152,6 +1164,7 @@ dependencies = [
  "sgx_types",
  "sgxvm",
  "thiserror-no-std",
+ "uuid",
  "webpki",
  "webpki-roots",
  "x25519-dalek",
@@ -1455,6 +1468,12 @@ name = "untrusted"
 version = "0.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a156c684c91ea7d62626509bce3cb4e1d9ed5c4d978f7b4352658f96a4c26b4a"
+
+[[package]]
+name = "uuid"
+version = "0.8.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bc5cf98d8186244414c848017f0e2676b3fcb46807f6668a97dfe67359a3c4b7"
 
 [[package]]
 name = "version_check"
