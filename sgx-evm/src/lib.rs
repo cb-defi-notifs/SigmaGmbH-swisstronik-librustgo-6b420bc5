@@ -1,4 +1,5 @@
 #![no_std]
+#![feature(slice_as_chunks)]
 
 #[macro_use]
 extern crate sgx_tstd as std;
@@ -12,13 +13,13 @@ use protobuf::Message;
 use protobuf::RepeatedField;
 use sgxvm::primitive_types::{H160, H256, U256};
 use sgxvm::{self, Vicinity};
-use std::panic::catch_unwind;
-use std::ptr;
+// use std::panic::catch_unwind;
+// use std::ptr;
 use std::slice;
 use std::vec::Vec;
 
-use crate::error::{handle_c_error_default, Error};
-use crate::memory::{ByteSliceView, UnmanagedVector};
+// use crate::error::{handle_c_error_default, Error};
+// use crate::memory::{ByteSliceView, UnmanagedVector};
 use crate::protobuf_generated::ffi::{
     AccessListItem, FFIRequest, FFIRequest_oneof_req, HandleTransactionResponse, Log,
     SGXVMCallRequest, SGXVMCreateRequest, Topic, TransactionContext as ProtoTransactionContext,

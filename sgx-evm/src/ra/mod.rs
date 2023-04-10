@@ -1,6 +1,6 @@
 use sgx_types::*;
 use std::slice;
-use sgx_tse::{rsgx_create_report, rsgx_self_report, rsgx_verify_report};
+use sgx_tse::rsgx_self_report;
 
 pub mod cert;
 pub mod hex;
@@ -10,6 +10,7 @@ pub mod seed_client;
 pub mod utils;
 pub mod consts;
 pub mod report;
+pub mod types;
 
 pub fn get_mr_enclave() -> [u8; 32] {
     rsgx_self_report().body.mr_enclave.m

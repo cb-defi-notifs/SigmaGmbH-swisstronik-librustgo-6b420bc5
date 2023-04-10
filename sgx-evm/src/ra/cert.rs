@@ -1,7 +1,7 @@
 use std::prelude::v1::*;
 use std::time::*;
-use std::vec::Vec;
 use std::untrusted::time::SystemTimeEx;
+use std::vec::Vec;
 use std::{ptr, str};
 
 use sgx_tcrypto::*;
@@ -106,7 +106,10 @@ pub fn gen_ecc_cert(
                 // Validity: Issuing/Expiring Time (unused but required)
                 let now = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
                 let issue_ts = TzUtc.timestamp(now.as_secs() as i64, 0);
-                let expire = now + Duration::days(super::consts::CERTEXPIRYDAYS).to_std().unwrap();
+                let expire = now
+                    + Duration::days(super::consts::CERTEXPIRYDAYS)
+                        .to_std()
+                        .unwrap();
                 let expire_ts = TzUtc.timestamp(expire.as_secs() as i64, 0);
                 writer.next().write_sequence(|writer| {
                     writer
@@ -457,8 +460,9 @@ pub fn verify_mra_cert(cert_der: &[u8]) -> Result<(), sgx_status_t> {
 pub fn verify_ra_cert(
     cert_der: &[u8],
     override_verify_type: Option<SigningMethod>,
-) -> Result<Vec<u8>, sgx_status_t> {
-    let report = super::report::AttestationReport::from_cert(cert_der).map_err(|_| sgx_status_t::SGX_ERROR_UNEXPECTED)?;
+) -> Result<Vec<u8>, super::types::AuthResult> {
+    let report = super::report::AttestationReport::from_cert(cert_der)
+        .map_err(|_| super::types::AuthResult::InvalidCert)?;
 
     // this is a small hack - override_verify_type is only used when verifying the master certificate
     // and in that case we don't care about checking vulns etc. Master certificate will also have
@@ -483,7 +487,7 @@ pub fn verify_ra_cert(
                     "received: {:?} \n expected: {:?}",
                     report.sgx_quote_body.isv_enclave_report.mr_enclave, this_mr_enclave
                 );
-                return Err(sgx_status_t::SGX_ERROR_UNEXPECTED);
+                return Err(super::types::AuthResult::MrEnclaveMismatch);
             }
         }
         SigningMethod::MRSIGNER => {
@@ -493,7 +497,7 @@ pub fn verify_ra_cert(
                     "received: {:?} \n expected: {:?}",
                     report.sgx_quote_body.isv_enclave_report.mr_signer, MRSIGNER
                 );
-                return Err(sgx_status_t::SGX_ERROR_UNEXPECTED);
+                return Err(super::types::AuthResult::MrSignerMismatch);
             }
         }
         SigningMethod::NONE => {}
@@ -529,4 +533,77 @@ pub fn get_ias_auth_config() -> (Vec<u8>, rustls::RootCertStore) {
         .expect("Failed to add CA");
 
     (ias_cert_dec, root_store)
+}
+
+fn extract_asn1_value(cert: &[u8], oid: &[u8]) -> Result<Vec<u8>, Error> {
+    let mut offset = match cert.windows(oid.len()).position(|window| window == oid) {
+        Some(size) => size,
+        None => {
+            return Err(Error::GenericError);
+        }
+    };
+
+    offset += 12; // 11 + TAG (0x04)
+
+    if offset + 2 >= cert.len() {
+        return Err(Error::GenericError);
+    }
+
+    // Obtain Netscape Comment length
+    let mut len = cert[offset] as usize;
+    if len > 0x80 {
+        len = (cert[offset + 1] as usize) * 0x100 + (cert[offset + 2] as usize);
+        offset += 2;
+    }
+
+    // Obtain Netscape Comment
+    offset += 1;
+
+    if offset + len >= cert.len() {
+        return Err(Error::GenericError);
+    }
+
+    let payload = cert[offset..offset + len].to_vec();
+
+    Ok(payload)
+}
+
+pub fn verify_quote_status(
+    report: &super::report::AttestationReport,
+    advisories: &super::report::AdvisoryIDs,
+) -> Result<super::types::AuthResult, super::types::AuthResult> {
+    match &report.sgx_quote_status {
+        super::report::SgxQuoteStatus::OK
+        | super::report::SgxQuoteStatus::SwHardeningNeeded
+        | super::report::SgxQuoteStatus::ConfigurationAndSwHardeningNeeded => {
+            check_advisories(&report.sgx_quote_status, advisories)?;
+
+            Ok(super::types::AuthResult::Success)
+        }
+        _ => {
+            println!(
+                "Invalid attestation quote status - cannot verify remote node: {:?}",
+                &report.sgx_quote_status
+            );
+            Err(super::types::AuthResult::from(&report.sgx_quote_status))
+        }
+    }
+}
+
+fn check_advisories(
+    quote_status: &super::report::SgxQuoteStatus,
+    advisories: &super::report::AdvisoryIDs,
+) -> Result<(), super::types::AuthResult> {
+    // this checks if there are any vulnerabilities that are not on in the whitelisted list
+    let vulnerable = advisories.vulnerable();
+    if vulnerable.is_empty() {
+        Ok(())
+    } else {
+        println!("Platform is updated but requires further BIOS configuration");
+        println!(
+            "The following vulnerabilities must be mitigated: {:?}",
+            vulnerable
+        );
+        Err(super::types::AuthResult::from(quote_status))
+    }
 }

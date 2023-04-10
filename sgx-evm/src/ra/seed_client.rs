@@ -1,20 +1,13 @@
-use sgx_rand::*;
 use sgx_tcrypto::*;
-use sgx_tse::*;
 use sgx_types::*;
-use std::backtrace::{self, PrintFormat};
 
-use itertools::Itertools;
 use rustls;
 use std::io;
 use std::io::{Read, Write};
 use std::net::TcpStream;
 use std::prelude::v1::*;
-use std::ptr;
 use std::str;
-use std::string::String;
 use std::sync::Arc;
-use std::untrusted::fs;
 use std::vec::Vec;
 
 #[no_mangle]

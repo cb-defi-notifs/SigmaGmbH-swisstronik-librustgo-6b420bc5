@@ -8,6 +8,7 @@ name = "enclave"
 crate-type = ["staticlib"]
 
 [dependencies]
+derive_more = "0.99"
 uuid = "0.8.1"
 serde = { git = "https://github.com/mesalock-linux/serde-sgx", features = ["derive"] }
 errno = { version = "0.2.8", default-features=false }

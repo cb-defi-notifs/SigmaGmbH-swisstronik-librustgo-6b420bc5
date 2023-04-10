@@ -1,7 +1,6 @@
 /// This file contains signatures of `OCALL` functions
 use crate::{querier::GoQuerier, Allocation, AllocationWithResult};
 use sgx_types::sgx_status_t;
-use core::slice;
 use sgx_types::*;
 use std::vec::Vec;
 
