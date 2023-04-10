@@ -1,12 +1,12 @@
 use std::prelude::v1::*;
 use std::time::*;
+use std::vec::Vec;
 use std::untrusted::time::SystemTimeEx;
 use std::{ptr, str};
 
 use sgx_tcrypto::*;
 use sgx_types::*;
 
-use super::CERTEXPIRYDAYS;
 use base64;
 use bit_vec::BitVec;
 use chrono::prelude::*;
@@ -23,6 +23,8 @@ use webpki;
 use yasna;
 use yasna::models::ObjectIdentifier;
 
+use super::consts::*;
+
 extern "C" {
     #[allow(dead_code)]
     pub fn ocall_get_update_info(
@@ -33,8 +35,12 @@ extern "C" {
     ) -> sgx_status_t;
 }
 
+pub enum Error {
+    GenericError,
+}
+
 type SignatureAlgorithms = &'static [&'static webpki::SignatureAlgorithm];
-static SUPPORTED_SIG_ALGS: SignatureAlgorithms = &[
+pub static SUPPORTED_SIG_ALGS: SignatureAlgorithms = &[
     &webpki::ECDSA_P256_SHA256,
     &webpki::ECDSA_P256_SHA384,
     &webpki::ECDSA_P384_SHA256,
@@ -100,7 +106,7 @@ pub fn gen_ecc_cert(
                 // Validity: Issuing/Expiring Time (unused but required)
                 let now = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
                 let issue_ts = TzUtc.timestamp(now.as_secs() as i64, 0);
-                let expire = now + Duration::days(CERTEXPIRYDAYS).to_std().unwrap();
+                let expire = now + Duration::days(super::consts::CERTEXPIRYDAYS).to_std().unwrap();
                 let expire_ts = TzUtc.timestamp(expire.as_secs() as i64, 0);
                 writer.next().write_sequence(|writer| {
                     writer
@@ -437,4 +443,70 @@ pub fn verify_mra_cert(cert_der: &[u8]) -> Result<(), sgx_status_t> {
     }
 
     Ok(())
+}
+
+/// # Verifies remote attestation cert
+///
+/// Logic:
+/// 1. Extract public key
+/// 2. Extract netscape comment - where the attestation report is located
+/// 3. Parse the report itself (verify it is signed by intel)
+/// 4. Extract public key from report body
+/// 5. Verify enclave signature (mr enclave/signer)
+///
+pub fn verify_ra_cert(
+    cert_der: &[u8],
+    override_verify_type: Option<SigningMethod>,
+) -> Result<Vec<u8>, sgx_status_t> {
+    let report = super::report::AttestationReport::from_cert(cert_der).map_err(|_| sgx_status_t::SGX_ERROR_UNEXPECTED)?;
+
+    // this is a small hack - override_verify_type is only used when verifying the master certificate
+    // and in that case we don't care about checking vulns etc. Master certificate will also have
+    // a bad GID in prod, so there's no reason to verify it
+    if override_verify_type.is_none() {
+        verify_quote_status(&report, &report.advisory_ids)?;
+    }
+
+    let signing_method: SigningMethod = match override_verify_type {
+        Some(method) => method,
+        None => super::consts::SIGNING_METHOD,
+    };
+
+    // verify certificate
+    match signing_method {
+        SigningMethod::MRENCLAVE => {
+            let this_mr_enclave = super::get_mr_enclave();
+
+            if report.sgx_quote_body.isv_enclave_report.mr_enclave != this_mr_enclave {
+                println!("Got a different mr_enclave than expected. Invalid certificate");
+                println!(
+                    "received: {:?} \n expected: {:?}",
+                    report.sgx_quote_body.isv_enclave_report.mr_enclave, this_mr_enclave
+                );
+                return Err(sgx_status_t::SGX_ERROR_UNEXPECTED);
+            }
+        }
+        SigningMethod::MRSIGNER => {
+            if report.sgx_quote_body.isv_enclave_report.mr_signer != MRSIGNER {
+                println!("Got a different mrsigner than expected. Invalid certificate");
+                println!(
+                    "received: {:?} \n expected: {:?}",
+                    report.sgx_quote_body.isv_enclave_report.mr_signer, MRSIGNER
+                );
+                return Err(sgx_status_t::SGX_ERROR_UNEXPECTED);
+            }
+        }
+        SigningMethod::NONE => {}
+    }
+
+    let report_public_key = report.sgx_quote_body.isv_enclave_report.report_data[0..32].to_vec();
+    Ok(report_public_key)
+}
+
+pub fn get_netscape_comment(cert_der: &[u8]) -> Result<Vec<u8>, Error> {
+    // Search for Netscape Comment OID
+    let ns_cmt_oid = &[
+        0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x86, 0xF8, 0x42, 0x01, 0x0D,
+    ];
+    extract_asn1_value(cert_der, ns_cmt_oid)
 }

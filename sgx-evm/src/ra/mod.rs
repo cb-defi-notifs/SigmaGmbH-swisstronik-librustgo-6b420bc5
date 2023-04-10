@@ -1,5 +1,6 @@
 use sgx_types::*;
 use std::slice;
+use sgx_tse::{rsgx_create_report, rsgx_self_report, rsgx_verify_report};
 
 pub mod cert;
 pub mod hex;
@@ -7,11 +8,12 @@ pub mod keychain;
 pub mod seed_server;
 pub mod seed_client;
 pub mod utils;
+pub mod consts;
+pub mod report;
 
-pub const DEV_HOSTNAME: &'static str = "api.trustedservices.intel.com";
-pub const SIGRL_SUFFIX: &'static str = "/sgx/dev/attestation/v4/sigrl/";
-pub const REPORT_SUFFIX: &'static str = "/sgx/dev/attestation/v4/report";
-pub const CERTEXPIRYDAYS: i64 = 90i64;
+pub fn get_mr_enclave() -> [u8; 32] {
+    rsgx_self_report().body.mr_enclave.m
+}
 
 #[no_mangle]
 /// Handles initialization of a new seed node.

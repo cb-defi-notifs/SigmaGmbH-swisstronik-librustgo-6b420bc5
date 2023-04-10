@@ -160,13 +160,13 @@ pub fn get_sigrl_from_intel(fd: c_int, gid: u32) -> Vec<u8> {
     let ias_key = get_ias_api_key();
 
     let req = format!("GET {}{:08x} HTTP/1.1\r\nHOST: {}\r\nOcp-Apim-Subscription-Key: {}\r\nConnection: Close\r\n\r\n",
-                        super::SIGRL_SUFFIX,
+                        super::consts::SIGRL_SUFFIX,
                         gid,
-                        super::DEV_HOSTNAME,
+                        super::consts::DEV_HOSTNAME,
                         ias_key);
     println!("{}", req);
 
-    let dns_name = webpki::DNSNameRef::try_from_ascii_str(super::DEV_HOSTNAME).unwrap();
+    let dns_name = webpki::DNSNameRef::try_from_ascii_str(super::consts::DEV_HOSTNAME).unwrap();
     let mut sess = rustls::ClientSession::new(&Arc::new(config), dns_name);
     let mut sock = TcpStream::new(fd).unwrap();
     let mut tls = rustls::Stream::new(&mut sess, &mut sock);
@@ -201,13 +201,13 @@ pub fn get_report_from_intel(fd: c_int, quote: Vec<u8>) -> SgxResult<(String, St
     let ias_key = get_ias_api_key();
 
     let req = format!("POST {} HTTP/1.1\r\nHOST: {}\r\nOcp-Apim-Subscription-Key:{}\r\nContent-Length:{}\r\nContent-Type: application/json\r\nConnection: close\r\n\r\n{}",
-                           super::REPORT_SUFFIX,
-                           super::DEV_HOSTNAME,
+                           super::consts::REPORT_SUFFIX,
+                           super::consts::DEV_HOSTNAME,
                            ias_key,
                            encoded_json.len(),
                            encoded_json);
     println!("{}", req);
-    let dns_name = webpki::DNSNameRef::try_from_ascii_str(super::DEV_HOSTNAME).unwrap();
+    let dns_name = webpki::DNSNameRef::try_from_ascii_str(super::consts::DEV_HOSTNAME).unwrap();
     let mut sess = rustls::ClientSession::new(&Arc::new(config), dns_name);
     let mut sock = TcpStream::new(fd).unwrap();
     let mut tls = rustls::Stream::new(&mut sess, &mut sock);
