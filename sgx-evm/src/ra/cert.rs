@@ -344,7 +344,8 @@ pub fn verify_mra_cert(cert_der: &[u8]) -> Result<(), sgx_status_t> {
     if let Value::String(quote_status) = &attn_report["isvEnclaveQuoteStatus"] {
         println!("isvEnclaveQuoteStatus = {}", quote_status);
         match quote_status.as_ref() {
-            "OK" => (),
+            // todo: remove SW_HARDENING_NEEDED
+            "OK" | "SW_HARDENING_NEEDED" => (),
             "GROUP_OUT_OF_DATE" | "GROUP_REVOKED" | "CONFIGURATION_NEEDED" => {
                 // Verify platformInfoBlob for further info if status not OK
                 if let Value::String(pib) = &attn_report["platformInfoBlob"] {

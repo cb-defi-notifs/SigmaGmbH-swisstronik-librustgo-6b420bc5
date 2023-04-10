@@ -181,8 +181,6 @@ func Listen(addr string, maxOpenConnections int) (net.Listener, error) {
 
 // RequestSeed handles request of seed from seed server
 func RequestSeed(addr string) error {
-
-	// TODO: Establish connection to seed server
 	conn, err := net.Dial("tcp", addr)
 	if err != nil {
 		fmt.Println("Cannot establish connection with seed server. Reason: ", err.Error())
