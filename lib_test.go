@@ -127,7 +127,7 @@ func _TestCall(t *testing.T) {
 func TestSeedExchange(t *testing.T) {
 	addr := "127.0.0.1:8999"
 	defaultTimeout := 10 * time.Second
-	_, _, err := api.StartSeedServer(addr, defaultTimeout, defaultTimeout, defaultTimeout, defaultTimeout, true, 50)
+	err := api.StartSeedServer(addr, defaultTimeout, defaultTimeout, defaultTimeout, defaultTimeout, true, 50)
 	if err != nil {
 		t.Fail()
 	}
