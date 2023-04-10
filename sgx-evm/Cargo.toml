@@ -9,7 +9,7 @@ crate-type = ["staticlib"]
 
 [dependencies]
 derive_more = "0.99"
-uuid = "0.8.1"
+uuid = { version = "0.8.1", default-features=false }
 serde = { git = "https://github.com/mesalock-linux/serde-sgx", features = ["derive"] }
 errno = { version = "0.2.8", default-features=false }
 thiserror-no-std = "2.0.2"
