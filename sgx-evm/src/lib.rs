@@ -136,14 +136,14 @@ pub extern "C" fn handle_request(
                     return AllocationWithResult::default();
                 }
             };
-            
+
             let mut ocall_result = std::mem::MaybeUninit::<Allocation>::uninit();
-            let sgx_result = unsafe { 
+            let sgx_result = unsafe {
                 ocall::ocall_allocate(
                     ocall_result.as_mut_ptr(),
                     encoded_response.as_ptr(),
                     encoded_response.len()
-                ) 
+                )
             };
             match sgx_result {
                 sgx_status_t::SGX_SUCCESS => {
