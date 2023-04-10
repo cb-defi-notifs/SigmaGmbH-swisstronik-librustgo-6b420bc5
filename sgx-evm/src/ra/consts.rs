@@ -14,3 +14,5 @@ pub const REPORT_SUFFIX: &'static str = "/sgx/dev/attestation/v4/report";
 pub const CERTEXPIRYDAYS: i64 = 90i64;
 
 pub const SIGNING_METHOD: SigningMethod = SigningMethod::MRSIGNER;
+
+pub const PUBLIC_KEY_SIZE: usize = 32;

@@ -466,16 +466,15 @@ impl rustls::ClientCertVerifier for ClientAuth {
 
     fn verify_client_cert(
         &self,
-        _certs: &[rustls::Certificate],
+        certs: &[rustls::Certificate],
         _sni: Option<&webpki::DNSName>,
     ) -> Result<rustls::ClientCertVerified, rustls::TLSError> {
-        println!("client cert: {:?}", _certs);
         // This call will automatically verify cert is properly signed
-        match super::cert::verify_mra_cert(&_certs[0].0) {
-            Ok(()) => {
+        match super::cert::verify_ra_cert(&certs[0].0, None) {
+            Ok(_) => {
                 return Ok(rustls::ClientCertVerified::assertion());
-            }
-            Err(sgx_status_t::SGX_ERROR_UPDATE_NEEDED) => {
+            },
+            Err(super::types::AuthResult::SwHardeningAndConfigurationNeeded) => {
                 if self.outdated_ok {
                     println!("outdated_ok is set, overriding outdated error");
                     return Ok(rustls::ClientCertVerified::assertion());
@@ -510,17 +509,16 @@ impl rustls::ServerCertVerifier for ServerAuth {
     fn verify_server_cert(
         &self,
         _roots: &rustls::RootCertStore,
-        _certs: &[rustls::Certificate],
+        certs: &[rustls::Certificate],
         _hostname: webpki::DNSNameRef,
         _ocsp: &[u8],
     ) -> Result<rustls::ServerCertVerified, rustls::TLSError> {
-        println!("server cert: {:?}", _certs);
         // This call will automatically verify cert is properly signed
-        match super::cert::verify_mra_cert(&_certs[0].0) {
-            Ok(()) => {
+        match super::cert::verify_ra_cert(&certs[0].0, None) {
+            Ok(_) => {
                 return Ok(rustls::ServerCertVerified::assertion());
             }
-            Err(sgx_status_t::SGX_ERROR_UPDATE_NEEDED) => {
+            Err(super::types::AuthResult::SwHardeningAndConfigurationNeeded) => {
                 if self.outdated_ok {
                     println!("outdated_ok is set, overriding outdated error");
                     return Ok(rustls::ServerCertVerified::assertion());
