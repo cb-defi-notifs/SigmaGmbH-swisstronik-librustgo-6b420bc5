@@ -146,6 +146,8 @@ impl AttestationReport {
         // Convert to endorsed report
         let report: EndorsedAttestationReport = serde_json::from_slice(&payload)?;
 
+        println!("DEBUG from_cert");
+
         // Verify report's signature - aka intel's signing cert
         let signing_cert = webpki::EndEntityCert::from(&report.signing_cert).map_err(|_err| {
             println!("Failed to validate signature");

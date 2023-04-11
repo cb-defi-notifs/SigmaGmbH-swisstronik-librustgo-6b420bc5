@@ -64,12 +64,12 @@ pub fn gen_ecc_cert(
     prv_k: &sgx_ec256_private_t,
     pub_k: &sgx_ec256_public_t,
     ecc_handle: &SgxEccHandle,
-) -> Result<(Vec<u8>, Vec<u8>), sgx_status_t> {
+) -> SgxResult<(Vec<u8>, Vec<u8>)> {
     // Generate public key bytes since both DER will use it
     let mut pub_key_bytes: Vec<u8> = vec![4];
-    let mut pk_gx = pub_k.gx.clone();
+    let mut pk_gx = pub_k.gx;
     pk_gx.reverse();
-    let mut pk_gy = pub_k.gy.clone();
+    let mut pk_gy = pub_k.gy;
     pk_gy.reverse();
     pub_key_bytes.extend_from_slice(&pk_gx);
     pub_key_bytes.extend_from_slice(&pk_gy);
@@ -99,17 +99,14 @@ pub fn gen_ecc_cert(
                             writer
                                 .next()
                                 .write_oid(&ObjectIdentifier::from_slice(&[2, 5, 4, 3]));
-                            writer.next().write_utf8_string(&ISSUER);
+                            writer.next().write_utf8_string(ISSUER);
                         });
                     });
                 });
                 // Validity: Issuing/Expiring Time (unused but required)
                 let now = SystemTime::now().duration_since(UNIX_EPOCH).unwrap();
                 let issue_ts = TzUtc.timestamp(now.as_secs() as i64, 0);
-                let expire = now
-                    + Duration::days(super::consts::CERTEXPIRYDAYS)
-                        .to_std()
-                        .unwrap();
+                let expire = now + Duration::days(CERTEXPIRYDAYS).to_std().unwrap();
                 let expire_ts = TzUtc.timestamp(expire.as_secs() as i64, 0);
                 writer.next().write_sequence(|writer| {
                     writer
@@ -126,7 +123,7 @@ pub fn gen_ecc_cert(
                             writer
                                 .next()
                                 .write_oid(&ObjectIdentifier::from_slice(&[2, 5, 4, 3]));
-                            writer.next().write_utf8_string(&SUBJECT);
+                            writer.next().write_utf8_string(SUBJECT);
                         });
                     });
                 });
@@ -154,7 +151,7 @@ pub fn gen_ecc_cert(
                         writer.write_sequence(|writer| {
                             writer.next().write_sequence(|writer| {
                                 writer.next().write_oid(&ObjectIdentifier::from_slice(&[
-                                    2, 16, 840, 1, 113730, 1, 13,
+                                    2, 16, 840, 1, 113_730, 1, 13,
                                 ]));
                                 writer.next().write_bytes(&payload.into_bytes());
                             });
@@ -170,13 +167,13 @@ pub fn gen_ecc_cert(
             // Signature
             let sig = {
                 let tbs = &writer.buf[4..];
-                ecc_handle.ecdsa_sign_slice(tbs, &prv_k).unwrap()
+                ecc_handle.ecdsa_sign_slice(tbs, prv_k).unwrap()
             };
             let sig_der = yasna::construct_der(|writer| {
                 writer.write_sequence(|writer| {
-                    let mut sig_x = sig.x.clone();
+                    let mut sig_x = sig.x;
                     sig_x.reverse();
-                    let mut sig_y = sig.y.clone();
+                    let mut sig_y = sig.y;
                     sig_y.reverse();
                     writer.next().write_biguint(&BigUint::from_slice(&sig_x));
                     writer.next().write_biguint(&BigUint::from_slice(&sig_y));
@@ -201,7 +198,7 @@ pub fn gen_ecc_cert(
             let inner_key_der = yasna::construct_der(|writer| {
                 writer.write_sequence(|writer| {
                     writer.next().write_u8(1);
-                    let mut prv_k_r = prv_k.r.clone();
+                    let mut prv_k_r = prv_k.r;
                     prv_k_r.reverse();
                     writer.next().write_bytes(&prv_k_r);
                     writer
@@ -461,6 +458,7 @@ pub fn verify_ra_cert(
     cert_der: &[u8],
     override_verify_type: Option<SigningMethod>,
 ) -> Result<Vec<u8>, super::types::AuthResult> {
+    println!("DEBUG verify_ra_cert");
     let report = super::report::AttestationReport::from_cert(cert_der)
         .map_err(|_| super::types::AuthResult::InvalidCert)?;
 

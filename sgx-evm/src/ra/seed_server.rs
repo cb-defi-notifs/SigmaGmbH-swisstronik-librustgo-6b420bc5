@@ -21,16 +21,24 @@ pub unsafe extern "C" fn ecall_start_seed_server(
     let _result = ecc_handle.open();
     let (prv_k, pub_k) = ecc_handle.create_key_pair().unwrap();
 
-    let (attn_report, sig, cert) = match super::utils::create_attestation_report(&pub_k, sign_type)
-    {
+    let signed_report = match super::utils::create_attestation_report(&pub_k, sign_type) {
         Ok(r) => r,
         Err(e) => {
-            println!("Error in create_attestation_report: {:?}", e);
+            println!("Error creating attestation report");
             return;
         }
     };
 
-    let payload = attn_report + "|" + &sig + "|" + &cert;
+    let payload: String = match serde_json::to_string(&signed_report) {
+        Ok(payload) => payload,
+        Err(err) => {
+            println!(
+                "Error serializing report. May be malformed, or badly encoded: {:?}",
+                err
+            );
+            return;
+        }
+    };
     let (key_der, cert_der) = match super::cert::gen_ecc_cert(payload, &prv_k, &pub_k, &ecc_handle)
     {
         Ok(r) => r,

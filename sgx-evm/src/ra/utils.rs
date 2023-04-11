@@ -234,7 +234,7 @@ fn as_u32_le(array: &[u8; 4]) -> u32 {
 pub fn create_attestation_report(
     pub_k: &sgx_ec256_public_t,
     sign_type: sgx_quote_sign_type_t,
-) -> SgxResult<(String, String, String)> {
+) -> Result<super::report::EndorsedAttestationReport, sgx_status_t> {
     // Workflow:
     // (1) ocall to get the target_info structure (ti) and epid group id (eg)
     // (1.5) get sigrl
@@ -254,7 +254,7 @@ pub fn create_attestation_report(
         )
     };
 
-    println!("eg = {:?}", eg);
+    println!("EPID group = {:?}", eg);
 
     if res != sgx_status_t::SGX_SUCCESS {
         return Err(res);
@@ -281,7 +281,7 @@ pub fn create_attestation_report(
         return Err(rt);
     }
 
-    //println!("Got ias_sock = {}", ias_sock);
+    println!("Got ias_sock successfully = {}", ias_sock);
 
     // Now sigrl_vec is the revocation list, a vec<u8>
     let sigrl_vec: Vec<u8> = get_sigrl_from_intel(ias_sock, eg_num);
@@ -327,7 +327,7 @@ pub fn create_attestation_report(
     //       7. [out]p_qe_report need further check
     //       8. [out]p_quote
     //       9. quote_size
-    let (p_sigrl, sigrl_len) = if sigrl_vec.len() == 0 {
+    let (p_sigrl, sigrl_len) = if sigrl_vec.is_empty() {
         (ptr::null(), 0)
     } else {
         (sigrl_vec.as_ptr(), sigrl_vec.len() as u32)
@@ -361,6 +361,7 @@ pub fn create_attestation_report(
     };
 
     if result != sgx_status_t::SGX_SUCCESS {
+        println!("ocall_get_quote returned {}", result);
         return Err(result);
     }
 
@@ -388,13 +389,12 @@ pub fn create_attestation_report(
         return Err(sgx_status_t::SGX_ERROR_UNEXPECTED);
     }
 
-    println!("qe_report check passed");
+    println!("QE report check passed");
 
     // Debug
     // for i in 0..quote_len {
     //     print!("{:02X}", unsafe {*p_quote.offset(i as isize)});
     // }
-    // println!("");
 
     // Check qe_report to defend against replay attack
     // The purpose of p_qe_report is for the ISV enclave to confirm the QUOTE
@@ -410,8 +410,8 @@ pub fn create_attestation_report(
     let rhs_hash = rsgx_sha256_slice(&rhs_vec[..]).unwrap();
     let lhs_hash = &qe_report.body.report_data.d[..32];
 
-    println!("rhs hash = {:02X}", rhs_hash.iter().format(""));
-    println!("report hs= {:02X}", lhs_hash.iter().format(""));
+    println!("Report rhs hash = {:02X}", rhs_hash.iter().format(""));
+    println!("Report lhs hash = {:02X}", lhs_hash.iter().format(""));
 
     if rhs_hash != lhs_hash {
         println!("Quote is tampered!");
@@ -431,7 +431,13 @@ pub fn create_attestation_report(
         return Err(rt);
     }
 
-    get_report_from_intel(ias_sock, quote_vec)
+    let (attn_report, signature, signing_cert) =
+        get_report_from_intel(ias_sock, quote_vec)?;
+    Ok(super::report::EndorsedAttestationReport {
+        report: attn_report.into_bytes(),
+        signature,
+        signing_cert,
+    })
 }
 
 fn load_spid(filename: &str) -> sgx_spid_t {
@@ -469,12 +475,14 @@ impl rustls::ClientCertVerifier for ClientAuth {
         certs: &[rustls::Certificate],
         _sni: Option<&webpki::DNSName>,
     ) -> Result<rustls::ClientCertVerified, rustls::TLSError> {
+        println!("DEBUG CLIENT");
         // This call will automatically verify cert is properly signed
         match super::cert::verify_ra_cert(&certs[0].0, None) {
             Ok(_) => {
                 return Ok(rustls::ClientCertVerified::assertion());
             },
             Err(super::types::AuthResult::SwHardeningAndConfigurationNeeded) => {
+                println!("Hardening needed");
                 if self.outdated_ok {
                     println!("outdated_ok is set, overriding outdated error");
                     return Ok(rustls::ClientCertVerified::assertion());
@@ -514,7 +522,8 @@ impl rustls::ServerCertVerifier for ServerAuth {
         _ocsp: &[u8],
     ) -> Result<rustls::ServerCertVerified, rustls::TLSError> {
         // This call will automatically verify cert is properly signed
-        match super::cert::verify_ra_cert(&certs[0].0, None) {
+        let res = super::cert::verify_ra_cert(&certs[0].0, None);
+        match res {
             Ok(_) => {
                 return Ok(rustls::ServerCertVerified::assertion());
             }
