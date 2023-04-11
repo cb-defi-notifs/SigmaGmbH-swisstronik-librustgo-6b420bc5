@@ -13,6 +13,8 @@ use std::string::String;
 use std::sync::Arc;
 use std::vec::Vec;
 
+use super::consts::*;
+
 fn parse_response_attn_report(resp: &[u8]) -> SgxResult<(String, Vec<u8>, Vec<u8>)> {
     println!("[Attestation] parse_response_attn_report");
     let mut headers = [httparse::EMPTY_HEADER; 16];
@@ -159,9 +161,9 @@ pub fn get_sigrl_from_intel(fd: c_int, gid: u32) -> Vec<u8> {
     let ias_key = get_ias_api_key();
 
     let req = format!("GET {}{:08x} HTTP/1.1\r\nHOST: {}\r\nOcp-Apim-Subscription-Key: {}\r\nConnection: Close\r\n\r\n",
-                        super::consts::SIGRL_SUFFIX,
+                        SIGRL_SUFFIX,
                         gid,
-                        super::consts::DEV_HOSTNAME,
+                        DEV_HOSTNAME,
                         ias_key);
     println!("{}", req);
 
@@ -200,8 +202,8 @@ pub fn get_report_from_intel(fd: c_int, quote: Vec<u8>) -> SgxResult<(String, Ve
     let ias_key = get_ias_api_key();
 
     let req = format!("POST {} HTTP/1.1\r\nHOST: {}\r\nOcp-Apim-Subscription-Key:{}\r\nContent-Length:{}\r\nContent-Type: application/json\r\nConnection: close\r\n\r\n{}",
-                           super::consts::REPORT_SUFFIX,
-                           super::consts::DEV_HOSTNAME,
+                           REPORT_SUFFIX,
+                           DEV_HOSTNAME,
                            ias_key,
                            encoded_json.len(),
                            encoded_json);
