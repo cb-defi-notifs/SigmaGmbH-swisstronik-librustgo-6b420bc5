@@ -1,16 +1,12 @@
-use crate::errors::GoError;
 use crate::errors::{handle_c_error_default, Error};
-use crate::memory::{ByteSliceView, U8SliceView, UnmanagedVector};
-use crate::protobuf_generated::{self, node};
+use crate::memory::{ByteSliceView, UnmanagedVector};
+use crate::protobuf_generated::node;
 use crate::types::{Allocation, AllocationWithResult, GoQuerier};
 
 use protobuf::Message;
 use sgx_types::*;
 use sgx_urts::SgxEnclave;
-use std::net::{SocketAddr, TcpListener, TcpStream};
-use std::os::unix::io::{AsRawFd, IntoRawFd};
 use std::panic::catch_unwind;
-use std::slice;
 
 static ENCLAVE_FILE: &'static str = "/tmp/enclave.signed.so";
 pub static mut ENCLAVE_ID: Option<sgx_types::sgx_enclave_id_t> = None;

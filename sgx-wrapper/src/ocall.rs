@@ -5,7 +5,6 @@ use crate::memory::{U8SliceView, UnmanagedVector};
 use crate::types::{Allocation, AllocationWithResult, GoQuerier};
 
 use sgx_types::*;
-use sgx_urts::SgxEnclave;
 use std::net::{SocketAddr, TcpStream};
 use std::os::unix::io::IntoRawFd;
 use std::slice;
