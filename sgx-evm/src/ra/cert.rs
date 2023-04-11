@@ -6,6 +6,7 @@ use std::{ptr, str};
 
 use sgx_tcrypto::*;
 use sgx_types::*;
+use sgx_tse::rsgx_self_report;
 
 use base64;
 use bit_vec::BitVec;
@@ -24,6 +25,8 @@ use yasna;
 use yasna::models::ObjectIdentifier;
 
 use super::consts::*;
+use super::types::AuthResult;
+use super::report::*;
 
 extern "C" {
     #[allow(dead_code)]
@@ -58,6 +61,10 @@ pub const IAS_REPORT_CA: &[u8] = include_bytes!("../../AttestationReportSigningC
 
 const ISSUER: &str = "MesaTEE";
 const SUBJECT: &str = "MesaTEE";
+
+pub fn get_mr_enclave() -> [u8; 32] {
+    rsgx_self_report().body.mr_enclave.m
+}
 
 pub fn gen_ecc_cert(
     payload: String,
@@ -227,9 +234,9 @@ pub fn gen_ecc_cert(
 pub fn verify_ra_cert(
     cert_der: &[u8],
     override_verify_type: Option<SigningMethod>,
-) -> Result<Vec<u8>, super::types::AuthResult> {
-    let report = super::report::AttestationReport::from_cert(cert_der)
-        .map_err(|_| super::types::AuthResult::InvalidCert)?;
+) -> Result<Vec<u8>, AuthResult> {
+    let report = AttestationReport::from_cert(cert_der)
+        .map_err(|_| AuthResult::InvalidCert)?;
 
     // this is a small hack - override_verify_type is only used when verifying the master certificate
     // and in that case we don't care about checking vulns etc. Master certificate will also have
@@ -240,13 +247,13 @@ pub fn verify_ra_cert(
 
     let signing_method: SigningMethod = match override_verify_type {
         Some(method) => method,
-        None => super::consts::SIGNING_METHOD,
+        None => SIGNING_METHOD,
     };
 
     // verify certificate
     match signing_method {
         SigningMethod::MRENCLAVE => {
-            let this_mr_enclave = super::get_mr_enclave();
+            let this_mr_enclave = get_mr_enclave();
 
             if report.sgx_quote_body.isv_enclave_report.mr_enclave != this_mr_enclave {
                 println!("Got a different mr_enclave than expected. Invalid certificate");
@@ -254,7 +261,7 @@ pub fn verify_ra_cert(
                     "received: {:?} \n expected: {:?}",
                     report.sgx_quote_body.isv_enclave_report.mr_enclave, this_mr_enclave
                 );
-                return Err(super::types::AuthResult::MrEnclaveMismatch);
+                return Err(AuthResult::MrEnclaveMismatch);
             }
         }
         SigningMethod::MRSIGNER => {
@@ -264,7 +271,7 @@ pub fn verify_ra_cert(
                     "received: {:?} \n expected: {:?}",
                     report.sgx_quote_body.isv_enclave_report.mr_signer, MRSIGNER
                 );
-                return Err(super::types::AuthResult::MrSignerMismatch);
+                return Err(AuthResult::MrSignerMismatch);
             }
         }
         SigningMethod::NONE => {}
@@ -336,31 +343,31 @@ fn extract_asn1_value(cert: &[u8], oid: &[u8]) -> Result<Vec<u8>, Error> {
 }
 
 pub fn verify_quote_status(
-    report: &super::report::AttestationReport,
-    advisories: &super::report::AdvisoryIDs,
-) -> Result<super::types::AuthResult, super::types::AuthResult> {
+    report: &AttestationReport,
+    advisories: &AdvisoryIDs,
+) -> Result<AuthResult, AuthResult> {
     match &report.sgx_quote_status {
-        super::report::SgxQuoteStatus::OK
-        | super::report::SgxQuoteStatus::SwHardeningNeeded
-        | super::report::SgxQuoteStatus::ConfigurationAndSwHardeningNeeded => {
+        SgxQuoteStatus::OK | 
+        SgxQuoteStatus::SwHardeningNeeded | 
+        SgxQuoteStatus::ConfigurationAndSwHardeningNeeded => {
             check_advisories(&report.sgx_quote_status, advisories)?;
 
-            Ok(super::types::AuthResult::Success)
+            Ok(AuthResult::Success)
         }
         _ => {
             println!(
                 "Invalid attestation quote status - cannot verify remote node: {:?}",
                 &report.sgx_quote_status
             );
-            Err(super::types::AuthResult::from(&report.sgx_quote_status))
+            Err(AuthResult::from(&report.sgx_quote_status))
         }
     }
 }
 
 fn check_advisories(
-    quote_status: &super::report::SgxQuoteStatus,
-    advisories: &super::report::AdvisoryIDs,
-) -> Result<(), super::types::AuthResult> {
+    quote_status: &SgxQuoteStatus,
+    advisories: &AdvisoryIDs,
+) -> Result<(), AuthResult> {
     // this checks if there are any vulnerabilities that are not on in the whitelisted list
     let vulnerable = advisories.vulnerable();
     if vulnerable.is_empty() {
@@ -371,6 +378,6 @@ fn check_advisories(
             "The following vulnerabilities must be mitigated: {:?}",
             vulnerable
         );
-        Err(super::types::AuthResult::from(quote_status))
+        Err(AuthResult::from(quote_status))
     }
 }

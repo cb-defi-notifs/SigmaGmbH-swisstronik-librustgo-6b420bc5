@@ -9,6 +9,9 @@ use serde_json::Value;
 use lazy_static::lazy_static;
 use uuid::Uuid;
 
+use super::types::AuthResult;
+use super::cert::*;
+
 /// AttestationReport can be endorsed by either the Intel Attestation Service
 /// using EPID or Data Center Attestation
 /// Service (platform dependent) using ECDSA.
@@ -138,7 +141,7 @@ impl AttestationReport {
     // just unused in SW mode
     #[allow(dead_code)]
     pub fn from_cert(cert: &[u8]) -> Result<Self, Error> {
-        let payload = super::cert::get_netscape_comment(cert).map_err(|_err| {
+        let payload = get_netscape_comment(cert).map_err(|_err| {
             println!("Failed to get netscape comment");
             Error::ReportParseError
         })?;
@@ -152,7 +155,7 @@ impl AttestationReport {
             Error::ReportParseError
         })?;
 
-        let (ias_cert, root_store) = super::cert::get_ias_auth_config();
+        let (ias_cert, root_store) = get_ias_auth_config();
 
         let trust_anchors: Vec<webpki::TrustAnchor> = root_store
             .roots
@@ -169,7 +172,7 @@ impl AttestationReport {
         // ourselves. We also can't just ignore the error message, since that means that the rest of
         // the validation didn't happen (time is validated early on)
         match signing_cert.verify_is_valid_tls_server_cert(
-            super::cert::SUPPORTED_SIG_ALGS,
+            SUPPORTED_SIG_ALGS,
             &webpki::TLSServerTrustAnchors(&trust_anchors),
             &chain,
             time_stamp,
@@ -347,19 +350,19 @@ pub enum SgxQuoteStatus {
     UnknownBadStatus,
 }
 
-impl From<&SgxQuoteStatus> for super::types::AuthResult {
+impl From<&SgxQuoteStatus> for AuthResult {
     fn from(status: &SgxQuoteStatus) -> Self {
         match status {
             SgxQuoteStatus::ConfigurationAndSwHardeningNeeded => {
-                super::types::AuthResult::SwHardeningAndConfigurationNeeded
+                AuthResult::SwHardeningAndConfigurationNeeded
             }
-            SgxQuoteStatus::ConfigurationNeeded => super::types::AuthResult::ConfigurationNeeded,
-            SgxQuoteStatus::GroupOutOfDate => super::types::AuthResult::GroupOutOfDate,
-            SgxQuoteStatus::KeyRevoked => super::types::AuthResult::KeyRevoked,
-            SgxQuoteStatus::SigrlVersionMismatch => super::types::AuthResult::SigrlVersionMismatch,
-            SgxQuoteStatus::SignatureRevoked => super::types::AuthResult::SignatureRevoked,
-            SgxQuoteStatus::GroupRevoked => super::types::AuthResult::GroupRevoked,
-            _ => super::types::AuthResult::BadQuoteStatus,
+            SgxQuoteStatus::ConfigurationNeeded => AuthResult::ConfigurationNeeded,
+            SgxQuoteStatus::GroupOutOfDate => AuthResult::GroupOutOfDate,
+            SgxQuoteStatus::KeyRevoked => AuthResult::KeyRevoked,
+            SgxQuoteStatus::SigrlVersionMismatch => AuthResult::SigrlVersionMismatch,
+            SgxQuoteStatus::SignatureRevoked => AuthResult::SignatureRevoked,
+            SgxQuoteStatus::GroupRevoked => AuthResult::GroupRevoked,
+            _ => AuthResult::BadQuoteStatus,
         }
     }
 }
