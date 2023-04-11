@@ -9,7 +9,7 @@ use serde_json::Value;
 use lazy_static::lazy_static;
 use uuid::Uuid;
 
-use super::types::AuthResult;
+use super::types::{AuthResult, SUPPORTED_SIG_ALGS};
 use super::cert::*;
 
 /// AttestationReport can be endorsed by either the Intel Attestation Service

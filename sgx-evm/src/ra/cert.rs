@@ -25,7 +25,7 @@ use yasna;
 use yasna::models::ObjectIdentifier;
 
 use super::consts::*;
-use super::types::AuthResult;
+use super::types::*;
 use super::report::*;
 
 extern "C" {
@@ -41,21 +41,6 @@ extern "C" {
 pub enum Error {
     GenericError,
 }
-
-type SignatureAlgorithms = &'static [&'static webpki::SignatureAlgorithm];
-pub static SUPPORTED_SIG_ALGS: SignatureAlgorithms = &[
-    &webpki::ECDSA_P256_SHA256,
-    &webpki::ECDSA_P256_SHA384,
-    &webpki::ECDSA_P384_SHA256,
-    &webpki::ECDSA_P384_SHA384,
-    &webpki::RSA_PSS_2048_8192_SHA256_LEGACY_KEY,
-    &webpki::RSA_PSS_2048_8192_SHA384_LEGACY_KEY,
-    &webpki::RSA_PSS_2048_8192_SHA512_LEGACY_KEY,
-    &webpki::RSA_PKCS1_2048_8192_SHA256,
-    &webpki::RSA_PKCS1_2048_8192_SHA384,
-    &webpki::RSA_PKCS1_2048_8192_SHA512,
-    &webpki::RSA_PKCS1_3072_8192_SHA384,
-];
 
 pub const IAS_REPORT_CA: &[u8] = include_bytes!("../../AttestationReportSigningCACert.pem");
 
