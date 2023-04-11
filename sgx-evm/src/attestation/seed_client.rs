@@ -60,11 +60,13 @@ pub extern "C" fn ecall_request_seed(socket_fd: c_int, sign_type: sgx_quote_sign
 
     let mut tls = rustls::Stream::new(&mut sess, &mut conn);
 
+    // TODO: Send registration public key
     tls.write("hello".as_bytes()).unwrap();
 
     let mut plaintext = Vec::new();
     match tls.read_to_end(&mut plaintext) {
         Ok(_) => {
+            // TODO: Server should return encrypted seed
             println!("Server replied: {}", str::from_utf8(&plaintext).unwrap());
         }
         Err(ref err) if err.kind() == io::ErrorKind::ConnectionAborted => {
@@ -72,4 +74,6 @@ pub extern "C" fn ecall_request_seed(socket_fd: c_int, sign_type: sgx_quote_sign
         }
         Err(e) => println!("Error in read_to_end: {:?}", e),
     }
+
+    // TODO: Decrypt seed and seal it
 }

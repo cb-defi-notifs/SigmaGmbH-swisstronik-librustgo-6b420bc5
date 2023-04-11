@@ -44,7 +44,7 @@ extern "C" {
         api_key: *const u8,
     ) -> sgx_status_t;
 
-    pub fn ecall_start_seed_server(
+    pub fn ecall_share_seed(
         eid: sgx_enclave_id_t,
         socket_fd: c_int,
         sign_type: sgx_quote_sign_type_t,
@@ -209,7 +209,7 @@ pub unsafe extern "C" fn handle_initialization_request(
                     node::SetupRequest_oneof_req::startSeedServer(req) => {
                         println!("SGX_WRAPPER: starting seed server");
                         let sign_type = sgx_quote_sign_type_t::SGX_LINKABLE_SIGNATURE;
-                        let res = ecall_start_seed_server(evm_enclave.geteid(), req.fd, sign_type);
+                        let res = ecall_share_seed(evm_enclave.geteid(), req.fd, sign_type);
 
                         match res {
                             sgx_status_t::SGX_SUCCESS => {}

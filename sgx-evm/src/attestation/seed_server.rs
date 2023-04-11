@@ -10,11 +10,11 @@ use std::sync::Arc;
 use std::vec::Vec;
 
 #[no_mangle]
-pub unsafe extern "C" fn ecall_start_seed_server(
+pub unsafe extern "C" fn ecall_share_seed(
     socket_fd: c_int,
     sign_type: sgx_quote_sign_type_t,
 ) {
-    println!("Starting seed server...");
+    println!("Sharing seed...");
 
     // Generate Keypair
     let ecc_handle = SgxEccHandle::new();
@@ -63,7 +63,16 @@ pub unsafe extern "C" fn ecall_start_seed_server(
     let mut tls = rustls::Stream::new(&mut sess, &mut conn);
     let mut plaintext = [0u8; 1024]; //Vec::new();
     match tls.read(&mut plaintext) {
-        Ok(_) => println!("Client said: {}", str::from_utf8(&plaintext).unwrap()),
+        Ok(_) => {
+            /*
+                TODO:
+                1. Get public key from client
+                2. Create encryption key 
+                3. Encrypt seed
+                4. Send to client
+             */
+            println!("Client said: {}", str::from_utf8(&plaintext).unwrap())
+        },
         Err(e) => {
             println!("Error in read_to_end: {:?}", e);
             return;
