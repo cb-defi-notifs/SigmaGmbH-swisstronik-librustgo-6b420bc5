@@ -13,7 +13,7 @@ use std::string::String;
 use std::sync::Arc;
 use std::vec::Vec;
 
-fn parse_response_attn_report(resp: &[u8]) -> SgxResult<(String, String, String)> {
+fn parse_response_attn_report(resp: &[u8]) -> SgxResult<(String, Vec<u8>, Vec<u8>)> {
     println!("[Attestation] parse_response_attn_report");
     let mut headers = [httparse::EMPTY_HEADER; 16];
     let mut respp = httparse::Response::new(&mut headers);
@@ -72,14 +72,14 @@ fn parse_response_attn_report(resp: &[u8]) -> SgxResult<(String, String, String)
 
     // Remove %0A from cert, and only obtain the signing cert
     cert = cert.replace("%0A", "");
-    cert = super::cert::percent_decode(cert);
+    cert = super::hex::percent_decode(cert);
 
     let v: Vec<&str> = cert.split("-----").collect();
+
     if v.len() < 3 {
         println!("Error decoding response from IAS server");
         return Err(sgx_status_t::SGX_ERROR_UNEXPECTED);
     }
-
     let sig_cert = v[2].to_string();
 
     if len_num != 0 {
@@ -89,8 +89,10 @@ fn parse_response_attn_report(resp: &[u8]) -> SgxResult<(String, String, String)
         println!("Attestation report: {}", attn_report);
     }
 
-    // len_num == 0
-    Ok((attn_report, sig, sig_cert))
+    let sig_bytes = base64::decode(&sig).unwrap();
+    let sig_cert_bytes = base64::decode(&sig_cert).unwrap();
+
+    Ok((attn_report, sig_bytes, sig_cert_bytes))
 }
 
 fn parse_response_sigrl(resp: &[u8]) -> Vec<u8> {
@@ -189,7 +191,7 @@ pub fn get_sigrl_from_intel(fd: c_int, gid: u32) -> Vec<u8> {
 }
 
 // TODO: support pse
-pub fn get_report_from_intel(fd: c_int, quote: Vec<u8>) -> SgxResult<(String, String, String)> {
+pub fn get_report_from_intel(fd: c_int, quote: Vec<u8>) -> SgxResult<(String, Vec<u8>, Vec<u8>)> {
     println!("[Attestation] get_report_from_intel fd = {:?}", fd);
     let config = make_ias_client_config();
     let encoded_quote = base64::encode(&quote[..]);
