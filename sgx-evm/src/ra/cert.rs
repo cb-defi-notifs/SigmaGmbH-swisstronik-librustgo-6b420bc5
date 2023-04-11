@@ -228,7 +228,6 @@ pub fn verify_ra_cert(
     cert_der: &[u8],
     override_verify_type: Option<SigningMethod>,
 ) -> Result<Vec<u8>, super::types::AuthResult> {
-    println!("DEBUG verify_ra_cert");
     let report = super::report::AttestationReport::from_cert(cert_der)
         .map_err(|_| super::types::AuthResult::InvalidCert)?;
 

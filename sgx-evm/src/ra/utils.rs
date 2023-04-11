@@ -477,14 +477,12 @@ impl rustls::ClientCertVerifier for ClientAuth {
         certs: &[rustls::Certificate],
         _sni: Option<&webpki::DNSName>,
     ) -> Result<rustls::ClientCertVerified, rustls::TLSError> {
-        println!("DEBUG CLIENT");
         // This call will automatically verify cert is properly signed
         match super::cert::verify_ra_cert(&certs[0].0, None) {
             Ok(_) => {
                 return Ok(rustls::ClientCertVerified::assertion());
             },
             Err(super::types::AuthResult::SwHardeningAndConfigurationNeeded) => {
-                println!("Hardening needed");
                 if self.outdated_ok {
                     println!("outdated_ok is set, overriding outdated error");
                     return Ok(rustls::ClientCertVerified::assertion());
