@@ -36,6 +36,7 @@ mod querier;
 mod storage;
 mod encryption;
 mod attestation;
+mod key_manager;
 
 pub const MAX_RESULT_LEN: usize = 4096;
 
@@ -61,6 +62,12 @@ pub struct Allocation {
     pub result_ptr: *mut u8,
     pub result_size: usize,
 }
+
+#[no_mangle]
+/// Checks if there is already sealed master key
+pub unsafe extern "C" fn ecall_is_initialized() -> i32 {
+    0
+} 
 
 #[no_mangle]
 pub extern "C" fn ecall_allocate(

@@ -8,14 +8,6 @@ pub const SEED_FILENAME: &str = ".swtr_seed";
 pub const REG_SIZE: usize = 32;
 pub const REG_FILENAME: &str = ".reg_seed";
 
-#[no_mangle]
-/// Recovers encryption key from sealed file, generates public key and returns it.
-/// If there is no sealed file, it will return SGX_ERROR_UNEXPECTED.
-/// By usage of this function we check if node was already initialized
-pub unsafe extern "C" fn ecall_get_public_key(buffer: *mut u8) -> sgx_status_t {
-    sgx_status_t::SGX_ERROR_UNEXPECTED
-} 
-
 /// Returns node seed. If file with node seed was not found, will return SGX_ERROR_UNEXPECTED
 pub unsafe fn get_node_seed() -> Result<Vec<u8>, sgx_status_t> {
     // Open file with node seed
