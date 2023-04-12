@@ -1,13 +1,15 @@
 package librustgo
 
 import (
+	"fmt"
+	"math/big"
+	"testing"
+	"time"
+
 	"github.com/SigmaGmbH/librustgo/internal/api"
 	"github.com/SigmaGmbH/librustgo/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
-	"math/big"
-	"testing"
-	"time"
 )
 
 func _TestCreate(t *testing.T) {
@@ -135,4 +137,13 @@ func TestSeedExchange(t *testing.T) {
 	if err := api.RequestSeed(addr); err != nil {
 		t.Fail()
 	}
+}
+
+func TestNodeInitialized(t *testing.T) {
+	res, err := api.IsNodeInitialized()
+	if err != nil {
+		t.Fail()
+	}
+
+	fmt.Println("node initialized: ", res)
 }

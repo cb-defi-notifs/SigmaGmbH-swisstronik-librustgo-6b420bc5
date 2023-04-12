@@ -66,7 +66,11 @@ pub struct Allocation {
 #[no_mangle]
 /// Checks if there is already sealed master key
 pub unsafe extern "C" fn ecall_is_initialized() -> i32 {
-    0
+    if let Err(err) = key_manager::KeyManager::unseal() {
+        println!("[Enclave] Cannot restore master key. Reason: {:?}", err.as_str());
+        return false as i32
+    }
+    true as i32
 } 
 
 #[no_mangle]

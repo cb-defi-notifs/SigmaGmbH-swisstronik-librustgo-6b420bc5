@@ -34,6 +34,8 @@ extern "C" {
 
     pub fn ecall_init_node(eid: sgx_enclave_id_t, retval: *mut sgx_status_t) -> sgx_status_t;
 
+    pub fn ecall_is_initialized(eid: sgx_enclave_id_t, retval: *mut i32) -> sgx_status_t;
+
     pub fn ecall_create_report(
         eid: sgx_enclave_id_t,
         retval: *mut sgx_status_t,
@@ -244,6 +246,30 @@ pub unsafe extern "C" fn handle_initialization_request(
                             Ok(res) => res,
                             Err(_) => {
                                 return Err(Error::protobuf_decode("Response encoding failed"));
+                            }
+                        };
+
+                        Ok(response_bytes)
+                    },
+                    node::SetupRequest_oneof_req::isInitialized(_) => {
+                        println!("[SGX_WRAPPER] checking if node is initialized");
+                        let mut retval = 0i32;
+                        let res = ecall_is_initialized(evm_enclave.geteid(), &mut retval);
+                        
+                        match res {
+                            sgx_status_t::SGX_SUCCESS => {}
+                            _ => {
+                                return Err(Error::enclave_error(res.as_str()));
+                            }
+                        };
+
+                        // Create response, convert it to bytes and return
+                        let mut response = node::IsInitializedResponse::new();
+                        response.isInitialized = retval != 0;
+                        let response_bytes = match response.write_to_bytes() {
+                            Ok(res) => res,
+                            Err(_) => {
+                                return Err(Error::protobuf_decode("[SGX_WRAPPER] Response encoding failed"));
                             }
                         };
 

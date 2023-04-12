@@ -58,6 +58,11 @@ type CosmosRequest_BlockHash = ffi.CosmosRequest_BlockHash
 
 type HandleTransactionResponse = ffi.HandleTransactionResponse
 
+// IsNodeInitialized checks if node was properly initialized and master key was sealed
+func IsNodeInitialized() (bool, error) {
+	return api.IsNodeInitialized()
+}
+
 // Call handles incoming transaction data to transfer value or call some contract
 func Call(
 	querier types.Connector,

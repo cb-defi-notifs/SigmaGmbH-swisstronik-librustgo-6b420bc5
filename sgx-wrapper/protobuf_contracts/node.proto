@@ -30,6 +30,11 @@ message NodeSeedResponse {}
 
 message CreateAttestationReportResponse {}
 
+message IsInitializedRequest {}
+message IsInitializedResponse { 
+    bool isInitialized = 1;
+}
+
 message SetupRequest {
     oneof req {
         SetupSeedNodeRequest setupSeedNode = 1;
@@ -37,5 +42,6 @@ message SetupRequest {
         CreateAttestationReportRequest createAttestationReport = 3;
         StartSeedServerRequest startSeedServer = 4;
         NodeSeedRequest nodeSeed = 5;
+        IsInitializedRequest isInitialized = 6;
     }
 }
