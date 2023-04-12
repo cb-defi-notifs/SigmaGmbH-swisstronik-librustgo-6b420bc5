@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math/big"
 	"testing"
-	"time"
 
 	"github.com/SigmaGmbH/librustgo/internal/api"
 	"github.com/SigmaGmbH/librustgo/types"
