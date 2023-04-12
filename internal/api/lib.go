@@ -12,7 +12,6 @@ import (
 	"log"
 	"net"
 	"runtime"
-	"time"
 
 	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
 	"github.com/SigmaGmbH/librustgo/types"
