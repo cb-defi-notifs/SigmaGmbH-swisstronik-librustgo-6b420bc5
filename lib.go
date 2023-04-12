@@ -109,13 +109,8 @@ func CreateAttestationReport(apiKey []byte) {
 	api.CreateAttestationReport(apiKey)
 }
 
-func StartSeedServer(
-	addr string,
-	readHeaderTimeout, readTimeout, writeTimeout, idleTimeout time.Duration,
-	allowUnsafeCORS bool,
-	maxOpenConnections int,
-) {
-	api.StartSeedServer(addr, readHeaderTimeout, readTimeout, writeTimeout, idleTimeout, allowUnsafeCORS, maxOpenConnections)
+func StartSeedServer(addr string) error {
+	return api.StartSeedServer(addr)
 }
 
 func RequestSeed(addr string) {

@@ -145,12 +145,7 @@ func CreateAttestationReport(apiKey []byte) {
 }
 
 // StartSeedServer handles initialization of seed server
-func StartSeedServer(
-	addr string,
-	readHeaderTimeout, readTimeout, writeTimeout, idleTimeout time.Duration,
-	allowUnsafeCORS bool,
-	maxOpenConnections int,
-) error {
+func StartSeedServer(addr string) error {
 	ln, err := net.Listen("tcp", addr)
 	if err != nil {
 		fmt.Println("Cannot start seed server")
