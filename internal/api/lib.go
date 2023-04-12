@@ -244,8 +244,10 @@ func RequestSeed(addr string) error {
 	defer runtime.KeepAlive(reqBytes)
 
 	errmsg := NewUnmanagedVector(nil)
-
-	_ = C.handle_initialization_request(d, &errmsg)
+	_, err = C.handle_initialization_request(d, &errmsg)
+	if err != nil {
+		return ErrorWithMessage(err, errmsg)
+	}
 
 	return nil
 }

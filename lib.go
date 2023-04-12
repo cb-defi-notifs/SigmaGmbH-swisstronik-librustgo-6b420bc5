@@ -112,8 +112,10 @@ func StartSeedServer(addr string) error {
 	return api.StartSeedServer(addr)
 }
 
-func RequestSeed(addr string) {
-	api.RequestSeed(addr)
+// RequestSeed handles requesting seed and passing Remote Attestation.
+// Returns error if Remote Attestation was not passed or provided seed server address is not accessible
+func RequestSeed(addr string) error {
+	return api.RequestSeed(addr)
 }
 
 // Libsgx_wrapperVersion returns the version of the loaded library
