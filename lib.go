@@ -3,7 +3,6 @@ package librustgo
 import (
 	"github.com/SigmaGmbH/librustgo/internal/api"
 	"github.com/SigmaGmbH/librustgo/types"
-	"time"
 
 	ffi "github.com/SigmaGmbH/librustgo/go_protobuf_gen"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
