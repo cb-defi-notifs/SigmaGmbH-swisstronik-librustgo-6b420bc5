@@ -93,7 +93,7 @@ impl KeyManager {
 /// RegistrationKey handles all operations with registration key such as derivation of public key,
 /// derivation of encryption key, etc.
 pub struct RegistrationKey {
-    inner: [u8; REG_SIZE]
+    inner: [u8; REGISTRATION_KEY_SIZE]
 }
 
 impl RegistrationKey {
