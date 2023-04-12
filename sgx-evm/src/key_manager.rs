@@ -2,11 +2,18 @@ use sgx_rand::*;
 use sgx_tstd::sgxfs::SgxFile;
 use sgx_types::{sgx_read_rand, sgx_status_t, SgxResult};
 use std::io::{Read, Write};
+use std::vec::Vec;
+use aes_siv::{
+    aead::{Aead, KeyInit},
+    Aes128SivAead, Nonce,
+};
 
+use crate::error::Error;
 
 pub const REGISTRATION_KEY_SIZE: usize = 32;
 pub const SEED_SIZE: usize = 32;
 pub const SEED_FILENAME: &str = ".swtr_seed";
+pub const NONCE_LEN: usize = 16;
 
 /// KeyManager handles keys sealing/unsealing and derivation.
 /// * master_key – This key is used to derive keys for transaction and state encryption/decryption
@@ -88,12 +95,63 @@ impl KeyManager {
 
         Ok(Self { master_key })
     }
+
+    /// Encrypts provided message using Aes128SivAead
+    pub fn encrypt(&self, message: Vec<u8>) -> Result<Vec<u8>, Error>{
+        // Prepare cipher
+        let cipher = match Aes128SivAead::new_from_slice(&self.master_key) {
+            Ok(cipher) => cipher,
+            Err(err) => return Err(Error::encryption_err(err)),
+        };
+
+        // Generate nonce
+        let mut buffer = [0u8; NONCE_LEN];
+        let result = unsafe { sgx_read_rand(&mut buffer as *mut u8, NONCE_LEN) };
+        let nonce = match result {
+            sgx_status_t::SGX_SUCCESS => Nonce::from_slice(&buffer),
+            _ => {
+                return Err(Error::encryption_err(format!(
+                    "Cannot generate nonce: {:?}",
+                    result.as_str()
+                )))
+            }
+        };
+
+        // Encrypt message
+        match cipher.encrypt(nonce, message.as_slice()) {
+            Ok(ciphertext) => {
+                // Add nonce to the begging of the ciphertext
+                let final_ciphertext = [nonce.as_slice(), ciphertext.as_slice()].concat();
+                Ok(final_ciphertext.to_vec())
+            }
+            Err(err) => Err(Error::encryption_err(err)),
+        }
+    }
+
+    /// Decrypts provided ciphertext using Aes128SivAead
+    pub fn decrypt(&self, ciphertext: Vec<u8>) -> Result<Vec<u8>, Error> {
+        // Prepare cipher
+        let cipher = match Aes128SivAead::new_from_slice(&self.master_key) {
+            Ok(cipher) => cipher,
+            Err(err) => return Err(Error::decryption_err(err)),
+        };
+
+        // Extract nonce from ciphertext
+        let nonce = Nonce::from_slice(&ciphertext[..NONCE_LEN]);
+
+        // Decrypt message
+        let ciphertext = &ciphertext[NONCE_LEN..];
+        match cipher.decrypt(nonce, ciphertext) {
+            Ok(message) => Ok(message),
+            Err(err) => Err(Error::decryption_err(err)),
+        }
+    }
 }
 
 /// RegistrationKey handles all operations with registration key such as derivation of public key,
 /// derivation of encryption key, etc.
 pub struct RegistrationKey {
-    inner: [u8; REGISTRATION_KEY_SIZE]
+    inner: [u8; REGISTRATION_KEY_SIZE],
 }
 
 impl RegistrationKey {
@@ -107,16 +165,15 @@ impl RegistrationKey {
     pub fn random() -> SgxResult<Self> {
         // Generate random seed
         let mut buffer = [0u8; REGISTRATION_KEY_SIZE];
-        let res = unsafe {
-            sgx_read_rand(&mut buffer as *mut u8, REGISTRATION_KEY_SIZE)
-        };
+        let res = unsafe { sgx_read_rand(&mut buffer as *mut u8, REGISTRATION_KEY_SIZE) };
 
         match res {
-            sgx_status_t::SGX_SUCCESS => {
-                return Ok(Self {inner: buffer})
-            },
+            sgx_status_t::SGX_SUCCESS => return Ok(Self { inner: buffer }),
             _ => {
-                println!("[KeyManager] Cannot generate random registration key. Reason: {:?}", res.as_str());
+                println!(
+                    "[KeyManager] Cannot generate random registration key. Reason: {:?}",
+                    res.as_str()
+                );
                 return Err(res);
             }
         }
@@ -124,7 +181,10 @@ impl RegistrationKey {
 
     /// Performes Diffie-Hellman derivation of encryption key for seed encryption
     /// * public_key – User public key
-    pub fn diffie_hellman(&self, public_key: x25519_dalek::PublicKey) -> x25519_dalek::SharedSecret {
+    pub fn diffie_hellman(
+        &self,
+        public_key: x25519_dalek::PublicKey,
+    ) -> x25519_dalek::SharedSecret {
         let secret = x25519_dalek::StaticSecret::from(self.inner);
         secret.diffie_hellman(&public_key)
     }
