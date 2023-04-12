@@ -74,7 +74,7 @@ func IsNodeInitialized() (bool, error) {
 }
 
 // SetupSeedNode handles initialization of seed node which will share seed with other nodes
-func SetupSeedNode() {
+func SetupSeedNode() error {
 	// Create protobuf encoded request
 	req := ffi.SetupRequest{Req: &ffi.SetupRequest_SetupSeedNode{
 		SetupSeedNode: &ffi.SetupSeedNodeRequest{},
@@ -82,6 +82,7 @@ func SetupSeedNode() {
 	reqBytes, err := proto.Marshal(&req)
 	if err != nil {
 		log.Fatalln("Failed to encode req:", err)
+		return err
 	}
 
 	// Pass request to Rust
@@ -89,8 +90,12 @@ func SetupSeedNode() {
 	defer runtime.KeepAlive(reqBytes)
 
 	errmsg := NewUnmanagedVector(nil)
+	_, err = C.handle_initialization_request(d, &errmsg)
+	if err != nil {
+		return ErrorWithMessage(err, errmsg)
+	}
 
-	_ = C.handle_initialization_request(d, &errmsg)
+	return nil
 }
 
 // SetupRegularNode handles initialization of regular node which will request seed from seed node

@@ -97,8 +97,8 @@ func Create(
 	return executionResult, nil
 }
 
-func SetupSeedNode() {
-	api.SetupSeedNode()
+func SetupSeedNode() error {
+	return api.SetupSeedNode()
 }
 
 func SetupRegularNode() {
