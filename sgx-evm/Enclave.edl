@@ -28,6 +28,8 @@ enclave {
 
         public sgx_status_t ecall_create_report([in] uint8_t api_key[32]);
 
+        public sgx_status_t ecall_get_public_key([out] uint8_t public_key[32]);
+
         public void ecall_share_seed(int fd, sgx_quote_sign_type_t quote_type);
 
         public void ecall_request_seed(int fd, sgx_quote_sign_type_t quote_type);
