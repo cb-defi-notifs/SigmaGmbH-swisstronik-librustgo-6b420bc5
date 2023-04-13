@@ -48,6 +48,10 @@ pub enum RustError {
         #[cfg(feature = "backtraces")]
         backtrace: Backtrace,
     },
+    #[error("Enclave failure: {}", msg)]
+    EnclaveError {
+        msg: String,
+    }
 
 }
 
@@ -104,6 +108,10 @@ impl RustError {
             #[cfg(feature = "backtraces")]
             backtrace: Backtrace::capture(),
         }
+    }
+
+    pub fn enclave_error<S: ToString>(msg: S) -> Self {
+        RustError::EnclaveError { msg: msg.to_string() }
     }
 }
 

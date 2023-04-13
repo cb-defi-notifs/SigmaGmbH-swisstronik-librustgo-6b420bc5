@@ -9,6 +9,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#define API_KEY_SIZE 32
+
 enum ErrnoValue {
   ErrnoValue_Success = 0,
   ErrnoValue_Other = 1,
@@ -177,6 +179,22 @@ typedef struct UnmanagedVector {
   uintptr_t cap;
 } UnmanagedVector;
 
+/**
+ * A view into an externally owned byte slice (Go `[]byte`).
+ * Use this for the current call only. A view cannot be copied for safety reasons.
+ * If you need a copy, use [`ByteSliceView::to_owned`].
+ *
+ * Go's nil value is fully supported, such that we can differentiate between nil and an empty slice.
+ */
+typedef struct ByteSliceView {
+  /**
+   * True if and only if the byte slice is nil in Go. If this is true, the other fields must be ignored.
+   */
+  bool is_nil;
+  const uint8_t *ptr;
+  uintptr_t len;
+} ByteSliceView;
+
 typedef struct querier_t {
   uint8_t _private[0];
 } querier_t;
@@ -205,20 +223,11 @@ typedef struct GoQuerier {
 } GoQuerier;
 
 /**
- * A view into an externally owned byte slice (Go `[]byte`).
- * Use this for the current call only. A view cannot be copied for safety reasons.
- * If you need a copy, use [`ByteSliceView::to_owned`].
- *
- * Go's nil value is fully supported, such that we can differentiate between nil and an empty slice.
+ * Handles all incoming protobuf-encoded requests related to node setup
+ * such as generating of attestation certificate, keys, etc.
  */
-typedef struct ByteSliceView {
-  /**
-   * True if and only if the byte slice is nil in Go. If this is true, the other fields must be ignored.
-   */
-  bool is_nil;
-  const uint8_t *ptr;
-  uintptr_t len;
-} ByteSliceView;
+struct UnmanagedVector handle_initialization_request(struct ByteSliceView request,
+                                                     struct UnmanagedVector *error_msg);
 
 struct UnmanagedVector make_pb_request(struct GoQuerier querier,
                                        struct ByteSliceView request,

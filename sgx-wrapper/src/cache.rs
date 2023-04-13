@@ -1,7 +1,7 @@
 use std::panic::catch_unwind;
 
 use crate::memory::{ByteSliceView, UnmanagedVector};
-use crate::types::{GoQuerier};
+use crate::types::GoQuerier;
 use crate::errors::{handle_c_error_default, Error};
 use crate::enclave::{self};
 use crate::types::AllocationWithResult;

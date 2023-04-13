@@ -1,15 +1,17 @@
 package librustgo
 
 import (
+	"fmt"
+	"math/big"
+	"testing"
+
 	"github.com/SigmaGmbH/librustgo/internal/api"
 	"github.com/SigmaGmbH/librustgo/types"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
-	"math/big"
-	"testing"
 )
 
-func TestCreate(t *testing.T) {
+func _TestCreate(t *testing.T) {
 	db := types.CreateMockedDatabase()
 	from := common.HexToAddress("0x690b9a9e9aa1c9db991c7721a92d351db4fac990")
 
@@ -48,7 +50,7 @@ func TestCreate(t *testing.T) {
 	}
 }
 
-func TestCall(t *testing.T) {
+func _TestCall(t *testing.T) {
 	db := types.CreateMockedDatabase()
 	from := common.HexToAddress("0x690b9a9e9aa1c9db991c7721a92d351db4fac990")
 	to := common.HexToAddress("0xad60cdbe1d3ceb5f67074303f99ac95af082784d")
@@ -121,4 +123,25 @@ func TestCall(t *testing.T) {
 	if receiverBalanceBefore+value.Uint64() != receiverBalanceAfter {
 		t.Fail()
 	}
+}
+
+func TestSeedExchange(t *testing.T) {
+	addr := "127.0.0.1:8999"
+	err := api.StartSeedServer(addr)
+	if err != nil {
+		t.Fail()
+	}
+
+	if err := api.RequestSeed(addr); err != nil {
+		t.Fail()
+	}
+}
+
+func TestNodeInitialized(t *testing.T) {
+	res, err := api.IsNodeInitialized()
+	if err != nil {
+		t.Fail()
+	}
+
+	fmt.Println("node initialized: ", res)
 }

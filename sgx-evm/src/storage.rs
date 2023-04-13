@@ -1,4 +1,3 @@
-use sgx_types::sgx_status_t;
 use sgxvm::evm::backend::Basic;
 use sgxvm::primitive_types::{H160, H256, U256};
 use sgxvm::storage::Storage;

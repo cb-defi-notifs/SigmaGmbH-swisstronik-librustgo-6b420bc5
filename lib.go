@@ -57,6 +57,11 @@ type CosmosRequest_BlockHash = ffi.CosmosRequest_BlockHash
 
 type HandleTransactionResponse = ffi.HandleTransactionResponse
 
+// IsNodeInitialized checks if node was properly initialized and master key was sealed
+func IsNodeInitialized() (bool, error) {
+	return api.IsNodeInitialized()
+}
+
 // Call handles incoming transaction data to transfer value or call some contract
 func Call(
 	querier types.Connector,
@@ -89,6 +94,28 @@ func Create(
 	}
 
 	return executionResult, nil
+}
+
+func SetupSeedNode() error {
+	return api.SetupSeedNode()
+}
+
+func SetupRegularNode() {
+	api.SetupRegularNode()
+}
+
+func CreateAttestationReport(apiKey []byte) {
+	api.CreateAttestationReport(apiKey)
+}
+
+func StartSeedServer(addr string) error {
+	return api.StartSeedServer(addr)
+}
+
+// RequestSeed handles requesting seed and passing Remote Attestation.
+// Returns error if Remote Attestation was not passed or provided seed server address is not accessible
+func RequestSeed(addr string) error {
+	return api.RequestSeed(addr)
 }
 
 // Libsgx_wrapperVersion returns the version of the loaded library

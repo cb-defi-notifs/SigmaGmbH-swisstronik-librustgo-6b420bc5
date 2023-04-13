@@ -1,7 +1,9 @@
 #![no_std]
+#![feature(slice_as_chunks)]
 
 #[macro_use]
 extern crate sgx_tstd as std;
+extern crate rustls;
 
 extern crate sgx_types;
 use sgx_types::sgx_status_t;
@@ -11,13 +13,13 @@ use protobuf::Message;
 use protobuf::RepeatedField;
 use sgxvm::primitive_types::{H160, H256, U256};
 use sgxvm::{self, Vicinity};
-use std::panic::catch_unwind;
-use std::ptr;
+// use std::panic::catch_unwind;
+// use std::ptr;
 use std::slice;
 use std::vec::Vec;
 
-use crate::error::{handle_c_error_default, Error};
-use crate::memory::{ByteSliceView, UnmanagedVector};
+// use crate::error::{handle_c_error_default, Error};
+// use crate::memory::{ByteSliceView, UnmanagedVector};
 use crate::protobuf_generated::ffi::{
     AccessListItem, FFIRequest, FFIRequest_oneof_req, HandleTransactionResponse, Log,
     SGXVMCallRequest, SGXVMCreateRequest, Topic, TransactionContext as ProtoTransactionContext,
@@ -33,6 +35,10 @@ mod protobuf_generated;
 mod querier;
 mod storage;
 mod encryption;
+mod attestation;
+mod key_manager;
+
+pub const MAX_RESULT_LEN: usize = 4096;
 
 #[repr(C)]
 pub struct AllocationWithResult {
@@ -56,6 +62,16 @@ pub struct Allocation {
     pub result_ptr: *mut u8,
     pub result_size: usize,
 }
+
+#[no_mangle]
+/// Checks if there is already sealed master key
+pub unsafe extern "C" fn ecall_is_initialized() -> i32 {
+    if let Err(err) = key_manager::KeyManager::unseal() {
+        println!("[Enclave] Cannot restore master key. Reason: {:?}", err.as_str());
+        return false as i32
+    }
+    true as i32
+} 
 
 #[no_mangle]
 pub extern "C" fn ecall_allocate(
@@ -132,14 +148,14 @@ pub extern "C" fn handle_request(
                     return AllocationWithResult::default();
                 }
             };
-            
+
             let mut ocall_result = std::mem::MaybeUninit::<Allocation>::uninit();
-            let sgx_result = unsafe { 
+            let sgx_result = unsafe {
                 ocall::ocall_allocate(
                     ocall_result.as_mut_ptr(),
                     encoded_response.as_ptr(),
                     encoded_response.len()
-                ) 
+                )
             };
             match sgx_result {
                 sgx_status_t::SGX_SUCCESS => {

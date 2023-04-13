@@ -75,9 +75,10 @@ var querier_vtable = C.Querier_vtable{
 	query_external: (C.query_external_fn)(C.cQueryExternal_cgo),
 }
 
+// BuildConnector allows rust code interact with Go
 // contract: original pointer/struct referenced must live longer than C.GoQuerier struct
 // since this is only used internally, we can verify the code that this is the case
-func buildConnector(q types.Connector) C.GoQuerier {
+func BuildConnector(q types.Connector) C.GoQuerier {
 	return C.GoQuerier{
 		state:  (*C.querier_t)(unsafe.Pointer(&q)),
 		vtable: querier_vtable,
@@ -96,15 +97,15 @@ func cQueryExternal(ptr *C.querier_t, request C.U8SliceView, result *C.Unmanaged
 		panic("Got a non-none UnmanagedVector we're about to override. This is a bug because someone has to drop the old one.")
 	}
 
-	req := copyU8Slice(request)
+	req := CopyU8Slice(request)
 	querier := *(*types.Connector)(unsafe.Pointer(ptr))
 	response, err := querier.Query(req)
 
 	if err != nil {
-		*errOut = newUnmanagedVector([]byte(err.Error()))
+		*errOut = NewUnmanagedVector([]byte(err.Error()))
 		return C.GoError_QuerierError
 	}
-	*result = newUnmanagedVector(response)
+	*result = NewUnmanagedVector(response)
 
 	return C.GoError_None
 }

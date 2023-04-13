@@ -1,14 +1,19 @@
-use crate::types::{GoQuerier, AllocationWithResult, Allocation};
-use crate::memory::{UnmanagedVector, U8SliceView};
-use crate::errors::GoError;
+use crate::errors::{handle_c_error_default, Error};
+use crate::memory::{ByteSliceView, UnmanagedVector};
+use crate::protobuf_generated::node;
+use crate::types::{Allocation, AllocationWithResult, GoQuerier};
 
+use protobuf::Message;
 use sgx_types::*;
 use sgx_urts::SgxEnclave;
-use std::slice;
+use std::panic::catch_unwind;
 
 static ENCLAVE_FILE: &'static str = "/tmp/enclave.signed.so";
 pub static mut ENCLAVE_ID: Option<sgx_types::sgx_enclave_id_t> = None;
 
+pub const API_KEY_SIZE: usize = 32;
+
+#[allow(dead_code)]
 extern "C" {
     pub fn handle_request(
         eid: sgx_enclave_id_t,
@@ -23,6 +28,30 @@ extern "C" {
         retval: *mut Allocation,
         data: *const u8,
         len: usize,
+    ) -> sgx_status_t;
+
+    pub fn ecall_init_seed_node(eid: sgx_enclave_id_t, retval: *mut sgx_status_t) -> sgx_status_t;
+
+    pub fn ecall_init_node(eid: sgx_enclave_id_t, retval: *mut sgx_status_t) -> sgx_status_t;
+
+    pub fn ecall_is_initialized(eid: sgx_enclave_id_t, retval: *mut i32) -> sgx_status_t;
+
+    pub fn ecall_create_report(
+        eid: sgx_enclave_id_t,
+        retval: *mut sgx_status_t,
+        api_key: *const u8,
+    ) -> sgx_status_t;
+
+    pub fn ecall_share_seed(
+        eid: sgx_enclave_id_t,
+        socket_fd: c_int,
+        sign_type: sgx_quote_sign_type_t,
+    ) -> sgx_status_t;
+
+    pub fn ecall_request_seed(
+        eid: sgx_enclave_id_t,
+        socket_fd: c_int,
+        sign_type: sgx_quote_sign_type_t,
     ) -> sgx_status_t;
 }
 
@@ -46,87 +75,219 @@ pub fn init_enclave() -> SgxResult<SgxEnclave> {
 }
 
 #[no_mangle]
-pub extern "C" fn ocall_query_raw(
-    querier: *mut GoQuerier,
-    request: *const u8,
-    request_len: usize,
-) -> AllocationWithResult {
-    // Recover request and querier
-    let request = unsafe { slice::from_raw_parts(request, request_len) };
-    let querier = unsafe { &*querier };
+/// Handles all incoming protobuf-encoded requests related to node setup
+/// such as generating of attestation certificate, keys, etc.
+pub unsafe extern "C" fn handle_initialization_request(
+    request: ByteSliceView,
+    error_msg: Option<&mut UnmanagedVector>,
+) -> UnmanagedVector {
+    let r = catch_unwind(|| {
+        // Check if request is correct
+        let req_bytes = request
+            .read()
+            .ok_or_else(|| Error::unset_arg(crate::cache::PB_REQUEST_ARG))?;
 
-    // Prepare vectors for output and error
-    let mut output = UnmanagedVector::default();
-    let mut error_msg = UnmanagedVector::default();
+        // Initialize enclave
+        let evm_enclave = match crate::enclave::init_enclave() {
+            Ok(r) => r,
+            Err(err) => {
+                println!("Got error: {:?}", err.as_str());
+                return Err(Error::vm_err("Cannot initialize SGXVM enclave"));
+            }
+        };
+        // Set enclave id to static variable to make it accessible across inner ecalls
+        crate::enclave::ENCLAVE_ID = Some(evm_enclave.geteid());
 
-    // Make request to GoQuerier (Connector)
-    let go_result: GoError = (querier.vtable.query_external)(
-        querier.state,
-        U8SliceView::new(Some(&request)),
-        &mut output as *mut UnmanagedVector,
-        &mut error_msg as *mut UnmanagedVector,
-    )
-    .into();
+        let request = match protobuf::parse_from_bytes::<node::SetupRequest>(req_bytes) {
+            Ok(request) => request,
+            Err(e) => {
+                return Err(Error::protobuf_decode(e.to_string()));
+            }
+        };
 
-    // Consume vectors to destroy them
-    let output = output.consume();
-    let error_msg = error_msg.consume();
+        let result = match request.req {
+            Some(req) => {
+                match req {
+                    node::SetupRequest_oneof_req::setupSeedNode(req) => {
+                        let mut retval = sgx_status_t::SGX_SUCCESS;
+                        let res = ecall_init_seed_node(evm_enclave.geteid(), &mut retval);
 
-    match go_result {
-        GoError::None => {
-            let output = output.unwrap_or_default();
+                        match res {
+                            sgx_status_t::SGX_SUCCESS => {}
+                            _ => {
+                                return Err(Error::enclave_error(res.as_str()));
+                            }
+                        };
 
-            let enclave_eid = unsafe { ENCLAVE_ID.expect("Enclave should be already initialized") };
-            let mut allocation_result = std::mem::MaybeUninit::<Allocation>::uninit();
+                        match retval {
+                            sgx_status_t::SGX_SUCCESS => {}
+                            _ => {
+                                return Err(Error::enclave_error(res.as_str()));
+                            }
+                        }
 
-            let res = unsafe {
-                ecall_allocate(
-                    enclave_eid, 
-                    allocation_result.as_mut_ptr(), 
-                    output.as_ptr(), 
-                    output.len(),
-                )
-            };
+                        // Create response, convert it to bytes and return
+                        let mut response = node::SetupSeedNodeRequest::new();
+                        let response_bytes = match response.write_to_bytes() {
+                            Ok(res) => res,
+                            Err(_) => {
+                                return Err(Error::protobuf_decode("Response encoding failed"));
+                            }
+                        };
 
-            match res {
-                sgx_status_t::SGX_SUCCESS => {
-                    let allocation_result = unsafe { allocation_result.assume_init() };
-                    return AllocationWithResult {
-                        result_ptr: allocation_result.result_ptr,
-                        result_size: output.len(),
-                        status: sgx_status_t::SGX_SUCCESS,
-                    };
-                },
-                _ => {
-                    println!("ecall_allocate failed. Reason: {:?}", res.as_str());
-                    return AllocationWithResult {
-                        result_ptr: std::ptr::null_mut(),
-                        result_size: 0usize,
-                        status: res,
-                    };
+                        Ok(response_bytes)
+                    }
+                    node::SetupRequest_oneof_req::setupRegularNode(req) => {
+                        let mut retval = sgx_status_t::SGX_SUCCESS;
+                        let res = ecall_init_node(evm_enclave.geteid(), &mut retval);
+
+                        match res {
+                            sgx_status_t::SGX_SUCCESS => {}
+                            _ => {
+                                return Err(Error::enclave_error(res.as_str()));
+                            }
+                        };
+
+                        match retval {
+                            sgx_status_t::SGX_SUCCESS => {}
+                            _ => {
+                                return Err(Error::enclave_error(res.as_str()));
+                            }
+                        }
+
+                        // Create response, convert it to bytes and return
+                        let mut response = node::SetupRegularNodeResponse::new();
+                        let response_bytes = match response.write_to_bytes() {
+                            Ok(res) => res,
+                            Err(_) => {
+                                return Err(Error::protobuf_decode("Response encoding failed"));
+                            }
+                        };
+
+                        Ok(response_bytes)
+                    }
+                    node::SetupRequest_oneof_req::createAttestationReport(req) => {
+                        let api_key = req.apiKey;
+                        if api_key.len() != API_KEY_SIZE {
+                            return Err(Error::enclave_error("Wrong length of api key"));
+                        }
+
+                        let mut retval = sgx_status_t::SGX_SUCCESS;
+                        let res = ecall_create_report(
+                            evm_enclave.geteid(),
+                            &mut retval,
+                            api_key.as_ptr(),
+                        );
+
+                        match res {
+                            sgx_status_t::SGX_SUCCESS => {}
+                            _ => {
+                                return Err(Error::enclave_error(res.as_str()));
+                            }
+                        };
+
+                        match retval {
+                            sgx_status_t::SGX_SUCCESS => {}
+                            _ => {
+                                return Err(Error::enclave_error(res.as_str()));
+                            }
+                        }
+
+                        // Create response, convert it to bytes and return
+                        let mut response = node::CreateAttestationReportResponse::new();
+                        let response_bytes = match response.write_to_bytes() {
+                            Ok(res) => res,
+                            Err(_) => {
+                                return Err(Error::protobuf_decode("Response encoding failed"));
+                            }
+                        };
+
+                        Ok(response_bytes)
+                    }
+                    node::SetupRequest_oneof_req::startSeedServer(req) => {
+                        println!("SGX_WRAPPER: starting seed server");
+                        let sign_type = sgx_quote_sign_type_t::SGX_LINKABLE_SIGNATURE;
+                        let res = ecall_share_seed(evm_enclave.geteid(), req.fd, sign_type);
+
+                        match res {
+                            sgx_status_t::SGX_SUCCESS => {}
+                            _ => {
+                                return Err(Error::enclave_error(res.as_str()));
+                            }
+                        };
+
+                        // Create response, convert it to bytes and return
+                        let response = node::StartSeedServerResponse::new();
+                        let response_bytes = match response.write_to_bytes() {
+                            Ok(res) => res,
+                            Err(_) => {
+                                return Err(Error::protobuf_decode("Response encoding failed"));
+                            }
+                        };
+
+                        Ok(response_bytes)
+                    }
+                    node::SetupRequest_oneof_req::nodeSeed(req) => {
+                        println!("SGX_WRAPPER: trying to request seed");
+                        let sign_type = sgx_quote_sign_type_t::SGX_LINKABLE_SIGNATURE;
+                        let res =
+                            ecall_request_seed(evm_enclave.geteid(), req.fd, sign_type);
+
+                        match res {
+                            sgx_status_t::SGX_SUCCESS => {}
+                            _ => {
+                                return Err(Error::enclave_error(res.as_str()));
+                            }
+                        };
+
+                        // Create response, convert it to bytes and return
+                        let mut response = node::NodeSeedResponse::new();
+                        let response_bytes = match response.write_to_bytes() {
+                            Ok(res) => res,
+                            Err(_) => {
+                                return Err(Error::protobuf_decode("Response encoding failed"));
+                            }
+                        };
+
+                        Ok(response_bytes)
+                    },
+                    node::SetupRequest_oneof_req::isInitialized(_) => {
+                        println!("[SGX_WRAPPER] checking if node is initialized");
+                        let mut retval = 0i32;
+                        let res = ecall_is_initialized(evm_enclave.geteid(), &mut retval);
+                        
+                        match res {
+                            sgx_status_t::SGX_SUCCESS => {}
+                            _ => {
+                                return Err(Error::enclave_error(res.as_str()));
+                            }
+                        };
+
+                        // Create response, convert it to bytes and return
+                        let mut response = node::IsInitializedResponse::new();
+                        response.isInitialized = retval != 0;
+                        let response_bytes = match response.write_to_bytes() {
+                            Ok(res) => res,
+                            Err(_) => {
+                                return Err(Error::protobuf_decode("[SGX_WRAPPER] Response encoding failed"));
+                            }
+                        };
+
+                        Ok(response_bytes)
+                    }
                 }
-            };
-        },
-        _ => {
-            let err_msg = error_msg.unwrap_or_default();
-            println!(
-                "[OCALL] query_raw: got error: {:?} with message: {:?}",
-                go_result,
-                String::from_utf8_lossy(&err_msg)
-            );
-            return AllocationWithResult::default();
-        }
-    };
-}
+            }
+            None => Err(Error::protobuf_decode("Request unwrapping failed")),
+        };
 
-#[no_mangle]
-pub extern "C" fn ocall_allocate(data: *const u8, len: usize) -> Allocation {
-    let slice = unsafe { slice::from_raw_parts(data, len) };
-    let mut vector_copy = slice.to_vec();
+        // Destroy enclave after usage and set enclave id to None
+        evm_enclave.destroy();
+        crate::enclave::ENCLAVE_ID = None;
 
-    let ptr = vector_copy.as_mut_ptr();
-    let len = vector_copy.len();
-    std::mem::forget(vector_copy);
+        result
+    })
+    .unwrap_or_else(|_| Err(Error::panic()));
 
-    Allocation { result_ptr: ptr, result_len: len }
+    let data = handle_c_error_default(r, error_msg);
+    UnmanagedVector::new(Some(data))
 }

@@ -1,9 +1,14 @@
 enclave {
+    from "sgx_backtrace.edl" import *;
     from "sgx_tstd.edl" import *;
     from "sgx_stdio.edl" import *;
-    from "sgx_backtrace.edl" import *;
+    from "sgx_fs.edl" import *;
+    from "sgx_net.edl" import *;
+    from "sgx_time.edl" import *;
     from "sgx_tstdc.edl" import *;
-    from "sgx_fd.edl" import *;
+    from "sgx_tprotected_fs.edl" import *;
+
+    include "sgx_quote.h"
 
     struct ResultWithAllocation {
         uint8_t* ptr;
@@ -17,6 +22,18 @@ enclave {
     };
 
     trusted {
+        public sgx_status_t ecall_init_seed_node();
+
+        public sgx_status_t ecall_init_node();
+
+        public sgx_status_t ecall_create_report([in] uint8_t api_key[32]);
+
+        public int ecall_is_initialized();
+
+        public void ecall_share_seed(int fd, sgx_quote_sign_type_t quote_type);
+
+        public void ecall_request_seed(int fd, sgx_quote_sign_type_t quote_type);
+
         public ResultWithAllocation handle_request(
             [user_check] void* querier,
             [in, size=len] const uint8_t* request, 
@@ -39,6 +56,29 @@ enclave {
         Allocation ocall_allocate(
             [in, size=len] const uint8_t* data,
             size_t len
+        );
+
+        sgx_status_t ocall_sgx_init_quote([out] sgx_target_info_t *ret_ti, [out] sgx_epid_group_id_t *ret_gid);
+
+        sgx_status_t ocall_get_ias_socket([out] int *ret_fd);
+
+        sgx_status_t ocall_get_quote(  
+            [in, size = sigrl_len] uint8_t * p_sigrl,
+            uint32_t sigrl_len,
+            [in] sgx_report_t *report,
+            sgx_quote_sign_type_t quote_type,
+            [in] sgx_spid_t *p_spid,
+            [in] sgx_quote_nonce_t *p_nonce,
+            [out] sgx_report_t *p_qe_report,
+            [out, size = maxlen] sgx_quote_t *p_quote,
+            uint32_t maxlen,
+            [out] uint32_t* p_quote_len
+        );
+
+	    sgx_status_t ocall_get_update_info(
+            [in] sgx_platform_info_t * platformBlob,
+			int32_t enclaveTrusted,
+			[out] sgx_update_info_bit_t * update_info
         );
     };
 };

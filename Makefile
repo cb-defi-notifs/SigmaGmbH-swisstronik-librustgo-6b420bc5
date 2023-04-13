@@ -8,14 +8,17 @@ CXX=clang++
 SGX_MODE ?= HW
 Trts_Library_Name = sgx_trts
 Service_Library_Name = sgx_tservice
+Enclave_build_feature = hardware_mode
 
 # ENCLAVE SETTINGS
 ifneq ($(SGX_MODE), HW)
 	Trts_Library_Name := sgx_trts_sim
 	Service_Library_Name := sgx_tservice_sim
+	Enclave_build_feature := simulation_mode
 else
 	Trts_Library_Name := sgx_trts
 	Service_Library_Name := sgx_tservice
+	Enclave_build_feature := hardware_mode
 endif
 
 # DEFINEs
@@ -31,14 +34,19 @@ define sgx_clean
 endef
 
 define compile_protobuf
-	@echo "Compiling protobuf files"
+	@echo "Compiling protobuf files for enclave"
     protoc --rust_out sgx-evm/src/protobuf_generated/ ./sgx-evm/protobuf_contracts/ffi.proto
     sed -i -e 's/use protobuf::Message as/\n\nuse std::prelude::v1::*;\nuse protobuf::Message as/g' ./sgx-evm/src/protobuf_generated/ffi.rs
 endef
 
+define compile_wrapper_protobuf
+	@echo "Compiling protobuf files for wrapper"
+    protoc --rust_out sgx-wrapper/src/protobuf_generated/ ./sgx-wrapper/protobuf_contracts/node.proto
+endef
+
 define compile_enclave_rust
 	@echo "Building enclave rust code"
-	@CARGO_TARGET_DIR=./sgx-evm/target RUSTFLAGS="-C target-cpu=native" cargo build --release --manifest-path ./sgx-evm/Cargo.toml
+	@CARGO_TARGET_DIR=./sgx-evm/target RUSTFLAGS="-C target-cpu=native" cargo build --release --features $(Enclave_build_feature) --no-default-features --manifest-path ./sgx-evm/Cargo.toml
 endef
 
 define create_bridge_enclave_rust
@@ -70,7 +78,7 @@ endef
 define compile_unsigned_enclave
 	@echo "Compile into unsinged enclave"
 	@g++ ./sgx-evm/Enclave_t.o -o ./sgx-evm/enclave.unsigned.so -Wl,--no-undefined -nostdlib -nodefaultlibs -nostartfiles -L/opt/intel/sgxsdk/lib64 \
-		-Wl,--whole-archive -l$(Trts_Library_Name) -Wl,--no-whole-archive -Wl,--start-group -lsgx_tstdc -lsgx_tcxx -l$(Service_Library_Name) -lsgx_tcrypto -lpthread \
+		-Wl,--whole-archive -l$(Trts_Library_Name) -Wl,--no-whole-archive -Wl,--start-group -lsgx_tstdc -lsgx_tcxx -l$(Service_Library_Name) -lsgx_tcrypto -lsgx_tprotected_fs -lpthread \
 		-L./sgx-artifacts/lib -lenclave -Wl,--end-group -Wl,--version-script=./sgx-evm/Enclave.lds -Wl,-z,relro,-z,now,-z,noexecstack -Wl,-Bstatic -Wl,-Bsymbolic \
 		-Wl,--no-undefined -Wl,-pie,-eenclave_entry -Wl,--export-dynamic -Wl,--gc-sections -Wl,--defsym,__ImageBase=0
 endef
@@ -81,6 +89,7 @@ define sign_enclave
 endef
 
 define wrapper_build
+	$(call compile_wrapper_protobuf)
 	@cd sgx-wrapper && cargo build --release
 	@cp ./sgx-artifacts/bin/enclave.signed.so /tmp/enclave.signed.so
 	@rm Enclave_u*
@@ -90,6 +99,7 @@ endef
 define go_build
 	@cp ./sgx-wrapper/target/release/libsgx_wrapper.so ./internal/api/libsgx_wrapper.x86_64.so
     @protoc --go_out=go_protobuf_gen --proto_path=sgx-evm/protobuf_contracts/ sgx-evm/protobuf_contracts/ffi.proto
+	@protoc --go_out=go_protobuf_gen --proto_path=sgx-wrapper/protobuf_contracts/ sgx-wrapper/protobuf_contracts/node.proto
 endef
 
 define sgx_build
@@ -111,7 +121,7 @@ sgx:
 	$(call sgx_build)
 	@echo "Intel SGX enclave built and signed"
 
-build_app:
+build_wrapper:
 	$(call sgx_build)
 	$(call wrapper_build)
 
@@ -125,6 +135,13 @@ run_go:
 	$(call wrapper_build)
 	$(call go_build)
 	@go run ./cmd/demo/main.go
+
+# This is debug command and it will be removed soon
+debug_seed:
+	$(call sgx_build)
+	$(call wrapper_build)
+	$(call go_build)
+	@go test -test.run=TestSeedExchange
 
 clean:
 	$(call sgx_clean)

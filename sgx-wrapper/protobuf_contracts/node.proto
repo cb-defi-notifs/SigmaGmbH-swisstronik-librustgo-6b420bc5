@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package node.node;
+
+option go_package = "./";
+
+message SetupSeedNodeRequest {}
+
+message SetupSeedNodeResponse {}
+
+message SetupRegularNodeRequest {}
+
+message SetupRegularNodeResponse {}
+
+message CreateAttestationReportRequest {
+    bytes apiKey = 1;
+}
+
+message StartSeedServerRequest {
+    int32 fd = 1;
+}
+
+message StartSeedServerResponse {}
+
+message NodeSeedRequest {
+    int32 fd = 1;
+}
+
+message NodeSeedResponse {}
+
+message CreateAttestationReportResponse {}
+
+message IsInitializedRequest {}
+message IsInitializedResponse { 
+    bool isInitialized = 1;
+}
+
+message SetupRequest {
+    oneof req {
+        SetupSeedNodeRequest setupSeedNode = 1;
+        SetupRegularNodeRequest setupRegularNode = 2;
+        CreateAttestationReportRequest createAttestationReport = 3;
+        StartSeedServerRequest startSeedServer = 4;
+        NodeSeedRequest nodeSeed = 5;
+        IsInitializedRequest isInitialized = 6;
+    }
+}
