@@ -7,6 +7,11 @@ edition = "2021"
 name = "enclave"
 crate-type = ["staticlib"]
 
+[features]
+default = ["hardware"]
+hardware = []
+simulation = []
+
 [dependencies]
 derive_more = "0.99"
 uuid = { version = "0.8.1", default-features=false }
