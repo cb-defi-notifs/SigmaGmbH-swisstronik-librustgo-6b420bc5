@@ -8,14 +8,17 @@ CXX=clang++
 SGX_MODE ?= HW
 Trts_Library_Name = sgx_trts
 Service_Library_Name = sgx_tservice
+Enclave_build_feature = hardware_mode
 
 # ENCLAVE SETTINGS
 ifneq ($(SGX_MODE), HW)
 	Trts_Library_Name := sgx_trts_sim
 	Service_Library_Name := sgx_tservice_sim
+	Enclave_build_feature := simulation_mode
 else
 	Trts_Library_Name := sgx_trts
 	Service_Library_Name := sgx_tservice
+	Enclave_build_feature := hardware_mode
 endif
 
 # DEFINEs
@@ -43,7 +46,7 @@ endef
 
 define compile_enclave_rust
 	@echo "Building enclave rust code"
-	@CARGO_TARGET_DIR=./sgx-evm/target RUSTFLAGS="-C target-cpu=native" cargo build --release --manifest-path ./sgx-evm/Cargo.toml
+	@CARGO_TARGET_DIR=./sgx-evm/target RUSTFLAGS="-C target-cpu=native" cargo build --release --features $(Enclave_build_feature) --manifest-path ./sgx-evm/Cargo.toml
 endef
 
 define create_bridge_enclave_rust

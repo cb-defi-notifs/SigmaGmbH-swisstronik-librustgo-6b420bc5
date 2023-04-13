@@ -12,47 +12,13 @@ use std::vec::Vec;
 
 #[no_mangle]
 pub extern "C" fn ecall_request_seed(socket_fd: c_int, sign_type: sgx_quote_sign_type_t) {
-    // Generate Keypair
-    let ecc_handle = SgxEccHandle::new();
-    ecc_handle.open().unwrap();
-    let (prv_k, pub_k) = ecc_handle.create_key_pair().unwrap();
-
-    let signed_report =
-        match super::utils::create_attestation_report(&pub_k, sign_type) {
-            Ok(r) => r,
-            Err(e) => {
-                println!("Error creating attestation report");
-                return;
-            }
-        };
-
-    let payload: String = match serde_json::to_string(&signed_report) {
-        Ok(payload) => payload,
+    let cfg = match get_client_configuration(sign_type) {
+        Ok(cfg) => cfg,
         Err(err) => {
-            println!("Error serializing report. May be malformed, or badly encoded: {:?}", err);
+            println!("{}", err);
             return;
         }
     };
-    let (key_der, cert_der) = match super::cert::gen_ecc_cert(payload, &prv_k, &pub_k, &ecc_handle)
-    {
-        Ok(r) => r,
-        Err(e) => {
-            println!("Error in gen_ecc_cert: {:?}", e);
-            return;
-        }
-    };
-    ecc_handle.close().unwrap();
-
-    let mut cfg = rustls::ClientConfig::new();
-    let mut certs = Vec::new();
-    certs.push(rustls::Certificate(cert_der));
-    let privkey = rustls::PrivateKey(key_der);
-
-    cfg.set_single_client_cert(certs, privkey).unwrap();
-    cfg.dangerous()
-        .set_certificate_verifier(Arc::new(super::utils::ServerAuth::new(true)));
-    cfg.versions.clear();
-    cfg.versions.push(rustls::ProtocolVersion::TLSv1_2);
 
     let dns_name = webpki::DNSNameRef::try_from_ascii_str("localhost").unwrap();
     let mut sess = rustls::ClientSession::new(&Arc::new(cfg), dns_name);
@@ -76,4 +42,53 @@ pub extern "C" fn ecall_request_seed(socket_fd: c_int, sign_type: sgx_quote_sign
     }
 
     // TODO: Decrypt seed and seal it
+}
+
+#[cfg(feature = "hardware_mode")]
+fn get_client_configuration(sign_type: sgx_quote_sign_type_t) -> Result<rustls::ClientConfig, String> {
+    // Generate Keypair
+    let ecc_handle = SgxEccHandle::new();
+    ecc_handle.open().unwrap();
+    let (prv_k, pub_k) = ecc_handle.create_key_pair().unwrap();
+
+    let signed_report =
+        match super::utils::create_attestation_report(&pub_k, sign_type) {
+            Ok(r) => r,
+            Err(e) => {
+                return Err(format!("Error creating attestation report"));
+            }
+        };
+
+    let payload: String = match serde_json::to_string(&signed_report) {
+        Ok(payload) => payload,
+        Err(err) => {
+            return Err(format!("Error serializing report. May be malformed, or badly encoded: {:?}", err));
+        }
+    };
+    let (key_der, cert_der) = match super::cert::gen_ecc_cert(payload, &prv_k, &pub_k, &ecc_handle)
+    {
+        Ok(r) => r,
+        Err(e) => {
+            return Err(format!("Error in gen_ecc_cert: {:?}", e));
+        }
+    };
+    ecc_handle.close().unwrap();
+
+    let mut cfg = rustls::ClientConfig::new();
+    let mut certs = Vec::new();
+    certs.push(rustls::Certificate(cert_der));
+    let privkey = rustls::PrivateKey(key_der);
+
+    cfg.set_single_client_cert(certs, privkey).unwrap();
+    cfg.dangerous()
+        .set_certificate_verifier(Arc::new(super::utils::ServerAuth::new(true)));
+    cfg.versions.clear();
+    cfg.versions.push(rustls::ProtocolVersion::TLSv1_2);
+
+    Ok(cfg)
+}
+
+#[cfg(not(feature = "hardware_mode"))]
+fn get_client_configuration(_sign_type: sgx_quote_sign_type_t) -> Result<rustls::ClientConfig, String> {
+    Ok(rustls::ClientConfig::new())
 }

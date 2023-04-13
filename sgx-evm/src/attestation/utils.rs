@@ -466,6 +466,7 @@ impl ClientAuth {
     }
 }
 
+#[cfg(feature = "hardware_mode")]
 impl rustls::ClientCertVerifier for ClientAuth {
     fn client_auth_root_subjects(
         &self,
@@ -500,6 +501,24 @@ impl rustls::ClientCertVerifier for ClientAuth {
                 ));
             }
         }
+    }
+}
+
+#[cfg(not(feature = "hardware_mode"))]
+impl rustls::ClientCertVerifier for ClientAuth {
+    fn client_auth_root_subjects(
+        &self,
+        _sni: Option<&webpki::DNSName>,
+    ) -> Option<rustls::DistinguishedNames> {
+        Some(rustls::DistinguishedNames::new())
+    }
+
+    fn verify_client_cert(
+        &self,
+        _certs: &[rustls::Certificate],
+        _sni: Option<&webpki::DNSName>,
+    ) -> Result<rustls::ClientCertVerified, rustls::TLSError> {
+        Ok(rustls::ClientCertVerified::assertion())
     }
 }
 

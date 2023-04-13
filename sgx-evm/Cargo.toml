@@ -8,9 +8,9 @@ name = "enclave"
 crate-type = ["staticlib"]
 
 [features]
-default = ["hardware"]
-hardware = []
-simulation = []
+default = ["hardware_mode"]
+hardware_mode = []
+simulation_mode = []
 
 [dependencies]
 derive_more = "0.99"
