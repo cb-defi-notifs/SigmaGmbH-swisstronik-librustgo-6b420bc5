@@ -145,6 +145,7 @@ func CreateAttestationReport(apiKey []byte) {
 
 // StartSeedServer handles initialization of seed server
 func StartSeedServer(addr string) error {
+	fmt.Println("[Seed Server] Trying to start seed server")
 	ln, err := net.Listen("tcp", addr)
 	if err != nil {
 		fmt.Println("[Seed Server] Cannot start seed server")
