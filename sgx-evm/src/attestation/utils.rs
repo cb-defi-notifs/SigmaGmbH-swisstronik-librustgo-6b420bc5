@@ -534,6 +534,7 @@ impl ServerAuth {
     }
 }
 
+#[cfg(feature = "hardware_mode")]
 impl rustls::ServerCertVerifier for ServerAuth {
     fn verify_server_cert(
         &self,
@@ -564,5 +565,18 @@ impl rustls::ServerCertVerifier for ServerAuth {
                 ));
             }
         }
+    }
+}
+
+#[cfg(not(feature = "hardware_mode"))]
+impl rustls::ServerCertVerifier for ServerAuth {
+    fn verify_server_cert(
+        &self,
+        _roots: &rustls::RootCertStore,
+        _certs: &[rustls::Certificate],
+        _hostname: webpki::DNSNameRef,
+        _ocsp: &[u8],
+    ) -> Result<rustls::ServerCertVerified, rustls::TLSError> {
+        Ok(rustls::ServerCertVerified::assertion())
     }
 }
