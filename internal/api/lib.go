@@ -147,7 +147,7 @@ func CreateAttestationReport(apiKey []byte) {
 func StartSeedServer(addr string) error {
 	ln, err := net.Listen("tcp", addr)
 	if err != nil {
-		fmt.Println("Cannot start seed server")
+		fmt.Println("[Seed Server] Cannot start seed server")
 		return err
 	}
 
@@ -155,26 +155,31 @@ func StartSeedServer(addr string) error {
 		for {
 			connection, err := ln.Accept()
 			if err != nil {
-				println("Got error ", err.Error(), ", connection: ", connection.RemoteAddr().String())
+				fmt.Println("[Seed Server] Got error ", err.Error(), ", connection: ", connection.RemoteAddr().String())
 				continue
 			}
 
-			attestPeer(connection)
+			if err := attestPeer(connection); err != nil {
+				fmt.Println("[Seed Server] Attestation failed. Reason: {:?}", err)
+				continue
+			}
 		}
 	}()
+
+	fmt.Println("[Seed Server] Starting seed server. Address: ", addr)
 
 	return nil
 }
 
-func attestPeer(connection net.Conn) {
+func attestPeer(connection net.Conn) error {
 	defer connection.Close()
-	println("Attesting peer: ", connection.RemoteAddr().String())
+	println("[Seed Server] Attesting peer: ", connection.RemoteAddr().String())
 
 	// Extract file descriptor for socket
 	file, err := connection.(*net.TCPConn).File()
 	if err != nil {
-		fmt.Println("Cannot get access to the connection. Reason: ", err.Error())
-		return
+		fmt.Println("[Seed Server] Cannot get access to the connection. Reason: ", err.Error())
+		return err
 	}
 
 	// Create protobuf encoded request
@@ -185,7 +190,8 @@ func attestPeer(connection net.Conn) {
 	}}
 	reqBytes, err := proto.Marshal(&req)
 	if err != nil {
-		log.Fatalln("Failed to encode req:", err)
+		fmt.Println("[Seed Server] Failed to encode req:", err)
+		return err
 	}
 
 	// Pass request to Rust
@@ -193,8 +199,12 @@ func attestPeer(connection net.Conn) {
 	defer runtime.KeepAlive(reqBytes)
 
 	errmsg := NewUnmanagedVector(nil)
+	_, err = C.handle_initialization_request(d, &errmsg)
+	if err != nil {
+		return ErrorWithMessage(err, errmsg)
+	}
 
-	_ = C.handle_initialization_request(d, &errmsg)
+	return nil
 }
 
 // Listen starts a net.Listener on the tcp network on the given address.
