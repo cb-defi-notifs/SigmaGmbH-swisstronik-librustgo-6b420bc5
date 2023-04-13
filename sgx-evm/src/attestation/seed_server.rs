@@ -14,6 +14,11 @@ pub unsafe extern "C" fn ecall_share_seed(
     socket_fd: c_int,
     sign_type: sgx_quote_sign_type_t,
 ) {
+    share_seed_inner(socket_fd, sign_type);
+}
+
+#[cfg(feature = "hardware_mode")]
+fn share_seed_inner(socket_fd: c_int, sign_type: sgx_quote_sign_type_t) {
     let cfg = match get_server_configuration(sign_type) {
         Ok(cfg) => cfg,
         Err(err) => {
@@ -45,6 +50,31 @@ pub unsafe extern "C" fn ecall_share_seed(
     };
 
     tls.write("hello back".as_bytes()).unwrap();
+}
+
+#[cfg(not(feature = "hardware_mode"))]
+fn share_seed_inner(socket_fd: c_int, sign_type: sgx_quote_sign_type_t) {
+    let mut conn = TcpStream::new(socket_fd).unwrap();
+
+    let mut plaintext = [0u8; 1024]; //Vec::new();
+    match conn.read(&mut plaintext) {
+        Ok(_) => {
+            /*
+                TODO:
+                1. Get public key from client
+                2. Create encryption key 
+                3. Encrypt seed
+                4. Send to client
+             */
+            println!("Client said: {}", str::from_utf8(&plaintext).unwrap())
+        },
+        Err(e) => {
+            println!("Error in read_to_end: {:?}", e);
+            return;
+        }
+    };
+
+    conn.write("hello back".as_bytes()).unwrap();
 }
 
 #[cfg(feature = "hardware_mode")]
@@ -85,9 +115,4 @@ fn get_server_configuration(sign_type: sgx_quote_sign_type_t) -> Result<rustls::
         .unwrap();
 
     Ok(cfg)
-}
-
-#[cfg(not(feature = "hardware_mode"))]
-fn get_server_configuration(_sign_type: sgx_quote_sign_type_t) -> Result<rustls::ServerConfig, String> {
-    Ok(rustls::ServerConfig::new(Arc::new(super::utils::ClientAuth::new(true))))
 }

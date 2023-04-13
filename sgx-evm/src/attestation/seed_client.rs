@@ -12,6 +12,11 @@ use std::vec::Vec;
 
 #[no_mangle]
 pub extern "C" fn ecall_request_seed(socket_fd: c_int, sign_type: sgx_quote_sign_type_t) {
+    request_seed_inner(socket_fd, sign_type);
+}
+
+#[cfg(feature = "hardware_mode")]
+fn request_seed_inner(socket_fd: c_int, sign_type: sgx_quote_sign_type_t) {
     let cfg = match get_client_configuration(sign_type) {
         Ok(cfg) => cfg,
         Err(err) => {
@@ -31,6 +36,27 @@ pub extern "C" fn ecall_request_seed(socket_fd: c_int, sign_type: sgx_quote_sign
 
     let mut plaintext = Vec::new();
     match tls.read_to_end(&mut plaintext) {
+        Ok(_) => {
+            // TODO: Server should return encrypted seed
+            println!("Server replied: {}", str::from_utf8(&plaintext).unwrap());
+        }
+        Err(ref err) if err.kind() == io::ErrorKind::ConnectionAborted => {
+            println!("EOF (tls)");
+        }
+        Err(e) => println!("Error in read_to_end: {:?}", e),
+    }
+
+    // TODO: Decrypt seed and seal it
+}
+
+#[cfg(not(feature = "hardware_mode"))] 
+fn request_seed_inner(socket_fd: c_int, _sign_type: sgx_quote_sign_type_t) {
+    let mut conn = TcpStream::new(socket_fd).unwrap();
+    // TODO: Send registration public key
+    conn.write("hello".as_bytes()).unwrap();
+
+    let mut plaintext = Vec::new();
+    match conn.read_to_end(&mut plaintext) {
         Ok(_) => {
             // TODO: Server should return encrypted seed
             println!("Server replied: {}", str::from_utf8(&plaintext).unwrap());
@@ -86,9 +112,4 @@ fn get_client_configuration(sign_type: sgx_quote_sign_type_t) -> Result<rustls::
     cfg.versions.push(rustls::ProtocolVersion::TLSv1_2);
 
     Ok(cfg)
-}
-
-#[cfg(not(feature = "hardware_mode"))]
-fn get_client_configuration(_sign_type: sgx_quote_sign_type_t) -> Result<rustls::ClientConfig, String> {
-    Ok(rustls::ClientConfig::new())
 }
