@@ -46,7 +46,7 @@ endef
 
 define compile_enclave_rust
 	@echo "Building enclave rust code"
-	@CARGO_TARGET_DIR=./sgx-evm/target RUSTFLAGS="-C target-cpu=native" cargo build --release --features $(Enclave_build_feature) --manifest-path ./sgx-evm/Cargo.toml
+	@CARGO_TARGET_DIR=./sgx-evm/target RUSTFLAGS="-C target-cpu=native" cargo build --release --features $(Enclave_build_feature) --no-default-features --manifest-path ./sgx-evm/Cargo.toml
 endef
 
 define create_bridge_enclave_rust
