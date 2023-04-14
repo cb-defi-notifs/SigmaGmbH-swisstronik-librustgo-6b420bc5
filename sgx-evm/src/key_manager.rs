@@ -146,6 +146,49 @@ impl KeyManager {
             Err(err) => Err(Error::decryption_err(err)),
         }
     }
+
+    /// Recovers encrypted seed obtained from seed exchange server
+    pub fn from_encrypted_seed(
+        reg_key: &RegistrationKey,
+        public_key: Vec<u8>,
+        encrypted_seed: Vec<u8>,
+    ) -> Result<Self, Error> {
+        // Convert public key to appropriate format
+        let public_key: [u8; 32] = match public_key.try_into() {
+            Ok(public_key) => public_key,
+            Err(err) => {
+                return Err(Error::decryption_err(format!("Public key has wrong length")))
+            }
+        };
+        let public_key = x25519_dalek::PublicKey::from(public_key);
+        
+        // Derive shared secret
+        let shared_secret = reg_key.diffie_hellman(public_key);
+
+        // Decrypt seed
+        let cipher = match Aes128SivAead::new_from_slice(shared_secret.as_bytes()) {
+            Ok(cipher) => cipher,
+            Err(err) => return Err(Error::decryption_err(err)),
+        };
+        let nonce = Nonce::from_slice(&encrypted_seed[..NONCE_LEN]);
+        let ciphertext = &encrypted_seed[NONCE_LEN..];
+        let master_key = match cipher.decrypt(nonce, ciphertext) {
+            Ok(master_key) => master_key,
+            Err(err) => {
+                return Err(Error::decryption_err(err))
+            }
+        };
+        
+        // Convert master key to appropriate format
+        let master_key: [u8; 32] = match master_key.try_into() {
+            Ok(master_key) => master_key,
+            Err(err) => {
+                return Err(Error::decryption_err(format!("Master key has wrong length")))
+            }
+        };
+
+        Ok(Self { master_key })
+    }
 }
 
 /// RegistrationKey handles all operations with registration key such as derivation of public key,

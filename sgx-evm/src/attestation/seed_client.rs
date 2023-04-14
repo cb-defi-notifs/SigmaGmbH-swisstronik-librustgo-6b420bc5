@@ -10,31 +10,55 @@ use std::str;
 use std::sync::Arc;
 use std::vec::Vec;
 
-use super::consts::QUOTE_SIGNATURE_TYPE;
+use crate::attestation::consts::QUOTE_SIGNATURE_TYPE;
+use crate::key_manager::{KeyManager, RegistrationKey}; 
 
 #[no_mangle]
-pub extern "C" fn ecall_request_seed(socket_fd: c_int) {
-    request_seed_inner(socket_fd);
+pub extern "C" fn ecall_request_seed(socket_fd: c_int) -> sgx_status_t {
+    request_seed_inner(socket_fd)
 }
 
 #[cfg(feature = "hardware_mode")]
-fn request_seed_inner(socket_fd: c_int) {
+fn request_seed_inner(socket_fd: c_int) -> sgx_status_t {
     let cfg = match get_client_configuration() {
         Ok(cfg) => cfg,
         Err(err) => {
             println!("{}", err);
-            return;
+            return sgx_status_t::SGX_ERROR_UNEXPECTED;
         }
     };
 
-    let dns_name = webpki::DNSNameRef::try_from_ascii_str("localhost").unwrap();
+    let dns_name = match webpki::DNSNameRef::try_from_ascii_str("localhost") {
+        Ok(dns_name) => dns_name,
+        Err(err) => {
+            println!("[Enclave] Seed Client: wrong host. Reason: {:?}", err);
+            return sgx_status_t::SGX_ERROR_UNEXPECTED;
+        }
+    };
     let mut sess = rustls::ClientSession::new(&Arc::new(cfg), dns_name);
-    let mut conn = TcpStream::new(socket_fd).unwrap();
+    let mut conn = match TcpStream::new(socket_fd) {
+        Ok(conn) => conn,
+        Err(err) => {
+            println!("[Enclave] Seed Client: cannot establish tcp connection. Reason: {:?}", err);
+            return sgx_status_t::SGX_ERROR_UNEXPECTED;
+        }
+    };
 
     let mut tls = rustls::Stream::new(&mut sess, &mut conn);
 
-    // TODO: Send registration public key
-    tls.write("hello".as_bytes()).unwrap();
+    // Generate temporary registration key used for seed encryption during transfer
+    let registration_key = match RegistrationKey::random() {
+        Ok(key) => key,
+        Err(err) => {
+            return err
+        }
+    };
+
+    // Send client public key to the seed exchange server
+    if let Err(err) = tls.write(registration_key.public_key().as_bytes()) {
+        println!("[Enclave] Seed Client: cannot send public key to server. Reason: {:?}", err);
+        return sgx_status_t::SGX_ERROR_UNEXPECTED;
+    }
 
     let mut plaintext = Vec::new();
     match tls.read_to_end(&mut plaintext) {
@@ -49,13 +73,26 @@ fn request_seed_inner(socket_fd: c_int) {
     }
 
     // TODO: Decrypt seed and seal it
+    sgx_status_t::SGX_SUCCESS
 }
 
 #[cfg(not(feature = "hardware_mode"))] 
-fn request_seed_inner(socket_fd: c_int) {
+fn request_seed_inner(socket_fd: c_int) -> sgx_status_t {
     let mut conn = TcpStream::new(socket_fd).unwrap();
-    // TODO: Send registration public key
-    conn.write("hello".as_bytes()).unwrap();
+
+    // Generate temporary registration key used for seed encryption during transfer
+    let registration_key = match RegistrationKey::random() {
+        Ok(key) => key,
+        Err(err) => {
+            return err
+        }
+    };
+
+    // Send client public key to the seed exchange server
+    if let Err(err) = conn.write(registration_key.public_key().as_bytes()) {
+        println!("[Enclave] Seed Client: cannot send public key to server. Reason: {:?}", err);
+        return sgx_status_t::SGX_ERROR_UNEXPECTED;
+    }
 
     let mut plaintext = Vec::new();
     match conn.read_to_end(&mut plaintext) {
@@ -70,6 +107,8 @@ fn request_seed_inner(socket_fd: c_int) {
     }
 
     // TODO: Decrypt seed and seal it
+
+    sgx_status_t::SGX_SUCCESS
 }
 
 #[cfg(feature = "hardware_mode")]

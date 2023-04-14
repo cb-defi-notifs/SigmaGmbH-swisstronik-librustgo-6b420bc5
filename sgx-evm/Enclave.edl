@@ -28,7 +28,7 @@ enclave {
 
         public void ecall_share_seed(int fd);
 
-        public void ecall_request_seed(int fd);
+        public sgx_status_t ecall_request_seed(int fd);
 
         public ResultWithAllocation handle_request(
             [user_check] void* querier,
