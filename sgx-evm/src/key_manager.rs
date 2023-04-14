@@ -147,7 +147,55 @@ impl KeyManager {
         }
     }
 
-    /// Recovers encrypted seed obtained from seed exchange server
+    /// Encrypts master key using shared key
+    pub fn to_encrypted_seed(
+        &self,
+        reg_key: &RegistrationKey,
+        public_key: Vec<u8>,
+    ) -> Result<Vec<u8>, Error> {
+        // Convert public key to appropriate format
+        let public_key: [u8; 32] = match public_key.try_into() {
+            Ok(public_key) => public_key,
+            Err(err) => {
+                return Err(Error::decryption_err(format!("Public key has wrong length")))
+            }
+        };
+        let public_key = x25519_dalek::PublicKey::from(public_key);
+
+        // Derive shared secret
+        let shared_secret = reg_key.diffie_hellman(public_key);
+
+        // Prepare cipher
+        let cipher = match Aes128SivAead::new_from_slice(shared_secret.as_bytes()) {
+            Ok(cipher) => cipher,
+            Err(err) => return Err(Error::encryption_err(err)),
+        };
+
+        // Generate nonce
+        let mut buffer = [0u8; NONCE_LEN];
+        let result = unsafe { sgx_read_rand(&mut buffer as *mut u8, NONCE_LEN) };
+        let nonce = match result {
+            sgx_status_t::SGX_SUCCESS => Nonce::from_slice(&buffer),
+            _ => {
+                return Err(Error::encryption_err(format!(
+                    "Cannot generate nonce: {:?}",
+                    result.as_str()
+                )))
+            }
+        };
+
+        // Encrypt master key
+        match cipher.encrypt(nonce, self.master_key.as_slice()) {
+            Ok(ciphertext) => {
+                let public_key = reg_key.public_key();
+                let result_bytes = [public_key.as_bytes(), nonce.as_slice(), ciphertext.as_slice()].concat();
+                Ok(result_bytes)
+            }
+            Err(err) => Err(Error::encryption_err(err)),
+        }
+    }
+
+    /// Recovers encrypted master key obtained from seed exchange server
     pub fn from_encrypted_seed(
         reg_key: &RegistrationKey,
         public_key: Vec<u8>,
