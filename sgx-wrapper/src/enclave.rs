@@ -32,15 +32,7 @@ extern "C" {
 
     pub fn ecall_init_seed_node(eid: sgx_enclave_id_t, retval: *mut sgx_status_t) -> sgx_status_t;
 
-    pub fn ecall_init_node(eid: sgx_enclave_id_t, retval: *mut sgx_status_t) -> sgx_status_t;
-
     pub fn ecall_is_initialized(eid: sgx_enclave_id_t, retval: *mut i32) -> sgx_status_t;
-
-    pub fn ecall_create_report(
-        eid: sgx_enclave_id_t,
-        retval: *mut sgx_status_t,
-        api_key: *const u8,
-    ) -> sgx_status_t;
 
     pub fn ecall_share_seed(
         eid: sgx_enclave_id_t,
@@ -136,74 +128,7 @@ pub unsafe extern "C" fn handle_initialization_request(
                         };
 
                         Ok(response_bytes)
-                    }
-                    node::SetupRequest_oneof_req::setupRegularNode(req) => {
-                        let mut retval = sgx_status_t::SGX_SUCCESS;
-                        let res = ecall_init_node(evm_enclave.geteid(), &mut retval);
-
-                        match res {
-                            sgx_status_t::SGX_SUCCESS => {}
-                            _ => {
-                                return Err(Error::enclave_error(res.as_str()));
-                            }
-                        };
-
-                        match retval {
-                            sgx_status_t::SGX_SUCCESS => {}
-                            _ => {
-                                return Err(Error::enclave_error(res.as_str()));
-                            }
-                        }
-
-                        // Create response, convert it to bytes and return
-                        let mut response = node::SetupRegularNodeResponse::new();
-                        let response_bytes = match response.write_to_bytes() {
-                            Ok(res) => res,
-                            Err(_) => {
-                                return Err(Error::protobuf_decode("Response encoding failed"));
-                            }
-                        };
-
-                        Ok(response_bytes)
-                    }
-                    node::SetupRequest_oneof_req::createAttestationReport(req) => {
-                        let api_key = req.apiKey;
-                        if api_key.len() != API_KEY_SIZE {
-                            return Err(Error::enclave_error("Wrong length of api key"));
-                        }
-
-                        let mut retval = sgx_status_t::SGX_SUCCESS;
-                        let res = ecall_create_report(
-                            evm_enclave.geteid(),
-                            &mut retval,
-                            api_key.as_ptr(),
-                        );
-
-                        match res {
-                            sgx_status_t::SGX_SUCCESS => {}
-                            _ => {
-                                return Err(Error::enclave_error(res.as_str()));
-                            }
-                        };
-
-                        match retval {
-                            sgx_status_t::SGX_SUCCESS => {}
-                            _ => {
-                                return Err(Error::enclave_error(res.as_str()));
-                            }
-                        }
-
-                        // Create response, convert it to bytes and return
-                        let mut response = node::CreateAttestationReportResponse::new();
-                        let response_bytes = match response.write_to_bytes() {
-                            Ok(res) => res,
-                            Err(_) => {
-                                return Err(Error::protobuf_decode("Response encoding failed"));
-                            }
-                        };
-
-                        Ok(response_bytes)
-                    }
+                    },
                     node::SetupRequest_oneof_req::startSeedServer(req) => {
                         println!("SGX_WRAPPER: starting seed server");
                         let sign_type = sgx_quote_sign_type_t::SGX_LINKABLE_SIGNATURE;

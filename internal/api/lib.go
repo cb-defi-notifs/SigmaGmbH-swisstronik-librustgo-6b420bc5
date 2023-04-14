@@ -97,52 +97,6 @@ func SetupSeedNode() error {
 	return nil
 }
 
-// SetupRegularNode handles initialization of regular node which will request seed from seed node
-func SetupRegularNode() {
-	// Create protobuf encoded request
-	req := ffi.SetupRequest{Req: &ffi.SetupRequest_SetupRegularNode{
-		SetupRegularNode: &ffi.SetupRegularNodeRequest{},
-	}}
-	reqBytes, err := proto.Marshal(&req)
-	if err != nil {
-		log.Fatalln("Failed to encode req:", err)
-	}
-
-	// Pass request to Rust
-	d := MakeView(reqBytes)
-	defer runtime.KeepAlive(reqBytes)
-
-	errmsg := NewUnmanagedVector(nil)
-
-	_ = C.handle_initialization_request(d, &errmsg)
-}
-
-func CreateAttestationReport(apiKey []byte) {
-	if len(apiKey) != 32 {
-		log.Fatalln("Wrong api key size")
-		return
-	}
-
-	// Create protobuf encoded request
-	req := ffi.SetupRequest{Req: &ffi.SetupRequest_CreateAttestationReport{
-		CreateAttestationReport: &ffi.CreateAttestationReportRequest{
-			ApiKey: apiKey,
-		},
-	}}
-	reqBytes, err := proto.Marshal(&req)
-	if err != nil {
-		log.Fatalln("Failed to encode req:", err)
-	}
-
-	// Pass request to Rust
-	d := MakeView(reqBytes)
-	defer runtime.KeepAlive(reqBytes)
-
-	errmsg := NewUnmanagedVector(nil)
-
-	_ = C.handle_initialization_request(d, &errmsg)
-}
-
 // StartSeedServer handles initialization of seed server
 func StartSeedServer(addr string) error {
 	fmt.Println("[Seed Server] Trying to start seed server")

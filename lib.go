@@ -102,14 +102,6 @@ func SetupSeedNode() error {
 	return api.SetupSeedNode()
 }
 
-func SetupRegularNode() {
-	api.SetupRegularNode()
-}
-
-func CreateAttestationReport(apiKey []byte) {
-	api.CreateAttestationReport(apiKey)
-}
-
 func StartSeedServer(addr string) error {
 	return api.StartSeedServer(addr)
 }

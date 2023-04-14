@@ -8,14 +8,6 @@ message SetupSeedNodeRequest {}
 
 message SetupSeedNodeResponse {}
 
-message SetupRegularNodeRequest {}
-
-message SetupRegularNodeResponse {}
-
-message CreateAttestationReportRequest {
-    bytes apiKey = 1;
-}
-
 message StartSeedServerRequest {
     int32 fd = 1;
 }
@@ -28,8 +20,6 @@ message NodeSeedRequest {
 
 message NodeSeedResponse {}
 
-message CreateAttestationReportResponse {}
-
 message IsInitializedRequest {}
 message IsInitializedResponse { 
     bool isInitialized = 1;
@@ -38,10 +28,8 @@ message IsInitializedResponse {
 message SetupRequest {
     oneof req {
         SetupSeedNodeRequest setupSeedNode = 1;
-        SetupRegularNodeRequest setupRegularNode = 2;
-        CreateAttestationReportRequest createAttestationReport = 3;
-        StartSeedServerRequest startSeedServer = 4;
-        NodeSeedRequest nodeSeed = 5;
-        IsInitializedRequest isInitialized = 6;
+        StartSeedServerRequest startSeedServer = 2;
+        NodeSeedRequest nodeSeed = 3;
+        IsInitializedRequest isInitialized = 4;
     }
 }

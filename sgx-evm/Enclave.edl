@@ -24,10 +24,6 @@ enclave {
     trusted {
         public sgx_status_t ecall_init_seed_node();
 
-        public sgx_status_t ecall_init_node();
-
-        public sgx_status_t ecall_create_report([in] uint8_t api_key[32]);
-
         public int ecall_is_initialized();
 
         public void ecall_share_seed(int fd, sgx_quote_sign_type_t quote_type);
