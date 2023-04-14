@@ -96,129 +96,6 @@ func (*SetupSeedNodeResponse) Descriptor() ([]byte, []int) {
 	return file_node_proto_rawDescGZIP(), []int{1}
 }
 
-type SetupRegularNodeRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-}
-
-func (x *SetupRegularNodeRequest) Reset() {
-	*x = SetupRegularNodeRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_node_proto_msgTypes[2]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *SetupRegularNodeRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SetupRegularNodeRequest) ProtoMessage() {}
-
-func (x *SetupRegularNodeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_node_proto_msgTypes[2]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SetupRegularNodeRequest.ProtoReflect.Descriptor instead.
-func (*SetupRegularNodeRequest) Descriptor() ([]byte, []int) {
-	return file_node_proto_rawDescGZIP(), []int{2}
-}
-
-type SetupRegularNodeResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-}
-
-func (x *SetupRegularNodeResponse) Reset() {
-	*x = SetupRegularNodeResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_node_proto_msgTypes[3]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *SetupRegularNodeResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SetupRegularNodeResponse) ProtoMessage() {}
-
-func (x *SetupRegularNodeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_node_proto_msgTypes[3]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SetupRegularNodeResponse.ProtoReflect.Descriptor instead.
-func (*SetupRegularNodeResponse) Descriptor() ([]byte, []int) {
-	return file_node_proto_rawDescGZIP(), []int{3}
-}
-
-type CreateAttestationReportRequest struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	ApiKey []byte `protobuf:"bytes,1,opt,name=apiKey,proto3" json:"apiKey,omitempty"`
-}
-
-func (x *CreateAttestationReportRequest) Reset() {
-	*x = CreateAttestationReportRequest{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_node_proto_msgTypes[4]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *CreateAttestationReportRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateAttestationReportRequest) ProtoMessage() {}
-
-func (x *CreateAttestationReportRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_node_proto_msgTypes[4]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateAttestationReportRequest.ProtoReflect.Descriptor instead.
-func (*CreateAttestationReportRequest) Descriptor() ([]byte, []int) {
-	return file_node_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *CreateAttestationReportRequest) GetApiKey() []byte {
-	if x != nil {
-		return x.ApiKey
-	}
-	return nil
-}
-
 type StartSeedServerRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -230,7 +107,7 @@ type StartSeedServerRequest struct {
 func (x *StartSeedServerRequest) Reset() {
 	*x = StartSeedServerRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_node_proto_msgTypes[5]
+		mi := &file_node_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -243,7 +120,7 @@ func (x *StartSeedServerRequest) String() string {
 func (*StartSeedServerRequest) ProtoMessage() {}
 
 func (x *StartSeedServerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_node_proto_msgTypes[5]
+	mi := &file_node_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -256,7 +133,7 @@ func (x *StartSeedServerRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StartSeedServerRequest.ProtoReflect.Descriptor instead.
 func (*StartSeedServerRequest) Descriptor() ([]byte, []int) {
-	return file_node_proto_rawDescGZIP(), []int{5}
+	return file_node_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *StartSeedServerRequest) GetFd() int32 {
@@ -275,7 +152,7 @@ type StartSeedServerResponse struct {
 func (x *StartSeedServerResponse) Reset() {
 	*x = StartSeedServerResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_node_proto_msgTypes[6]
+		mi := &file_node_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -288,7 +165,7 @@ func (x *StartSeedServerResponse) String() string {
 func (*StartSeedServerResponse) ProtoMessage() {}
 
 func (x *StartSeedServerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_node_proto_msgTypes[6]
+	mi := &file_node_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -301,7 +178,7 @@ func (x *StartSeedServerResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StartSeedServerResponse.ProtoReflect.Descriptor instead.
 func (*StartSeedServerResponse) Descriptor() ([]byte, []int) {
-	return file_node_proto_rawDescGZIP(), []int{6}
+	return file_node_proto_rawDescGZIP(), []int{3}
 }
 
 type NodeSeedRequest struct {
@@ -315,7 +192,7 @@ type NodeSeedRequest struct {
 func (x *NodeSeedRequest) Reset() {
 	*x = NodeSeedRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_node_proto_msgTypes[7]
+		mi := &file_node_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -328,7 +205,7 @@ func (x *NodeSeedRequest) String() string {
 func (*NodeSeedRequest) ProtoMessage() {}
 
 func (x *NodeSeedRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_node_proto_msgTypes[7]
+	mi := &file_node_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -341,7 +218,7 @@ func (x *NodeSeedRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NodeSeedRequest.ProtoReflect.Descriptor instead.
 func (*NodeSeedRequest) Descriptor() ([]byte, []int) {
-	return file_node_proto_rawDescGZIP(), []int{7}
+	return file_node_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *NodeSeedRequest) GetFd() int32 {
@@ -360,7 +237,7 @@ type NodeSeedResponse struct {
 func (x *NodeSeedResponse) Reset() {
 	*x = NodeSeedResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_node_proto_msgTypes[8]
+		mi := &file_node_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -373,7 +250,7 @@ func (x *NodeSeedResponse) String() string {
 func (*NodeSeedResponse) ProtoMessage() {}
 
 func (x *NodeSeedResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_node_proto_msgTypes[8]
+	mi := &file_node_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -386,45 +263,7 @@ func (x *NodeSeedResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use NodeSeedResponse.ProtoReflect.Descriptor instead.
 func (*NodeSeedResponse) Descriptor() ([]byte, []int) {
-	return file_node_proto_rawDescGZIP(), []int{8}
-}
-
-type CreateAttestationReportResponse struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-}
-
-func (x *CreateAttestationReportResponse) Reset() {
-	*x = CreateAttestationReportResponse{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_node_proto_msgTypes[9]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *CreateAttestationReportResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateAttestationReportResponse) ProtoMessage() {}
-
-func (x *CreateAttestationReportResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_node_proto_msgTypes[9]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateAttestationReportResponse.ProtoReflect.Descriptor instead.
-func (*CreateAttestationReportResponse) Descriptor() ([]byte, []int) {
-	return file_node_proto_rawDescGZIP(), []int{9}
+	return file_node_proto_rawDescGZIP(), []int{5}
 }
 
 type IsInitializedRequest struct {
@@ -436,7 +275,7 @@ type IsInitializedRequest struct {
 func (x *IsInitializedRequest) Reset() {
 	*x = IsInitializedRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_node_proto_msgTypes[10]
+		mi := &file_node_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -449,7 +288,7 @@ func (x *IsInitializedRequest) String() string {
 func (*IsInitializedRequest) ProtoMessage() {}
 
 func (x *IsInitializedRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_node_proto_msgTypes[10]
+	mi := &file_node_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -462,7 +301,7 @@ func (x *IsInitializedRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IsInitializedRequest.ProtoReflect.Descriptor instead.
 func (*IsInitializedRequest) Descriptor() ([]byte, []int) {
-	return file_node_proto_rawDescGZIP(), []int{10}
+	return file_node_proto_rawDescGZIP(), []int{6}
 }
 
 type IsInitializedResponse struct {
@@ -476,7 +315,7 @@ type IsInitializedResponse struct {
 func (x *IsInitializedResponse) Reset() {
 	*x = IsInitializedResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_node_proto_msgTypes[11]
+		mi := &file_node_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -489,7 +328,7 @@ func (x *IsInitializedResponse) String() string {
 func (*IsInitializedResponse) ProtoMessage() {}
 
 func (x *IsInitializedResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_node_proto_msgTypes[11]
+	mi := &file_node_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -502,7 +341,7 @@ func (x *IsInitializedResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IsInitializedResponse.ProtoReflect.Descriptor instead.
 func (*IsInitializedResponse) Descriptor() ([]byte, []int) {
-	return file_node_proto_rawDescGZIP(), []int{11}
+	return file_node_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *IsInitializedResponse) GetIsInitialized() bool {
@@ -520,8 +359,6 @@ type SetupRequest struct {
 	// Types that are assignable to Req:
 	//
 	//	*SetupRequest_SetupSeedNode
-	//	*SetupRequest_SetupRegularNode
-	//	*SetupRequest_CreateAttestationReport
 	//	*SetupRequest_StartSeedServer
 	//	*SetupRequest_NodeSeed
 	//	*SetupRequest_IsInitialized
@@ -531,7 +368,7 @@ type SetupRequest struct {
 func (x *SetupRequest) Reset() {
 	*x = SetupRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_node_proto_msgTypes[12]
+		mi := &file_node_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -544,7 +381,7 @@ func (x *SetupRequest) String() string {
 func (*SetupRequest) ProtoMessage() {}
 
 func (x *SetupRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_node_proto_msgTypes[12]
+	mi := &file_node_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -557,7 +394,7 @@ func (x *SetupRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetupRequest.ProtoReflect.Descriptor instead.
 func (*SetupRequest) Descriptor() ([]byte, []int) {
-	return file_node_proto_rawDescGZIP(), []int{12}
+	return file_node_proto_rawDescGZIP(), []int{8}
 }
 
 func (m *SetupRequest) GetReq() isSetupRequest_Req {
@@ -570,20 +407,6 @@ func (m *SetupRequest) GetReq() isSetupRequest_Req {
 func (x *SetupRequest) GetSetupSeedNode() *SetupSeedNodeRequest {
 	if x, ok := x.GetReq().(*SetupRequest_SetupSeedNode); ok {
 		return x.SetupSeedNode
-	}
-	return nil
-}
-
-func (x *SetupRequest) GetSetupRegularNode() *SetupRegularNodeRequest {
-	if x, ok := x.GetReq().(*SetupRequest_SetupRegularNode); ok {
-		return x.SetupRegularNode
-	}
-	return nil
-}
-
-func (x *SetupRequest) GetCreateAttestationReport() *CreateAttestationReportRequest {
-	if x, ok := x.GetReq().(*SetupRequest_CreateAttestationReport); ok {
-		return x.CreateAttestationReport
 	}
 	return nil
 }
@@ -617,31 +440,19 @@ type SetupRequest_SetupSeedNode struct {
 	SetupSeedNode *SetupSeedNodeRequest `protobuf:"bytes,1,opt,name=setupSeedNode,proto3,oneof"`
 }
 
-type SetupRequest_SetupRegularNode struct {
-	SetupRegularNode *SetupRegularNodeRequest `protobuf:"bytes,2,opt,name=setupRegularNode,proto3,oneof"`
-}
-
-type SetupRequest_CreateAttestationReport struct {
-	CreateAttestationReport *CreateAttestationReportRequest `protobuf:"bytes,3,opt,name=createAttestationReport,proto3,oneof"`
-}
-
 type SetupRequest_StartSeedServer struct {
-	StartSeedServer *StartSeedServerRequest `protobuf:"bytes,4,opt,name=startSeedServer,proto3,oneof"`
+	StartSeedServer *StartSeedServerRequest `protobuf:"bytes,2,opt,name=startSeedServer,proto3,oneof"`
 }
 
 type SetupRequest_NodeSeed struct {
-	NodeSeed *NodeSeedRequest `protobuf:"bytes,5,opt,name=nodeSeed,proto3,oneof"`
+	NodeSeed *NodeSeedRequest `protobuf:"bytes,3,opt,name=nodeSeed,proto3,oneof"`
 }
 
 type SetupRequest_IsInitialized struct {
-	IsInitialized *IsInitializedRequest `protobuf:"bytes,6,opt,name=isInitialized,proto3,oneof"`
+	IsInitialized *IsInitializedRequest `protobuf:"bytes,4,opt,name=isInitialized,proto3,oneof"`
 }
 
 func (*SetupRequest_SetupSeedNode) isSetupRequest_Req() {}
-
-func (*SetupRequest_SetupRegularNode) isSetupRequest_Req() {}
-
-func (*SetupRequest_CreateAttestationReport) isSetupRequest_Req() {}
 
 func (*SetupRequest_StartSeedServer) isSetupRequest_Req() {}
 
@@ -656,61 +467,40 @@ var file_node_proto_rawDesc = []byte{
 	0x64, 0x65, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x22, 0x16, 0x0a, 0x14, 0x53, 0x65, 0x74, 0x75, 0x70,
 	0x53, 0x65, 0x65, 0x64, 0x4e, 0x6f, 0x64, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22,
 	0x17, 0x0a, 0x15, 0x53, 0x65, 0x74, 0x75, 0x70, 0x53, 0x65, 0x65, 0x64, 0x4e, 0x6f, 0x64, 0x65,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x19, 0x0a, 0x17, 0x53, 0x65, 0x74, 0x75,
-	0x70, 0x52, 0x65, 0x67, 0x75, 0x6c, 0x61, 0x72, 0x4e, 0x6f, 0x64, 0x65, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x22, 0x1a, 0x0a, 0x18, 0x53, 0x65, 0x74, 0x75, 0x70, 0x52, 0x65, 0x67, 0x75,
-	0x6c, 0x61, 0x72, 0x4e, 0x6f, 0x64, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22,
-	0x38, 0x0a, 0x1e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x41, 0x74, 0x74, 0x65, 0x73, 0x74, 0x61,
-	0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x70, 0x6f, 0x72, 0x74, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x12, 0x16, 0x0a, 0x06, 0x61, 0x70, 0x69, 0x4b, 0x65, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28,
-	0x0c, 0x52, 0x06, 0x61, 0x70, 0x69, 0x4b, 0x65, 0x79, 0x22, 0x28, 0x0a, 0x16, 0x53, 0x74, 0x61,
-	0x72, 0x74, 0x53, 0x65, 0x65, 0x64, 0x53, 0x65, 0x72, 0x76, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x66, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52,
-	0x02, 0x66, 0x64, 0x22, 0x19, 0x0a, 0x17, 0x53, 0x74, 0x61, 0x72, 0x74, 0x53, 0x65, 0x65, 0x64,
-	0x53, 0x65, 0x72, 0x76, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x21,
-	0x0a, 0x0f, 0x4e, 0x6f, 0x64, 0x65, 0x53, 0x65, 0x65, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x12, 0x0e, 0x0a, 0x02, 0x66, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x02, 0x66,
-	0x64, 0x22, 0x12, 0x0a, 0x10, 0x4e, 0x6f, 0x64, 0x65, 0x53, 0x65, 0x65, 0x64, 0x52, 0x65, 0x73,
-	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x21, 0x0a, 0x1f, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x41,
-	0x74, 0x74, 0x65, 0x73, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x70, 0x6f, 0x72, 0x74,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x16, 0x0a, 0x14, 0x49, 0x73, 0x49, 0x6e,
-	0x69, 0x74, 0x69, 0x61, 0x6c, 0x69, 0x7a, 0x65, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x22, 0x3d, 0x0a, 0x15, 0x49, 0x73, 0x49, 0x6e, 0x69, 0x74, 0x69, 0x61, 0x6c, 0x69, 0x7a, 0x65,
-	0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x24, 0x0a, 0x0d, 0x69, 0x73, 0x49,
-	0x6e, 0x69, 0x74, 0x69, 0x61, 0x6c, 0x69, 0x7a, 0x65, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08,
-	0x52, 0x0d, 0x69, 0x73, 0x49, 0x6e, 0x69, 0x74, 0x69, 0x61, 0x6c, 0x69, 0x7a, 0x65, 0x64, 0x22,
-	0xe9, 0x03, 0x0a, 0x0c, 0x53, 0x65, 0x74, 0x75, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
-	0x12, 0x47, 0x0a, 0x0d, 0x73, 0x65, 0x74, 0x75, 0x70, 0x53, 0x65, 0x65, 0x64, 0x4e, 0x6f, 0x64,
-	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x2e, 0x6e,
-	0x6f, 0x64, 0x65, 0x2e, 0x53, 0x65, 0x74, 0x75, 0x70, 0x53, 0x65, 0x65, 0x64, 0x4e, 0x6f, 0x64,
-	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x48, 0x00, 0x52, 0x0d, 0x73, 0x65, 0x74, 0x75,
-	0x70, 0x53, 0x65, 0x65, 0x64, 0x4e, 0x6f, 0x64, 0x65, 0x12, 0x50, 0x0a, 0x10, 0x73, 0x65, 0x74,
-	0x75, 0x70, 0x52, 0x65, 0x67, 0x75, 0x6c, 0x61, 0x72, 0x4e, 0x6f, 0x64, 0x65, 0x18, 0x02, 0x20,
-	0x01, 0x28, 0x0b, 0x32, 0x22, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x2e,
-	0x53, 0x65, 0x74, 0x75, 0x70, 0x52, 0x65, 0x67, 0x75, 0x6c, 0x61, 0x72, 0x4e, 0x6f, 0x64, 0x65,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x48, 0x00, 0x52, 0x10, 0x73, 0x65, 0x74, 0x75, 0x70,
-	0x52, 0x65, 0x67, 0x75, 0x6c, 0x61, 0x72, 0x4e, 0x6f, 0x64, 0x65, 0x12, 0x65, 0x0a, 0x17, 0x63,
-	0x72, 0x65, 0x61, 0x74, 0x65, 0x41, 0x74, 0x74, 0x65, 0x73, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e,
-	0x52, 0x65, 0x70, 0x6f, 0x72, 0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x29, 0x2e, 0x6e,
-	0x6f, 0x64, 0x65, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x41,
-	0x74, 0x74, 0x65, 0x73, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x70, 0x6f, 0x72, 0x74,
-	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x48, 0x00, 0x52, 0x17, 0x63, 0x72, 0x65, 0x61, 0x74,
-	0x65, 0x41, 0x74, 0x74, 0x65, 0x73, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x70, 0x6f,
-	0x72, 0x74, 0x12, 0x4d, 0x0a, 0x0f, 0x73, 0x74, 0x61, 0x72, 0x74, 0x53, 0x65, 0x65, 0x64, 0x53,
-	0x65, 0x72, 0x76, 0x65, 0x72, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x21, 0x2e, 0x6e, 0x6f,
-	0x64, 0x65, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x2e, 0x53, 0x74, 0x61, 0x72, 0x74, 0x53, 0x65, 0x65,
-	0x64, 0x53, 0x65, 0x72, 0x76, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x48, 0x00,
-	0x52, 0x0f, 0x73, 0x74, 0x61, 0x72, 0x74, 0x53, 0x65, 0x65, 0x64, 0x53, 0x65, 0x72, 0x76, 0x65,
-	0x72, 0x12, 0x38, 0x0a, 0x08, 0x6e, 0x6f, 0x64, 0x65, 0x53, 0x65, 0x65, 0x64, 0x18, 0x05, 0x20,
-	0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x2e,
-	0x4e, 0x6f, 0x64, 0x65, 0x53, 0x65, 0x65, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x48,
-	0x00, 0x52, 0x08, 0x6e, 0x6f, 0x64, 0x65, 0x53, 0x65, 0x65, 0x64, 0x12, 0x47, 0x0a, 0x0d, 0x69,
-	0x73, 0x49, 0x6e, 0x69, 0x74, 0x69, 0x61, 0x6c, 0x69, 0x7a, 0x65, 0x64, 0x18, 0x06, 0x20, 0x01,
-	0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x2e, 0x49,
-	0x73, 0x49, 0x6e, 0x69, 0x74, 0x69, 0x61, 0x6c, 0x69, 0x7a, 0x65, 0x64, 0x52, 0x65, 0x71, 0x75,
-	0x65, 0x73, 0x74, 0x48, 0x00, 0x52, 0x0d, 0x69, 0x73, 0x49, 0x6e, 0x69, 0x74, 0x69, 0x61, 0x6c,
-	0x69, 0x7a, 0x65, 0x64, 0x42, 0x05, 0x0a, 0x03, 0x72, 0x65, 0x71, 0x42, 0x04, 0x5a, 0x02, 0x2e,
-	0x2f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x28, 0x0a, 0x16, 0x53, 0x74, 0x61, 0x72,
+	0x74, 0x53, 0x65, 0x65, 0x64, 0x53, 0x65, 0x72, 0x76, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x12, 0x0e, 0x0a, 0x02, 0x66, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x02,
+	0x66, 0x64, 0x22, 0x19, 0x0a, 0x17, 0x53, 0x74, 0x61, 0x72, 0x74, 0x53, 0x65, 0x65, 0x64, 0x53,
+	0x65, 0x72, 0x76, 0x65, 0x72, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x21, 0x0a,
+	0x0f, 0x4e, 0x6f, 0x64, 0x65, 0x53, 0x65, 0x65, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x12, 0x0e, 0x0a, 0x02, 0x66, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x02, 0x66, 0x64,
+	0x22, 0x12, 0x0a, 0x10, 0x4e, 0x6f, 0x64, 0x65, 0x53, 0x65, 0x65, 0x64, 0x52, 0x65, 0x73, 0x70,
+	0x6f, 0x6e, 0x73, 0x65, 0x22, 0x16, 0x0a, 0x14, 0x49, 0x73, 0x49, 0x6e, 0x69, 0x74, 0x69, 0x61,
+	0x6c, 0x69, 0x7a, 0x65, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x22, 0x3d, 0x0a, 0x15,
+	0x49, 0x73, 0x49, 0x6e, 0x69, 0x74, 0x69, 0x61, 0x6c, 0x69, 0x7a, 0x65, 0x64, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x24, 0x0a, 0x0d, 0x69, 0x73, 0x49, 0x6e, 0x69, 0x74, 0x69,
+	0x61, 0x6c, 0x69, 0x7a, 0x65, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08, 0x52, 0x0d, 0x69, 0x73,
+	0x49, 0x6e, 0x69, 0x74, 0x69, 0x61, 0x6c, 0x69, 0x7a, 0x65, 0x64, 0x22, 0xb0, 0x02, 0x0a, 0x0c,
+	0x53, 0x65, 0x74, 0x75, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x47, 0x0a, 0x0d,
+	0x73, 0x65, 0x74, 0x75, 0x70, 0x53, 0x65, 0x65, 0x64, 0x4e, 0x6f, 0x64, 0x65, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x2e,
+	0x53, 0x65, 0x74, 0x75, 0x70, 0x53, 0x65, 0x65, 0x64, 0x4e, 0x6f, 0x64, 0x65, 0x52, 0x65, 0x71,
+	0x75, 0x65, 0x73, 0x74, 0x48, 0x00, 0x52, 0x0d, 0x73, 0x65, 0x74, 0x75, 0x70, 0x53, 0x65, 0x65,
+	0x64, 0x4e, 0x6f, 0x64, 0x65, 0x12, 0x4d, 0x0a, 0x0f, 0x73, 0x74, 0x61, 0x72, 0x74, 0x53, 0x65,
+	0x65, 0x64, 0x53, 0x65, 0x72, 0x76, 0x65, 0x72, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x21,
+	0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x2e, 0x53, 0x74, 0x61, 0x72, 0x74,
+	0x53, 0x65, 0x65, 0x64, 0x53, 0x65, 0x72, 0x76, 0x65, 0x72, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
+	0x74, 0x48, 0x00, 0x52, 0x0f, 0x73, 0x74, 0x61, 0x72, 0x74, 0x53, 0x65, 0x65, 0x64, 0x53, 0x65,
+	0x72, 0x76, 0x65, 0x72, 0x12, 0x38, 0x0a, 0x08, 0x6e, 0x6f, 0x64, 0x65, 0x53, 0x65, 0x65, 0x64,
+	0x18, 0x03, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1a, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x2e, 0x6e, 0x6f,
+	0x64, 0x65, 0x2e, 0x4e, 0x6f, 0x64, 0x65, 0x53, 0x65, 0x65, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x48, 0x00, 0x52, 0x08, 0x6e, 0x6f, 0x64, 0x65, 0x53, 0x65, 0x65, 0x64, 0x12, 0x47,
+	0x0a, 0x0d, 0x69, 0x73, 0x49, 0x6e, 0x69, 0x74, 0x69, 0x61, 0x6c, 0x69, 0x7a, 0x65, 0x64, 0x18,
+	0x04, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x1f, 0x2e, 0x6e, 0x6f, 0x64, 0x65, 0x2e, 0x6e, 0x6f, 0x64,
+	0x65, 0x2e, 0x49, 0x73, 0x49, 0x6e, 0x69, 0x74, 0x69, 0x61, 0x6c, 0x69, 0x7a, 0x65, 0x64, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x48, 0x00, 0x52, 0x0d, 0x69, 0x73, 0x49, 0x6e, 0x69, 0x74,
+	0x69, 0x61, 0x6c, 0x69, 0x7a, 0x65, 0x64, 0x42, 0x05, 0x0a, 0x03, 0x72, 0x65, 0x71, 0x42, 0x04,
+	0x5a, 0x02, 0x2e, 0x2f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -725,34 +515,28 @@ func file_node_proto_rawDescGZIP() []byte {
 	return file_node_proto_rawDescData
 }
 
-var file_node_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_node_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_node_proto_goTypes = []interface{}{
-	(*SetupSeedNodeRequest)(nil),            // 0: node.node.SetupSeedNodeRequest
-	(*SetupSeedNodeResponse)(nil),           // 1: node.node.SetupSeedNodeResponse
-	(*SetupRegularNodeRequest)(nil),         // 2: node.node.SetupRegularNodeRequest
-	(*SetupRegularNodeResponse)(nil),        // 3: node.node.SetupRegularNodeResponse
-	(*CreateAttestationReportRequest)(nil),  // 4: node.node.CreateAttestationReportRequest
-	(*StartSeedServerRequest)(nil),          // 5: node.node.StartSeedServerRequest
-	(*StartSeedServerResponse)(nil),         // 6: node.node.StartSeedServerResponse
-	(*NodeSeedRequest)(nil),                 // 7: node.node.NodeSeedRequest
-	(*NodeSeedResponse)(nil),                // 8: node.node.NodeSeedResponse
-	(*CreateAttestationReportResponse)(nil), // 9: node.node.CreateAttestationReportResponse
-	(*IsInitializedRequest)(nil),            // 10: node.node.IsInitializedRequest
-	(*IsInitializedResponse)(nil),           // 11: node.node.IsInitializedResponse
-	(*SetupRequest)(nil),                    // 12: node.node.SetupRequest
+	(*SetupSeedNodeRequest)(nil),    // 0: node.node.SetupSeedNodeRequest
+	(*SetupSeedNodeResponse)(nil),   // 1: node.node.SetupSeedNodeResponse
+	(*StartSeedServerRequest)(nil),  // 2: node.node.StartSeedServerRequest
+	(*StartSeedServerResponse)(nil), // 3: node.node.StartSeedServerResponse
+	(*NodeSeedRequest)(nil),         // 4: node.node.NodeSeedRequest
+	(*NodeSeedResponse)(nil),        // 5: node.node.NodeSeedResponse
+	(*IsInitializedRequest)(nil),    // 6: node.node.IsInitializedRequest
+	(*IsInitializedResponse)(nil),   // 7: node.node.IsInitializedResponse
+	(*SetupRequest)(nil),            // 8: node.node.SetupRequest
 }
 var file_node_proto_depIdxs = []int32{
-	0,  // 0: node.node.SetupRequest.setupSeedNode:type_name -> node.node.SetupSeedNodeRequest
-	2,  // 1: node.node.SetupRequest.setupRegularNode:type_name -> node.node.SetupRegularNodeRequest
-	4,  // 2: node.node.SetupRequest.createAttestationReport:type_name -> node.node.CreateAttestationReportRequest
-	5,  // 3: node.node.SetupRequest.startSeedServer:type_name -> node.node.StartSeedServerRequest
-	7,  // 4: node.node.SetupRequest.nodeSeed:type_name -> node.node.NodeSeedRequest
-	10, // 5: node.node.SetupRequest.isInitialized:type_name -> node.node.IsInitializedRequest
-	6,  // [6:6] is the sub-list for method output_type
-	6,  // [6:6] is the sub-list for method input_type
-	6,  // [6:6] is the sub-list for extension type_name
-	6,  // [6:6] is the sub-list for extension extendee
-	0,  // [0:6] is the sub-list for field type_name
+	0, // 0: node.node.SetupRequest.setupSeedNode:type_name -> node.node.SetupSeedNodeRequest
+	2, // 1: node.node.SetupRequest.startSeedServer:type_name -> node.node.StartSeedServerRequest
+	4, // 2: node.node.SetupRequest.nodeSeed:type_name -> node.node.NodeSeedRequest
+	6, // 3: node.node.SetupRequest.isInitialized:type_name -> node.node.IsInitializedRequest
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_node_proto_init() }
@@ -786,42 +570,6 @@ func file_node_proto_init() {
 			}
 		}
 		file_node_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SetupRegularNodeRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_node_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SetupRegularNodeResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_node_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateAttestationReportRequest); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_node_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*StartSeedServerRequest); i {
 			case 0:
 				return &v.state
@@ -833,7 +581,7 @@ func file_node_proto_init() {
 				return nil
 			}
 		}
-		file_node_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
+		file_node_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*StartSeedServerResponse); i {
 			case 0:
 				return &v.state
@@ -845,7 +593,7 @@ func file_node_proto_init() {
 				return nil
 			}
 		}
-		file_node_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
+		file_node_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*NodeSeedRequest); i {
 			case 0:
 				return &v.state
@@ -857,7 +605,7 @@ func file_node_proto_init() {
 				return nil
 			}
 		}
-		file_node_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
+		file_node_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*NodeSeedResponse); i {
 			case 0:
 				return &v.state
@@ -869,19 +617,7 @@ func file_node_proto_init() {
 				return nil
 			}
 		}
-		file_node_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateAttestationReportResponse); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_node_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+		file_node_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*IsInitializedRequest); i {
 			case 0:
 				return &v.state
@@ -893,7 +629,7 @@ func file_node_proto_init() {
 				return nil
 			}
 		}
-		file_node_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+		file_node_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*IsInitializedResponse); i {
 			case 0:
 				return &v.state
@@ -905,7 +641,7 @@ func file_node_proto_init() {
 				return nil
 			}
 		}
-		file_node_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+		file_node_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*SetupRequest); i {
 			case 0:
 				return &v.state
@@ -918,10 +654,8 @@ func file_node_proto_init() {
 			}
 		}
 	}
-	file_node_proto_msgTypes[12].OneofWrappers = []interface{}{
+	file_node_proto_msgTypes[8].OneofWrappers = []interface{}{
 		(*SetupRequest_SetupSeedNode)(nil),
-		(*SetupRequest_SetupRegularNode)(nil),
-		(*SetupRequest_CreateAttestationReport)(nil),
 		(*SetupRequest_StartSeedServer)(nil),
 		(*SetupRequest_NodeSeed)(nil),
 		(*SetupRequest_IsInitialized)(nil),
@@ -932,7 +666,7 @@ func file_node_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_node_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   13,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

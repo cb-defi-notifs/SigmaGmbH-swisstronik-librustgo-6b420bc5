@@ -9,17 +9,18 @@ use std::str;
 use std::sync::Arc;
 use std::vec::Vec;
 
+use super::consts::QUOTE_SIGNATURE_TYPE;
+
 #[no_mangle]
 pub unsafe extern "C" fn ecall_share_seed(
     socket_fd: c_int,
-    sign_type: sgx_quote_sign_type_t,
 ) {
-    share_seed_inner(socket_fd, sign_type);
+    share_seed_inner(socket_fd);
 }
 
 #[cfg(feature = "hardware_mode")]
-fn share_seed_inner(socket_fd: c_int, sign_type: sgx_quote_sign_type_t) {
-    let cfg = match get_server_configuration(sign_type) {
+fn share_seed_inner(socket_fd: c_int) {
+    let cfg = match get_server_configuration() {
         Ok(cfg) => cfg,
         Err(err) => {
             println!("{}", err);
@@ -53,7 +54,7 @@ fn share_seed_inner(socket_fd: c_int, sign_type: sgx_quote_sign_type_t) {
 }
 
 #[cfg(not(feature = "hardware_mode"))]
-fn share_seed_inner(socket_fd: c_int, sign_type: sgx_quote_sign_type_t) {
+fn share_seed_inner(socket_fd: c_int) {
     let mut conn = TcpStream::new(socket_fd).unwrap();
 
     let mut plaintext = [0u8; 1024]; //Vec::new();
@@ -78,13 +79,13 @@ fn share_seed_inner(socket_fd: c_int, sign_type: sgx_quote_sign_type_t) {
 }
 
 #[cfg(feature = "hardware_mode")]
-fn get_server_configuration(sign_type: sgx_quote_sign_type_t) -> Result<rustls::ServerConfig, String> {
+fn get_server_configuration() -> Result<rustls::ServerConfig, String> {
     // Generate Keypair
     let ecc_handle = SgxEccHandle::new();
     let _result = ecc_handle.open();
     let (prv_k, pub_k) = ecc_handle.create_key_pair().unwrap();
 
-    let signed_report = match super::utils::create_attestation_report(&pub_k, sign_type) {
+    let signed_report = match super::utils::create_attestation_report(&pub_k, QUOTE_SIGNATURE_TYPE) {
         Ok(r) => r,
         Err(e) => {
             return Err(format!("Error creating attestation report"));

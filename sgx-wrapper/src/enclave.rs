@@ -37,13 +37,11 @@ extern "C" {
     pub fn ecall_share_seed(
         eid: sgx_enclave_id_t,
         socket_fd: c_int,
-        sign_type: sgx_quote_sign_type_t,
     ) -> sgx_status_t;
 
     pub fn ecall_request_seed(
         eid: sgx_enclave_id_t,
         socket_fd: c_int,
-        sign_type: sgx_quote_sign_type_t,
     ) -> sgx_status_t;
 }
 
@@ -130,9 +128,7 @@ pub unsafe extern "C" fn handle_initialization_request(
                         Ok(response_bytes)
                     },
                     node::SetupRequest_oneof_req::startSeedServer(req) => {
-                        println!("SGX_WRAPPER: starting seed server");
-                        let sign_type = sgx_quote_sign_type_t::SGX_LINKABLE_SIGNATURE;
-                        let res = ecall_share_seed(evm_enclave.geteid(), req.fd, sign_type);
+                        let res = ecall_share_seed(evm_enclave.geteid(), req.fd);
 
                         match res {
                             sgx_status_t::SGX_SUCCESS => {}
@@ -153,10 +149,8 @@ pub unsafe extern "C" fn handle_initialization_request(
                         Ok(response_bytes)
                     }
                     node::SetupRequest_oneof_req::nodeSeed(req) => {
-                        println!("SGX_WRAPPER: trying to request seed");
-                        let sign_type = sgx_quote_sign_type_t::SGX_LINKABLE_SIGNATURE;
                         let res =
-                            ecall_request_seed(evm_enclave.geteid(), req.fd, sign_type);
+                            ecall_request_seed(evm_enclave.geteid(), req.fd);
 
                         match res {
                             sgx_status_t::SGX_SUCCESS => {}

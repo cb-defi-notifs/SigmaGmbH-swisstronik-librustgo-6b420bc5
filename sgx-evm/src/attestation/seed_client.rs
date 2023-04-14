@@ -10,14 +10,16 @@ use std::str;
 use std::sync::Arc;
 use std::vec::Vec;
 
+use super::consts::QUOTE_SIGNATURE_TYPE;
+
 #[no_mangle]
-pub extern "C" fn ecall_request_seed(socket_fd: c_int, sign_type: sgx_quote_sign_type_t) {
-    request_seed_inner(socket_fd, sign_type);
+pub extern "C" fn ecall_request_seed(socket_fd: c_int) {
+    request_seed_inner(socket_fd);
 }
 
 #[cfg(feature = "hardware_mode")]
-fn request_seed_inner(socket_fd: c_int, sign_type: sgx_quote_sign_type_t) {
-    let cfg = match get_client_configuration(sign_type) {
+fn request_seed_inner(socket_fd: c_int) {
+    let cfg = match get_client_configuration() {
         Ok(cfg) => cfg,
         Err(err) => {
             println!("{}", err);
@@ -50,7 +52,7 @@ fn request_seed_inner(socket_fd: c_int, sign_type: sgx_quote_sign_type_t) {
 }
 
 #[cfg(not(feature = "hardware_mode"))] 
-fn request_seed_inner(socket_fd: c_int, _sign_type: sgx_quote_sign_type_t) {
+fn request_seed_inner(socket_fd: c_int) {
     let mut conn = TcpStream::new(socket_fd).unwrap();
     // TODO: Send registration public key
     conn.write("hello".as_bytes()).unwrap();
@@ -71,14 +73,14 @@ fn request_seed_inner(socket_fd: c_int, _sign_type: sgx_quote_sign_type_t) {
 }
 
 #[cfg(feature = "hardware_mode")]
-fn get_client_configuration(sign_type: sgx_quote_sign_type_t) -> Result<rustls::ClientConfig, String> {
+fn get_client_configuration() -> Result<rustls::ClientConfig, String> {
     // Generate Keypair
     let ecc_handle = SgxEccHandle::new();
     ecc_handle.open().unwrap();
     let (prv_k, pub_k) = ecc_handle.create_key_pair().unwrap();
 
     let signed_report =
-        match super::utils::create_attestation_report(&pub_k, sign_type) {
+        match super::utils::create_attestation_report(&pub_k, QUOTE_SIGNATURE_TYPE) {
             Ok(r) => r,
             Err(e) => {
                 return Err(format!("Error creating attestation report"));
