@@ -12,9 +12,7 @@ use std::vec::Vec;
 use super::consts::QUOTE_SIGNATURE_TYPE;
 
 #[no_mangle]
-pub unsafe extern "C" fn ecall_share_seed(
-    socket_fd: c_int,
-) {
+pub unsafe extern "C" fn ecall_share_seed(socket_fd: c_int) {
     share_seed_inner(socket_fd);
 }
 
@@ -29,26 +27,26 @@ fn share_seed_inner(socket_fd: c_int) {
     };
 
     let mut sess = rustls::ServerSession::new(&Arc::new(cfg));
-    let mut conn = TcpStream::new(socket_fd).unwrap();
-
-    let mut tls = rustls::Stream::new(&mut sess, &mut conn);
-    let mut plaintext = [0u8; 1024]; //Vec::new();
-    match tls.read(&mut plaintext) {
-        Ok(_) => {
-            /*
-                TODO:
-                1. Get public key from client
-                2. Create encryption key 
-                3. Encrypt seed
-                4. Send to client
-             */
-            println!("Client said: {}", str::from_utf8(&plaintext).unwrap())
-        },
-        Err(e) => {
-            println!("Error in read_to_end: {:?}", e);
+    let mut conn = match TcpStream::new(socket_fd) {
+        Ok(conn) => conn,
+        Err(err) => {
+            println!(
+                "[Enclave] Seed Server: cannot establish connection with client: {:?}",
+                err
+            );
             return;
         }
     };
+
+    let mut tls = rustls::Stream::new(&mut sess, &mut conn);
+    let mut plaintext = Vec::new();
+    if let Err(err) = tls.read(&mut plaintext) {
+        println!("[Enclave] Seed Server: error in read_to_end: {:?}", e);
+        return;
+    };
+
+    // TODO: Unseal or make key manager static
+    // TODO: Add encryption
 
     tls.write("hello back".as_bytes()).unwrap();
 }
@@ -61,14 +59,14 @@ fn share_seed_inner(socket_fd: c_int) {
     match conn.read(&mut plaintext) {
         Ok(_) => {
             /*
-                TODO:
-                1. Get public key from client
-                2. Create encryption key 
-                3. Encrypt seed
-                4. Send to client
-             */
+               TODO:
+               1. Get public key from client
+               2. Create encryption key
+               3. Encrypt seed
+               4. Send to client
+            */
             println!("Client said: {}", str::from_utf8(&plaintext).unwrap())
-        },
+        }
         Err(e) => {
             println!("Error in read_to_end: {:?}", e);
             return;
@@ -85,7 +83,8 @@ fn get_server_configuration() -> Result<rustls::ServerConfig, String> {
     let _result = ecc_handle.open();
     let (prv_k, pub_k) = ecc_handle.create_key_pair().unwrap();
 
-    let signed_report = match super::utils::create_attestation_report(&pub_k, QUOTE_SIGNATURE_TYPE) {
+    let signed_report = match super::utils::create_attestation_report(&pub_k, QUOTE_SIGNATURE_TYPE)
+    {
         Ok(r) => r,
         Err(e) => {
             return Err(format!("Error creating attestation report"));
@@ -95,7 +94,10 @@ fn get_server_configuration() -> Result<rustls::ServerConfig, String> {
     let payload: String = match serde_json::to_string(&signed_report) {
         Ok(payload) => payload,
         Err(err) => {
-            return Err(format!("Error serializing report. May be malformed, or badly encoded: {:?}", err));
+            return Err(format!(
+                "Error serializing report. May be malformed, or badly encoded: {:?}",
+                err
+            ));
         }
     };
     let (key_der, cert_der) = match super::cert::gen_ecc_cert(payload, &prv_k, &pub_k, &ecc_handle)

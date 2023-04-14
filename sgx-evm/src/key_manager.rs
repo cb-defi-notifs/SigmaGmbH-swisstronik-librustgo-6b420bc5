@@ -1,12 +1,12 @@
+use aes_siv::{
+    aead::{Aead, KeyInit},
+    Aes128SivAead, Nonce,
+};
 use sgx_rand::*;
 use sgx_tstd::sgxfs::SgxFile;
 use sgx_types::{sgx_read_rand, sgx_status_t, SgxResult};
 use std::io::{Read, Write};
 use std::vec::Vec;
-use aes_siv::{
-    aead::{Aead, KeyInit},
-    Aes128SivAead, Nonce,
-};
 
 use crate::error::Error;
 
@@ -97,7 +97,7 @@ impl KeyManager {
     }
 
     /// Encrypts provided message using Aes128SivAead
-    pub fn encrypt(&self, message: Vec<u8>) -> Result<Vec<u8>, Error>{
+    pub fn encrypt(&self, message: Vec<u8>) -> Result<Vec<u8>, Error> {
         // Prepare cipher
         let cipher = match Aes128SivAead::new_from_slice(&self.master_key) {
             Ok(cipher) => cipher,
@@ -157,7 +157,9 @@ impl KeyManager {
         let public_key: [u8; 32] = match public_key.try_into() {
             Ok(public_key) => public_key,
             Err(err) => {
-                return Err(Error::decryption_err(format!("Public key has wrong length")))
+                return Err(Error::decryption_err(format!(
+                    "Public key has wrong length"
+                )))
             }
         };
         let public_key = x25519_dalek::PublicKey::from(public_key);
@@ -188,7 +190,12 @@ impl KeyManager {
         match cipher.encrypt(nonce, self.master_key.as_slice()) {
             Ok(ciphertext) => {
                 let public_key = reg_key.public_key();
-                let result_bytes = [public_key.as_bytes(), nonce.as_slice(), ciphertext.as_slice()].concat();
+                let result_bytes = [
+                    public_key.as_bytes(),
+                    nonce.as_slice(),
+                    ciphertext.as_slice(),
+                ]
+                .concat();
                 Ok(result_bytes)
             }
             Err(err) => Err(Error::encryption_err(err)),
@@ -205,11 +212,13 @@ impl KeyManager {
         let public_key: [u8; 32] = match public_key.try_into() {
             Ok(public_key) => public_key,
             Err(err) => {
-                return Err(Error::decryption_err(format!("Public key has wrong length")))
+                return Err(Error::decryption_err(format!(
+                    "Public key has wrong length"
+                )))
             }
         };
         let public_key = x25519_dalek::PublicKey::from(public_key);
-        
+
         // Derive shared secret
         let shared_secret = reg_key.diffie_hellman(public_key);
 
@@ -222,16 +231,16 @@ impl KeyManager {
         let ciphertext = &encrypted_seed[NONCE_LEN..];
         let master_key = match cipher.decrypt(nonce, ciphertext) {
             Ok(master_key) => master_key,
-            Err(err) => {
-                return Err(Error::decryption_err(err))
-            }
+            Err(err) => return Err(Error::decryption_err(err)),
         };
-        
+
         // Convert master key to appropriate format
         let master_key: [u8; 32] = match master_key.try_into() {
             Ok(master_key) => master_key,
             Err(err) => {
-                return Err(Error::decryption_err(format!("Master key has wrong length")))
+                return Err(Error::decryption_err(format!(
+                    "Master key has wrong length"
+                )))
             }
         };
 
