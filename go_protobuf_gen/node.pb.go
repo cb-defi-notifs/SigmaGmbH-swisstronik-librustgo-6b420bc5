@@ -518,6 +518,7 @@ type SetupRequest struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Req:
+	//
 	//	*SetupRequest_SetupSeedNode
 	//	*SetupRequest_SetupRegularNode
 	//	*SetupRequest_CreateAttestationReport

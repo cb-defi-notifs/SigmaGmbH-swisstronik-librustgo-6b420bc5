@@ -31,6 +31,16 @@ pub enum RustError {
         #[cfg(feature = "backtraces")]
         backtrace: Backtrace,
     },
+    #[error("Error decoding protobuf: {}", msg)]
+    ProtobufDecodeError {
+        msg: String,
+        #[cfg(feature = "backtraces")]
+        backtrace: Backtrace,
+    },
+    #[error("Enclave failure: {}", msg)]
+    EnclaveError {
+        msg: String,
+    }
 }
 
 impl RustError {
@@ -63,6 +73,18 @@ impl RustError {
             #[cfg(feature = "backtraces")]
             backtrace: Backtrace::capture(),
         }
+    }
+
+    pub fn protobuf_decode<S: ToString>(msg: S) -> Self {
+        RustError::ProtobufDecodeError {
+            msg: msg.to_string(),
+            #[cfg(feature = "backtraces")]
+            backtrace: Backtrace::capture(),
+        }
+    }
+
+    pub fn enclave_error<S: ToString>(msg: S) -> Self {
+        RustError::EnclaveError { msg: msg.to_string() }
     }
 }
 
