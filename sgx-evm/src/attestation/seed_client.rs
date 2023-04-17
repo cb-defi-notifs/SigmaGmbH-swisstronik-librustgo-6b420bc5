@@ -159,7 +159,7 @@ fn request_seed_inner(socket_fd: c_int) -> sgx_status_t {
     // Check size of response. It should be equal or more 90 bytes
     // 32 public key | 16 nonce | ciphertext
     if plaintext.len() < ENCRYPTED_KEY_SIZE {
-        println!("[Enclave] Seed Client: wrong response size");
+        println!("[Enclave] Seed Client: wrong response size. Expected >90, Got {:?}", plaintext.len());
         return sgx_status_t::SGX_ERROR_UNEXPECTED;
     }
 
