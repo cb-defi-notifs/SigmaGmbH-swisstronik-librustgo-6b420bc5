@@ -9,7 +9,12 @@ use std::str;
 use std::sync::Arc;
 use std::vec::Vec;
 
-use super::consts::QUOTE_SIGNATURE_TYPE;
+use crate::attestation::{
+    consts::QUOTE_SIGNATURE_TYPE,
+    utils::{create_attestation_report, ClientAuth},
+    cert::gen_ecc_cert,
+};
+use crate::key_manager::{KeyManager, RegistrationKey};
 
 #[no_mangle]
 pub unsafe extern "C" fn ecall_share_seed(socket_fd: c_int) -> sgx_status_t {
@@ -39,18 +44,45 @@ fn share_seed_inner(socket_fd: c_int) -> sgx_status_t {
     };
 
     let mut tls = rustls::Stream::new(&mut sess, &mut conn);
-    let mut plaintext = Vec::new();
-    if let Err(err) = tls.read(&mut plaintext) {
+    let mut client_public_key = Vec::new();
+    if let Err(err) = tls.read(&mut client_public_key) {
         println!("[Enclave] Seed Server: error in read_to_end: {:?}", err);
         return sgx_status_t::SGX_ERROR_UNEXPECTED;
     };
 
-    // TODO: Unseal or make key manager static
-    // TODO: Add encryption
+    // Generate registration key for ECDH
+    let registration_key = match RegistrationKey::random() {
+        Ok(key) => key,
+        Err(err) => {
+            return err;
+        }
+    };
 
-    tls.write("hello back".as_bytes()).unwrap();
+    // Unseal key manager to get access to master key
+    let key_manager = match KeyManager::unseal() {
+        Ok(key_manager) => key_manager,
+        Err(err) => {
+            return err;
+        }
+    };
 
-    sgx_status_t::SGX_SUCCESS
+    // Encrypt master key and send it to the client
+    let encrypted_master_key = match key_manager.to_encrypted_seed(&registration_key, client_public_key) {
+        Ok(ciphertext) => ciphertext,
+        Err(err) => {
+            println!("[Enclave] Cannot encrypt master key. Reason: {:?}", err);
+            return sgx_status_t::SGX_ERROR_UNEXPECTED;
+        }
+    };
+
+    // Send encrypted master key back to client
+    match tls.write(encrypted_master_key.as_slice()) {
+        Ok(_) => sgx_status_t::SGX_SUCCESS,
+        Err(err) => {
+            println!("[Enclave] Cannot send encrypted master key to client. Reason: {:?}", err);
+            sgx_status_t::SGX_ERROR_UNEXPECTED
+        }
+    }
 }
 
 #[cfg(not(feature = "hardware_mode"))]
@@ -66,26 +98,45 @@ fn share_seed_inner(socket_fd: c_int) -> sgx_status_t {
         }
     };
 
-    let mut plaintext = [0u8; 1024]; //Vec::new();
-    match conn.read(&mut plaintext) {
-        Ok(_) => {
-            /*
-               TODO:
-               1. Get public key from client
-               2. Create encryption key
-               3. Encrypt seed
-               4. Send to client
-            */
-            println!("Client said: {}", str::from_utf8(&plaintext).unwrap())
+    let mut client_public_key = Vec::new();
+    if let Err(err) = conn.read(&mut client_public_key) {
+        println!("[Enclave] Seed Server: error in read_to_end: {:?}", err);
+        return sgx_status_t::SGX_ERROR_UNEXPECTED;
+    };
+
+    // Generate registration key for ECDH
+    let registration_key = match RegistrationKey::random() {
+        Ok(key) => key,
+        Err(err) => {
+            return err;
         }
-        Err(e) => {
-            println!("Error in read_to_end: {:?}", e);
+    };
+
+    // Unseal key manager to get access to master key
+    let key_manager = match KeyManager::unseal() {
+        Ok(key_manager) => key_manager,
+        Err(err) => {
+            return err;
+        }
+    };
+
+    // Encrypt master key and send it to the client
+    let encrypted_master_key = match key_manager.to_encrypted_seed(&registration_key, client_public_key) {
+        Ok(ciphertext) => ciphertext,
+        Err(err) => {
+            println!("[Enclave] Cannot encrypt master key. Reason: {:?}", err);
             return sgx_status_t::SGX_ERROR_UNEXPECTED;
         }
     };
 
-    conn.write("hello back".as_bytes()).unwrap();
-    sgx_status_t::SGX_SUCCESS
+    // Send encrypted master key back to client
+    match tls.write(encrypted_master_key.as_slice()) {
+        Ok(_) => sgx_status_t::SGX_SUCCESS,
+        Err(err) => {
+            println!("[Enclave] Cannot send encrypted master key to client. Reason: {:?}", err);
+            sgx_status_t::SGX_ERROR_UNEXPECTED
+        }
+    }
 }
 
 #[cfg(feature = "hardware_mode")]
@@ -95,7 +146,7 @@ fn get_server_configuration() -> Result<rustls::ServerConfig, String> {
     let _result = ecc_handle.open();
     let (prv_k, pub_k) = ecc_handle.create_key_pair().unwrap();
 
-    let signed_report = match super::utils::create_attestation_report(&pub_k, QUOTE_SIGNATURE_TYPE)
+    let signed_report = match create_attestation_report(&pub_k, QUOTE_SIGNATURE_TYPE)
     {
         Ok(r) => r,
         Err(e) => {
@@ -112,7 +163,7 @@ fn get_server_configuration() -> Result<rustls::ServerConfig, String> {
             ));
         }
     };
-    let (key_der, cert_der) = match super::cert::gen_ecc_cert(payload, &prv_k, &pub_k, &ecc_handle)
+    let (key_der, cert_der) = match gen_ecc_cert(payload, &prv_k, &pub_k, &ecc_handle)
     {
         Ok(r) => r,
         Err(e) => {
@@ -121,7 +172,7 @@ fn get_server_configuration() -> Result<rustls::ServerConfig, String> {
     };
     let _result = ecc_handle.close();
 
-    let mut cfg = rustls::ServerConfig::new(Arc::new(super::utils::ClientAuth::new(true)));
+    let mut cfg = rustls::ServerConfig::new(Arc::new(ClientAuth::new(true)));
     let mut certs = Vec::new();
     certs.push(rustls::Certificate(cert_der));
     let privkey = rustls::PrivateKey(key_der);
