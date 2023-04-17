@@ -126,6 +126,10 @@ func _TestCall(t *testing.T) {
 }
 
 func TestSeedExchange(t *testing.T) {
+	if err := api.SetupSeedNode(); err != nil {
+		t.Fail()
+	}
+
 	addr := "127.0.0.1:8999"
 	err := api.StartSeedServer(addr)
 	if err != nil {
