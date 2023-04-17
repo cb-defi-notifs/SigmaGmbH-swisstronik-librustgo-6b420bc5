@@ -36,6 +36,7 @@ extern "C" {
 
     pub fn ecall_share_seed(
         eid: sgx_enclave_id_t,
+        retval: *mut sgx_status_t,
         socket_fd: c_int,
     ) -> sgx_status_t;
 
@@ -129,7 +130,8 @@ pub unsafe extern "C" fn handle_initialization_request(
                         Ok(response_bytes)
                     },
                     node::SetupRequest_oneof_req::startSeedServer(req) => {
-                        let res = ecall_share_seed(evm_enclave.geteid(), req.fd);
+                        let mut retval = sgx_status_t::SGX_SUCCESS;
+                        let res = ecall_share_seed(evm_enclave.geteid(), &mut retval, req.fd);
 
                         match res {
                             sgx_status_t::SGX_SUCCESS => {}
@@ -137,6 +139,13 @@ pub unsafe extern "C" fn handle_initialization_request(
                                 return Err(Error::enclave_error(res.as_str()));
                             }
                         };
+
+                        match retval {
+                            sgx_status_t::SGX_SUCCESS => {}
+                            _ => {
+                                return Err(Error::enclave_error(res.as_str()));
+                            }
+                        }
 
                         // Create response, convert it to bytes and return
                         let response = node::StartSeedServerResponse::new();

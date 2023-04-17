@@ -12,17 +12,17 @@ use std::vec::Vec;
 use super::consts::QUOTE_SIGNATURE_TYPE;
 
 #[no_mangle]
-pub unsafe extern "C" fn ecall_share_seed(socket_fd: c_int) {
-    share_seed_inner(socket_fd);
+pub unsafe extern "C" fn ecall_share_seed(socket_fd: c_int) -> sgx_status_t {
+    share_seed_inner(socket_fd)
 }
 
 #[cfg(feature = "hardware_mode")]
-fn share_seed_inner(socket_fd: c_int) {
+fn share_seed_inner(socket_fd: c_int) -> sgx_status_t {
     let cfg = match get_server_configuration() {
         Ok(cfg) => cfg,
         Err(err) => {
             println!("{}", err);
-            return;
+            return sgx_status_t::SGX_ERROR_UNEXPECTED;
         }
     };
 
@@ -34,26 +34,37 @@ fn share_seed_inner(socket_fd: c_int) {
                 "[Enclave] Seed Server: cannot establish connection with client: {:?}",
                 err
             );
-            return;
+            return sgx_status_t::SGX_ERROR_UNEXPECTED;
         }
     };
 
     let mut tls = rustls::Stream::new(&mut sess, &mut conn);
     let mut plaintext = Vec::new();
     if let Err(err) = tls.read(&mut plaintext) {
-        println!("[Enclave] Seed Server: error in read_to_end: {:?}", e);
-        return;
+        println!("[Enclave] Seed Server: error in read_to_end: {:?}", err);
+        return sgx_status_t::SGX_ERROR_UNEXPECTED;
     };
 
     // TODO: Unseal or make key manager static
     // TODO: Add encryption
 
     tls.write("hello back".as_bytes()).unwrap();
+
+    sgx_status_t::SGX_SUCCESS
 }
 
 #[cfg(not(feature = "hardware_mode"))]
-fn share_seed_inner(socket_fd: c_int) {
-    let mut conn = TcpStream::new(socket_fd).unwrap();
+fn share_seed_inner(socket_fd: c_int) -> sgx_status_t {
+    let mut conn = match TcpStream::new(socket_fd) {
+        Ok(conn) => conn,
+        Err(err) => {
+            println!(
+                "[Enclave] Seed Server: cannot establish connection with client: {:?}",
+                err
+            );
+            return sgx_status_t::SGX_ERROR_UNEXPECTED;
+        }
+    };
 
     let mut plaintext = [0u8; 1024]; //Vec::new();
     match conn.read(&mut plaintext) {
@@ -69,11 +80,12 @@ fn share_seed_inner(socket_fd: c_int) {
         }
         Err(e) => {
             println!("Error in read_to_end: {:?}", e);
-            return;
+            return sgx_status_t::SGX_ERROR_UNEXPECTED;
         }
     };
 
     conn.write("hello back".as_bytes()).unwrap();
+    sgx_status_t::SGX_SUCCESS
 }
 
 #[cfg(feature = "hardware_mode")]
