@@ -114,7 +114,7 @@ pub unsafe extern "C" fn handle_initialization_request(
                         match retval {
                             sgx_status_t::SGX_SUCCESS => {}
                             _ => {
-                                return Err(Error::enclave_error(res.as_str()));
+                                return Err(Error::enclave_error(retval.as_str()));
                             }
                         }
 

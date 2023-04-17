@@ -207,7 +207,7 @@ fn get_client_configuration() -> Result<rustls::ClientConfig, String> {
     {
         Ok(r) => r,
         Err(e) => {
-            return Err(format!("Error creating attestation report"));
+            return Err(format!("Error creating attestation report: {:?}", e.as_str()));
         }
     };
 
