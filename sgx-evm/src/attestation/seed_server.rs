@@ -130,7 +130,7 @@ fn share_seed_inner(socket_fd: c_int) -> sgx_status_t {
     };
 
     // Send encrypted master key back to client
-    match tls.write(encrypted_master_key.as_slice()) {
+    match conn.write(encrypted_master_key.as_slice()) {
         Ok(_) => sgx_status_t::SGX_SUCCESS,
         Err(err) => {
             println!("[Enclave] Cannot send encrypted master key to client. Reason: {:?}", err);

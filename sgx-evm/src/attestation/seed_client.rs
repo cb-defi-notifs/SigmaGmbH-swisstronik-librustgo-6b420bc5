@@ -10,7 +10,11 @@ use std::str;
 use std::sync::Arc;
 use std::vec::Vec;
 
-use crate::attestation::consts::{ENCRYPTED_KEY_SIZE, PUBLIC_KEY_SIZE, QUOTE_SIGNATURE_TYPE};
+use crate::attestation::{
+    consts::{ENCRYPTED_KEY_SIZE, PUBLIC_KEY_SIZE, QUOTE_SIGNATURE_TYPE},
+    cert::gen_ecc_cert,
+    utils::{ServerAuth, create_attestation_report},
+};
 use crate::key_manager::{KeyManager, RegistrationKey};
 
 #[no_mangle]
@@ -140,7 +144,7 @@ fn request_seed_inner(socket_fd: c_int) -> sgx_status_t {
     }
 
     let mut plaintext = Vec::new();
-    match tls.read_to_end(&mut plaintext) {
+    match conn.read_to_end(&mut plaintext) {
         Err(ref err) if err.kind() == io::ErrorKind::ConnectionAborted => {
             println!("[Enclave] Seed Client: connection aborted");
             return sgx_status_t::SGX_ERROR_UNEXPECTED;
@@ -199,7 +203,7 @@ fn get_client_configuration() -> Result<rustls::ClientConfig, String> {
     ecc_handle.open().unwrap();
     let (prv_k, pub_k) = ecc_handle.create_key_pair().unwrap();
 
-    let signed_report = match super::utils::create_attestation_report(&pub_k, QUOTE_SIGNATURE_TYPE)
+    let signed_report = match create_attestation_report(&pub_k, QUOTE_SIGNATURE_TYPE)
     {
         Ok(r) => r,
         Err(e) => {
@@ -216,7 +220,7 @@ fn get_client_configuration() -> Result<rustls::ClientConfig, String> {
             ));
         }
     };
-    let (key_der, cert_der) = match super::cert::gen_ecc_cert(payload, &prv_k, &pub_k, &ecc_handle)
+    let (key_der, cert_der) = match gen_ecc_cert(payload, &prv_k, &pub_k, &ecc_handle)
     {
         Ok(r) => r,
         Err(e) => {
@@ -232,7 +236,7 @@ fn get_client_configuration() -> Result<rustls::ClientConfig, String> {
 
     cfg.set_single_client_cert(certs, privkey).unwrap();
     cfg.dangerous()
-        .set_certificate_verifier(Arc::new(super::utils::ServerAuth::new(true)));
+        .set_certificate_verifier(Arc::new(ServerAuth::new(true)));
     cfg.versions.clear();
     cfg.versions.push(rustls::ProtocolVersion::TLSv1_2);
 
