@@ -115,7 +115,7 @@ func StartSeedServer(addr string) error {
 			}
 
 			if err := attestPeer(connection); err != nil {
-				fmt.Println("[Seed Server] Attestation failed. Reason: {:?}", err)
+				fmt.Println("[Seed Server] Attestation failed. Reason: ", err)
 				continue
 			}
 		}
