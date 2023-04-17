@@ -45,7 +45,6 @@ impl<'state> ExtendedBackend for Backend<'state> {
 /// This trait declares readonly functions for the backend
 impl<'state> EvmBackend for Backend<'state> {
     fn gas_price(&self) -> U256 {
-        // TODO: Will obtain that data via ocall
         U256::zero()
     }
 
@@ -54,12 +53,10 @@ impl<'state> EvmBackend for Backend<'state> {
     }
 
     fn block_hash(&self, _number: U256) -> H256 {
-        // TODO: Will obtain that data via ocall
         H256::default()
     }
 
     fn block_number(&self) -> U256 {
-        // TODO: Will obtain that data via ocall
         U256::zero()
     }
 
@@ -68,7 +65,6 @@ impl<'state> EvmBackend for Backend<'state> {
     }
 
     fn block_timestamp(&self) -> U256 {
-        // TODO: Will obtain that data via ocall
         U256::zero()
     }
 
@@ -77,20 +73,14 @@ impl<'state> EvmBackend for Backend<'state> {
     }
 
     fn block_gas_limit(&self) -> U256 {
-        // TODO: Will obtain that data via ocall to make it possible to
-        // change via in-built Cosmos SDK's voting
         U256::max_value()
     }
 
     fn block_base_fee_per_gas(&self) -> U256 {
-        // TODO: Will obtain that data via ocall to make it possible to
-        // change via in-built Cosmos SDK's voting
         U256::zero()
     }
 
     fn chain_id(&self) -> U256 {
-        // TODO: For now it is hardcoded value to make process of testing easier
-        // 1 (0x01) is Ethereum mainnet chain id
         U256::one()
     }
 
