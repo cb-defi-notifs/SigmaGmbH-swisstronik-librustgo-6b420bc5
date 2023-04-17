@@ -212,7 +212,7 @@ impl KeyManager {
         let public_key: [u8; 32] = match public_key.try_into() {
             Ok(public_key) => public_key,
             Err(err) => {
-                return Err(Error::decryption_err(format!(
+                return Err(Error::encryption_err(format!(
                     "Public key has wrong length"
                 )))
             }

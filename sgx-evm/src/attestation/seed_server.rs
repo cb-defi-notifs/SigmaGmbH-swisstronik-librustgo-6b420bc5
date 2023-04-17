@@ -44,7 +44,7 @@ fn share_seed_inner(socket_fd: c_int) -> sgx_status_t {
     };
 
     let mut tls = rustls::Stream::new(&mut sess, &mut conn);
-    let mut client_public_key = Vec::new();
+    let mut client_public_key = [0u8; 32];
     if let Err(err) = tls.read(&mut client_public_key) {
         println!("[Enclave] Seed Server: error in read_to_end: {:?}", err);
         return sgx_status_t::SGX_ERROR_UNEXPECTED;
@@ -67,7 +67,7 @@ fn share_seed_inner(socket_fd: c_int) -> sgx_status_t {
     };
 
     // Encrypt master key and send it to the client
-    let encrypted_master_key = match key_manager.to_encrypted_seed(&registration_key, client_public_key) {
+    let encrypted_master_key = match key_manager.to_encrypted_seed(&registration_key, client_public_key.to_vec()) {
         Ok(ciphertext) => ciphertext,
         Err(err) => {
             println!("[Enclave] Cannot encrypt master key. Reason: {:?}", err);

@@ -62,6 +62,9 @@ fn request_seed_inner(socket_fd: c_int) -> sgx_status_t {
         Err(err) => return err,
     };
 
+    // TODO: Remove after debugging
+    println!("[DEBUG] Client -> Server: public key: {:?}", registration_key.public_key().as_bytes());
+
     // Send client public key to the seed exchange server
     if let Err(err) = tls.write(registration_key.public_key().as_bytes()) {
         println!(
@@ -121,6 +124,9 @@ fn request_seed_inner(socket_fd: c_int) -> sgx_status_t {
         return error_status;
     }
 
+
+    println!("[Enclave] Seed successfully sealed");
+    
     sgx_status_t::SGX_SUCCESS
 }
 
