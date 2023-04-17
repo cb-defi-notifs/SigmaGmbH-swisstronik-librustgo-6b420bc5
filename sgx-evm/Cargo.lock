@@ -59,15 +59,6 @@ dependencies = [
 
 [[package]]
 name = "autocfg"
-version = "0.1.8"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0dde43e75fd43e8a1bf86103336bc699aa8d17ad1be60c76c0bdfd4828e19b78"
-dependencies = [
- "autocfg 1.1.0",
-]
-
-[[package]]
-name = "autocfg"
 version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d468802bab17cbc0cc575e9b053f41e72aa36bfa6b7f55e3529ffa43161b97fa"
@@ -261,7 +252,6 @@ dependencies = [
  "convert_case",
  "proc-macro2",
  "quote",
- "rustc_version",
  "syn 1.0.109",
 ]
 
@@ -1082,16 +1072,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "sct"
-version = "0.6.0"
-source = "git+https://github.com/mesalock-linux/sct.rs?branch=mesalock_sgx#c4d859cca232e6c9d88ca12048df3bc26e1ed4ad"
-dependencies = [
- "ring",
- "sgx_tstd",
- "untrusted",
-]
-
-[[package]]
 name = "sec1"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1150,17 +1130,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "serde_json"
-version = "1.0.60"
-source = "git+https://github.com/mesalock-linux/serde-json-sgx#380893814ad2a057758d825bab798aa117f7362a"
-dependencies = [
- "itoa",
- "ryu",
- "serde 1.0.118",
- "sgx_tstd",
-]
-
-[[package]]
 name = "sgx-evm"
 version = "0.1.0"
 dependencies = [
@@ -1188,11 +1157,7 @@ dependencies = [
  "sgx_types",
  "sgxvm",
  "thiserror-no-std",
- "uuid",
- "webpki",
- "webpki-roots",
  "x25519-dalek",
- "yasna",
 ]
 
 [[package]]
@@ -1398,9 +1363,9 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "2.0.12"
+version = "2.0.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "79d9531f94112cfc3e4c8f5f02cb2b58f72c97b7efd85f70203cc6d8efda5927"
+checksum = "21e3787bb71465627110e7d87ed4faaa36c1f61042ee67badb9e2ef173accc40"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1573,17 +1538,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "yasna"
-version = "0.3.1"
-source = "git+https://github.com/mesalock-linux/yasna.rs-sgx#a1f50714cd3eb29608ecf7888cacedc173edfdb2"
-dependencies = [
- "bit-vec",
- "chrono",
- "num-bigint 0.2.5",
- "sgx_tstd",
-]
-
-[[package]]
 name = "zeroize"
 version = "1.5.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1594,11 +1548,11 @@ dependencies = [
 
 [[package]]
 name = "zeroize_derive"
-version = "1.4.2"
+version = "1.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ce36e65b0d2999d2aafac989fb249189a141aee1f53c612c1f37d72631959f69"
+checksum = "25588073e5216b50bca71d61cb8595cdb9745e87032a58c199730def2862c934"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.12",
+ "syn 2.0.11",
 ]

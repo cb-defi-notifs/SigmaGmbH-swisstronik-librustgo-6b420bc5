@@ -63,6 +63,13 @@ pub struct Allocation {
     pub result_size: usize,
 }
 
+#[no_mangle] 
+pub extern "C" fn ecall_get_node_public_key(
+    buffer: *mut u8,
+) -> sgx_status_t {
+    sgx_status_t::SGX_SUCCESS
+}
+
 #[no_mangle]
 /// Checks if there is already sealed master key
 pub unsafe extern "C" fn ecall_is_initialized() -> i32 {
