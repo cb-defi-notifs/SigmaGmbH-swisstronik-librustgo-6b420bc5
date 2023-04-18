@@ -130,13 +130,15 @@ func TestSeedExchange(t *testing.T) {
 		t.Fail()
 	}
 
-	addr := "127.0.0.1:8999"
+	addr := "localhost:8999"
 	err := api.StartSeedServer(addr)
 	if err != nil {
 		t.Fail()
 	}
 
-	if err := api.RequestSeed(addr); err != nil {
+	host := "localhost"
+	port := 8999
+	if err := api.RequestSeed(host, port); err != nil {
 		t.Fail()
 	}
 }

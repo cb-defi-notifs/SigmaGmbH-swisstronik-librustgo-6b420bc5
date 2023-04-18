@@ -16,6 +16,7 @@ message StartSeedServerResponse {}
 
 message NodeSeedRequest {
     int32 fd = 1;
+    string hostname = 2;
 }
 
 message NodeSeedResponse {}

@@ -108,8 +108,8 @@ func StartSeedServer(addr string) error {
 
 // RequestSeed handles requesting seed and passing Remote Attestation.
 // Returns error if Remote Attestation was not passed or provided seed server address is not accessible
-func RequestSeed(addr string) error {
-	return api.RequestSeed(addr)
+func RequestSeed(host string, port int) error {
+	return api.RequestSeed(host, port)
 }
 
 // GetNodePublicKey handles request for node public key

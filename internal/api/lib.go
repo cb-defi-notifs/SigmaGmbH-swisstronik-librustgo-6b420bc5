@@ -179,8 +179,9 @@ func Listen(addr string, maxOpenConnections int) (net.Listener, error) {
 }
 
 // RequestSeed handles request of seed from seed server
-func RequestSeed(addr string) error {
-	conn, err := net.Dial("tcp", addr)
+func RequestSeed(hostname string, port int) error {
+	address := fmt.Sprintf("%s:%d", hostname, port)
+	conn, err := net.Dial("tcp", address)
 	if err != nil {
 		fmt.Println("Cannot establish connection with seed server. Reason: ", err.Error())
 		return err
@@ -196,6 +197,7 @@ func RequestSeed(addr string) error {
 	req := ffi.SetupRequest{Req: &ffi.SetupRequest_NodeSeed{
 		NodeSeed: &ffi.NodeSeedRequest{
 			Fd: int32(file.Fd()),
+			Hostname: hostname,
 		},
 	}}
 	reqBytes, err := proto.Marshal(&req)

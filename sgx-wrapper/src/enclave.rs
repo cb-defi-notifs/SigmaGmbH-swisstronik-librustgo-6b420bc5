@@ -161,14 +161,18 @@ pub unsafe extern "C" fn handle_initialization_request(
                         Ok(response_bytes)
                     }
                     node::SetupRequest_oneof_req::nodeSeed(req) => {
-                        let mut retval = sgx_status_t::SGX_SUCCESS;
+                        if req.hostname.is_empty() {
+                            return Err(Error::empty_arg("Hostname was not set"));    
+                        }
+
+                        println!("[DEBUG] Hostname: {:?}", req.hostname);
                         
-                        let hostname = String::from("localhost");
+                        let mut retval = sgx_status_t::SGX_SUCCESS;
                         let res = ecall_request_seed(
                             evm_enclave.geteid(), 
                             &mut retval,
-                            hostname.as_ptr() as *const u8,
-                            hostname.len(),
+                            req.hostname.as_ptr() as *const u8,
+                            req.hostname.len(),
                             req.fd
                         );
 
