@@ -162,7 +162,7 @@ pub unsafe extern "C" fn handle_initialization_request(
                     }
                     node::SetupRequest_oneof_req::nodeSeed(req) => {
                         if req.hostname.is_empty() {
-                            return Err(Error::empty_arg("Hostname was not set"));    
+                            return Err(Error::unset_arg("Hostname was not set"));    
                         }
 
                         println!("[DEBUG] Hostname: {:?}", req.hostname);
