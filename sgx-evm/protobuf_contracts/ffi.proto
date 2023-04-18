@@ -203,9 +203,18 @@ message SGXVMCreateRequest {
   TransactionContext context = 2;
 }
 
+// Request to obtain node public key
+message NodePublicKeyRequest {}
+
+// Response with node public key
+message NodePublicKeyResponse {
+  bytes publicKey = 1;
+}
+
 message FFIRequest {
   oneof req {
     SGXVMCallRequest callRequest = 1;
     SGXVMCreateRequest createRequest = 2;
+    NodePublicKeyRequest publicKeyRequest = 3;
   }
 }

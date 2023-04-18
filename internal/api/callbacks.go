@@ -85,6 +85,13 @@ func BuildConnector(q types.Connector) C.GoQuerier {
 	}
 }
 
+func buildEmptyConnector() C.GoQuerier {
+	return C.GoQuerier{
+		state: nil,
+		vtable: querier_vtable,
+	}
+}
+
 //export cQueryExternal
 func cQueryExternal(ptr *C.querier_t, request C.U8SliceView, result *C.UnmanagedVector, errOut *C.UnmanagedVector) (ret C.GoError) {
 	defer recoverPanic(&ret)

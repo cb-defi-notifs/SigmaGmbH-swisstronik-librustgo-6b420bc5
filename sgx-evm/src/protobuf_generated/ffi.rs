@@ -7996,6 +7996,301 @@ impl ::protobuf::reflect::ProtobufValue for SGXVMCreateRequest {
 }
 
 #[derive(PartialEq,Clone,Default)]
+pub struct NodePublicKeyRequest {
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a NodePublicKeyRequest {
+    fn default() -> &'a NodePublicKeyRequest {
+        <NodePublicKeyRequest as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl NodePublicKeyRequest {
+    pub fn new() -> NodePublicKeyRequest {
+        ::std::default::Default::default()
+    }
+}
+
+impl ::protobuf::Message for NodePublicKeyRequest {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> NodePublicKeyRequest {
+        NodePublicKeyRequest::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static mut descriptor: ::protobuf::lazy::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const ::protobuf::reflect::MessageDescriptor,
+        };
+        unsafe {
+            descriptor.get(|| {
+                let fields = ::std::vec::Vec::new();
+                ::protobuf::reflect::MessageDescriptor::new::<NodePublicKeyRequest>(
+                    "NodePublicKeyRequest",
+                    fields,
+                    file_descriptor_proto()
+                )
+            })
+        }
+    }
+
+    fn default_instance() -> &'static NodePublicKeyRequest {
+        static mut instance: ::protobuf::lazy::Lazy<NodePublicKeyRequest> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const NodePublicKeyRequest,
+        };
+        unsafe {
+            instance.get(NodePublicKeyRequest::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for NodePublicKeyRequest {
+    fn clear(&mut self) {
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for NodePublicKeyRequest {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for NodePublicKeyRequest {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
+pub struct NodePublicKeyResponse {
+    // message fields
+    pub publicKey: ::std::vec::Vec<u8>,
+    // special fields
+    pub unknown_fields: ::protobuf::UnknownFields,
+    pub cached_size: ::protobuf::CachedSize,
+}
+
+impl<'a> ::std::default::Default for &'a NodePublicKeyResponse {
+    fn default() -> &'a NodePublicKeyResponse {
+        <NodePublicKeyResponse as ::protobuf::Message>::default_instance()
+    }
+}
+
+impl NodePublicKeyResponse {
+    pub fn new() -> NodePublicKeyResponse {
+        ::std::default::Default::default()
+    }
+
+    // bytes publicKey = 1;
+
+
+    pub fn get_publicKey(&self) -> &[u8] {
+        &self.publicKey
+    }
+    pub fn clear_publicKey(&mut self) {
+        self.publicKey.clear();
+    }
+
+    // Param is passed by value, moved
+    pub fn set_publicKey(&mut self, v: ::std::vec::Vec<u8>) {
+        self.publicKey = v;
+    }
+
+    // Mutable pointer to the field.
+    // If field is not initialized, it is initialized with default value first.
+    pub fn mut_publicKey(&mut self) -> &mut ::std::vec::Vec<u8> {
+        &mut self.publicKey
+    }
+
+    // Take field
+    pub fn take_publicKey(&mut self) -> ::std::vec::Vec<u8> {
+        ::std::mem::replace(&mut self.publicKey, ::std::vec::Vec::new())
+    }
+}
+
+impl ::protobuf::Message for NodePublicKeyResponse {
+    fn is_initialized(&self) -> bool {
+        true
+    }
+
+    fn merge_from(&mut self, is: &mut ::protobuf::CodedInputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        while !is.eof()? {
+            let (field_number, wire_type) = is.read_tag_unpack()?;
+            match field_number {
+                1 => {
+                    ::protobuf::rt::read_singular_proto3_bytes_into(wire_type, is, &mut self.publicKey)?;
+                },
+                _ => {
+                    ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
+                },
+            };
+        }
+        ::std::result::Result::Ok(())
+    }
+
+    // Compute sizes of nested messages
+    #[allow(unused_variables)]
+    fn compute_size(&self) -> u32 {
+        let mut my_size = 0;
+        if !self.publicKey.is_empty() {
+            my_size += ::protobuf::rt::bytes_size(1, &self.publicKey);
+        }
+        my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
+        self.cached_size.set(my_size);
+        my_size
+    }
+
+    fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if !self.publicKey.is_empty() {
+            os.write_bytes(1, &self.publicKey)?;
+        }
+        os.write_unknown_fields(self.get_unknown_fields())?;
+        ::std::result::Result::Ok(())
+    }
+
+    fn get_cached_size(&self) -> u32 {
+        self.cached_size.get()
+    }
+
+    fn get_unknown_fields(&self) -> &::protobuf::UnknownFields {
+        &self.unknown_fields
+    }
+
+    fn mut_unknown_fields(&mut self) -> &mut ::protobuf::UnknownFields {
+        &mut self.unknown_fields
+    }
+
+    fn as_any(&self) -> &dyn (::std::any::Any) {
+        self as &dyn (::std::any::Any)
+    }
+    fn as_any_mut(&mut self) -> &mut dyn (::std::any::Any) {
+        self as &mut dyn (::std::any::Any)
+    }
+    fn into_any(self: Box<Self>) -> ::std::boxed::Box<dyn (::std::any::Any)> {
+        self
+    }
+
+    fn descriptor(&self) -> &'static ::protobuf::reflect::MessageDescriptor {
+        Self::descriptor_static()
+    }
+
+    fn new() -> NodePublicKeyResponse {
+        NodePublicKeyResponse::new()
+    }
+
+    fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
+        static mut descriptor: ::protobuf::lazy::Lazy<::protobuf::reflect::MessageDescriptor> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const ::protobuf::reflect::MessageDescriptor,
+        };
+        unsafe {
+            descriptor.get(|| {
+                let mut fields = ::std::vec::Vec::new();
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBytes>(
+                    "publicKey",
+                    |m: &NodePublicKeyResponse| { &m.publicKey },
+                    |m: &mut NodePublicKeyResponse| { &mut m.publicKey },
+                ));
+                ::protobuf::reflect::MessageDescriptor::new::<NodePublicKeyResponse>(
+                    "NodePublicKeyResponse",
+                    fields,
+                    file_descriptor_proto()
+                )
+            })
+        }
+    }
+
+    fn default_instance() -> &'static NodePublicKeyResponse {
+        static mut instance: ::protobuf::lazy::Lazy<NodePublicKeyResponse> = ::protobuf::lazy::Lazy {
+            lock: ::protobuf::lazy::ONCE_INIT,
+            ptr: 0 as *const NodePublicKeyResponse,
+        };
+        unsafe {
+            instance.get(NodePublicKeyResponse::new)
+        }
+    }
+}
+
+impl ::protobuf::Clear for NodePublicKeyResponse {
+    fn clear(&mut self) {
+        self.publicKey.clear();
+        self.unknown_fields.clear();
+    }
+}
+
+impl ::std::fmt::Debug for NodePublicKeyResponse {
+    fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+        ::protobuf::text_format::fmt(self, f)
+    }
+}
+
+impl ::protobuf::reflect::ProtobufValue for NodePublicKeyResponse {
+    fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
+        ::protobuf::reflect::ProtobufValueRef::Message(self)
+    }
+}
+
+#[derive(PartialEq,Clone,Default)]
 pub struct FFIRequest {
     // message oneof groups
     pub req: ::std::option::Option<FFIRequest_oneof_req>,
@@ -8014,6 +8309,7 @@ impl<'a> ::std::default::Default for &'a FFIRequest {
 pub enum FFIRequest_oneof_req {
     callRequest(SGXVMCallRequest),
     createRequest(SGXVMCreateRequest),
+    publicKeyRequest(NodePublicKeyRequest),
 }
 
 impl FFIRequest {
@@ -8118,6 +8414,55 @@ impl FFIRequest {
             SGXVMCreateRequest::new()
         }
     }
+
+    // .ffi.ffi.NodePublicKeyRequest publicKeyRequest = 3;
+
+
+    pub fn get_publicKeyRequest(&self) -> &NodePublicKeyRequest {
+        match self.req {
+            ::std::option::Option::Some(FFIRequest_oneof_req::publicKeyRequest(ref v)) => v,
+            _ => NodePublicKeyRequest::default_instance(),
+        }
+    }
+    pub fn clear_publicKeyRequest(&mut self) {
+        self.req = ::std::option::Option::None;
+    }
+
+    pub fn has_publicKeyRequest(&self) -> bool {
+        match self.req {
+            ::std::option::Option::Some(FFIRequest_oneof_req::publicKeyRequest(..)) => true,
+            _ => false,
+        }
+    }
+
+    // Param is passed by value, moved
+    pub fn set_publicKeyRequest(&mut self, v: NodePublicKeyRequest) {
+        self.req = ::std::option::Option::Some(FFIRequest_oneof_req::publicKeyRequest(v))
+    }
+
+    // Mutable pointer to the field.
+    pub fn mut_publicKeyRequest(&mut self) -> &mut NodePublicKeyRequest {
+        if let ::std::option::Option::Some(FFIRequest_oneof_req::publicKeyRequest(_)) = self.req {
+        } else {
+            self.req = ::std::option::Option::Some(FFIRequest_oneof_req::publicKeyRequest(NodePublicKeyRequest::new()));
+        }
+        match self.req {
+            ::std::option::Option::Some(FFIRequest_oneof_req::publicKeyRequest(ref mut v)) => v,
+            _ => panic!(),
+        }
+    }
+
+    // Take field
+    pub fn take_publicKeyRequest(&mut self) -> NodePublicKeyRequest {
+        if self.has_publicKeyRequest() {
+            match self.req.take() {
+                ::std::option::Option::Some(FFIRequest_oneof_req::publicKeyRequest(v)) => v,
+                _ => panic!(),
+            }
+        } else {
+            NodePublicKeyRequest::new()
+        }
+    }
 }
 
 impl ::protobuf::Message for FFIRequest {
@@ -8128,6 +8473,11 @@ impl ::protobuf::Message for FFIRequest {
             }
         }
         if let Some(FFIRequest_oneof_req::createRequest(ref v)) = self.req {
+            if !v.is_initialized() {
+                return false;
+            }
+        }
+        if let Some(FFIRequest_oneof_req::publicKeyRequest(ref v)) = self.req {
             if !v.is_initialized() {
                 return false;
             }
@@ -8151,6 +8501,12 @@ impl ::protobuf::Message for FFIRequest {
                     }
                     self.req = ::std::option::Option::Some(FFIRequest_oneof_req::createRequest(is.read_message()?));
                 },
+                3 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    self.req = ::std::option::Option::Some(FFIRequest_oneof_req::publicKeyRequest(is.read_message()?));
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -8173,6 +8529,10 @@ impl ::protobuf::Message for FFIRequest {
                     let len = v.compute_size();
                     my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
                 },
+                &FFIRequest_oneof_req::publicKeyRequest(ref v) => {
+                    let len = v.compute_size();
+                    my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
+                },
             };
         }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
@@ -8190,6 +8550,11 @@ impl ::protobuf::Message for FFIRequest {
                 },
                 &FFIRequest_oneof_req::createRequest(ref v) => {
                     os.write_tag(2, ::protobuf::wire_format::WireTypeLengthDelimited)?;
+                    os.write_raw_varint32(v.get_cached_size())?;
+                    v.write_to_with_cached_sizes(os)?;
+                },
+                &FFIRequest_oneof_req::publicKeyRequest(ref v) => {
+                    os.write_tag(3, ::protobuf::wire_format::WireTypeLengthDelimited)?;
                     os.write_raw_varint32(v.get_cached_size())?;
                     v.write_to_with_cached_sizes(os)?;
                 },
@@ -8247,6 +8612,11 @@ impl ::protobuf::Message for FFIRequest {
                     FFIRequest::has_createRequest,
                     FFIRequest::get_createRequest,
                 ));
+                fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, NodePublicKeyRequest>(
+                    "publicKeyRequest",
+                    FFIRequest::has_publicKeyRequest,
+                    FFIRequest::get_publicKeyRequest,
+                ));
                 ::protobuf::reflect::MessageDescriptor::new::<FFIRequest>(
                     "FFIRequest",
                     fields,
@@ -8269,6 +8639,7 @@ impl ::protobuf::Message for FFIRequest {
 
 impl ::protobuf::Clear for FFIRequest {
     fn clear(&mut self) {
+        self.req = ::std::option::Option::None;
         self.req = ::std::option::Option::None;
         self.req = ::std::option::Option::None;
         self.unknown_fields.clear();
@@ -8371,19 +8742,22 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     sactionContextR\x07context\"\x7f\n\x12SGXVMCreateRequest\x122\n\x06param\
     s\x18\x01\x20\x01(\x0b2\x1a.ffi.ffi.SGXVMCreateParamsR\x06params\x125\n\
     \x07context\x18\x02\x20\x01(\x0b2\x1b.ffi.ffi.TransactionContextR\x07con\
-    text\"\x97\x01\n\nFFIRequest\x12=\n\x0bcallRequest\x18\x01\x20\x01(\x0b2\
-    \x19.ffi.ffi.SGXVMCallRequestH\0R\x0bcallRequest\x12C\n\rcreateRequest\
-    \x18\x02\x20\x01(\x0b2\x1b.ffi.ffi.SGXVMCreateRequestH\0R\rcreateRequest\
-    B\x05\n\x03reqB\x04Z\x02./J\xa74\n\x07\x12\x05\0\0\xd2\x01\x01\n\x08\n\
-    \x01\x0c\x12\x03\0\0\x12\n\x08\n\x01\x02\x12\x03\x02\0\x10\n\x08\n\x01\
-    \x08\x12\x03\x04\0\x19\n\t\n\x02\x08\x0b\x12\x03\x04\0\x19\n\x1c\n\x02\
-    \x04\0\x12\x04\x08\0\x0b\x012\x10General\x20request\n\n\n\n\x03\x04\0\
-    \x01\x12\x03\x08\x08\x16\n\x0b\n\x04\x04\0\x02\0\x12\x03\t\x02!\n\x0c\n\
-    \x05\x04\0\x02\0\x04\x12\x03\t\x02\n\n\x0c\n\x05\x04\0\x02\0\x05\x12\x03\
-    \t\x0b\x10\n\x0c\n\x05\x04\0\x02\0\x01\x12\x03\t\x11\x1c\n\x0c\n\x05\x04\
-    \0\x02\0\x03\x12\x03\t\x1f\x20\n\x0b\n\x04\x04\0\x02\x01\x12\x03\n\x02\
-    \x14\n\x0c\n\x05\x04\0\x02\x01\x05\x12\x03\n\x02\x07\n\x0c\n\x05\x04\0\
-    \x02\x01\x01\x12\x03\n\x08\x0f\n\x0c\n\x05\x04\0\x02\x01\x03\x12\x03\n\
+    text\"\x16\n\x14NodePublicKeyRequest\"5\n\x15NodePublicKeyResponse\x12\
+    \x1c\n\tpublicKey\x18\x01\x20\x01(\x0cR\tpublicKey\"\xe4\x01\n\nFFIReque\
+    st\x12=\n\x0bcallRequest\x18\x01\x20\x01(\x0b2\x19.ffi.ffi.SGXVMCallRequ\
+    estH\0R\x0bcallRequest\x12C\n\rcreateRequest\x18\x02\x20\x01(\x0b2\x1b.f\
+    fi.ffi.SGXVMCreateRequestH\0R\rcreateRequest\x12K\n\x10publicKeyRequest\
+    \x18\x03\x20\x01(\x0b2\x1d.ffi.ffi.NodePublicKeyRequestH\0R\x10publicKey\
+    RequestB\x05\n\x03reqB\x04Z\x02./J\x976\n\x07\x12\x05\0\0\xdb\x01\x01\n\
+    \x08\n\x01\x0c\x12\x03\0\0\x12\n\x08\n\x01\x02\x12\x03\x02\0\x10\n\x08\n\
+    \x01\x08\x12\x03\x04\0\x19\n\t\n\x02\x08\x0b\x12\x03\x04\0\x19\n\x1c\n\
+    \x02\x04\0\x12\x04\x08\0\x0b\x012\x10General\x20request\n\n\n\n\x03\x04\
+    \0\x01\x12\x03\x08\x08\x16\n\x0b\n\x04\x04\0\x02\0\x12\x03\t\x02!\n\x0c\
+    \n\x05\x04\0\x02\0\x04\x12\x03\t\x02\n\n\x0c\n\x05\x04\0\x02\0\x05\x12\
+    \x03\t\x0b\x10\n\x0c\n\x05\x04\0\x02\0\x01\x12\x03\t\x11\x1c\n\x0c\n\x05\
+    \x04\0\x02\0\x03\x12\x03\t\x1f\x20\n\x0b\n\x04\x04\0\x02\x01\x12\x03\n\
+    \x02\x14\n\x0c\n\x05\x04\0\x02\x01\x05\x12\x03\n\x02\x07\n\x0c\n\x05\x04\
+    \0\x02\x01\x01\x12\x03\n\x08\x0f\n\x0c\n\x05\x04\0\x02\x01\x03\x12\x03\n\
     \x12\x13\n\n\n\x02\x04\x01\x12\x04\r\0\x14\x01\n\n\n\x03\x04\x01\x01\x12\
     \x03\r\x08\x17\n\x0b\n\x04\x04\x01\x02\0\x12\x03\x0e\x02\x11\n\x0c\n\x05\
     \x04\x01\x02\0\x05\x12\x03\x0e\x02\x07\n\x0c\n\x05\x04\x01\x02\0\x01\x12\
@@ -8659,15 +9033,25 @@ static file_descriptor_proto_data: &'static [u8] = b"\
     \x04!\x02\0\x03\x12\x04\xc9\x01\x1d\x1e\n\x0c\n\x04\x04!\x02\x01\x12\x04\
     \xca\x01\x02!\n\r\n\x05\x04!\x02\x01\x06\x12\x04\xca\x01\x02\x14\n\r\n\
     \x05\x04!\x02\x01\x01\x12\x04\xca\x01\x15\x1c\n\r\n\x05\x04!\x02\x01\x03\
-    \x12\x04\xca\x01\x1f\x20\n\x0c\n\x02\x04\"\x12\x06\xcd\x01\0\xd2\x01\x01\
-    \n\x0b\n\x03\x04\"\x01\x12\x04\xcd\x01\x08\x12\n\x0e\n\x04\x04\"\x08\0\
-    \x12\x06\xce\x01\x02\xd1\x01\x03\n\r\n\x05\x04\"\x08\0\x01\x12\x04\xce\
-    \x01\x08\x0b\n\x0c\n\x04\x04\"\x02\0\x12\x04\xcf\x01\x04%\n\r\n\x05\x04\
-    \"\x02\0\x06\x12\x04\xcf\x01\x04\x14\n\r\n\x05\x04\"\x02\0\x01\x12\x04\
-    \xcf\x01\x15\x20\n\r\n\x05\x04\"\x02\0\x03\x12\x04\xcf\x01#$\n\x0c\n\x04\
-    \x04\"\x02\x01\x12\x04\xd0\x01\x04)\n\r\n\x05\x04\"\x02\x01\x06\x12\x04\
-    \xd0\x01\x04\x16\n\r\n\x05\x04\"\x02\x01\x01\x12\x04\xd0\x01\x17$\n\r\n\
-    \x05\x04\"\x02\x01\x03\x12\x04\xd0\x01'(b\x06proto3\
+    \x12\x04\xca\x01\x1f\x20\n/\n\x02\x04\"\x12\x04\xce\x01\0\x1f\x1a#\x20Re\
+    quest\x20to\x20obtain\x20node\x20public\x20key\n\n\x0b\n\x03\x04\"\x01\
+    \x12\x04\xce\x01\x08\x1c\n-\n\x02\x04#\x12\x06\xd1\x01\0\xd3\x01\x01\x1a\
+    \x1f\x20Response\x20with\x20node\x20public\x20key\n\n\x0b\n\x03\x04#\x01\
+    \x12\x04\xd1\x01\x08\x1d\n\x0c\n\x04\x04#\x02\0\x12\x04\xd2\x01\x02\x16\
+    \n\r\n\x05\x04#\x02\0\x05\x12\x04\xd2\x01\x02\x07\n\r\n\x05\x04#\x02\0\
+    \x01\x12\x04\xd2\x01\x08\x11\n\r\n\x05\x04#\x02\0\x03\x12\x04\xd2\x01\
+    \x14\x15\n\x0c\n\x02\x04$\x12\x06\xd5\x01\0\xdb\x01\x01\n\x0b\n\x03\x04$\
+    \x01\x12\x04\xd5\x01\x08\x12\n\x0e\n\x04\x04$\x08\0\x12\x06\xd6\x01\x02\
+    \xda\x01\x03\n\r\n\x05\x04$\x08\0\x01\x12\x04\xd6\x01\x08\x0b\n\x0c\n\
+    \x04\x04$\x02\0\x12\x04\xd7\x01\x04%\n\r\n\x05\x04$\x02\0\x06\x12\x04\
+    \xd7\x01\x04\x14\n\r\n\x05\x04$\x02\0\x01\x12\x04\xd7\x01\x15\x20\n\r\n\
+    \x05\x04$\x02\0\x03\x12\x04\xd7\x01#$\n\x0c\n\x04\x04$\x02\x01\x12\x04\
+    \xd8\x01\x04)\n\r\n\x05\x04$\x02\x01\x06\x12\x04\xd8\x01\x04\x16\n\r\n\
+    \x05\x04$\x02\x01\x01\x12\x04\xd8\x01\x17$\n\r\n\x05\x04$\x02\x01\x03\
+    \x12\x04\xd8\x01'(\n\x0c\n\x04\x04$\x02\x02\x12\x04\xd9\x01\x04.\n\r\n\
+    \x05\x04$\x02\x02\x06\x12\x04\xd9\x01\x04\x18\n\r\n\x05\x04$\x02\x02\x01\
+    \x12\x04\xd9\x01\x19)\n\r\n\x05\x04$\x02\x02\x03\x12\x04\xd9\x01,-b\x06p\
+    roto3\
 ";
 
 static mut file_descriptor_proto_lazy: ::protobuf::lazy::Lazy<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::lazy::Lazy {

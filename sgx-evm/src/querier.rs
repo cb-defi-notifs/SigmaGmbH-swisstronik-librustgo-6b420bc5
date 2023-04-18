@@ -1,5 +1,4 @@
 use crate::memory::{UnmanagedVector, U8SliceView};
-use crate::error::GoError;
 
 #[repr(C)]
 #[derive(Clone)]
@@ -24,11 +23,4 @@ pub struct Querier_vtable {
         *mut UnmanagedVector, // result output
         *mut UnmanagedVector, // error message output
     ) -> i32,
-}
-
-#[repr(C)]
-pub struct QueryResult {
-    pub output: UnmanagedVector,
-    pub error: GoError,
-    pub error_message: UnmanagedVector,
 }

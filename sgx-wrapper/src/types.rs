@@ -1,4 +1,4 @@
-use crate::{UnmanagedVector, U8SliceView, errors::GoError};
+use crate::{UnmanagedVector, U8SliceView};
 use std::marker::PhantomData;
 use sgx_types::*;
 
@@ -25,13 +25,6 @@ pub struct Querier_vtable {
         *mut UnmanagedVector, // result output
         *mut UnmanagedVector, // error message output
     ) -> i32,
-}
-
-#[repr(C)]
-pub struct QueryResult {
-    pub output: UnmanagedVector,
-    pub error: GoError,
-    pub error_message: UnmanagedVector,
 }
 
 #[repr(C)]
