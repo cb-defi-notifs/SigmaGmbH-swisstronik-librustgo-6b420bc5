@@ -199,6 +199,8 @@ fn request_seed_inner(socket_fd: c_int) -> sgx_status_t {
         return error_status;
     }
 
+    println!("[Enclave] Seed successfully sealed");
+
     sgx_status_t::SGX_SUCCESS
 }
 
