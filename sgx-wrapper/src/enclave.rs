@@ -164,8 +164,6 @@ pub unsafe extern "C" fn handle_initialization_request(
                         if req.hostname.is_empty() {
                             return Err(Error::unset_arg("Hostname was not set"));    
                         }
-
-                        println!("[DEBUG] Hostname: {:?}", req.hostname);
                         
                         let mut retval = sgx_status_t::SGX_SUCCESS;
                         let res = ecall_request_seed(
