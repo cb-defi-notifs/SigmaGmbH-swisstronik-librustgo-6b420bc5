@@ -19,8 +19,6 @@ pub const NONCE_LEN: usize = 16;
 /// Handles initialization of a new seed node.
 /// If seed is already sealed, it will reset it
 pub unsafe extern "C" fn ecall_init_master_key(reset_flag: i32) -> sgx_status_t {
-    println!("[Enclave] Initialize master key");
-
     // Check if master key exists
     let master_key_exists = match KeyManager::exists() {
         Ok(exists) => exists,
