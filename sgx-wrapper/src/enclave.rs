@@ -11,8 +11,6 @@ use std::panic::catch_unwind;
 static ENCLAVE_FILE: &'static str = "/tmp/enclave.signed.so";
 pub static mut ENCLAVE_ID: Option<sgx_types::sgx_enclave_id_t> = None;
 
-pub const API_KEY_SIZE: usize = 32;
-
 #[allow(dead_code)]
 extern "C" {
     pub fn handle_request(
