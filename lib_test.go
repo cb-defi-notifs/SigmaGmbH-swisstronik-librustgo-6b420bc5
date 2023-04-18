@@ -126,13 +126,19 @@ func _TestCall(t *testing.T) {
 }
 
 func TestSeedExchange(t *testing.T) {
-	addr := "127.0.0.1:8999"
+	if err := api.InitializeMasterKey(true); err != nil {
+		t.Fail()
+	}
+
+	addr := "localhost:8999"
 	err := api.StartSeedServer(addr)
 	if err != nil {
 		t.Fail()
 	}
 
-	if err := api.RequestSeed(addr); err != nil {
+	host := "localhost"
+	port := 8999
+	if err := api.RequestSeed(host, port); err != nil {
 		t.Fail()
 	}
 }

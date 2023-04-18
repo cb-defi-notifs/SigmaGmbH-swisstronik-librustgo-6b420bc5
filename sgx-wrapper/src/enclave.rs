@@ -11,8 +11,6 @@ use std::panic::catch_unwind;
 static ENCLAVE_FILE: &'static str = "/tmp/enclave.signed.so";
 pub static mut ENCLAVE_ID: Option<sgx_types::sgx_enclave_id_t> = None;
 
-pub const API_KEY_SIZE: usize = 32;
-
 #[allow(dead_code)]
 extern "C" {
     pub fn handle_request(
@@ -30,28 +28,22 @@ extern "C" {
         len: usize,
     ) -> sgx_status_t;
 
-    pub fn ecall_init_seed_node(eid: sgx_enclave_id_t, retval: *mut sgx_status_t) -> sgx_status_t;
-
-    pub fn ecall_init_node(eid: sgx_enclave_id_t, retval: *mut sgx_status_t) -> sgx_status_t;
+    pub fn ecall_init_master_key(eid: sgx_enclave_id_t, retval: *mut sgx_status_t, reset_flag: i32) -> sgx_status_t;
 
     pub fn ecall_is_initialized(eid: sgx_enclave_id_t, retval: *mut i32) -> sgx_status_t;
 
-    pub fn ecall_create_report(
-        eid: sgx_enclave_id_t,
-        retval: *mut sgx_status_t,
-        api_key: *const u8,
-    ) -> sgx_status_t;
-
     pub fn ecall_share_seed(
         eid: sgx_enclave_id_t,
+        retval: *mut sgx_status_t,
         socket_fd: c_int,
-        sign_type: sgx_quote_sign_type_t,
     ) -> sgx_status_t;
 
     pub fn ecall_request_seed(
         eid: sgx_enclave_id_t,
+        retval: *mut sgx_status_t,
+        hostname: *const u8,
+        data_len: usize,
         socket_fd: c_int,
-        sign_type: sgx_quote_sign_type_t,
     ) -> sgx_status_t;
 }
 
@@ -108,9 +100,10 @@ pub unsafe extern "C" fn handle_initialization_request(
         let result = match request.req {
             Some(req) => {
                 match req {
-                    node::SetupRequest_oneof_req::setupSeedNode(req) => {
+                    node::SetupRequest_oneof_req::initializeMasterKey(req) => {
                         let mut retval = sgx_status_t::SGX_SUCCESS;
-                        let res = ecall_init_seed_node(evm_enclave.geteid(), &mut retval);
+                        let should_reset = req.shouldReset as i32;
+                        let res = ecall_init_master_key(evm_enclave.geteid(), &mut retval, should_reset);
 
                         match res {
                             sgx_status_t::SGX_SUCCESS => {}
@@ -122,12 +115,12 @@ pub unsafe extern "C" fn handle_initialization_request(
                         match retval {
                             sgx_status_t::SGX_SUCCESS => {}
                             _ => {
-                                return Err(Error::enclave_error(res.as_str()));
+                                return Err(Error::enclave_error(retval.as_str()));
                             }
                         }
 
                         // Create response, convert it to bytes and return
-                        let mut response = node::SetupSeedNodeRequest::new();
+                        let response = node::InitializeMasterKeyResponse::new();
                         let response_bytes = match response.write_to_bytes() {
                             Ok(res) => res,
                             Err(_) => {
@@ -136,78 +129,10 @@ pub unsafe extern "C" fn handle_initialization_request(
                         };
 
                         Ok(response_bytes)
-                    }
-                    node::SetupRequest_oneof_req::setupRegularNode(req) => {
-                        let mut retval = sgx_status_t::SGX_SUCCESS;
-                        let res = ecall_init_node(evm_enclave.geteid(), &mut retval);
-
-                        match res {
-                            sgx_status_t::SGX_SUCCESS => {}
-                            _ => {
-                                return Err(Error::enclave_error(res.as_str()));
-                            }
-                        };
-
-                        match retval {
-                            sgx_status_t::SGX_SUCCESS => {}
-                            _ => {
-                                return Err(Error::enclave_error(res.as_str()));
-                            }
-                        }
-
-                        // Create response, convert it to bytes and return
-                        let mut response = node::SetupRegularNodeResponse::new();
-                        let response_bytes = match response.write_to_bytes() {
-                            Ok(res) => res,
-                            Err(_) => {
-                                return Err(Error::protobuf_decode("Response encoding failed"));
-                            }
-                        };
-
-                        Ok(response_bytes)
-                    }
-                    node::SetupRequest_oneof_req::createAttestationReport(req) => {
-                        let api_key = req.apiKey;
-                        if api_key.len() != API_KEY_SIZE {
-                            return Err(Error::enclave_error("Wrong length of api key"));
-                        }
-
-                        let mut retval = sgx_status_t::SGX_SUCCESS;
-                        let res = ecall_create_report(
-                            evm_enclave.geteid(),
-                            &mut retval,
-                            api_key.as_ptr(),
-                        );
-
-                        match res {
-                            sgx_status_t::SGX_SUCCESS => {}
-                            _ => {
-                                return Err(Error::enclave_error(res.as_str()));
-                            }
-                        };
-
-                        match retval {
-                            sgx_status_t::SGX_SUCCESS => {}
-                            _ => {
-                                return Err(Error::enclave_error(res.as_str()));
-                            }
-                        }
-
-                        // Create response, convert it to bytes and return
-                        let mut response = node::CreateAttestationReportResponse::new();
-                        let response_bytes = match response.write_to_bytes() {
-                            Ok(res) => res,
-                            Err(_) => {
-                                return Err(Error::protobuf_decode("Response encoding failed"));
-                            }
-                        };
-
-                        Ok(response_bytes)
-                    }
+                    },
                     node::SetupRequest_oneof_req::startSeedServer(req) => {
-                        println!("SGX_WRAPPER: starting seed server");
-                        let sign_type = sgx_quote_sign_type_t::SGX_LINKABLE_SIGNATURE;
-                        let res = ecall_share_seed(evm_enclave.geteid(), req.fd, sign_type);
+                        let mut retval = sgx_status_t::SGX_SUCCESS;
+                        let res = ecall_share_seed(evm_enclave.geteid(), &mut retval, req.fd);
 
                         match res {
                             sgx_status_t::SGX_SUCCESS => {}
@@ -215,6 +140,13 @@ pub unsafe extern "C" fn handle_initialization_request(
                                 return Err(Error::enclave_error(res.as_str()));
                             }
                         };
+
+                        match retval {
+                            sgx_status_t::SGX_SUCCESS => {}
+                            _ => {
+                                return Err(Error::enclave_error(retval.as_str()));
+                            }
+                        }
 
                         // Create response, convert it to bytes and return
                         let response = node::StartSeedServerResponse::new();
@@ -228,20 +160,28 @@ pub unsafe extern "C" fn handle_initialization_request(
                         Ok(response_bytes)
                     }
                     node::SetupRequest_oneof_req::nodeSeed(req) => {
-                        println!("SGX_WRAPPER: trying to request seed");
-                        let sign_type = sgx_quote_sign_type_t::SGX_LINKABLE_SIGNATURE;
-                        let res =
-                            ecall_request_seed(evm_enclave.geteid(), req.fd, sign_type);
+                        if req.hostname.is_empty() {
+                            return Err(Error::unset_arg("Hostname was not set"));    
+                        }
+                        
+                        let mut retval = sgx_status_t::SGX_SUCCESS;
+                        let res = ecall_request_seed(
+                            evm_enclave.geteid(), 
+                            &mut retval,
+                            req.hostname.as_ptr() as *const u8,
+                            req.hostname.len(),
+                            req.fd
+                        );
 
-                        match res {
-                            sgx_status_t::SGX_SUCCESS => {}
-                            _ => {
+                        match (res, retval) {
+                            (sgx_status_t::SGX_SUCCESS, sgx_status_t::SGX_SUCCESS) => {}
+                            (_, _) => {
                                 return Err(Error::enclave_error(res.as_str()));
                             }
                         };
 
                         // Create response, convert it to bytes and return
-                        let mut response = node::NodeSeedResponse::new();
+                        let response = node::NodeSeedResponse::new();
                         let response_bytes = match response.write_to_bytes() {
                             Ok(res) => res,
                             Err(_) => {

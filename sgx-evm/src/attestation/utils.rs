@@ -139,7 +139,6 @@ fn parse_response_sigrl(resp: &[u8]) -> Vec<u8> {
         return base64::decode(str::from_utf8(resp_body).unwrap()).unwrap();
     }
 
-    // len_num == 0
     Vec::new()
 }
 
@@ -156,8 +155,6 @@ pub fn make_ias_client_config() -> rustls::ClientConfig {
 pub fn get_sigrl_from_intel(fd: c_int, gid: u32) -> Vec<u8> {
     println!("[Attestation] get_sigrl_from_intel fd = {:?}", fd);
     let config = make_ias_client_config();
-    //let sigrl_arg = SigRLArg { group_id : gid };
-    //let sigrl_req = sigrl_arg.to_httpreq();
     let ias_key = get_ias_api_key();
 
     let req = format!("GET {}{:08x} HTTP/1.1\r\nHOST: {}\r\nOcp-Apim-Subscription-Key: {}\r\nConnection: Close\r\n\r\n",

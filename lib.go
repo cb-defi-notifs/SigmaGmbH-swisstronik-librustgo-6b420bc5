@@ -98,16 +98,8 @@ func Create(
 	return executionResult, nil
 }
 
-func SetupSeedNode() error {
-	return api.SetupSeedNode()
-}
-
-func SetupRegularNode() {
-	api.SetupRegularNode()
-}
-
-func CreateAttestationReport(apiKey []byte) {
-	api.CreateAttestationReport(apiKey)
+func InitializeMasterKey(shouldReset bool) error {
+	return api.InitializeMasterKey(shouldReset)
 }
 
 func StartSeedServer(addr string) error {
@@ -116,8 +108,8 @@ func StartSeedServer(addr string) error {
 
 // RequestSeed handles requesting seed and passing Remote Attestation.
 // Returns error if Remote Attestation was not passed or provided seed server address is not accessible
-func RequestSeed(addr string) error {
-	return api.RequestSeed(addr)
+func RequestSeed(host string, port int) error {
+	return api.RequestSeed(host, port)
 }
 
 // GetNodePublicKey handles request for node public key

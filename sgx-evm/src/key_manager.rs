@@ -1,12 +1,12 @@
+use aes_siv::{
+    aead::{Aead, KeyInit},
+    Aes128SivAead, Nonce,
+};
 use sgx_rand::*;
 use sgx_tstd::sgxfs::SgxFile;
 use sgx_types::{sgx_read_rand, sgx_status_t, SgxResult};
 use std::io::{Read, Write};
 use std::vec::Vec;
-use aes_siv::{
-    aead::{Aead, KeyInit},
-    Aes128SivAead, Nonce,
-};
 
 use crate::error::Error;
 
@@ -15,6 +15,42 @@ pub const SEED_SIZE: usize = 32;
 pub const SEED_FILENAME: &str = ".swtr_seed";
 pub const NONCE_LEN: usize = 16;
 
+#[no_mangle]
+/// Handles initialization of a new seed node.
+/// If seed is already sealed, it will reset it
+pub unsafe extern "C" fn ecall_init_master_key(reset_flag: i32) -> sgx_status_t {
+    // Check if master key exists
+    let master_key_exists = match KeyManager::exists() {
+        Ok(exists) => exists,
+        Err(err) => {
+            return err;
+        }
+    };
+
+    // If master key does not exist or reset flag was set, generate random master key and seal it
+    if !master_key_exists || reset_flag != 0 {
+        // Generate random master key
+        let key_manager = match KeyManager::random() {
+            Ok(manager) => manager,
+            Err(err) => {
+                return err;
+            }
+        };
+
+        // Seal master key
+        match key_manager.seal() {
+            Ok(_) => {
+                return sgx_status_t::SGX_SUCCESS;
+            }
+            Err(err) => {
+                return err;
+            }
+        };
+    }
+
+    sgx_status_t::SGX_SUCCESS
+}
+
 /// KeyManager handles keys sealing/unsealing and derivation.
 /// * master_key – This key is used to derive keys for transaction and state encryption/decryption
 pub struct KeyManager {
@@ -22,6 +58,18 @@ pub struct KeyManager {
 }
 
 impl KeyManager {
+    /// Checks if file with sealed master key exists
+    pub fn exists() -> SgxResult<bool> {
+        match SgxFile::open(SEED_FILENAME) {
+            Ok(_) => Ok(true),
+            Err(ref err) if err.kind() == std::io::ErrorKind::NotFound => Ok(false),
+            Err(err) => {
+                println!("[KeyManager] Cannot check if sealed file exists");
+                return Err(sgx_status_t::SGX_ERROR_UNEXPECTED);
+            }
+        }
+    }
+
     /// Seals key to protected file, so it will be accessible only for enclave.
     /// For now, enclaves with same MRSIGNER will be able to recover that file, but
     /// we'll use MRENCLAVE since Upgradeability Protocol will be implemented
@@ -97,7 +145,7 @@ impl KeyManager {
     }
 
     /// Encrypts provided message using Aes128SivAead
-    pub fn encrypt(&self, message: Vec<u8>) -> Result<Vec<u8>, Error>{
+    pub fn encrypt(&self, message: Vec<u8>) -> Result<Vec<u8>, Error> {
         // Prepare cipher
         let cipher = match Aes128SivAead::new_from_slice(&self.master_key) {
             Ok(cipher) => cipher,
@@ -145,6 +193,113 @@ impl KeyManager {
             Ok(message) => Ok(message),
             Err(err) => Err(Error::decryption_err(err)),
         }
+    }
+
+    /// Encrypts master key using shared key
+    pub fn to_encrypted_seed(
+        &self,
+        reg_key: &RegistrationKey,
+        public_key: Vec<u8>,
+    ) -> Result<Vec<u8>, Error> {
+        // Convert public key to appropriate format
+        let public_key: [u8; 32] = match public_key.try_into() {
+            Ok(public_key) => public_key,
+            Err(err) => {
+                return Err(Error::decryption_err(format!(
+                    "Public key has wrong length"
+                )))
+            }
+        };
+        let public_key = x25519_dalek::PublicKey::from(public_key);
+
+        // Derive shared secret
+        let shared_secret = reg_key.diffie_hellman(public_key);
+
+        // Prepare cipher
+        let cipher = match Aes128SivAead::new_from_slice(shared_secret.as_bytes()) {
+            Ok(cipher) => cipher,
+            Err(err) => return Err(Error::encryption_err(err)),
+        };
+
+        // Generate nonce
+        let mut buffer = [0u8; NONCE_LEN];
+        let result = unsafe { sgx_read_rand(&mut buffer as *mut u8, NONCE_LEN) };
+        let nonce = match result {
+            sgx_status_t::SGX_SUCCESS => Nonce::from_slice(&buffer),
+            _ => {
+                return Err(Error::encryption_err(format!(
+                    "Cannot generate nonce: {:?}",
+                    result.as_str()
+                )))
+            }
+        };
+
+        // Encrypt master key
+        match cipher.encrypt(nonce, self.master_key.as_slice()) {
+            Ok(ciphertext) => {
+                let public_key = reg_key.public_key();
+                let result_bytes = [
+                    public_key.as_bytes(),
+                    nonce.as_slice(),
+                    ciphertext.as_slice(),
+                ]
+                .concat();
+                Ok(result_bytes)
+            }
+            Err(err) => Err(Error::encryption_err(err)),
+        }
+    }
+
+    /// Recovers encrypted master key obtained from seed exchange server
+    pub fn from_encrypted_seed(
+        reg_key: &RegistrationKey,
+        public_key: Vec<u8>,
+        encrypted_seed: Vec<u8>,
+    ) -> Result<Self, Error> {
+        // Convert public key to appropriate format
+        let public_key: [u8; 32] = match public_key.try_into() {
+            Ok(public_key) => public_key,
+            Err(err) => {
+                return Err(Error::encryption_err(format!(
+                    "Public key has wrong length"
+                )))
+            }
+        };
+        let public_key = x25519_dalek::PublicKey::from(public_key);
+
+        // Derive shared secret
+        let shared_secret = reg_key.diffie_hellman(public_key);
+
+        // Decrypt seed
+        let cipher = match Aes128SivAead::new_from_slice(shared_secret.as_bytes()) {
+            Ok(cipher) => cipher,
+            Err(err) => return Err(Error::decryption_err(err)),
+        };
+        let nonce = Nonce::from_slice(&encrypted_seed[..NONCE_LEN]);
+        let ciphertext = &encrypted_seed[NONCE_LEN..];
+        let master_key = match cipher.decrypt(nonce, ciphertext) {
+            Ok(master_key) => master_key,
+            Err(err) => return Err(Error::decryption_err(err)),
+        };
+
+        // Convert master key to appropriate format
+        let master_key: [u8; 32] = match master_key.try_into() {
+            Ok(master_key) => master_key,
+            Err(err) => {
+                return Err(Error::decryption_err(format!(
+                    "Master key has wrong length"
+                )))
+            }
+        };
+
+        Ok(Self { master_key })
+    }
+
+    /// Return x25519 public key for transaction encryption
+    pub fn get_public_key(&self) -> Vec<u8> {
+        let secret = x25519_dalek::StaticSecret::from(self.master_key);
+        let public_key = x25519_dalek::PublicKey::from(&secret);
+        public_key.as_bytes().to_vec()
     }
 }
 

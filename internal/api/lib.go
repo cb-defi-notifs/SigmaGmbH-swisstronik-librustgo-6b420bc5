@@ -73,10 +73,10 @@ func IsNodeInitialized() (bool, error) {
 }
 
 // SetupSeedNode handles initialization of seed node which will share seed with other nodes
-func SetupSeedNode() error {
+func InitializeMasterKey(shouldReset bool) error {
 	// Create protobuf encoded request
-	req := ffi.SetupRequest{Req: &ffi.SetupRequest_SetupSeedNode{
-		SetupSeedNode: &ffi.SetupSeedNodeRequest{},
+	req := ffi.SetupRequest{Req: &ffi.SetupRequest_InitializeMasterKey{
+		InitializeMasterKey: &ffi.InitializeMasterKeyRequest{ ShouldReset: shouldReset },
 	}}
 	reqBytes, err := proto.Marshal(&req)
 	if err != nil {
@@ -97,52 +97,6 @@ func SetupSeedNode() error {
 	return nil
 }
 
-// SetupRegularNode handles initialization of regular node which will request seed from seed node
-func SetupRegularNode() {
-	// Create protobuf encoded request
-	req := ffi.SetupRequest{Req: &ffi.SetupRequest_SetupRegularNode{
-		SetupRegularNode: &ffi.SetupRegularNodeRequest{},
-	}}
-	reqBytes, err := proto.Marshal(&req)
-	if err != nil {
-		log.Fatalln("Failed to encode req:", err)
-	}
-
-	// Pass request to Rust
-	d := MakeView(reqBytes)
-	defer runtime.KeepAlive(reqBytes)
-
-	errmsg := NewUnmanagedVector(nil)
-
-	_ = C.handle_initialization_request(d, &errmsg)
-}
-
-func CreateAttestationReport(apiKey []byte) {
-	if len(apiKey) != 32 {
-		log.Fatalln("Wrong api key size")
-		return
-	}
-
-	// Create protobuf encoded request
-	req := ffi.SetupRequest{Req: &ffi.SetupRequest_CreateAttestationReport{
-		CreateAttestationReport: &ffi.CreateAttestationReportRequest{
-			ApiKey: apiKey,
-		},
-	}}
-	reqBytes, err := proto.Marshal(&req)
-	if err != nil {
-		log.Fatalln("Failed to encode req:", err)
-	}
-
-	// Pass request to Rust
-	d := MakeView(reqBytes)
-	defer runtime.KeepAlive(reqBytes)
-
-	errmsg := NewUnmanagedVector(nil)
-
-	_ = C.handle_initialization_request(d, &errmsg)
-}
-
 // StartSeedServer handles initialization of seed server
 func StartSeedServer(addr string) error {
 	fmt.Println("[Seed Server] Trying to start seed server")
@@ -161,7 +115,7 @@ func StartSeedServer(addr string) error {
 			}
 
 			if err := attestPeer(connection); err != nil {
-				fmt.Println("[Seed Server] Attestation failed. Reason: {:?}", err)
+				fmt.Println("[Seed Server] Attestation failed. Reason: ", err)
 				continue
 			}
 		}
@@ -225,8 +179,9 @@ func Listen(addr string, maxOpenConnections int) (net.Listener, error) {
 }
 
 // RequestSeed handles request of seed from seed server
-func RequestSeed(addr string) error {
-	conn, err := net.Dial("tcp", addr)
+func RequestSeed(hostname string, port int) error {
+	address := fmt.Sprintf("%s:%d", hostname, port)
+	conn, err := net.Dial("tcp", address)
 	if err != nil {
 		fmt.Println("Cannot establish connection with seed server. Reason: ", err.Error())
 		return err
@@ -242,6 +197,7 @@ func RequestSeed(addr string) error {
 	req := ffi.SetupRequest{Req: &ffi.SetupRequest_NodeSeed{
 		NodeSeed: &ffi.NodeSeedRequest{
 			Fd: int32(file.Fd()),
+			Hostname: hostname,
 		},
 	}}
 	reqBytes, err := proto.Marshal(&req)
