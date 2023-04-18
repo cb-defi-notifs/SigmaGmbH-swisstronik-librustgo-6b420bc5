@@ -277,17 +277,17 @@ func GetNodePublicKey() (*ffi.NodePublicKeyResponse, error) {
 	}
 
 	// Pass request to Rust
-	d := makeView(reqBytes)
+	d := MakeView(reqBytes)
 	defer runtime.KeepAlive(reqBytes)
 
-	errmsg := newUnmanagedVector(nil)
-	ptr, err := C.make_pb_request(c, d, &errmsg) // TODO: Pass empty struct instead of nil
+	errmsg := NewUnmanagedVector(nil)
+	ptr, err := C.make_pb_request(c, d, &errmsg)
 	if err != nil {
-		return &ffi.NodePublicKeyResponse{}, errorWithMessage(err, errmsg)
+		return &ffi.NodePublicKeyResponse{}, ErrorWithMessage(err, errmsg)
 	}
 
 	// Recover returned value
-	executionResult := copyAndDestroyUnmanagedVector(ptr)
+	executionResult := CopyAndDestroyUnmanagedVector(ptr)
 	response := ffi.NodePublicKeyResponse{}
 	if err := proto.Unmarshal(executionResult, &response); err != nil {
 		log.Fatalln("Failed to decode node public key result:", err)
