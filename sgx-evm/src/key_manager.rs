@@ -60,7 +60,6 @@ pub struct KeyManager {
 }
 
 impl KeyManager {
-
     /// Checks if file with sealed master key exists
     pub fn exists() -> SgxResult<bool> {
         match SgxFile::open(SEED_FILENAME) {
@@ -296,6 +295,13 @@ impl KeyManager {
         };
 
         Ok(Self { master_key })
+    }
+
+    /// Return x25519 public key for transaction encryption
+    pub fn get_public_key(&self) -> Vec<u8> {
+        let secret = x25519_dalek::StaticSecret::from(self.master_key);
+        let public_key = x25519_dalek::PublicKey::from(&secret);
+        public_key.as_bytes().to_vec()
     }
 }
 

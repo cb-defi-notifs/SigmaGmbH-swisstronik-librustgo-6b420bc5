@@ -1,14 +1,5 @@
 use crate::error::Error;
-use aes_siv::{
-    aead::{Aead, KeyInit},
-    Aes128SivAead, Nonce,
-};
-use x25519_dalek::{StaticSecret, PublicKey};
-use sgx_types::*;
 use std::vec::Vec;
-
-pub static NODE_PRIVATE_KEY: &str =
-    "bf8fca698444afd8b4cd4e851cb58321192a6d8eab503bf17d8be249e767cf3d";
 
 use crate::key_manager::KeyManager;
 
@@ -34,21 +25,4 @@ pub fn decrypt_storage_cell(encrypted_value: Vec<u8>) -> Result<Vec<u8>, Error> 
     };
 
     key_manager.decrypt(encrypted_value)
-}
-
-/// Returns x25519 public key generated from node private key
-pub fn x25519_get_public_key() -> Result<Vec<u8>, Error> {
-    // Decode key
-    let key = match hex::decode(NODE_PRIVATE_KEY) {
-        Ok(key) => key,
-        Err(err) => return Err(Error::enclave_err(err)),
-    };
-
-    // Construct secret 
-    let key_bytes: [u8; 32] = key.try_into().unwrap();
-    let secret = StaticSecret::from(key_bytes);
-
-    // Derive public key
-    let public_key = PublicKey::from(&secret);
-    Ok(public_key.as_bytes().to_vec())
 }
