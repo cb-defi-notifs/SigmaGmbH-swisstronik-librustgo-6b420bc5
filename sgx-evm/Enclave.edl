@@ -22,7 +22,7 @@ enclave {
     };
 
     trusted {
-        public sgx_status_t ecall_init_seed_node();
+        public sgx_status_t ecall_init_master_key(int reset);
 
         public int ecall_is_initialized();
 

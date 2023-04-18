@@ -4,9 +4,11 @@ package node.node;
 
 option go_package = "./";
 
-message SetupSeedNodeRequest {}
+message InitializeMasterKeyRequest {
+    bool shouldReset = 1;
+}
 
-message SetupSeedNodeResponse {}
+message InitializeMasterKeyResponse {}
 
 message StartSeedServerRequest {
     int32 fd = 1;
@@ -28,7 +30,7 @@ message IsInitializedResponse {
 
 message SetupRequest {
     oneof req {
-        SetupSeedNodeRequest setupSeedNode = 1;
+        InitializeMasterKeyRequest initializeMasterKey = 1;
         StartSeedServerRequest startSeedServer = 2;
         NodeSeedRequest nodeSeed = 3;
         IsInitializedRequest isInitialized = 4;

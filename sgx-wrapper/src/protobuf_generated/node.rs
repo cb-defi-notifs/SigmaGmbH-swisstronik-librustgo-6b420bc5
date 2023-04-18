@@ -27,25 +27,42 @@ use protobuf::ProtobufEnum as ProtobufEnum_imported_for_functions;
 const _PROTOBUF_VERSION_CHECK: () = ::protobuf::VERSION_2_8_1;
 
 #[derive(PartialEq,Clone,Default)]
-pub struct SetupSeedNodeRequest {
+pub struct InitializeMasterKeyRequest {
+    // message fields
+    pub shouldReset: bool,
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
 }
 
-impl<'a> ::std::default::Default for &'a SetupSeedNodeRequest {
-    fn default() -> &'a SetupSeedNodeRequest {
-        <SetupSeedNodeRequest as ::protobuf::Message>::default_instance()
+impl<'a> ::std::default::Default for &'a InitializeMasterKeyRequest {
+    fn default() -> &'a InitializeMasterKeyRequest {
+        <InitializeMasterKeyRequest as ::protobuf::Message>::default_instance()
     }
 }
 
-impl SetupSeedNodeRequest {
-    pub fn new() -> SetupSeedNodeRequest {
+impl InitializeMasterKeyRequest {
+    pub fn new() -> InitializeMasterKeyRequest {
         ::std::default::Default::default()
     }
+
+    // bool shouldReset = 1;
+
+
+    pub fn get_shouldReset(&self) -> bool {
+        self.shouldReset
+    }
+    pub fn clear_shouldReset(&mut self) {
+        self.shouldReset = false;
+    }
+
+    // Param is passed by value, moved
+    pub fn set_shouldReset(&mut self, v: bool) {
+        self.shouldReset = v;
+    }
 }
 
-impl ::protobuf::Message for SetupSeedNodeRequest {
+impl ::protobuf::Message for InitializeMasterKeyRequest {
     fn is_initialized(&self) -> bool {
         true
     }
@@ -54,6 +71,13 @@ impl ::protobuf::Message for SetupSeedNodeRequest {
         while !is.eof()? {
             let (field_number, wire_type) = is.read_tag_unpack()?;
             match field_number {
+                1 => {
+                    if wire_type != ::protobuf::wire_format::WireTypeVarint {
+                        return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
+                    }
+                    let tmp = is.read_bool()?;
+                    self.shouldReset = tmp;
+                },
                 _ => {
                     ::protobuf::rt::read_unknown_or_skip_group(field_number, wire_type, is, self.mut_unknown_fields())?;
                 },
@@ -66,12 +90,18 @@ impl ::protobuf::Message for SetupSeedNodeRequest {
     #[allow(unused_variables)]
     fn compute_size(&self) -> u32 {
         let mut my_size = 0;
+        if self.shouldReset != false {
+            my_size += 2;
+        }
         my_size += ::protobuf::rt::unknown_fields_size(self.get_unknown_fields());
         self.cached_size.set(my_size);
         my_size
     }
 
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
+        if self.shouldReset != false {
+            os.write_bool(1, self.shouldReset)?;
+        }
         os.write_unknown_fields(self.get_unknown_fields())?;
         ::std::result::Result::Ok(())
     }
@@ -102,8 +132,8 @@ impl ::protobuf::Message for SetupSeedNodeRequest {
         Self::descriptor_static()
     }
 
-    fn new() -> SetupSeedNodeRequest {
-        SetupSeedNodeRequest::new()
+    fn new() -> InitializeMasterKeyRequest {
+        InitializeMasterKeyRequest::new()
     }
 
     fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
@@ -113,9 +143,14 @@ impl ::protobuf::Message for SetupSeedNodeRequest {
         };
         unsafe {
             descriptor.get(|| {
-                let fields = ::std::vec::Vec::new();
-                ::protobuf::reflect::MessageDescriptor::new::<SetupSeedNodeRequest>(
-                    "SetupSeedNodeRequest",
+                let mut fields = ::std::vec::Vec::new();
+                fields.push(::protobuf::reflect::accessor::make_simple_field_accessor::<_, ::protobuf::types::ProtobufTypeBool>(
+                    "shouldReset",
+                    |m: &InitializeMasterKeyRequest| { &m.shouldReset },
+                    |m: &mut InitializeMasterKeyRequest| { &mut m.shouldReset },
+                ));
+                ::protobuf::reflect::MessageDescriptor::new::<InitializeMasterKeyRequest>(
+                    "InitializeMasterKeyRequest",
                     fields,
                     file_descriptor_proto()
                 )
@@ -123,55 +158,56 @@ impl ::protobuf::Message for SetupSeedNodeRequest {
         }
     }
 
-    fn default_instance() -> &'static SetupSeedNodeRequest {
-        static mut instance: ::protobuf::lazy::Lazy<SetupSeedNodeRequest> = ::protobuf::lazy::Lazy {
+    fn default_instance() -> &'static InitializeMasterKeyRequest {
+        static mut instance: ::protobuf::lazy::Lazy<InitializeMasterKeyRequest> = ::protobuf::lazy::Lazy {
             lock: ::protobuf::lazy::ONCE_INIT,
-            ptr: 0 as *const SetupSeedNodeRequest,
+            ptr: 0 as *const InitializeMasterKeyRequest,
         };
         unsafe {
-            instance.get(SetupSeedNodeRequest::new)
+            instance.get(InitializeMasterKeyRequest::new)
         }
     }
 }
 
-impl ::protobuf::Clear for SetupSeedNodeRequest {
+impl ::protobuf::Clear for InitializeMasterKeyRequest {
     fn clear(&mut self) {
+        self.shouldReset = false;
         self.unknown_fields.clear();
     }
 }
 
-impl ::std::fmt::Debug for SetupSeedNodeRequest {
+impl ::std::fmt::Debug for InitializeMasterKeyRequest {
     fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
         ::protobuf::text_format::fmt(self, f)
     }
 }
 
-impl ::protobuf::reflect::ProtobufValue for SetupSeedNodeRequest {
+impl ::protobuf::reflect::ProtobufValue for InitializeMasterKeyRequest {
     fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
         ::protobuf::reflect::ProtobufValueRef::Message(self)
     }
 }
 
 #[derive(PartialEq,Clone,Default)]
-pub struct SetupSeedNodeResponse {
+pub struct InitializeMasterKeyResponse {
     // special fields
     pub unknown_fields: ::protobuf::UnknownFields,
     pub cached_size: ::protobuf::CachedSize,
 }
 
-impl<'a> ::std::default::Default for &'a SetupSeedNodeResponse {
-    fn default() -> &'a SetupSeedNodeResponse {
-        <SetupSeedNodeResponse as ::protobuf::Message>::default_instance()
+impl<'a> ::std::default::Default for &'a InitializeMasterKeyResponse {
+    fn default() -> &'a InitializeMasterKeyResponse {
+        <InitializeMasterKeyResponse as ::protobuf::Message>::default_instance()
     }
 }
 
-impl SetupSeedNodeResponse {
-    pub fn new() -> SetupSeedNodeResponse {
+impl InitializeMasterKeyResponse {
+    pub fn new() -> InitializeMasterKeyResponse {
         ::std::default::Default::default()
     }
 }
 
-impl ::protobuf::Message for SetupSeedNodeResponse {
+impl ::protobuf::Message for InitializeMasterKeyResponse {
     fn is_initialized(&self) -> bool {
         true
     }
@@ -228,8 +264,8 @@ impl ::protobuf::Message for SetupSeedNodeResponse {
         Self::descriptor_static()
     }
 
-    fn new() -> SetupSeedNodeResponse {
-        SetupSeedNodeResponse::new()
+    fn new() -> InitializeMasterKeyResponse {
+        InitializeMasterKeyResponse::new()
     }
 
     fn descriptor_static() -> &'static ::protobuf::reflect::MessageDescriptor {
@@ -240,8 +276,8 @@ impl ::protobuf::Message for SetupSeedNodeResponse {
         unsafe {
             descriptor.get(|| {
                 let fields = ::std::vec::Vec::new();
-                ::protobuf::reflect::MessageDescriptor::new::<SetupSeedNodeResponse>(
-                    "SetupSeedNodeResponse",
+                ::protobuf::reflect::MessageDescriptor::new::<InitializeMasterKeyResponse>(
+                    "InitializeMasterKeyResponse",
                     fields,
                     file_descriptor_proto()
                 )
@@ -249,30 +285,30 @@ impl ::protobuf::Message for SetupSeedNodeResponse {
         }
     }
 
-    fn default_instance() -> &'static SetupSeedNodeResponse {
-        static mut instance: ::protobuf::lazy::Lazy<SetupSeedNodeResponse> = ::protobuf::lazy::Lazy {
+    fn default_instance() -> &'static InitializeMasterKeyResponse {
+        static mut instance: ::protobuf::lazy::Lazy<InitializeMasterKeyResponse> = ::protobuf::lazy::Lazy {
             lock: ::protobuf::lazy::ONCE_INIT,
-            ptr: 0 as *const SetupSeedNodeResponse,
+            ptr: 0 as *const InitializeMasterKeyResponse,
         };
         unsafe {
-            instance.get(SetupSeedNodeResponse::new)
+            instance.get(InitializeMasterKeyResponse::new)
         }
     }
 }
 
-impl ::protobuf::Clear for SetupSeedNodeResponse {
+impl ::protobuf::Clear for InitializeMasterKeyResponse {
     fn clear(&mut self) {
         self.unknown_fields.clear();
     }
 }
 
-impl ::std::fmt::Debug for SetupSeedNodeResponse {
+impl ::std::fmt::Debug for InitializeMasterKeyResponse {
     fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
         ::protobuf::text_format::fmt(self, f)
     }
 }
 
-impl ::protobuf::reflect::ProtobufValue for SetupSeedNodeResponse {
+impl ::protobuf::reflect::ProtobufValue for InitializeMasterKeyResponse {
     fn as_ref(&self) -> ::protobuf::reflect::ProtobufValueRef {
         ::protobuf::reflect::ProtobufValueRef::Message(self)
     }
@@ -1201,7 +1237,7 @@ impl<'a> ::std::default::Default for &'a SetupRequest {
 
 #[derive(Clone,PartialEq,Debug)]
 pub enum SetupRequest_oneof_req {
-    setupSeedNode(SetupSeedNodeRequest),
+    initializeMasterKey(InitializeMasterKeyRequest),
     startSeedServer(StartSeedServerRequest),
     nodeSeed(NodeSeedRequest),
     isInitialized(IsInitializedRequest),
@@ -1212,52 +1248,52 @@ impl SetupRequest {
         ::std::default::Default::default()
     }
 
-    // .node.node.SetupSeedNodeRequest setupSeedNode = 1;
+    // .node.node.InitializeMasterKeyRequest initializeMasterKey = 1;
 
 
-    pub fn get_setupSeedNode(&self) -> &SetupSeedNodeRequest {
+    pub fn get_initializeMasterKey(&self) -> &InitializeMasterKeyRequest {
         match self.req {
-            ::std::option::Option::Some(SetupRequest_oneof_req::setupSeedNode(ref v)) => v,
-            _ => SetupSeedNodeRequest::default_instance(),
+            ::std::option::Option::Some(SetupRequest_oneof_req::initializeMasterKey(ref v)) => v,
+            _ => InitializeMasterKeyRequest::default_instance(),
         }
     }
-    pub fn clear_setupSeedNode(&mut self) {
+    pub fn clear_initializeMasterKey(&mut self) {
         self.req = ::std::option::Option::None;
     }
 
-    pub fn has_setupSeedNode(&self) -> bool {
+    pub fn has_initializeMasterKey(&self) -> bool {
         match self.req {
-            ::std::option::Option::Some(SetupRequest_oneof_req::setupSeedNode(..)) => true,
+            ::std::option::Option::Some(SetupRequest_oneof_req::initializeMasterKey(..)) => true,
             _ => false,
         }
     }
 
     // Param is passed by value, moved
-    pub fn set_setupSeedNode(&mut self, v: SetupSeedNodeRequest) {
-        self.req = ::std::option::Option::Some(SetupRequest_oneof_req::setupSeedNode(v))
+    pub fn set_initializeMasterKey(&mut self, v: InitializeMasterKeyRequest) {
+        self.req = ::std::option::Option::Some(SetupRequest_oneof_req::initializeMasterKey(v))
     }
 
     // Mutable pointer to the field.
-    pub fn mut_setupSeedNode(&mut self) -> &mut SetupSeedNodeRequest {
-        if let ::std::option::Option::Some(SetupRequest_oneof_req::setupSeedNode(_)) = self.req {
+    pub fn mut_initializeMasterKey(&mut self) -> &mut InitializeMasterKeyRequest {
+        if let ::std::option::Option::Some(SetupRequest_oneof_req::initializeMasterKey(_)) = self.req {
         } else {
-            self.req = ::std::option::Option::Some(SetupRequest_oneof_req::setupSeedNode(SetupSeedNodeRequest::new()));
+            self.req = ::std::option::Option::Some(SetupRequest_oneof_req::initializeMasterKey(InitializeMasterKeyRequest::new()));
         }
         match self.req {
-            ::std::option::Option::Some(SetupRequest_oneof_req::setupSeedNode(ref mut v)) => v,
+            ::std::option::Option::Some(SetupRequest_oneof_req::initializeMasterKey(ref mut v)) => v,
             _ => panic!(),
         }
     }
 
     // Take field
-    pub fn take_setupSeedNode(&mut self) -> SetupSeedNodeRequest {
-        if self.has_setupSeedNode() {
+    pub fn take_initializeMasterKey(&mut self) -> InitializeMasterKeyRequest {
+        if self.has_initializeMasterKey() {
             match self.req.take() {
-                ::std::option::Option::Some(SetupRequest_oneof_req::setupSeedNode(v)) => v,
+                ::std::option::Option::Some(SetupRequest_oneof_req::initializeMasterKey(v)) => v,
                 _ => panic!(),
             }
         } else {
-            SetupSeedNodeRequest::new()
+            InitializeMasterKeyRequest::new()
         }
     }
 
@@ -1411,7 +1447,7 @@ impl SetupRequest {
 
 impl ::protobuf::Message for SetupRequest {
     fn is_initialized(&self) -> bool {
-        if let Some(SetupRequest_oneof_req::setupSeedNode(ref v)) = self.req {
+        if let Some(SetupRequest_oneof_req::initializeMasterKey(ref v)) = self.req {
             if !v.is_initialized() {
                 return false;
             }
@@ -1442,7 +1478,7 @@ impl ::protobuf::Message for SetupRequest {
                     if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
                         return ::std::result::Result::Err(::protobuf::rt::unexpected_wire_type(wire_type));
                     }
-                    self.req = ::std::option::Option::Some(SetupRequest_oneof_req::setupSeedNode(is.read_message()?));
+                    self.req = ::std::option::Option::Some(SetupRequest_oneof_req::initializeMasterKey(is.read_message()?));
                 },
                 2 => {
                     if wire_type != ::protobuf::wire_format::WireTypeLengthDelimited {
@@ -1476,7 +1512,7 @@ impl ::protobuf::Message for SetupRequest {
         let mut my_size = 0;
         if let ::std::option::Option::Some(ref v) = self.req {
             match v {
-                &SetupRequest_oneof_req::setupSeedNode(ref v) => {
+                &SetupRequest_oneof_req::initializeMasterKey(ref v) => {
                     let len = v.compute_size();
                     my_size += 1 + ::protobuf::rt::compute_raw_varint32_size(len) + len;
                 },
@@ -1502,7 +1538,7 @@ impl ::protobuf::Message for SetupRequest {
     fn write_to_with_cached_sizes(&self, os: &mut ::protobuf::CodedOutputStream<'_>) -> ::protobuf::ProtobufResult<()> {
         if let ::std::option::Option::Some(ref v) = self.req {
             match v {
-                &SetupRequest_oneof_req::setupSeedNode(ref v) => {
+                &SetupRequest_oneof_req::initializeMasterKey(ref v) => {
                     os.write_tag(1, ::protobuf::wire_format::WireTypeLengthDelimited)?;
                     os.write_raw_varint32(v.get_cached_size())?;
                     v.write_to_with_cached_sizes(os)?;
@@ -1566,10 +1602,10 @@ impl ::protobuf::Message for SetupRequest {
         unsafe {
             descriptor.get(|| {
                 let mut fields = ::std::vec::Vec::new();
-                fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, SetupSeedNodeRequest>(
-                    "setupSeedNode",
-                    SetupRequest::has_setupSeedNode,
-                    SetupRequest::get_setupSeedNode,
+                fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, InitializeMasterKeyRequest>(
+                    "initializeMasterKey",
+                    SetupRequest::has_initializeMasterKey,
+                    SetupRequest::get_initializeMasterKey,
                 ));
                 fields.push(::protobuf::reflect::accessor::make_singular_message_accessor::<_, StartSeedServerRequest>(
                     "startSeedServer",
@@ -1629,55 +1665,58 @@ impl ::protobuf::reflect::ProtobufValue for SetupRequest {
 }
 
 static file_descriptor_proto_data: &'static [u8] = b"\
-    \n)sgx-wrapper/protobuf_contracts/node.proto\x12\tnode.node\"\x16\n\x14S\
-    etupSeedNodeRequest\"\x17\n\x15SetupSeedNodeResponse\"(\n\x16StartSeedSe\
-    rverRequest\x12\x0e\n\x02fd\x18\x01\x20\x01(\x05R\x02fd\"\x19\n\x17Start\
-    SeedServerResponse\"=\n\x0fNodeSeedRequest\x12\x0e\n\x02fd\x18\x01\x20\
+    \n)sgx-wrapper/protobuf_contracts/node.proto\x12\tnode.node\">\n\x1aInit\
+    ializeMasterKeyRequest\x12\x20\n\x0bshouldReset\x18\x01\x20\x01(\x08R\
+    \x0bshouldReset\"\x1d\n\x1bInitializeMasterKeyResponse\"(\n\x16StartSeed\
+    ServerRequest\x12\x0e\n\x02fd\x18\x01\x20\x01(\x05R\x02fd\"\x19\n\x17Sta\
+    rtSeedServerResponse\"=\n\x0fNodeSeedRequest\x12\x0e\n\x02fd\x18\x01\x20\
     \x01(\x05R\x02fd\x12\x1a\n\x08hostname\x18\x02\x20\x01(\tR\x08hostname\"\
     \x12\n\x10NodeSeedResponse\"\x16\n\x14IsInitializedRequest\"=\n\x15IsIni\
     tializedResponse\x12$\n\risInitialized\x18\x01\x20\x01(\x08R\risInitiali\
-    zed\"\xb0\x02\n\x0cSetupRequest\x12G\n\rsetupSeedNode\x18\x01\x20\x01(\
-    \x0b2\x1f.node.node.SetupSeedNodeRequestH\0R\rsetupSeedNode\x12M\n\x0fst\
-    artSeedServer\x18\x02\x20\x01(\x0b2!.node.node.StartSeedServerRequestH\0\
-    R\x0fstartSeedServer\x128\n\x08nodeSeed\x18\x03\x20\x01(\x0b2\x1a.node.n\
-    ode.NodeSeedRequestH\0R\x08nodeSeed\x12G\n\risInitialized\x18\x04\x20\
-    \x01(\x0b2\x1f.node.node.IsInitializedRequestH\0R\risInitializedB\x05\n\
-    \x03reqB\x04Z\x02./J\xd8\x05\n\x06\x12\x04\0\0#\x01\n\x08\n\x01\x0c\x12\
-    \x03\0\0\x12\n\x08\n\x01\x02\x12\x03\x02\0\x12\n\x08\n\x01\x08\x12\x03\
-    \x04\0\x19\n\t\n\x02\x08\x0b\x12\x03\x04\0\x19\n\t\n\x02\x04\0\x12\x03\
-    \x06\0\x1f\n\n\n\x03\x04\0\x01\x12\x03\x06\x08\x1c\n\t\n\x02\x04\x01\x12\
-    \x03\x08\0\x20\n\n\n\x03\x04\x01\x01\x12\x03\x08\x08\x1d\n\n\n\x02\x04\
-    \x02\x12\x04\n\0\x0c\x01\n\n\n\x03\x04\x02\x01\x12\x03\n\x08\x1e\n\x0b\n\
-    \x04\x04\x02\x02\0\x12\x03\x0b\x04\x11\n\x0c\n\x05\x04\x02\x02\0\x05\x12\
-    \x03\x0b\x04\t\n\x0c\n\x05\x04\x02\x02\0\x01\x12\x03\x0b\n\x0c\n\x0c\n\
-    \x05\x04\x02\x02\0\x03\x12\x03\x0b\x0f\x10\n\t\n\x02\x04\x03\x12\x03\x0e\
-    \0\"\n\n\n\x03\x04\x03\x01\x12\x03\x0e\x08\x1f\n\n\n\x02\x04\x04\x12\x04\
-    \x10\0\x13\x01\n\n\n\x03\x04\x04\x01\x12\x03\x10\x08\x17\n\x0b\n\x04\x04\
-    \x04\x02\0\x12\x03\x11\x04\x11\n\x0c\n\x05\x04\x04\x02\0\x05\x12\x03\x11\
-    \x04\t\n\x0c\n\x05\x04\x04\x02\0\x01\x12\x03\x11\n\x0c\n\x0c\n\x05\x04\
-    \x04\x02\0\x03\x12\x03\x11\x0f\x10\n\x0b\n\x04\x04\x04\x02\x01\x12\x03\
-    \x12\x04\x18\n\x0c\n\x05\x04\x04\x02\x01\x05\x12\x03\x12\x04\n\n\x0c\n\
-    \x05\x04\x04\x02\x01\x01\x12\x03\x12\x0b\x13\n\x0c\n\x05\x04\x04\x02\x01\
-    \x03\x12\x03\x12\x16\x17\n\t\n\x02\x04\x05\x12\x03\x15\0\x1b\n\n\n\x03\
-    \x04\x05\x01\x12\x03\x15\x08\x18\n\t\n\x02\x04\x06\x12\x03\x17\0\x1f\n\n\
-    \n\x03\x04\x06\x01\x12\x03\x17\x08\x1c\n\n\n\x02\x04\x07\x12\x04\x18\0\
-    \x1a\x01\n\n\n\x03\x04\x07\x01\x12\x03\x18\x08\x1d\n\x0b\n\x04\x04\x07\
-    \x02\0\x12\x03\x19\x04\x1b\n\x0c\n\x05\x04\x07\x02\0\x05\x12\x03\x19\x04\
-    \x08\n\x0c\n\x05\x04\x07\x02\0\x01\x12\x03\x19\t\x16\n\x0c\n\x05\x04\x07\
-    \x02\0\x03\x12\x03\x19\x19\x1a\n\n\n\x02\x04\x08\x12\x04\x1c\0#\x01\n\n\
-    \n\x03\x04\x08\x01\x12\x03\x1c\x08\x14\n\x0c\n\x04\x04\x08\x08\0\x12\x04\
-    \x1d\x04\"\x05\n\x0c\n\x05\x04\x08\x08\0\x01\x12\x03\x1d\n\r\n\x0b\n\x04\
-    \x04\x08\x02\0\x12\x03\x1e\x08/\n\x0c\n\x05\x04\x08\x02\0\x06\x12\x03\
-    \x1e\x08\x1c\n\x0c\n\x05\x04\x08\x02\0\x01\x12\x03\x1e\x1d*\n\x0c\n\x05\
-    \x04\x08\x02\0\x03\x12\x03\x1e-.\n\x0b\n\x04\x04\x08\x02\x01\x12\x03\x1f\
-    \x083\n\x0c\n\x05\x04\x08\x02\x01\x06\x12\x03\x1f\x08\x1e\n\x0c\n\x05\
-    \x04\x08\x02\x01\x01\x12\x03\x1f\x1f.\n\x0c\n\x05\x04\x08\x02\x01\x03\
-    \x12\x03\x1f12\n\x0b\n\x04\x04\x08\x02\x02\x12\x03\x20\x08%\n\x0c\n\x05\
-    \x04\x08\x02\x02\x06\x12\x03\x20\x08\x17\n\x0c\n\x05\x04\x08\x02\x02\x01\
-    \x12\x03\x20\x18\x20\n\x0c\n\x05\x04\x08\x02\x02\x03\x12\x03\x20#$\n\x0b\
-    \n\x04\x04\x08\x02\x03\x12\x03!\x08/\n\x0c\n\x05\x04\x08\x02\x03\x06\x12\
-    \x03!\x08\x1c\n\x0c\n\x05\x04\x08\x02\x03\x01\x12\x03!\x1d*\n\x0c\n\x05\
-    \x04\x08\x02\x03\x03\x12\x03!-.b\x06proto3\
+    zed\"\xc2\x02\n\x0cSetupRequest\x12Y\n\x13initializeMasterKey\x18\x01\
+    \x20\x01(\x0b2%.node.node.InitializeMasterKeyRequestH\0R\x13initializeMa\
+    sterKey\x12M\n\x0fstartSeedServer\x18\x02\x20\x01(\x0b2!.node.node.Start\
+    SeedServerRequestH\0R\x0fstartSeedServer\x128\n\x08nodeSeed\x18\x03\x20\
+    \x01(\x0b2\x1a.node.node.NodeSeedRequestH\0R\x08nodeSeed\x12G\n\risIniti\
+    alized\x18\x04\x20\x01(\x0b2\x1f.node.node.IsInitializedRequestH\0R\risI\
+    nitializedB\x05\n\x03reqB\x04Z\x02./J\x90\x06\n\x06\x12\x04\0\0%\x01\n\
+    \x08\n\x01\x0c\x12\x03\0\0\x12\n\x08\n\x01\x02\x12\x03\x02\0\x12\n\x08\n\
+    \x01\x08\x12\x03\x04\0\x19\n\t\n\x02\x08\x0b\x12\x03\x04\0\x19\n\n\n\x02\
+    \x04\0\x12\x04\x06\0\x08\x01\n\n\n\x03\x04\0\x01\x12\x03\x06\x08\"\n\x0b\
+    \n\x04\x04\0\x02\0\x12\x03\x07\x04\x19\n\x0c\n\x05\x04\0\x02\0\x05\x12\
+    \x03\x07\x04\x08\n\x0c\n\x05\x04\0\x02\0\x01\x12\x03\x07\t\x14\n\x0c\n\
+    \x05\x04\0\x02\0\x03\x12\x03\x07\x17\x18\n\t\n\x02\x04\x01\x12\x03\n\0&\
+    \n\n\n\x03\x04\x01\x01\x12\x03\n\x08#\n\n\n\x02\x04\x02\x12\x04\x0c\0\
+    \x0e\x01\n\n\n\x03\x04\x02\x01\x12\x03\x0c\x08\x1e\n\x0b\n\x04\x04\x02\
+    \x02\0\x12\x03\r\x04\x11\n\x0c\n\x05\x04\x02\x02\0\x05\x12\x03\r\x04\t\n\
+    \x0c\n\x05\x04\x02\x02\0\x01\x12\x03\r\n\x0c\n\x0c\n\x05\x04\x02\x02\0\
+    \x03\x12\x03\r\x0f\x10\n\t\n\x02\x04\x03\x12\x03\x10\0\"\n\n\n\x03\x04\
+    \x03\x01\x12\x03\x10\x08\x1f\n\n\n\x02\x04\x04\x12\x04\x12\0\x15\x01\n\n\
+    \n\x03\x04\x04\x01\x12\x03\x12\x08\x17\n\x0b\n\x04\x04\x04\x02\0\x12\x03\
+    \x13\x04\x11\n\x0c\n\x05\x04\x04\x02\0\x05\x12\x03\x13\x04\t\n\x0c\n\x05\
+    \x04\x04\x02\0\x01\x12\x03\x13\n\x0c\n\x0c\n\x05\x04\x04\x02\0\x03\x12\
+    \x03\x13\x0f\x10\n\x0b\n\x04\x04\x04\x02\x01\x12\x03\x14\x04\x18\n\x0c\n\
+    \x05\x04\x04\x02\x01\x05\x12\x03\x14\x04\n\n\x0c\n\x05\x04\x04\x02\x01\
+    \x01\x12\x03\x14\x0b\x13\n\x0c\n\x05\x04\x04\x02\x01\x03\x12\x03\x14\x16\
+    \x17\n\t\n\x02\x04\x05\x12\x03\x17\0\x1b\n\n\n\x03\x04\x05\x01\x12\x03\
+    \x17\x08\x18\n\t\n\x02\x04\x06\x12\x03\x19\0\x1f\n\n\n\x03\x04\x06\x01\
+    \x12\x03\x19\x08\x1c\n\n\n\x02\x04\x07\x12\x04\x1a\0\x1c\x01\n\n\n\x03\
+    \x04\x07\x01\x12\x03\x1a\x08\x1d\n\x0b\n\x04\x04\x07\x02\0\x12\x03\x1b\
+    \x04\x1b\n\x0c\n\x05\x04\x07\x02\0\x05\x12\x03\x1b\x04\x08\n\x0c\n\x05\
+    \x04\x07\x02\0\x01\x12\x03\x1b\t\x16\n\x0c\n\x05\x04\x07\x02\0\x03\x12\
+    \x03\x1b\x19\x1a\n\n\n\x02\x04\x08\x12\x04\x1e\0%\x01\n\n\n\x03\x04\x08\
+    \x01\x12\x03\x1e\x08\x14\n\x0c\n\x04\x04\x08\x08\0\x12\x04\x1f\x04$\x05\
+    \n\x0c\n\x05\x04\x08\x08\0\x01\x12\x03\x1f\n\r\n\x0b\n\x04\x04\x08\x02\0\
+    \x12\x03\x20\x08;\n\x0c\n\x05\x04\x08\x02\0\x06\x12\x03\x20\x08\"\n\x0c\
+    \n\x05\x04\x08\x02\0\x01\x12\x03\x20#6\n\x0c\n\x05\x04\x08\x02\0\x03\x12\
+    \x03\x209:\n\x0b\n\x04\x04\x08\x02\x01\x12\x03!\x083\n\x0c\n\x05\x04\x08\
+    \x02\x01\x06\x12\x03!\x08\x1e\n\x0c\n\x05\x04\x08\x02\x01\x01\x12\x03!\
+    \x1f.\n\x0c\n\x05\x04\x08\x02\x01\x03\x12\x03!12\n\x0b\n\x04\x04\x08\x02\
+    \x02\x12\x03\"\x08%\n\x0c\n\x05\x04\x08\x02\x02\x06\x12\x03\"\x08\x17\n\
+    \x0c\n\x05\x04\x08\x02\x02\x01\x12\x03\"\x18\x20\n\x0c\n\x05\x04\x08\x02\
+    \x02\x03\x12\x03\"#$\n\x0b\n\x04\x04\x08\x02\x03\x12\x03#\x08/\n\x0c\n\
+    \x05\x04\x08\x02\x03\x06\x12\x03#\x08\x1c\n\x0c\n\x05\x04\x08\x02\x03\
+    \x01\x12\x03#\x1d*\n\x0c\n\x05\x04\x08\x02\x03\x03\x12\x03#-.b\x06proto3\
 ";
 
 static mut file_descriptor_proto_lazy: ::protobuf::lazy::Lazy<::protobuf::descriptor::FileDescriptorProto> = ::protobuf::lazy::Lazy {

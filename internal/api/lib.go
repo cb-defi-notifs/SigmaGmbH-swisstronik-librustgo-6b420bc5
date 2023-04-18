@@ -73,10 +73,10 @@ func IsNodeInitialized() (bool, error) {
 }
 
 // SetupSeedNode handles initialization of seed node which will share seed with other nodes
-func SetupSeedNode() error {
+func InitializeMasterKey(shouldReset bool) error {
 	// Create protobuf encoded request
-	req := ffi.SetupRequest{Req: &ffi.SetupRequest_SetupSeedNode{
-		SetupSeedNode: &ffi.SetupSeedNodeRequest{},
+	req := ffi.SetupRequest{Req: &ffi.SetupRequest_InitializeMasterKey{
+		InitializeMasterKey: &ffi.InitializeMasterKeyRequest{ ShouldReset: shouldReset },
 	}}
 	reqBytes, err := proto.Marshal(&req)
 	if err != nil {

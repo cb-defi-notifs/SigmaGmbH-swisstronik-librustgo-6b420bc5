@@ -98,8 +98,8 @@ func Create(
 	return executionResult, nil
 }
 
-func SetupSeedNode() error {
-	return api.SetupSeedNode()
+func InitializeMasterKey(shouldReset bool) error {
+	return api.InitializeMasterKey(shouldReset)
 }
 
 func StartSeedServer(addr string) error {

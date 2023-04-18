@@ -28,7 +28,7 @@ extern "C" {
         len: usize,
     ) -> sgx_status_t;
 
-    pub fn ecall_init_seed_node(eid: sgx_enclave_id_t, retval: *mut sgx_status_t) -> sgx_status_t;
+    pub fn ecall_init_master_key(eid: sgx_enclave_id_t, retval: *mut sgx_status_t, reset_flag: i32) -> sgx_status_t;
 
     pub fn ecall_is_initialized(eid: sgx_enclave_id_t, retval: *mut i32) -> sgx_status_t;
 
@@ -100,9 +100,10 @@ pub unsafe extern "C" fn handle_initialization_request(
         let result = match request.req {
             Some(req) => {
                 match req {
-                    node::SetupRequest_oneof_req::setupSeedNode(req) => {
+                    node::SetupRequest_oneof_req::initializeMasterKey(req) => {
                         let mut retval = sgx_status_t::SGX_SUCCESS;
-                        let res = ecall_init_seed_node(evm_enclave.geteid(), &mut retval);
+                        let should_reset = req.shouldReset as i32;
+                        let res = ecall_init_master_key(evm_enclave.geteid(), &mut retval, should_reset);
 
                         match res {
                             sgx_status_t::SGX_SUCCESS => {}
@@ -119,7 +120,7 @@ pub unsafe extern "C" fn handle_initialization_request(
                         }
 
                         // Create response, convert it to bytes and return
-                        let mut response = node::SetupSeedNodeRequest::new();
+                        let mut response = node::InitializeMasterKeyResponse::new();
                         let response_bytes = match response.write_to_bytes() {
                             Ok(res) => res,
                             Err(_) => {

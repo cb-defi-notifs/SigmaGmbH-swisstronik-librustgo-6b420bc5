@@ -126,7 +126,7 @@ func _TestCall(t *testing.T) {
 }
 
 func TestSeedExchange(t *testing.T) {
-	if err := api.SetupSeedNode(); err != nil {
+	if err := api.InitializeMasterKey(true); err != nil {
 		t.Fail()
 	}
 
