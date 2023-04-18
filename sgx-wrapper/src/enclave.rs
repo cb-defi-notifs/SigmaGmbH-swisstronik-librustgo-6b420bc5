@@ -43,6 +43,8 @@ extern "C" {
     pub fn ecall_request_seed(
         eid: sgx_enclave_id_t,
         retval: *mut sgx_status_t,
+        hostname: *const u8,
+        data_len: usize,
         socket_fd: c_int,
     ) -> sgx_status_t;
 }
@@ -160,8 +162,15 @@ pub unsafe extern "C" fn handle_initialization_request(
                     }
                     node::SetupRequest_oneof_req::nodeSeed(req) => {
                         let mut retval = sgx_status_t::SGX_SUCCESS;
-                        let res =
-                            ecall_request_seed(evm_enclave.geteid(), &mut retval, req.fd);
+                        
+                        let hostname = String::from("localhost");
+                        let res = ecall_request_seed(
+                            evm_enclave.geteid(), 
+                            &mut retval,
+                            hostname.as_ptr() as *const u8,
+                            hostname.len(),
+                            req.fd
+                        );
 
                         match (res, retval) {
                             (sgx_status_t::SGX_SUCCESS, sgx_status_t::SGX_SUCCESS) => {}
