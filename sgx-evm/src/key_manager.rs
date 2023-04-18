@@ -15,6 +15,44 @@ pub const SEED_SIZE: usize = 32;
 pub const SEED_FILENAME: &str = ".swtr_seed";
 pub const NONCE_LEN: usize = 16;
 
+#[no_mangle]
+/// Handles initialization of a new seed node.
+/// If seed is already sealed, it will reset it
+pub unsafe extern "C" fn ecall_init_master_key(reset_flag: i32) -> sgx_status_t {
+    println!("[Enclave] Initialize master key");
+
+    // Check if master key exists
+    let master_key_exists = match KeyManager::exists() {
+        Ok(exists) => exists,
+        Err(err) => {
+            return err;
+        }
+    };
+
+    // If master key does not exist or reset flag was set, generate random master key and seal it
+    if !master_key_exists || reset_flag != 0 {
+        // Generate random master key
+        let key_manager = match KeyManager::random() {
+            Ok(manager) => manager,
+            Err(err) => {
+                return err;
+            }
+        };
+
+        // Seal master key
+        match key_manager.seal() {
+            Ok(_) => {
+                return sgx_status_t::SGX_SUCCESS;
+            }
+            Err(err) => {
+                return err;
+            }
+        };
+    }
+
+    sgx_status_t::SGX_SUCCESS
+}
+
 /// KeyManager handles keys sealing/unsealing and derivation.
 /// * master_key – This key is used to derive keys for transaction and state encryption/decryption
 pub struct KeyManager {
@@ -22,6 +60,19 @@ pub struct KeyManager {
 }
 
 impl KeyManager {
+
+    /// Checks if file with sealed master key exists
+    pub fn exists() -> SgxResult<bool> {
+        match SgxFile::open(SEED_FILENAME) {
+            Ok(_) => Ok(true),
+            Err(ref err) if err.kind() == std::io::ErrorKind::NotFound => Ok(false),
+            Err(err) => {
+                println!("[KeyManager] Cannot check if sealed file exists");
+                return Err(sgx_status_t::SGX_ERROR_UNEXPECTED);
+            }
+        }
+    }
+
     /// Seals key to protected file, so it will be accessible only for enclave.
     /// For now, enclaves with same MRSIGNER will be able to recover that file, but
     /// we'll use MRENCLAVE since Upgradeability Protocol will be implemented

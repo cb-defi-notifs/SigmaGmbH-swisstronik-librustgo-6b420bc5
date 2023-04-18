@@ -120,7 +120,7 @@ pub unsafe extern "C" fn handle_initialization_request(
                         }
 
                         // Create response, convert it to bytes and return
-                        let mut response = node::InitializeMasterKeyResponse::new();
+                        let response = node::InitializeMasterKeyResponse::new();
                         let response_bytes = match response.write_to_bytes() {
                             Ok(res) => res,
                             Err(_) => {
@@ -181,7 +181,7 @@ pub unsafe extern "C" fn handle_initialization_request(
                         };
 
                         // Create response, convert it to bytes and return
-                        let mut response = node::NodeSeedResponse::new();
+                        let response = node::NodeSeedResponse::new();
                         let response_bytes = match response.write_to_bytes() {
                             Ok(res) => res,
                             Err(_) => {
