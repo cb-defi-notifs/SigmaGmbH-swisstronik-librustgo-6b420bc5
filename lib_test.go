@@ -11,7 +11,7 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
-func _TestCreate(t *testing.T) {
+func TestCreate(t *testing.T) {
 	db := types.CreateMockedDatabase()
 	from := common.HexToAddress("0x690b9a9e9aa1c9db991c7721a92d351db4fac990")
 
@@ -50,7 +50,7 @@ func _TestCreate(t *testing.T) {
 	}
 }
 
-func _TestCall(t *testing.T) {
+func TestCall(t *testing.T) {
 	db := types.CreateMockedDatabase()
 	from := common.HexToAddress("0x690b9a9e9aa1c9db991c7721a92d351db4fac990")
 	to := common.HexToAddress("0xad60cdbe1d3ceb5f67074303f99ac95af082784d")

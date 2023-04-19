@@ -113,10 +113,11 @@ fn share_seed_inner(socket_fd: c_int) -> sgx_status_t {
     };
 
     // Unseal key manager to get access to master key
-    let key_manager = match KeyManager::unseal() {
-        Ok(key_manager) => key_manager,
-        Err(err) => {
-            return err;
+    let key_manager = match &*UNSEALED_KEY_MANAGER {
+        Some(key_manager) => key_manager,
+        None => {
+            println!("Cannot unseal master key");
+            return sgx_status_t::SGX_ERROR_UNEXPECTED;
         }
     };
 
