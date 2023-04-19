@@ -103,8 +103,6 @@ impl KeyManager {
     /// Unseals master key from protected file. If file was not found or unaccessible,
     /// will return SGX_ERROR_UNEXPECTED
     pub fn unseal() -> SgxResult<Self> {
-        println!("[KeyManager DEBUG] Trying to unseal...");
-
         // Open file with master key
         let mut master_key_file = match SgxFile::open(SEED_FILENAME) {
             Ok(file) => file,
