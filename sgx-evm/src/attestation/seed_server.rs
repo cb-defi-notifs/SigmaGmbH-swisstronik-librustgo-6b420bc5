@@ -14,7 +14,7 @@ use crate::attestation::{
     utils::{create_attestation_report, ClientAuth},
     cert::gen_ecc_cert,
 };
-use crate::key_manager::{KeyManager, RegistrationKey};
+use crate::key_manager::{KeyManager, RegistrationKey, UNSEALED_KEY_MANAGER};
 
 #[no_mangle]
 pub unsafe extern "C" fn ecall_share_seed(socket_fd: c_int) -> sgx_status_t {
@@ -59,10 +59,11 @@ fn share_seed_inner(socket_fd: c_int) -> sgx_status_t {
     };
 
     // Unseal key manager to get access to master key
-    let key_manager = match KeyManager::unseal() {
-        Ok(key_manager) => key_manager,
-        Err(err) => {
-            return err;
+    let key_manager = match &*UNSEALED_KEY_MANAGER {
+        Some(key_manager) => key_manager,
+        None => {
+            println!("Cannot unseal master key");
+            return sgx_status_t::SGX_ERROR_UNEXPECTED;
         }
     };
 

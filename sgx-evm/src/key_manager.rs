@@ -7,6 +7,7 @@ use sgx_tstd::sgxfs::SgxFile;
 use sgx_types::{sgx_read_rand, sgx_status_t, SgxResult};
 use std::io::{Read, Write};
 use std::vec::Vec;
+use lazy_static::lazy_static;
 
 use crate::error::Error;
 
@@ -14,6 +15,10 @@ pub const REGISTRATION_KEY_SIZE: usize = 32;
 pub const SEED_SIZE: usize = 32;
 pub const SEED_FILENAME: &str = ".swtr_seed";
 pub const NONCE_LEN: usize = 16;
+
+lazy_static! {
+    pub static ref UNSEALED_KEY_MANAGER: Option<KeyManager> = KeyManager::unseal().ok();
+}
 
 #[no_mangle]
 /// Handles initialization of a new seed node.
@@ -98,6 +103,8 @@ impl KeyManager {
     /// Unseals master key from protected file. If file was not found or unaccessible,
     /// will return SGX_ERROR_UNEXPECTED
     pub fn unseal() -> SgxResult<Self> {
+        println!("[KeyManager DEBUG] Trying to unseal...");
+
         // Open file with master key
         let mut master_key_file = match SgxFile::open(SEED_FILENAME) {
             Ok(file) => file,
