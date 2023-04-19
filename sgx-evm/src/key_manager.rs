@@ -15,6 +15,7 @@ pub const REGISTRATION_KEY_SIZE: usize = 32;
 pub const SEED_SIZE: usize = 32;
 pub const SEED_FILENAME: &str = ".swtr_seed";
 pub const NONCE_LEN: usize = 16;
+pub const PUBLIC_KEY_SIZE: usize = 32;
 
 lazy_static! {
     pub static ref UNSEALED_KEY_MANAGER: Option<KeyManager> = KeyManager::unseal().ok();
@@ -181,6 +182,29 @@ impl KeyManager {
         }
     }
 
+    /// Decrypts provided ciphertext using shared encryption key, derived using
+    /// master key and provided public key
+    pub fn decrypt_ecdh(&self, public_key: Vec<u8>, ciphertext: Vec<u8>) -> Result<Vec<u8>, Error> {
+        // Derive transaction encryption key
+        let shared_key = self.diffie_hellman(public_key)?;
+        
+        // Prepare cipher
+        let cipher = match Aes128SivAead::new_from_slice(shared_key.as_bytes()) {
+            Ok(cipher) => cipher,
+            Err(err) => return Err(Error::decryption_err(err)),
+        };
+
+        // Extract nonce from ciphertext
+        let nonce = Nonce::from_slice(&ciphertext[..NONCE_LEN]);
+
+        // Decrypt message
+        let ciphertext = &ciphertext[NONCE_LEN..];
+        match cipher.decrypt(nonce, ciphertext) {
+            Ok(message) => Ok(message),
+            Err(err) => Err(Error::decryption_err(err)),
+        }
+    }
+
     /// Decrypts provided ciphertext using Aes128SivAead
     pub fn decrypt(&self, ciphertext: Vec<u8>) -> Result<Vec<u8>, Error> {
         // Prepare cipher
@@ -306,6 +330,29 @@ impl KeyManager {
         let public_key = x25519_dalek::PublicKey::from(&secret);
         public_key.as_bytes().to_vec()
     }
+
+    /// Performes Diffie-Hellman derivation of encryption key for transaction encryption
+    /// * public_key – User public key
+    fn diffie_hellman(
+        &self,
+        public_key: Vec<u8>,
+    ) -> Result<x25519_dalek::SharedSecret, Error> {
+        let secret = x25519_dalek::StaticSecret::from(self.master_key);
+
+        if public_key.len() != PUBLIC_KEY_SIZE {
+            return Err(Error::ecdh_err("Wrong public key size"));
+        }
+
+        let public_key: [u8; 32] = match public_key.try_into() {
+            Ok(pk) => pk,
+            Err(err) => {
+                return Err(Error::ecdh_err("Cannot convert public key to proper size"));
+            }
+        };
+
+        let public_key = x25519_dalek::PublicKey::from(public_key);
+        Ok(secret.diffie_hellman(&public_key))
+    }
 }
 
 /// RegistrationKey handles all operations with registration key such as derivation of public key,
@@ -339,7 +386,7 @@ impl RegistrationKey {
         }
     }
 
-    /// Performes Diffie-Hellman derivation of encryption key for seed encryption
+    /// Performes Diffie-Hellman derivation of encryption key for master key encryption
     /// * public_key – User public key
     pub fn diffie_hellman(
         &self,

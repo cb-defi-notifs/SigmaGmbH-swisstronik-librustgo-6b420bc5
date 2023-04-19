@@ -1,4 +1,4 @@
-use crate::error::Error;
+use crate::{error::Error, key_manager::PUBLIC_KEY_SIZE};
 use std::vec::Vec;
 
 use crate::key_manager::UNSEALED_KEY_MANAGER;
@@ -25,4 +25,24 @@ pub fn decrypt_storage_cell(encrypted_value: Vec<u8>) -> Result<Vec<u8>, Error> 
     };
 
     key_manager.decrypt(encrypted_value)
+}
+
+/// Decrypts transaction data using derived shared secret
+pub fn decrypt_transaction_data(encrypted_data: Vec<u8>) -> Result<Vec<u8>, Error> {
+    // Extract public key from encrypted data
+    if encrypted_data.len() < PUBLIC_KEY_SIZE {
+        return Err(Error::ecdh_err("Wrong public key size"));
+    }
+
+    let public_key = &encrypted_data[..PUBLIC_KEY_SIZE];
+    let ciphertext = &encrypted_data[PUBLIC_KEY_SIZE..];
+
+    let key_manager = match &*UNSEALED_KEY_MANAGER {
+        Some(key_manager) => key_manager,
+        None => {
+            return Err(Error::encryption_err(format!("Cannot unseal master key")));
+        }
+    };
+
+    key_manager.decrypt_ecdh(public_key.to_vec(), ciphertext.to_vec())
 }
