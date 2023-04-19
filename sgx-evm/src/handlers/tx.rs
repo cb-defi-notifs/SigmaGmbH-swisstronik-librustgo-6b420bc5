@@ -1,4 +1,5 @@
 use crate::AllocationWithResult;
+use crate::encryption::decrypt_transaction_data;
 use crate::protobuf_generated::ffi::{
     AccessListItem, HandleTransactionResponse, Log,
     SGXVMCallRequest, SGXVMCreateRequest, Topic, TransactionContext as ProtoTransactionContext,
@@ -75,13 +76,31 @@ fn handle_call_request_inner(querier: *mut GoQuerier, data: SGXVMCallRequest) ->
         build_transaction_context(context),
     );
 
+    // Decrypt transaction data if presents
+    let data = match params.data.len() {
+        0 => params.data,
+        _ => {
+            let decrypted_data = decrypt_transaction_data(params.data);
+            match decrypted_data {
+                Ok(data) => data,
+                Err(err) => {
+                    return ExecutionResult::from_error(
+                        format!("{:?}", err),
+                        Vec::default(), 
+                        None
+                    );
+                }
+            }
+        }
+    };
+
     sgxvm::handle_sgxvm_call(
         &mut backend,
         params.gasLimit,
         H160::from_slice(&params.from),
         H160::from_slice(&params.to),
         U256::from_big_endian(&params.value),
-        params.data,
+        data,
         parse_access_list(params.accessList),
         params.commit,
     )
