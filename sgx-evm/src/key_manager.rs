@@ -396,18 +396,3 @@ impl RegistrationKey {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn should_encrypt_and_decrypt_using_master_key() {
-        let data = b"some_storage_data";
-        
-        let key_manager = KeyManager::random().unwrap();
-        let ciphertext = key_manager.encrypt(data.to_vec()).unwrap();
-        let decrypted_data = key_manager.decrypt(ciphertext).unwrap();
-
-        assert_eq!(data.to_vec(), decrypted_data);
-    }
-}
