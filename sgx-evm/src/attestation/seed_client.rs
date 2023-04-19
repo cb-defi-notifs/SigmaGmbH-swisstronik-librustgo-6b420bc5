@@ -7,7 +7,6 @@ use std::io;
 use std::io::{Read, Write};
 use std::net::TcpStream;
 use std::prelude::v1::*;
-use std::str;
 use std::sync::Arc;
 use std::vec::Vec;
 

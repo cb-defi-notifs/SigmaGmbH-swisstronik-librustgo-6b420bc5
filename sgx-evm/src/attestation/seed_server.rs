@@ -5,7 +5,6 @@ use rustls;
 use std::io::{Read, Write};
 use std::net::TcpStream;
 use std::prelude::v1::*;
-use std::str;
 use std::sync::Arc;
 use std::vec::Vec;
 
@@ -14,7 +13,7 @@ use crate::attestation::{
     utils::{create_attestation_report, ClientAuth},
     cert::gen_ecc_cert,
 };
-use crate::key_manager::{KeyManager, RegistrationKey, UNSEALED_KEY_MANAGER};
+use crate::key_manager::{RegistrationKey, UNSEALED_KEY_MANAGER};
 
 #[no_mangle]
 pub unsafe extern "C" fn ecall_share_seed(socket_fd: c_int) -> sgx_status_t {

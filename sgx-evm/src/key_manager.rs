@@ -2,7 +2,6 @@ use aes_siv::{
     aead::{Aead, KeyInit},
     Aes128SivAead, Nonce,
 };
-use sgx_rand::*;
 use sgx_tstd::sgxfs::SgxFile;
 use sgx_types::{sgx_read_rand, sgx_status_t, SgxResult};
 use std::io::{Read, Write};
@@ -394,5 +393,21 @@ impl RegistrationKey {
     ) -> x25519_dalek::SharedSecret {
         let secret = x25519_dalek::StaticSecret::from(self.inner);
         secret.diffie_hellman(&public_key)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn should_encrypt_and_decrypt_using_master_key() {
+        let data = b"some_storage_data";
+        
+        let key_manager = KeyManager::random().unwrap();
+        let ciphertext = key_manager.encrypt(data.to_vec()).unwrap();
+        let decrypted_data = key_manager.decrypt(ciphertext).unwrap();
+
+        assert_eq!(data.to_vec(), decrypted_data);
     }
 }

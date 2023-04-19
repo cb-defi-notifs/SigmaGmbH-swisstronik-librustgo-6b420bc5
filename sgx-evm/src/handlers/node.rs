@@ -1,8 +1,6 @@
 use protobuf::Message;
-use crate::key_manager;
 use crate::protobuf_generated::ffi::NodePublicKeyResponse;
 use crate::AllocationWithResult;
-use crate::encryption;
 use crate::key_manager::KeyManager;
 
 /// Handles incoming request for node public key
