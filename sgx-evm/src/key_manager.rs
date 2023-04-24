@@ -307,39 +307,8 @@ impl KeyManager {
         // Derive shared secret
         let shared_secret = reg_key.diffie_hellman(public_key);
 
-        // Prepare cipher
-        let cipher = match Aes128SivAead::new_from_slice(shared_secret.as_bytes()) {
-            Ok(cipher) => cipher,
-            Err(err) => return Err(Error::encryption_err(err)),
-        };
-
-        // Generate nonce
-        let mut buffer = [0u8; NONCE_LEN];
-        let result = unsafe { sgx_read_rand(&mut buffer as *mut u8, NONCE_LEN) };
-        let nonce = match result {
-            sgx_status_t::SGX_SUCCESS => Nonce::from_slice(&buffer),
-            _ => {
-                return Err(Error::encryption_err(format!(
-                    "Cannot generate nonce: {:?}",
-                    result.as_str()
-                )))
-            }
-        };
-
-        // Encrypt master key
-        match cipher.encrypt(nonce, self.master_key.as_slice()) {
-            Ok(ciphertext) => {
-                let public_key = reg_key.public_key();
-                let result_bytes = [
-                    public_key.as_bytes(),
-                    nonce.as_slice(),
-                    ciphertext.as_slice(),
-                ]
-                .concat();
-                Ok(result_bytes)
-            }
-            Err(err) => Err(Error::encryption_err(err)),
-        }
+        // Encrypted master key 
+        KeyManager::encrypt_deoxys(shared_secret.as_bytes(), self.master_key.to_vec())
     }
 
     /// Recovers encrypted master key obtained from seed exchange server
