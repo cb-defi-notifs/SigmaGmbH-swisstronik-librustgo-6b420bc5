@@ -356,7 +356,7 @@ impl KeyManager {
 
     /// Return x25519 public key for transaction encryption
     pub fn get_public_key(&self) -> Vec<u8> {
-        let secret = x25519_dalek::StaticSecret::from(self.master_key);
+        let secret = x25519_dalek::StaticSecret::from(self.tx_key);
         let public_key = x25519_dalek::PublicKey::from(&secret);
         public_key.as_bytes().to_vec()
     }
