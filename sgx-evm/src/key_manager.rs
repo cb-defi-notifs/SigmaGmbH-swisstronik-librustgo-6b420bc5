@@ -197,27 +197,43 @@ impl KeyManager {
         }
     }
 
-    /// Decrypts provided ciphertext using shared encryption key, derived using
-    /// master key and provided public key
-    pub fn decrypt_ecdh(&self, public_key: Vec<u8>, ciphertext: Vec<u8>) -> Result<Vec<u8>, Error> {
-        // Derive transaction encryption key
-        let shared_key = self.diffie_hellman(public_key)?;
-        
-        // Prepare cipher
-        let cipher = match Aes128SivAead::new_from_slice(shared_key.as_bytes()) {
-            Ok(cipher) => cipher,
-            Err(err) => return Err(Error::decryption_err(err)),
+    /// Encrypts provided value using encryption key, derived from master key and user public key.
+    /// To derive shared secret we're using x25519 since its private keys have wider range of acceptable
+    /// values than secp256k1, which is used for transaction signing.
+    pub fn encrypt_ecdh(&self, value: Vec<u8>, public_key: Vec<u8>) -> Result<Vec<u8>, Error> {
+        // Convert public key to appropriate format
+        let public_key: [u8; PUBLIC_KEY_SIZE] = match public_key.as_slice().try_into() {
+            Ok(public_key) => public_key,
+            Err(_) => { return Err(Error::encryption_err("wrong public key size")); }
         };
+        let public_key = x25519_dalek::PublicKey::from(public_key);
+        // Convert master key to x25519 private key
+        let secret_key = x25519_dalek::StaticSecret::from(self.tx_key);
+        // Derive shared key
+        let shared_key = secret_key.diffie_hellman(&public_key);
+        // Derive encryption key from shared key
+        let encryption_key = KeyManager::derive_key(shared_key.as_bytes(), b"IOEncryptionKeyV1");
+        // Encrypt provided value using shared secret
+        self.encrypt_deoxys(&encryption_key, value)
+    }
 
-        // Extract nonce from ciphertext
-        let nonce = Nonce::from_slice(&ciphertext[..NONCE_LEN]);
-
-        // Decrypt message
-        let ciphertext = &ciphertext[NONCE_LEN..];
-        match cipher.decrypt(nonce, ciphertext) {
-            Ok(message) => Ok(message),
-            Err(err) => Err(Error::decryption_err(err)),
-        }
+    /// Decrypts provided encrypted transaction data using encryption key, 
+    /// derived from node master key and user public key
+    pub fn decrypt_ecdh(&self, public_key: Vec<u8>, encrypted_value: Vec<u8>) -> Result<Vec<u8>, Error> {
+        // Convert public key to appropriate format
+        let public_key: [u8; PUBLIC_KEY_SIZE] = match public_key.as_slice().try_into() {
+            Ok(public_key) => public_key,
+            Err(_) => { return Err(Error::decryption_err("wrong public key size")); }
+        };
+        let public_key = x25519_dalek::PublicKey::from(public_key);
+        // Convert master key to x25519 private key
+        let secret_key = x25519_dalek::StaticSecret::from(self.tx_key);
+        // Derive shared key
+        let shared_key = secret_key.diffie_hellman(&public_key);
+        // Derive encryption key from shared key
+        let encryption_key = KeyManager::derive_key(shared_key.as_bytes(), b"IOEncryptionKeyV1");
+        // Decrypt provided value using shared secret
+        self.decrypt_deoxys(&encryption_key, encrypted_value)
     }
 
     /// Decrypts provided ciphertext using Aes128SivAead
