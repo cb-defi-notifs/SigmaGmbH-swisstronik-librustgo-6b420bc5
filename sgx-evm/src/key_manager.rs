@@ -239,6 +239,7 @@ impl KeyManager {
         }
     }
 
+    /// Encrypts provided plaintext using DEOXYS-II
     fn encrypt_deoxys(&self, encryption_key: &[u8; PRIVATE_KEY_SIZE], plaintext: Vec<u8>) -> Result<Vec<u8>, Error> {
         // Generate nonce
         let mut nonce_buffer = [0u8; NONCE_SIZE];
@@ -272,6 +273,34 @@ impl KeyManager {
         let ciphertext = cipher.seal(&nonce, plaintext, ad);
         // Return concatenated nonce and ciphertext
         Ok([nonce.as_slice(), ad.as_slice(), &ciphertext].concat())
+    }
+
+    /// Decrypt DEOXYS-II encrypted ciphertext
+    fn decrypt_deoxys(&self, encryption_key: &[u8; PRIVATE_KEY_SIZE], encrypted_value: Vec<u8>) -> Result<Vec<u8>, Error> {
+        // 15 bytes nonce | 16 bytes tag size | >=16 bytes ciphertext
+        if encrypted_value.len() < 46 {
+            return Err(Error::decryption_err("corrupted ciphertext"));
+        }
+
+        // Extract nonce from encrypted value
+        let nonce = &encrypted_value[..NONCE_SIZE];
+        let nonce: [u8; 15] = match nonce.try_into() {
+            Ok(nonce) => nonce,
+            Err(err) => { return Err(Error::decryption_err("cannot extract nonce")); }
+        };
+
+        // Extract additional data
+        let ad = &encrypted_value[NONCE_SIZE..NONCE_SIZE+TAG_SIZE];
+
+        // Extract ciphertext
+        let ciphertext = encrypted_value[NONCE_SIZE+TAG_SIZE..].to_vec();
+        // Construct cipher
+        let cipher = DeoxysII::new(encryption_key);
+        // Decrypt ciphertext
+        match cipher.open(&nonce, ciphertext, ad) {
+            Ok(plaintext) => Ok(plaintext),
+            Err(err) => Err(Error::decryption_err(format!("cannot decrypt value. Reason: {:?}", err)))
+        }
     }
 
     /// Encrypts master key using shared key
