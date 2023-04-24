@@ -67,7 +67,7 @@ fn share_seed_inner(socket_fd: c_int) -> sgx_status_t {
     };
 
     // Encrypt master key and send it to the client
-    let encrypted_master_key = match key_manager.to_encrypted_seed(&registration_key, client_public_key.to_vec()) {
+    let encrypted_master_key = match key_manager.to_encrypted_master_key(&registration_key, client_public_key.to_vec()) {
         Ok(ciphertext) => ciphertext,
         Err(err) => {
             println!("[Enclave] Cannot encrypt master key. Reason: {:?}", err);
@@ -122,7 +122,7 @@ fn share_seed_inner(socket_fd: c_int) -> sgx_status_t {
     };
 
     // Encrypt master key and send it to the client
-    let encrypted_master_key = match key_manager.to_encrypted_seed(&registration_key, client_public_key.to_vec()) {
+    let encrypted_master_key = match key_manager.to_encrypted_master_key(&registration_key, client_public_key.to_vec()) {
         Ok(ciphertext) => ciphertext,
         Err(err) => {
             println!("[Enclave] Cannot encrypt master key. Reason: {:?}", err);

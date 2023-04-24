@@ -288,7 +288,7 @@ impl KeyManager {
     }
 
     /// Encrypts master key using shared key
-    pub fn to_encrypted_seed(
+    pub fn to_encrypted_master_key(
         &self,
         reg_key: &RegistrationKey,
         public_key: Vec<u8>,
