@@ -269,11 +269,15 @@ impl KeyManager {
             Err(err) => { return Err(Error::decryption_err("cannot extract nonce")); }
         };
 
+        println!("Rust nonce: {:?}", nonce);
+
         // Extract additional data
         let ad = &encrypted_value[NONCE_SIZE..NONCE_SIZE+TAG_SIZE];
+        println!("Rust ad: {:?}", ad);
 
         // Extract ciphertext
         let ciphertext = encrypted_value[NONCE_SIZE+TAG_SIZE..].to_vec();
+        println!("Rust ciphertext: {:?}", ciphertext);
         // Construct cipher
         let cipher = DeoxysII::new(encryption_key);
         // Decrypt ciphertext
