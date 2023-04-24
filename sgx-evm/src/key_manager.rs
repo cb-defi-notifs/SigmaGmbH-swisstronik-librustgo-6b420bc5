@@ -239,6 +239,25 @@ impl KeyManager {
         }
     }
 
+    /// Encrypts smart contract state using simmetric key derived from master key only for specific contract.
+    /// That allows us to improve cryptographic strength of our encryption scheme.
+    /// 
+    /// As an output, this function returns vector which contains 15 bytes nonce and ciphertext. 
+    pub fn encrypt_state(&self, contract_address: Vec<u8>, value: Vec<u8>) -> Result<Vec<u8>, Error> {
+        // Derive encryption key for this contract
+        let contract_key = KeyManager::derive_key(&self.state_key, &contract_address);
+        // Encrypt contract state using contract encryption key
+        self.encrypt_deoxys(&contract_key, value)
+    }
+
+    /// Decrypts provided encrypted storage value of a smart contract. 
+    pub fn decrypt_state(&self, contract_address: Vec<u8>, encrypted_value: Vec<u8>) -> Result<Vec<u8>, Error> {
+        // Derive encryption key for this contract
+        let contract_key = KeyManager::derive_key(&self.state_key, &contract_address);
+        // Decrypt contract state using contract encryption key
+        self.decrypt_deoxys(&contract_key, encrypted_value)
+    }
+
     /// Encrypts provided plaintext using DEOXYS-II
     fn encrypt_deoxys(&self, encryption_key: &[u8; PRIVATE_KEY_SIZE], plaintext: Vec<u8>) -> Result<Vec<u8>, Error> {
         // Generate nonce
