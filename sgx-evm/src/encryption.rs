@@ -4,7 +4,7 @@ use std::vec::Vec;
 use crate::key_manager::UNSEALED_KEY_MANAGER;
 
 /// Encrypts given storage cell value using sealed master key
-pub fn encrypt_storage_cell(value: Vec<u8>) -> Result<Vec<u8>, Error> {
+pub fn encrypt_storage_cell(contract_address: Vec<u8>, value: Vec<u8>) -> Result<Vec<u8>, Error> {
     let key_manager = match &*UNSEALED_KEY_MANAGER {
         Some(key_manager) => key_manager,
         None => {
@@ -12,11 +12,11 @@ pub fn encrypt_storage_cell(value: Vec<u8>) -> Result<Vec<u8>, Error> {
         }
     };
 
-    key_manager.encrypt(value)
+    key_manager.encrypt_state(contract_address, value)
 }
 
 /// Decrypts given storage cell value using sealed master key
-pub fn decrypt_storage_cell(encrypted_value: Vec<u8>) -> Result<Vec<u8>, Error> {
+pub fn decrypt_storage_cell(contract_address: Vec<u8>, encrypted_value: Vec<u8>) -> Result<Vec<u8>, Error> {
     let key_manager = match &*UNSEALED_KEY_MANAGER {
         Some(key_manager) => key_manager,
         None => {
@@ -24,7 +24,7 @@ pub fn decrypt_storage_cell(encrypted_value: Vec<u8>) -> Result<Vec<u8>, Error> 
         }
     };
 
-    key_manager.decrypt(encrypted_value)
+    key_manager.decrypt_state(contract_address, encrypted_value)
 }
 
 /// Decrypts transaction data using derived shared secret

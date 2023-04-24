@@ -165,38 +165,6 @@ impl KeyManager {
         Ok(Self { master_key, tx_key, state_key })
     }
 
-    /// Encrypts provided message using Aes128SivAead
-    pub fn encrypt(&self, message: Vec<u8>) -> Result<Vec<u8>, Error> {
-        // Prepare cipher
-        let cipher = match Aes128SivAead::new_from_slice(&self.master_key) {
-            Ok(cipher) => cipher,
-            Err(err) => return Err(Error::encryption_err(err)),
-        };
-
-        // Generate nonce
-        let mut buffer = [0u8; NONCE_LEN];
-        let result = unsafe { sgx_read_rand(&mut buffer as *mut u8, NONCE_LEN) };
-        let nonce = match result {
-            sgx_status_t::SGX_SUCCESS => Nonce::from_slice(&buffer),
-            _ => {
-                return Err(Error::encryption_err(format!(
-                    "Cannot generate nonce: {:?}",
-                    result.as_str()
-                )))
-            }
-        };
-
-        // Encrypt message
-        match cipher.encrypt(nonce, message.as_slice()) {
-            Ok(ciphertext) => {
-                // Add nonce to the begging of the ciphertext
-                let final_ciphertext = [nonce.as_slice(), ciphertext.as_slice()].concat();
-                Ok(final_ciphertext.to_vec())
-            }
-            Err(err) => Err(Error::encryption_err(err)),
-        }
-    }
-
     /// Encrypts provided value using encryption key, derived from master key and user public key.
     /// To derive shared secret we're using x25519 since its private keys have wider range of acceptable
     /// values than secp256k1, which is used for transaction signing.
@@ -234,25 +202,6 @@ impl KeyManager {
         let encryption_key = KeyManager::derive_key(shared_key.as_bytes(), b"IOEncryptionKeyV1");
         // Decrypt provided value using shared secret
         self.decrypt_deoxys(&encryption_key, encrypted_value)
-    }
-
-    /// Decrypts provided ciphertext using Aes128SivAead
-    pub fn decrypt(&self, ciphertext: Vec<u8>) -> Result<Vec<u8>, Error> {
-        // Prepare cipher
-        let cipher = match Aes128SivAead::new_from_slice(&self.master_key) {
-            Ok(cipher) => cipher,
-            Err(err) => return Err(Error::decryption_err(err)),
-        };
-
-        // Extract nonce from ciphertext
-        let nonce = Nonce::from_slice(&ciphertext[..NONCE_LEN]);
-
-        // Decrypt message
-        let ciphertext = &ciphertext[NONCE_LEN..];
-        match cipher.decrypt(nonce, ciphertext) {
-            Ok(message) => Ok(message),
-            Err(err) => Err(Error::decryption_err(err)),
-        }
     }
 
     /// Encrypts smart contract state using simmetric key derived from master key only for specific contract.

@@ -51,7 +51,7 @@ impl Storage for FFIStorage {
                 return None;
             }
 
-            let decrypted_result = match encryption::decrypt_storage_cell(decoded_result.value) {
+            let decrypted_result = match encryption::decrypt_storage_cell(key.as_bytes().to_vec(), decoded_result.value) {
                 Ok(decrypted_result) => decrypted_result,
                 Err(err) => {
                     println!("Cannot decrypt result. Reason: {:?}", err);
@@ -143,7 +143,7 @@ impl Storage for FFIStorage {
 
     fn insert_storage_cell(&mut self, key: H160, index: H256, value: H256) {
         // Encrypt value
-        let encrypted_value = match encryption::encrypt_storage_cell(value.as_bytes().to_vec()) {
+        let encrypted_value = match encryption::encrypt_storage_cell(key.as_bytes().to_vec(), value.as_bytes().to_vec()) {
             Ok(encrypted_value) => encrypted_value,
             Err(err) => {
                 println!("Cannot encrypt value. Reason: {:?}", err);
