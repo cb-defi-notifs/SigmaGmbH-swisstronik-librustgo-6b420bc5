@@ -182,7 +182,7 @@ impl KeyManager {
         // Derive encryption key from shared key
         let encryption_key = KeyManager::derive_key(shared_key.as_bytes(), b"IOEncryptionKeyV1");
         // Encrypt provided value using shared secret
-        self.encrypt_deoxys(&encryption_key, value)
+        KeyManager::encrypt_deoxys(&encryption_key, value)
     }
 
     /// Decrypts provided encrypted transaction data using encryption key, 
@@ -201,7 +201,7 @@ impl KeyManager {
         // Derive encryption key from shared key
         let encryption_key = KeyManager::derive_key(shared_key.as_bytes(), b"IOEncryptionKeyV1");
         // Decrypt provided value using shared secret
-        self.decrypt_deoxys(&encryption_key, encrypted_value)
+        KeyManager::decrypt_deoxys(&encryption_key, encrypted_value)
     }
 
     /// Encrypts smart contract state using simmetric key derived from master key only for specific contract.
@@ -212,7 +212,7 @@ impl KeyManager {
         // Derive encryption key for this contract
         let contract_key = KeyManager::derive_key(&self.state_key, &contract_address);
         // Encrypt contract state using contract encryption key
-        self.encrypt_deoxys(&contract_key, value)
+        KeyManager::encrypt_deoxys(&contract_key, value)
     }
 
     /// Decrypts provided encrypted storage value of a smart contract. 
@@ -220,11 +220,11 @@ impl KeyManager {
         // Derive encryption key for this contract
         let contract_key = KeyManager::derive_key(&self.state_key, &contract_address);
         // Decrypt contract state using contract encryption key
-        self.decrypt_deoxys(&contract_key, encrypted_value)
+        KeyManager::decrypt_deoxys(&contract_key, encrypted_value)
     }
 
     /// Encrypts provided plaintext using DEOXYS-II
-    fn encrypt_deoxys(&self, encryption_key: &[u8; PRIVATE_KEY_SIZE], plaintext: Vec<u8>) -> Result<Vec<u8>, Error> {
+    fn encrypt_deoxys(encryption_key: &[u8; PRIVATE_KEY_SIZE], plaintext: Vec<u8>) -> Result<Vec<u8>, Error> {
         // Generate nonce
         let mut nonce_buffer = [0u8; NONCE_SIZE];
         let result = unsafe { sgx_read_rand(&mut nonce_buffer as *mut u8, NONCE_SIZE) };
@@ -260,7 +260,7 @@ impl KeyManager {
     }
 
     /// Decrypt DEOXYS-II encrypted ciphertext
-    fn decrypt_deoxys(&self, encryption_key: &[u8; PRIVATE_KEY_SIZE], encrypted_value: Vec<u8>) -> Result<Vec<u8>, Error> {
+    fn decrypt_deoxys(encryption_key: &[u8; PRIVATE_KEY_SIZE], encrypted_value: Vec<u8>) -> Result<Vec<u8>, Error> {
         // 15 bytes nonce | 16 bytes tag size | >=16 bytes ciphertext
         if encrypted_value.len() < 46 {
             return Err(Error::decryption_err("corrupted ciphertext"));
@@ -343,10 +343,10 @@ impl KeyManager {
     }
 
     /// Recovers encrypted master key obtained from seed exchange server
-    pub fn from_encrypted_seed(
+    pub fn from_encrypted_master_key(
         reg_key: &RegistrationKey,
         public_key: Vec<u8>,
-        encrypted_seed: Vec<u8>,
+        encrypted_master_key: Vec<u8>,
     ) -> Result<Self, Error> {
         // Convert public key to appropriate format
         let public_key: [u8; 32] = match public_key.try_into() {
@@ -362,17 +362,11 @@ impl KeyManager {
         // Derive shared secret
         let shared_secret = reg_key.diffie_hellman(public_key);
 
-        // Decrypt seed
-        let cipher = match Aes128SivAead::new_from_slice(shared_secret.as_bytes()) {
-            Ok(cipher) => cipher,
-            Err(err) => return Err(Error::decryption_err(err)),
-        };
-        let nonce = Nonce::from_slice(&encrypted_seed[..NONCE_LEN]);
-        let ciphertext = &encrypted_seed[NONCE_LEN..];
-        let master_key = match cipher.decrypt(nonce, ciphertext) {
-            Ok(master_key) => master_key,
-            Err(err) => return Err(Error::decryption_err(err)),
-        };
+        // Decrypt master key
+        let master_key = KeyManager::decrypt_deoxys(
+            shared_secret.as_bytes(), 
+            encrypted_master_key
+        )?;
 
         // Convert master key to appropriate format
         let master_key: [u8; 32] = match master_key.try_into() {
