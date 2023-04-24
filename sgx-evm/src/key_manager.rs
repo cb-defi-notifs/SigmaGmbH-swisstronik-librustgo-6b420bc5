@@ -6,6 +6,7 @@ use sgx_tstd::sgxfs::SgxFile;
 use sgx_types::{sgx_read_rand, sgx_status_t, SgxResult};
 use std::io::{Read, Write};
 use std::vec::Vec;
+use hmac::{Hmac, Mac, NewMac as _};
 use lazy_static::lazy_static;
 
 use crate::error::Error;
@@ -15,6 +16,7 @@ pub const SEED_SIZE: usize = 32;
 pub const SEED_FILENAME: &str = ".swtr_seed";
 pub const NONCE_LEN: usize = 16;
 pub const PUBLIC_KEY_SIZE: usize = 32;
+pub const PRIVATE_KEY_SIZE: usize = 32;
 
 lazy_static! {
     pub static ref UNSEALED_KEY_MANAGER: Option<KeyManager> = KeyManager::unseal().ok();
@@ -59,7 +61,12 @@ pub unsafe extern "C" fn ecall_init_master_key(reset_flag: i32) -> sgx_status_t 
 /// KeyManager handles keys sealing/unsealing and derivation.
 /// * master_key – This key is used to derive keys for transaction and state encryption/decryption
 pub struct KeyManager {
+    // Master key to derive all keys
     master_key: [u8; 32],
+    // Transaction key is used during encryption / decryption of transaction data
+    tx_key: [u8; PRIVATE_KEY_SIZE],
+    // State key is used for encryption of state fields
+    state_key: [u8; PRIVATE_KEY_SIZE],
 }
 
 impl KeyManager {
@@ -128,7 +135,11 @@ impl KeyManager {
             }
         };
 
-        Ok(Self { master_key })
+        // Derive keys for transaction and state encryption
+        let tx_key = KeyManager::derive_key(&master_key, b"TransactionEncryptionKeyV1");
+        let state_key = KeyManager::derive_key(&master_key, b"StateEncryptionKeyV1");
+
+        Ok(Self { master_key, tx_key, state_key })
     }
 
     /// Creates new KeyManager with random master key
@@ -146,7 +157,11 @@ impl KeyManager {
             }
         };
 
-        Ok(Self { master_key })
+        // Derive keys for transaction and state encryption
+        let tx_key = KeyManager::derive_key(&master_key, b"TransactionEncryptionKeyV1");
+        let state_key = KeyManager::derive_key(&master_key, b"StateEncryptionKeyV1");
+
+        Ok(Self { master_key, tx_key, state_key })
     }
 
     /// Encrypts provided message using Aes128SivAead
@@ -320,7 +335,11 @@ impl KeyManager {
             }
         };
 
-        Ok(Self { master_key })
+        // Derive keys for transaction and state encryption
+        let tx_key = KeyManager::derive_key(&master_key, b"TransactionEncryptionKeyV1");
+        let state_key = KeyManager::derive_key(&master_key, b"StateEncryptionKeyV1");
+
+        Ok(Self { master_key, tx_key, state_key })
     }
 
     /// Return x25519 public key for transaction encryption
@@ -351,6 +370,16 @@ impl KeyManager {
 
         let public_key = x25519_dalek::PublicKey::from(public_key);
         Ok(secret.diffie_hellman(&public_key))
+    }
+
+    fn derive_key(master_key: &[u8; PRIVATE_KEY_SIZE], info: &[u8]) -> [u8; PRIVATE_KEY_SIZE] {
+        let mut kdf = Hmac::<sha2::Sha256>::new_from_slice(info).expect("Unable to create KDF");
+        kdf.update(master_key);
+        let mut derived_key = [0u8; PRIVATE_KEY_SIZE];
+        let digest = kdf.finalize();
+        derived_key.copy_from_slice(&digest.into_bytes()[..PRIVATE_KEY_SIZE]);
+
+        derived_key
     }
 }
 
