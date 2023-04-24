@@ -2,6 +2,7 @@ use aes_siv::{
     aead::{Aead, KeyInit},
     Aes128SivAead, Nonce,
 };
+use deoxysii::*;
 use sgx_tstd::sgxfs::SgxFile;
 use sgx_types::{sgx_read_rand, sgx_status_t, SgxResult};
 use std::io::{Read, Write};
@@ -236,6 +237,41 @@ impl KeyManager {
             Ok(message) => Ok(message),
             Err(err) => Err(Error::decryption_err(err)),
         }
+    }
+
+    fn encrypt_deoxys(&self, encryption_key: &[u8; PRIVATE_KEY_SIZE], plaintext: Vec<u8>) -> Result<Vec<u8>, Error> {
+        // Generate nonce
+        let mut nonce_buffer = [0u8; NONCE_SIZE];
+        let result = unsafe { sgx_read_rand(&mut nonce_buffer as *mut u8, NONCE_SIZE) };
+        let nonce = match result {
+            sgx_status_t::SGX_SUCCESS => nonce_buffer,
+            _ => {
+                return Err(Error::encryption_err(format!(
+                    "Cannot generate nonce: {:?}",
+                    result.as_str()
+                )))
+            }
+        };
+
+        // Generate additional data for authentication 
+        let mut ad_buffer = [0u8; TAG_SIZE];
+        let result = unsafe { sgx_read_rand(&mut ad_buffer as *mut u8, TAG_SIZE) };
+        let ad = match result {
+            sgx_status_t::SGX_SUCCESS => ad_buffer,
+            _ => {
+                return Err(Error::encryption_err(format!(
+                    "Cannot generate ad: {:?}",
+                    result.as_str()
+                )))
+            }
+        };
+
+        // Construct cipher
+        let cipher = DeoxysII::new(encryption_key);
+        // Encrypt storage value
+        let ciphertext = cipher.seal(&nonce, plaintext, ad);
+        // Return concatenated nonce and ciphertext
+        Ok([nonce.as_slice(), ad.as_slice(), &ciphertext].concat())
     }
 
     /// Encrypts master key using shared key

@@ -263,6 +263,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "deoxysii"
+version = "0.2.4"
+dependencies = [
+ "sgx_tstd",
+ "subtle",
+ "thiserror-no-std",
+ "zeroize",
+]
+
+[[package]]
 name = "der"
 version = "0.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1203,6 +1213,7 @@ dependencies = [
  "base64",
  "bit-vec",
  "chrono",
+ "deoxysii",
  "derive_more",
  "errno",
  "hex",
