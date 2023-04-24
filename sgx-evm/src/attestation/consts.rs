@@ -8,6 +8,6 @@ pub const REPORT_SUFFIX: &'static str = "/sgx/dev/attestation/v4/report";
 pub const CERTEXPIRYDAYS: i64 = 90i64;
 
 pub const PUBLIC_KEY_SIZE: usize = 32;
-pub const ENCRYPTED_KEY_SIZE: usize = 46;
+pub const ENCRYPTED_KEY_SIZE: usize = 78;
 
 pub const QUOTE_SIGNATURE_TYPE: sgx_quote_sign_type_t = sgx_quote_sign_type_t::SGX_LINKABLE_SIGNATURE; 

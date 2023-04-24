@@ -22,7 +22,6 @@ hex = { version = "0.4.3", default-features=false }
 protobuf = { git = "https://github.com/mesalock-linux/rust-protobuf-sgx", branch = "v2.8" }
 sgxvm = { path = "./evm/sgxvm" }
 internal_types = { path = "./evm/internal_types" }
-aes-siv = "0.7.0"
 chrono = { git = "https://github.com/mesalock-linux/chrono-sgx" }
 webpki = { git = "https://github.com/mesalock-linux/webpki", branch = "mesalock_sgx" }
 yasna = { git = "https://github.com/mesalock-linux/yasna.rs-sgx", features = ["bit-vec", "num-bigint", "chrono"] }

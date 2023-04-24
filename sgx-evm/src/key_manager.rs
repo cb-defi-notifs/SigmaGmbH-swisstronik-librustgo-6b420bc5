@@ -1,7 +1,3 @@
-use aes_siv::{
-    aead::{Aead, KeyInit},
-    Aes128SivAead, Nonce,
-};
 use deoxysii::*;
 use sgx_tstd::sgxfs::SgxFile;
 use sgx_types::{sgx_read_rand, sgx_status_t, SgxResult};
@@ -308,7 +304,11 @@ impl KeyManager {
         let shared_secret = reg_key.diffie_hellman(public_key);
 
         // Encrypted master key 
-        KeyManager::encrypt_deoxys(shared_secret.as_bytes(), self.master_key.to_vec())
+        let encrypted_value = KeyManager::encrypt_deoxys(shared_secret.as_bytes(), self.master_key.to_vec())?;
+        
+        // Add public key as prefix
+        let reg_public_key = reg_key.public_key();
+        Ok([reg_public_key.as_bytes(), encrypted_value.as_slice()].concat())
     }
 
     /// Recovers encrypted master key obtained from seed exchange server
