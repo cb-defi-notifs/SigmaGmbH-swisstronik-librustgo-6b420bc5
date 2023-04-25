@@ -181,7 +181,7 @@ impl KeyManager {
         KeyManager::encrypt_deoxys(&encryption_key, value)
     }
 
-    /// Decrypts provided encrypted transaction data using encryption key, 
+    /// Decrypts provided encrypted transaction data using encryption key,
     /// derived from node master key and user public key
     pub fn decrypt_ecdh(&self, public_key: Vec<u8>, encrypted_value: Vec<u8>) -> Result<Vec<u8>, Error> {
         // Convert public key to appropriate format
@@ -202,8 +202,8 @@ impl KeyManager {
 
     /// Encrypts smart contract state using simmetric key derived from master key only for specific contract.
     /// That allows us to improve cryptographic strength of our encryption scheme.
-    /// 
-    /// As an output, this function returns vector which contains 15 bytes nonce and ciphertext. 
+    ///
+    /// As an output, this function returns vector which contains 15 bytes nonce and ciphertext.
     pub fn encrypt_state(&self, contract_address: Vec<u8>, value: Vec<u8>) -> Result<Vec<u8>, Error> {
         // Derive encryption key for this contract
         let contract_key = KeyManager::derive_key(&self.state_key, &contract_address);
@@ -211,7 +211,7 @@ impl KeyManager {
         KeyManager::encrypt_deoxys(&contract_key, value)
     }
 
-    /// Decrypts provided encrypted storage value of a smart contract. 
+    /// Decrypts provided encrypted storage value of a smart contract.
     pub fn decrypt_state(&self, contract_address: Vec<u8>, encrypted_value: Vec<u8>) -> Result<Vec<u8>, Error> {
         // Derive encryption key for this contract
         let contract_key = KeyManager::derive_key(&self.state_key, &contract_address);
@@ -234,7 +234,7 @@ impl KeyManager {
             }
         };
 
-        // Generate additional data for authentication 
+        // Generate additional data for authentication
         let mut ad_buffer = [0u8; TAG_SIZE];
         let result = unsafe { sgx_read_rand(&mut ad_buffer as *mut u8, TAG_SIZE) };
         let ad = match result {
@@ -269,15 +269,11 @@ impl KeyManager {
             Err(err) => { return Err(Error::decryption_err("cannot extract nonce")); }
         };
 
-        println!("Rust nonce: {:?}", nonce);
-
         // Extract additional data
         let ad = &encrypted_value[NONCE_SIZE..NONCE_SIZE+TAG_SIZE];
-        println!("Rust ad: {:?}", ad);
 
         // Extract ciphertext
         let ciphertext = encrypted_value[NONCE_SIZE+TAG_SIZE..].to_vec();
-        println!("Rust ciphertext: {:?}", ciphertext);
         // Construct cipher
         let cipher = DeoxysII::new(encryption_key);
         // Decrypt ciphertext
@@ -307,9 +303,9 @@ impl KeyManager {
         // Derive shared secret
         let shared_secret = reg_key.diffie_hellman(public_key);
 
-        // Encrypted master key 
+        // Encrypted master key
         let encrypted_value = KeyManager::encrypt_deoxys(shared_secret.as_bytes(), self.master_key.to_vec())?;
-        
+
         // Add public key as prefix
         let reg_public_key = reg_key.public_key();
         Ok([reg_public_key.as_bytes(), encrypted_value.as_slice()].concat())
@@ -337,7 +333,7 @@ impl KeyManager {
 
         // Decrypt master key
         let master_key = KeyManager::decrypt_deoxys(
-            shared_secret.as_bytes(), 
+            shared_secret.as_bytes(),
             encrypted_master_key
         )?;
 
