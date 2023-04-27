@@ -9,14 +9,8 @@ extern crate sgx_types;
 use sgx_types::sgx_status_t;
 
 use std::slice;
-use std::vec::Vec;
 
-// use crate::error::{handle_c_error_default, Error};
-// use crate::memory::{ByteSliceView, UnmanagedVector};
-use crate::protobuf_generated::ffi::{
-    AccessListItem, FFIRequest, FFIRequest_oneof_req, HandleTransactionResponse, Log,
-    SGXVMCallRequest, SGXVMCreateRequest, Topic, TransactionContext as ProtoTransactionContext, NodePublicKeyResponse,
-};
+use crate::protobuf_generated::ffi::{FFIRequest, FFIRequest_oneof_req};
 use crate::querier::GoQuerier;
 
 mod backend;

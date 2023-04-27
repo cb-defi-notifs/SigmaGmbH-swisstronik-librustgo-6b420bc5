@@ -7,7 +7,6 @@ use std::io;
 use std::io::{Read, Write};
 use std::net::TcpStream;
 use std::prelude::v1::*;
-use std::str;
 use std::sync::Arc;
 use std::vec::Vec;
 
@@ -110,7 +109,7 @@ fn request_seed_inner(hostname: String, socket_fd: c_int) -> sgx_status_t {
     let encrypted_seed = &plaintext[PUBLIC_KEY_SIZE..];
 
     // Construct key manager
-    let key_manager = KeyManager::from_encrypted_seed(
+    let key_manager: Result<_, _> = KeyManager::from_encrypted_master_key(
         &registration_key,
         public_key.to_vec(),
         encrypted_seed.to_vec(),
@@ -185,7 +184,7 @@ fn request_seed_inner(_hostname: String, socket_fd: c_int) -> sgx_status_t {
     let encrypted_seed = &plaintext[PUBLIC_KEY_SIZE..];
 
     // Construct key manager
-    let key_manager = KeyManager::from_encrypted_seed(
+    let key_manager = KeyManager::from_encrypted_master_key(
         &registration_key,
         public_key.to_vec(),
         encrypted_seed.to_vec(),

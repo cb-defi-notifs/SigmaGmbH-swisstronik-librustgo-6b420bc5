@@ -12,6 +12,8 @@ pub enum RustError {
     DecryptionError { msg: String },
     #[error("Enclave error: {}", msg)]
     EnclaveError { msg: String },
+    #[error("Cannot perform ECDH: {}", msg)]
+    ECDHError { msg: String },
 }
 
 impl RustError {
@@ -35,6 +37,12 @@ impl RustError {
 
     pub fn enclave_err<S: ToString>(msg: S) -> Self {
         RustError::EnclaveError {
+            msg: msg.to_string(),
+        }
+    }
+
+    pub fn ecdh_err<S: ToString>(msg: S) -> Self {
+        RustError::ECDHError {
             msg: msg.to_string(),
         }
     }

@@ -2,7 +2,7 @@ use std::prelude::v1::*;
 use std::time::*;
 use std::untrusted::time::SystemTimeEx;
 use std::vec::Vec;
-use std::{ptr, str};
+use std::str;
 
 use sgx_tcrypto::*;
 use sgx_types::*;
@@ -10,17 +10,12 @@ use sgx_tse::rsgx_self_report;
 
 use base64;
 use bit_vec::BitVec;
-use chrono::prelude::*;
 use chrono::Duration;
 use chrono::TimeZone;
 use chrono::Utc as TzUtc;
-use itertools::Itertools;
 use num_bigint::BigUint;
 use rustls;
-use serde_json;
-use serde_json::Value;
 use std::io::BufReader;
-use webpki;
 use yasna;
 use yasna::models::ObjectIdentifier;
 

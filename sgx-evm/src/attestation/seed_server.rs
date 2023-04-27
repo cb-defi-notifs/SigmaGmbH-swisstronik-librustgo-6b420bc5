@@ -5,7 +5,6 @@ use rustls;
 use std::io::{Read, Write};
 use std::net::TcpStream;
 use std::prelude::v1::*;
-use std::str;
 use std::sync::Arc;
 use std::vec::Vec;
 
@@ -14,7 +13,7 @@ use crate::attestation::{
     utils::{create_attestation_report, ClientAuth},
     cert::gen_ecc_cert,
 };
-use crate::key_manager::{KeyManager, RegistrationKey};
+use crate::key_manager::{RegistrationKey, UNSEALED_KEY_MANAGER};
 
 #[no_mangle]
 pub unsafe extern "C" fn ecall_share_seed(socket_fd: c_int) -> sgx_status_t {
@@ -59,15 +58,16 @@ fn share_seed_inner(socket_fd: c_int) -> sgx_status_t {
     };
 
     // Unseal key manager to get access to master key
-    let key_manager = match KeyManager::unseal() {
-        Ok(key_manager) => key_manager,
-        Err(err) => {
-            return err;
+    let key_manager = match &*UNSEALED_KEY_MANAGER {
+        Some(key_manager) => key_manager,
+        None => {
+            println!("Cannot unseal master key");
+            return sgx_status_t::SGX_ERROR_UNEXPECTED;
         }
     };
 
     // Encrypt master key and send it to the client
-    let encrypted_master_key = match key_manager.to_encrypted_seed(&registration_key, client_public_key.to_vec()) {
+    let encrypted_master_key = match key_manager.to_encrypted_master_key(&registration_key, client_public_key.to_vec()) {
         Ok(ciphertext) => ciphertext,
         Err(err) => {
             println!("[Enclave] Cannot encrypt master key. Reason: {:?}", err);
@@ -113,15 +113,16 @@ fn share_seed_inner(socket_fd: c_int) -> sgx_status_t {
     };
 
     // Unseal key manager to get access to master key
-    let key_manager = match KeyManager::unseal() {
-        Ok(key_manager) => key_manager,
-        Err(err) => {
-            return err;
+    let key_manager = match &*UNSEALED_KEY_MANAGER {
+        Some(key_manager) => key_manager,
+        None => {
+            println!("Cannot unseal master key");
+            return sgx_status_t::SGX_ERROR_UNEXPECTED;
         }
     };
 
     // Encrypt master key and send it to the client
-    let encrypted_master_key = match key_manager.to_encrypted_seed(&registration_key, client_public_key.to_vec()) {
+    let encrypted_master_key = match key_manager.to_encrypted_master_key(&registration_key, client_public_key.to_vec()) {
         Ok(ciphertext) => ciphertext,
         Err(err) => {
             println!("[Enclave] Cannot encrypt master key. Reason: {:?}", err);
