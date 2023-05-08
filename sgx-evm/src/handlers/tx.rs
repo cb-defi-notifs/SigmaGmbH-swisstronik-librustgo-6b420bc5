@@ -76,57 +76,75 @@ fn handle_call_request_inner(querier: *mut GoQuerier, data: SGXVMCallRequest) ->
         build_transaction_context(context),
     );
 
-    // Extract user public key from transaction data
-    let user_public_key = match extract_public_key_from_data(&params.data) {
-        Ok(pk) => pk,
-        Err(err) => {
-            return ExecutionResult::from_error(
-                format!("{:?}", err),
-                Vec::default(), 
-                None
+    // If data is empty, there should be no encryption of result. Otherwise we should try
+    // to extract user public key and encrypted data 
+    match params.data.len() {
+        0 => {
+            sgxvm::handle_sgxvm_call(
+                &mut backend,
+                params.gasLimit,
+                H160::from_slice(&params.from),
+                H160::from_slice(&params.to),
+                U256::from_big_endian(&params.value),
+                params.data,
+                parse_access_list(params.accessList),
+                params.commit,
+            )
+        },
+        _ => {
+            // Extract user public key from transaction data
+            let user_public_key = match extract_public_key_from_data(&params.data) {
+                Ok(pk) => pk,
+                Err(err) => {
+                    return ExecutionResult::from_error(
+                        format!("{:?}", err),
+                        Vec::default(), 
+                        None
+                    );
+                }
+            };
+
+            // If encrypted data presents, decrypt it
+            let data = if params.data.len() >= ENCRYPTED_DATA_LEN {
+                match decrypt_transaction_data(params.data, user_public_key.clone()) {
+                    Ok(data) => data,
+                    Err(err) => {
+                        return ExecutionResult::from_error(
+                            format!("{:?}", err),
+                            Vec::default(), 
+                            None
+                        );
+                    }
+                }
+            } else { Vec::default() };
+
+            let mut exec_result = sgxvm::handle_sgxvm_call(
+                &mut backend,
+                params.gasLimit,
+                H160::from_slice(&params.from),
+                H160::from_slice(&params.to),
+                U256::from_big_endian(&params.value),
+                data,
+                parse_access_list(params.accessList),
+                params.commit,
             );
+
+            // Encrypt transaction data output
+            let encrypted_data = match encrypt_transaction_data(exec_result.data, user_public_key) {
+                Ok(data) => data,
+                Err(err) => {
+                    return ExecutionResult::from_error(
+                        format!("{:?}", err),
+                        Vec::default(), 
+                        None
+                    );
+                }
+            };
+
+            exec_result.data = encrypted_data;
+            exec_result
         }
-    };
-
-    // If encrypted data presents, decrypt it
-    let data = if params.data.len() >= ENCRYPTED_DATA_LEN {
-        match decrypt_transaction_data(params.data, user_public_key.clone()) {
-            Ok(data) => data,
-            Err(err) => {
-                return ExecutionResult::from_error(
-                    format!("{:?}", err),
-                    Vec::default(), 
-                    None
-                );
-            }
-        }
-    } else { Vec::default() };
-
-    let mut exec_result = sgxvm::handle_sgxvm_call(
-        &mut backend,
-        params.gasLimit,
-        H160::from_slice(&params.from),
-        H160::from_slice(&params.to),
-        U256::from_big_endian(&params.value),
-        data,
-        parse_access_list(params.accessList),
-        params.commit,
-    );
-
-    // Encrypt transaction data output
-    let encrypted_data = match encrypt_transaction_data(exec_result.data, user_public_key) {
-        Ok(data) => data,
-        Err(err) => {
-            return ExecutionResult::from_error(
-                format!("{:?}", err),
-                Vec::default(), 
-                None
-            );
-        }
-    };
-
-    exec_result.data = encrypted_data;
-    exec_result
+    }
 }
 
 fn handle_create_request_inner(querier: *mut GoQuerier, data: SGXVMCreateRequest) -> ExecutionResult {
