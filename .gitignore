@@ -13,6 +13,10 @@ lib*.a
 tmp
 a.out
 
+# sgx artifacts
+sgx-artifacts/
+Enclave_u*
+
 # other stuff
 .DS_Store
 *.swtr_seed
