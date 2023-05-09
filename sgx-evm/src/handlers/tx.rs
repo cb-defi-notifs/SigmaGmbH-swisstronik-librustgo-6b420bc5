@@ -1,5 +1,5 @@
 use crate::AllocationWithResult;
-use crate::encryption::{decrypt_transaction_data, extract_public_key_from_data, ENCRYPTED_DATA_LEN, encrypt_transaction_data};
+use crate::encryption::{decrypt_transaction_data, extract_public_key_and_data, ENCRYPTED_DATA_LEN, encrypt_transaction_data};
 use crate::protobuf_generated::ffi::{
     AccessListItem, HandleTransactionResponse, Log,
     SGXVMCallRequest, SGXVMCreateRequest, Topic, TransactionContext as ProtoTransactionContext,
@@ -57,7 +57,7 @@ fn post_transaction_handling(execution_result: ExecutionResult) -> AllocationWit
             return AllocationWithResult::default();
         }
     };
-    
+
     super::allocate_inner(encoded_response)
 }
 
@@ -77,7 +77,7 @@ fn handle_call_request_inner(querier: *mut GoQuerier, data: SGXVMCallRequest) ->
     );
 
     // If data is empty, there should be no encryption of result. Otherwise we should try
-    // to extract user public key and encrypted data 
+    // to extract user public key and encrypted data
     match params.data.len() {
         0 => {
             sgxvm::handle_sgxvm_call(
@@ -93,25 +93,27 @@ fn handle_call_request_inner(querier: *mut GoQuerier, data: SGXVMCallRequest) ->
         },
         _ => {
             // Extract user public key from transaction data
-            let user_public_key = match extract_public_key_from_data(&params.data) {
-                Ok(pk) => pk,
+            let (user_public_key, data) = match extract_public_key_and_data(params.data) {
+                Ok((user_public_key, data)) => (user_public_key, data),
                 Err(err) => {
                     return ExecutionResult::from_error(
                         format!("{:?}", err),
-                        Vec::default(), 
+                        Vec::default(),
                         None
                     );
                 }
             };
 
+            println!("[Enclave DEBUG] {:?}", data.len());
+
             // If encrypted data presents, decrypt it
-            let data = if params.data.len() >= ENCRYPTED_DATA_LEN {
-                match decrypt_transaction_data(params.data, user_public_key.clone()) {
-                    Ok(data) => data,
+            let decrypted_data = if !data.is_empty() {
+                match decrypt_transaction_data(data, user_public_key.clone()) {
+                    Ok(decrypted_data) => decrypted_data,
                     Err(err) => {
                         return ExecutionResult::from_error(
                             format!("{:?}", err),
-                            Vec::default(), 
+                            Vec::default(),
                             None
                         );
                     }
@@ -124,7 +126,7 @@ fn handle_call_request_inner(querier: *mut GoQuerier, data: SGXVMCallRequest) ->
                 H160::from_slice(&params.from),
                 H160::from_slice(&params.to),
                 U256::from_big_endian(&params.value),
-                data,
+                decrypted_data,
                 parse_access_list(params.accessList),
                 params.commit,
             );
@@ -135,7 +137,7 @@ fn handle_call_request_inner(querier: *mut GoQuerier, data: SGXVMCallRequest) ->
                 Err(err) => {
                     return ExecutionResult::from_error(
                         format!("{:?}", err),
-                        Vec::default(), 
+                        Vec::default(),
                         None
                     );
                 }

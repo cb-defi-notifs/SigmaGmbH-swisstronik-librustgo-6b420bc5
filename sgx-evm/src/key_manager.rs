@@ -258,7 +258,7 @@ impl KeyManager {
     /// Decrypt DEOXYS-II encrypted ciphertext
     fn decrypt_deoxys(encryption_key: &[u8; PRIVATE_KEY_SIZE], encrypted_value: Vec<u8>) -> Result<Vec<u8>, Error> {
         // 15 bytes nonce | 16 bytes tag size | >=16 bytes ciphertext
-        if encrypted_value.len() < 46 {
+        if encrypted_value.len() < 47 {
             return Err(Error::decryption_err("corrupted ciphertext"));
         }
 
