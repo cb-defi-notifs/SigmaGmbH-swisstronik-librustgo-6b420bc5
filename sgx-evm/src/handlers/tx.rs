@@ -104,8 +104,6 @@ fn handle_call_request_inner(querier: *mut GoQuerier, data: SGXVMCallRequest) ->
                 }
             };
 
-            println!("[Enclave DEBUG] {:?}", data.len());
-
             // If encrypted data presents, decrypt it
             let decrypted_data = if !data.is_empty() {
                 match decrypt_transaction_data(data, user_public_key.clone()) {

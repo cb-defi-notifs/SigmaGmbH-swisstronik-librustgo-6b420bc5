@@ -197,7 +197,6 @@ impl KeyManager {
         // Derive encryption key from shared key
         let encryption_key = KeyManager::derive_key(shared_key.as_bytes(), b"IOEncryptionKeyV1");
         // Decrypt provided value using shared secret
-        println!("[Enclave DEBUG] keymanager data len: {:?}", encrypted_value.len());
         KeyManager::decrypt_deoxys(&encryption_key, encrypted_value)
     }
 
@@ -217,7 +216,6 @@ impl KeyManager {
         // Derive encryption key for this contract
         let contract_key = KeyManager::derive_key(&self.state_key, &contract_address);
         // Decrypt contract state using contract encryption key
-        println!("[Enclave DEBUG] decrypt_state: {:?}", encrypted_value.len());
         KeyManager::decrypt_deoxys(&contract_key, encrypted_value)
     }
 
@@ -259,7 +257,6 @@ impl KeyManager {
 
     /// Decrypt DEOXYS-II encrypted ciphertext
     fn decrypt_deoxys(encryption_key: &[u8; PRIVATE_KEY_SIZE], encrypted_value: Vec<u8>) -> Result<Vec<u8>, Error> {
-        println!("[Enclave DEBUG] decrypt_deoxys value len: {:?}", encrypted_value.len());
         // 15 bytes nonce | 16 bytes tag size | >=16 bytes ciphertext
         if encrypted_value.len() < 47 {
             return Err(Error::decryption_err("corrupted ciphertext"));
