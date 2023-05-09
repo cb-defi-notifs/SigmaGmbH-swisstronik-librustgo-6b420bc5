@@ -7,6 +7,7 @@ pub const FUNCTION_SELECTOR_LEN: usize = 4;
 pub const ZERO_FUNCTION_SELECTOR: [u8; 4] = [0u8; 4];
 pub const PUBLIC_KEY_ONLY_DATA_LEN: usize = 36;
 pub const ENCRYPTED_DATA_LEN: usize = 79;
+pub const DEFAULT_STORAGE_VALUE: [u8; 32] = [0u8; 32];
 
 /// Encrypts given storage cell value using sealed master key
 pub fn encrypt_storage_cell(contract_address: Vec<u8>, value: Vec<u8>) -> Result<Vec<u8>, Error> {
@@ -22,6 +23,12 @@ pub fn encrypt_storage_cell(contract_address: Vec<u8>, value: Vec<u8>) -> Result
 
 /// Decrypts given storage cell value using sealed master key
 pub fn decrypt_storage_cell(contract_address: Vec<u8>, encrypted_value: Vec<u8>) -> Result<Vec<u8>, Error> {
+    // It there is 32-byte zeroed vector, it means that storage slot was not initialized
+    // In this case we return default value
+    if encrypted_value == DEFAULT_STORAGE_VALUE.to_vec() {
+        return Ok(encrypted_value)
+    }
+
     let key_manager = match &*UNSEALED_KEY_MANAGER {
         Some(key_manager) => key_manager,
         None => {
