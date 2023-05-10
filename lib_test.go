@@ -24,7 +24,7 @@ func TestCreate(t *testing.T) {
 	// Calculate contract address
 	fromAcct, err := db.GetAccountOrEmpty(from)
 	if err != nil {
-		t.Fail()
+		t.Fatal(err)
 	}
 	contractAddress := crypto.CreateAddress(from, fromAcct.Nonce)
 
@@ -40,17 +40,17 @@ func TestCreate(t *testing.T) {
 		true,
 	)
 	if err != nil {
-		panic(err)
+		t.Fatal(err)
 	}
 
 	// Check if contract was deployed correctly
 	acct, _ := db.GetAccountOrEmpty(contractAddress)
 	if len(acct.Code) == 0 {
-		t.Fail()
+		t.Fatal("Contract was not deployed")
 	}
 }
 
-func TestCall(t *testing.T) {
+func TestCoinTransfer(t *testing.T) {
 	db := types.CreateMockedDatabase()
 	from := common.HexToAddress("0x690b9a9e9aa1c9db991c7721a92d351db4fac990")
 	to := common.HexToAddress("0xad60cdbe1d3ceb5f67074303f99ac95af082784d")
