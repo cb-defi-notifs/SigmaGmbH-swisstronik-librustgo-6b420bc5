@@ -7,9 +7,12 @@ use protobuf::Message;
 use sgx_types::*;
 use sgx_urts::SgxEnclave;
 use std::panic::catch_unwind;
+use std::env;
+use std::path::Path;
 
-static ENCLAVE_FILE: &'static str = "/tmp/enclave.signed.so";
+static ENCLAVE_FILE: &'static str = "enclave.signed.so";
 pub static mut ENCLAVE_ID: Option<sgx_types::sgx_enclave_id_t> = None;
+static CHAIN_HOME: &'static str = env!("CHAIN_HOME", "please specify CHAIN_HOME env variable");
 
 #[allow(dead_code)]
 extern "C" {
@@ -58,7 +61,7 @@ pub fn init_enclave() -> SgxResult<SgxEnclave> {
         misc_select: 0,
     };
     SgxEnclave::create(
-        ENCLAVE_FILE,
+        format!("{}/{}", CHAIN_HOME, ENCLAVE_FILE),
         debug,
         &mut launch_token,
         &mut launch_token_updated,
@@ -161,12 +164,12 @@ pub unsafe extern "C" fn handle_initialization_request(
                     }
                     node::SetupRequest_oneof_req::nodeSeed(req) => {
                         if req.hostname.is_empty() {
-                            return Err(Error::unset_arg("Hostname was not set"));    
+                            return Err(Error::unset_arg("Hostname was not set"));
                         }
-                        
+
                         let mut retval = sgx_status_t::SGX_SUCCESS;
                         let res = ecall_request_seed(
-                            evm_enclave.geteid(), 
+                            evm_enclave.geteid(),
                             &mut retval,
                             req.hostname.as_ptr() as *const u8,
                             req.hostname.len(),
@@ -195,7 +198,7 @@ pub unsafe extern "C" fn handle_initialization_request(
                         println!("[SGX_WRAPPER] checking if node is initialized");
                         let mut retval = 0i32;
                         let res = ecall_is_initialized(evm_enclave.geteid(), &mut retval);
-                        
+
                         match res {
                             sgx_status_t::SGX_SUCCESS => {}
                             _ => {
