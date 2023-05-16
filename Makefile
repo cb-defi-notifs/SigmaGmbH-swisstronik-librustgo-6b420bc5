@@ -6,6 +6,8 @@ DEFAULT = help
 CC=clang
 CXX=clang++
 SGX_MODE ?= HW
+ENCLAVE_HOME ?= $(HOME)/.swisstronik-enclave
+
 Trts_Library_Name = sgx_trts
 Service_Library_Name = sgx_tservice
 Enclave_build_feature = hardware_mode
@@ -90,8 +92,9 @@ endef
 
 define wrapper_build
 	$(call compile_wrapper_protobuf)
-	@cd sgx-wrapper && cargo build --release
-	@cp ./sgx-artifacts/bin/enclave.signed.so /tmp/enclave.signed.so
+	@cd sgx-wrapper && ENCLAVE_HOME=$(ENCLAVE_HOME) cargo build --release
+	@mkdir -p $(ENCLAVE_HOME)
+	@cp ./sgx-artifacts/bin/enclave.signed.so $(ENCLAVE_HOME)/enclave.signed.so
 	@rm Enclave_u*
 	$(call sgx_clean)
 endef
