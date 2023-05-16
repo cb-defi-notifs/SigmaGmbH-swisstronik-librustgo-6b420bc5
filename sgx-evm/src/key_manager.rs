@@ -19,7 +19,7 @@ pub const PRIVATE_KEY_SIZE: usize = 32;
 
 lazy_static! {
     pub static ref UNSEALED_KEY_MANAGER: Option<KeyManager> = KeyManager::unseal().ok();
-    pub static ref CHAIN_HOME: OsString = env::var_os("CHAIN_HOME").unwrap_or_else(|| OsString::from(format!("{}/.swisstronik", env::home_dir().unwrap().to_str().unwrap())));
+    pub static ref CHAIN_HOME: OsString = env::var_os("CHAIN_HOME").unwrap_or_else(|| OsString::from(format!("{}/.swisstronik-enclave", env::home_dir().unwrap().to_str().unwrap())));
 }
 
 #[no_mangle]
