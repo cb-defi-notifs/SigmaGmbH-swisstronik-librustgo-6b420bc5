@@ -12,7 +12,7 @@ use std::path::Path;
 
 static ENCLAVE_FILE: &'static str = "enclave.signed.so";
 pub static mut ENCLAVE_ID: Option<sgx_types::sgx_enclave_id_t> = None;
-static CHAIN_HOME: &'static str = env!("CHAIN_HOME", "please specify CHAIN_HOME env variable");
+static ENCLAVE_HOME: &'static str = env!("ENCLAVE_HOME", "please specify CHAIN_HOME env variable");
 
 #[allow(dead_code)]
 extern "C" {
@@ -62,7 +62,7 @@ pub fn init_enclave() -> SgxResult<SgxEnclave> {
     };
 
     SgxEnclave::create(
-        format!("{}/{}", CHAIN_HOME, ENCLAVE_FILE),
+        format!("{}/{}", ENCLAVE_HOME, ENCLAVE_FILE),
         debug,
         &mut launch_token,
         &mut launch_token_updated,
