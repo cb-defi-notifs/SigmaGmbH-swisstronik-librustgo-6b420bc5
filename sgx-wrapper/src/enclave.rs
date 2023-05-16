@@ -61,10 +61,8 @@ pub fn init_enclave() -> SgxResult<SgxEnclave> {
         misc_select: 0,
     };
 
-    let enclave_file_path = format!("{}/{}", CHAIN_HOME, ENCLAVE_FILE);
-    println!("Enclave file path: {}", enclave_file_path);
     SgxEnclave::create(
-        enclave_file_path,
+        format!("{}/{}", CHAIN_HOME, ENCLAVE_FILE),
         debug,
         &mut launch_token,
         &mut launch_token_updated,
