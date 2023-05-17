@@ -389,7 +389,8 @@ func (x *HandleTransactionResponse) GetGasUsed() uint64 {
 	return 0
 }
 
-// Topic represents 32-byte words that is used to describe what’s going on in an event
+// Topic represents 32-byte words that is used to describe what’s going on in an
+// event
 type Topic struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -561,7 +562,8 @@ type QueryGetAccountResponse struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// Since both fields are 256-bit unsigned integer, we encode them as big-endian bytes
+	// Since both fields are 256-bit unsigned integer, we encode them as
+	// big-endian bytes
 	Balance []byte `protobuf:"bytes,1,opt,name=balance,proto3" json:"balance,omitempty"`
 	Nonce   uint64 `protobuf:"varint,2,opt,name=nonce,proto3" json:"nonce,omitempty"`
 }
