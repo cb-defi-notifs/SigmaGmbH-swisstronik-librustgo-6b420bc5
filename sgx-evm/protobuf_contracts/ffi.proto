@@ -4,7 +4,7 @@ package ffi.ffi;
 
 option go_package = "./";
 
-//General request
+// General request
 
 message AccessListItem {
   repeated bytes storageSlot = 1;
@@ -48,10 +48,9 @@ message HandleTransactionResponse {
   uint64 gas_used = 5;
 }
 
-// Topic represents 32-byte words that is used to describe what’s going on in an event
-message Topic {
-  bytes inner = 1;
-}
+// Topic represents 32-byte words that is used to describe what’s going on in an
+// event
+message Topic { bytes inner = 1; }
 
 // Log represents an protobuf compatible Ethereum Log that defines a contract
 // log event.
@@ -73,7 +72,8 @@ message QueryGetAccount {
 
 // Response for account code
 message QueryGetAccountResponse {
-  // Since both fields are 256-bit unsigned integer, we encode them as big-endian bytes
+  // Since both fields are 256-bit unsigned integer, we encode them as
+  // big-endian bytes
   bytes balance = 1;
   uint64 nonce = 2;
 }
@@ -88,30 +88,20 @@ message QueryInsertAccount {
 // Response for account insertion
 message QueryInsertAccountResponse {}
 
-message QueryContainsKey {
-  bytes key = 1;
-}
+message QueryContainsKey { bytes key = 1; }
 
-message QueryContainsKeyResponse {
-  bool contains = 1;
-}
+message QueryContainsKeyResponse { bool contains = 1; }
 
 message QueryGetAccountStorageCell {
   bytes address = 1;
   bytes index = 2;
 }
 
-message QueryGetAccountStorageCellResponse {
-  bytes value = 1;
-}
+message QueryGetAccountStorageCellResponse { bytes value = 1; }
 
-message QueryGetAccountCode {
-  bytes address = 1;
-}
+message QueryGetAccountCode { bytes address = 1; }
 
-message QueryGetAccountCodeResponse {
-  bytes code = 1;
-}
+message QueryGetAccountCodeResponse { bytes code = 1; }
 
 message QueryInsertAccountCode {
   bytes address = 1;
@@ -128,9 +118,7 @@ message QueryInsertStorageCell {
 
 message QueryInsertStorageCellResponse {}
 
-message QueryRemove {
-  bytes address = 1;
-}
+message QueryRemove { bytes address = 1; }
 
 message QueryRemoveResponse {}
 
@@ -141,18 +129,12 @@ message QueryRemoveStorageCell {
 
 message QueryRemoveStorageCellResponse {}
 
-message QueryRemoveStorage {
-  bytes address = 1;
-}
+message QueryRemoveStorage { bytes address = 1; }
 
 message QueryRemoveStorageResponse {}
 
-message QueryBlockHash {
-  bytes number = 1;
-}
-message QueryBlockHashResponse {
-  bytes hash = 1;
-}
+message QueryBlockHash { bytes number = 1; }
+message QueryBlockHashResponse { bytes hash = 1; }
 
 message CosmosRequest {
   oneof req {
@@ -207,9 +189,7 @@ message SGXVMCreateRequest {
 message NodePublicKeyRequest {}
 
 // Response with node public key
-message NodePublicKeyResponse {
-  bytes publicKey = 1;
-}
+message NodePublicKeyResponse { bytes publicKey = 1; }
 
 message FFIRequest {
   oneof req {
