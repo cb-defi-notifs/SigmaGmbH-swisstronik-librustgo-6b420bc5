@@ -151,7 +151,7 @@ fn get_server_configuration() -> Result<rustls::ServerConfig, String> {
     {
         Ok(r) => r,
         Err(e) => {
-            return Err(format!("Error creating attestation report"));
+            return Err(format!("Error creating attestation report: {:?}", e.as_str()));
         }
     };
 

@@ -111,11 +111,13 @@ func StartSeedServer(addr string) error {
 			connection, err := ln.Accept()
 			if err != nil {
 				fmt.Println("[Seed Server] Got error ", err.Error(), ", connection: ", connection.RemoteAddr().String())
+				connection.Close()
 				continue
 			}
 
 			if err := attestPeer(connection); err != nil {
 				fmt.Println("[Seed Server] Attestation failed. Reason: ", err)
+				connection.Close()
 				continue
 			}
 		}
@@ -190,6 +192,7 @@ func RequestSeed(hostname string, port int) error {
 	file, err := conn.(*net.TCPConn).File()
 	if err != nil {
 		fmt.Println("Cannot get access to the connection. Reason: ", err.Error())
+		conn.Close()
 		return err
 	}
 
@@ -203,6 +206,7 @@ func RequestSeed(hostname string, port int) error {
 	reqBytes, err := proto.Marshal(&req)
 	if err != nil {
 		log.Fatalln("Failed to encode req:", err)
+		conn.Close()
 		return err
 	}
 
@@ -213,6 +217,7 @@ func RequestSeed(hostname string, port int) error {
 	errmsg := NewUnmanagedVector(nil)
 	_, err = C.handle_initialization_request(d, &errmsg)
 	if err != nil {
+		conn.Close()
 		return ErrorWithMessage(err, errmsg)
 	}
 
