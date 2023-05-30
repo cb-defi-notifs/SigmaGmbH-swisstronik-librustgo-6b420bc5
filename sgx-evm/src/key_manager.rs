@@ -76,7 +76,7 @@ impl KeyManager {
             Ok(_) => Ok(true),
             Err(ref err) if err.kind() == std::io::ErrorKind::NotFound => Ok(false),
             Err(err) => {
-                println!("[KeyManager] Cannot check if sealed file exists");
+                println!("[KeyManager] Cannot check if sealed file exists. Reason: {:?}", err);
                 return Err(sgx_status_t::SGX_ERROR_UNEXPECTED);
             }
         }
