@@ -1,4 +1,5 @@
 use std::panic::catch_unwind;
+use parking_lot::{Condvar, Mutex};
 
 use crate::memory::{ByteSliceView, UnmanagedVector};
 use crate::types::GoQuerier;
@@ -22,10 +23,10 @@ pub extern "C" fn make_pb_request(
             .read()
             .ok_or_else(|| Error::unset_arg(PB_REQUEST_ARG))?;
 
-        let evm_enclave = crate::enclave::ENCLAVE_REF.as_ref().map_err(|status| {
-            println!("Got error: {:?}", status.as_str());
-            return Error::vm_err("Cannot initialize SGXVM enclave");
-        })?;
+        let enclave_access_token = crate::enclave::ENCLAVE_DOORBELL
+            .get_access(1) // This can never be recursive
+            .ok_or(sgx_status_t::SGX_ERROR_BUSY)?;
+        let evm_enclave = (*enclave_access_token)?;
 
         // Prepare data for the enclave
         let request_vec = Vec::from(req_bytes);

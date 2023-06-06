@@ -8,14 +8,18 @@ use sgx_types::*;
 use sgx_urts::SgxEnclave;
 use std::panic::catch_unwind;
 use std::env;
+use std::ops::Deref;
+use std::time::Duration;
 use std::path::Path;
 use lazy_static::lazy_static;
+use parking_lot::{Condvar, Mutex};
 
 static ENCLAVE_FILE: &'static str = "enclave.signed.so";
 static ENCLAVE_HOME: &'static str = env!("ENCLAVE_HOME", "please specify CHAIN_HOME env variable");
+const ENCLAVE_LOCK_TIMEOUT: u64 = 6*5;
 
 lazy_static! {
-    pub static ref ENCLAVE_REF: SgxResult<SgxEnclave> = init_enclave();
+    pub static ref ENCLAVE_DOORBELL: EnclaveDoorbell = EnclaveDoorbell::new();
 }
 
 #[allow(dead_code)]
@@ -96,10 +100,10 @@ pub unsafe extern "C" fn handle_initialization_request(
             }
         };
 
-        let evm_enclave = crate::enclave::ENCLAVE_REF.as_ref().map_err(|status| {
-            println!("Got error: {:?}", status.as_str());
-            return Error::vm_err("Cannot initialize SGXVM enclave");
-        })?;
+        let enclave_access_token = crate::enclave::ENCLAVE_DOORBELL
+            .get_access(1) // This can never be recursive
+            .ok_or(sgx_status_t::SGX_ERROR_BUSY)?;
+        let evm_enclave = (*enclave_access_token)?;
 
         let result = match request.req {
             Some(req) => {
@@ -230,4 +234,79 @@ pub unsafe extern "C" fn handle_initialization_request(
 
     let data = handle_c_error_default(r, error_msg);
     UnmanagedVector::new(Some(data))
+}
+
+pub struct EnclaveDoorbell {
+    enclave: SgxResult<SgxEnclave>,
+    condvar: Condvar,
+    /// Amount of tasks allowed to use the enclave at the same time.
+    count: Mutex<u8>,
+}
+
+impl EnclaveDoorbell {
+    fn new() -> Self {
+        println!("Setting up enclave doorbell");
+        Self {
+            enclave: init_enclave(),
+            condvar: Condvar::new(),
+            count: Mutex::new(8),
+        }
+    }
+
+    fn wait_for(&'static self, duration: Duration, query_depth: u32) -> Option<EnclaveAccessToken> {
+        if query_depth == 1 {
+            let mut count = self.count.lock();
+            if *count == 0 {
+                // try to wait for other tasks to complete
+                let wait = self.condvar.wait_for(&mut count, duration);
+                // double check that the count is nonzero, so there's an available slot in the enclave.
+                if wait.timed_out() || *count == 0 {
+                    return None;
+                }
+            }
+            *count -= 1;
+        }
+        Some(EnclaveAccessToken::new(self, query_depth))
+    }
+
+    pub fn get_access(&'static self, query_depth: u32) -> Option<EnclaveAccessToken> {
+        self.wait_for(Duration::from_secs(ENCLAVE_LOCK_TIMEOUT), query_depth)
+    }
+}
+
+// NEVER add Clone or Copy
+pub struct EnclaveAccessToken {
+    doorbell: &'static EnclaveDoorbell,
+    enclave: SgxResult<&'static SgxEnclave>,
+    query_depth: u32,
+}
+
+impl EnclaveAccessToken {
+    fn new(doorbell: &'static EnclaveDoorbell, query_depth: u32) -> Self {
+        let enclave = doorbell.enclave.as_ref().map_err(|status| *status);
+        Self {
+            doorbell,
+            enclave,
+            query_depth,
+        }
+    }
+}
+
+impl Deref for EnclaveAccessToken {
+    type Target = SgxResult<&'static SgxEnclave>;
+
+    fn deref(&self) -> &Self::Target {
+        &self.enclave
+    }
+}
+
+impl Drop for EnclaveAccessToken {
+    fn drop(&mut self) {
+        if self.query_depth == 1 {
+            let mut count = self.doorbell.count.lock();
+            *count += 1;
+            drop(count);
+            self.doorbell.condvar.notify_one();
+        }
+    }
 }

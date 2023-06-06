@@ -152,13 +152,34 @@ pub extern "C" fn ocall_query_raw(
         GoError::None => {
             let output = output.unwrap_or_default();
 
-            let evm_enclave = crate::enclave::ENCLAVE_REF.as_ref().expect("Enclave should be already initialized");
+            // Bind the token to a local variable to ensure its
+            // destructor runs in the end of the function
+            let enclave_access_token = crate::enclave::ENCLAVE_DOORBELL
+                // This is always called from an ocall contxt, so we don't want to wait for
+                // an new TCS. To do that, we say that our query depth is >1, e.g. 2
+                .get_access(2)
+                .ok_or(sgx_status_t::SGX_ERROR_BUSY);
+
+            let enclave_access_token = match enclave_access_token {
+                Ok(token) => token,
+                Err(status) => {
+                    return AllocationWithResult {
+                        result_ptr: std::ptr::null_mut(),
+                        result_size: 0usize,
+                        status,
+                    };
+                }
+            };
+
+            let enclave_id = enclave_access_token
+                .expect("If we got here, surely the enclave has been loaded")
+                .geteid();
 
             let mut allocation_result = std::mem::MaybeUninit::<Allocation>::uninit();
 
             let res = unsafe {
                 crate::enclave::ecall_allocate(
-                    evm_enclave.geteid(),
+                    enclave_id,
                     allocation_result.as_mut_ptr(),
                     output.as_ptr(),
                     output.len(),
