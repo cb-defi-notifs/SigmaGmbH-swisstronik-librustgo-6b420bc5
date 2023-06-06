@@ -3,6 +3,7 @@ extern crate sgx_urts;
 extern crate errno;
 extern crate thiserror;
 extern crate protobuf;
+extern crate lazy_static;
 
 mod enclave;
 mod cache;

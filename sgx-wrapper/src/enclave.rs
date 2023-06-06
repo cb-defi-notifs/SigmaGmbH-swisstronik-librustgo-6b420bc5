@@ -9,10 +9,14 @@ use sgx_urts::SgxEnclave;
 use std::panic::catch_unwind;
 use std::env;
 use std::path::Path;
+use lazy_static::lazy_static;
 
 static ENCLAVE_FILE: &'static str = "enclave.signed.so";
-pub static mut ENCLAVE_ID: Option<sgx_types::sgx_enclave_id_t> = None;
 static ENCLAVE_HOME: &'static str = env!("ENCLAVE_HOME", "please specify CHAIN_HOME env variable");
+
+lazy_static! {
+    pub static ref ENCLAVE_REF: SgxResult<SgxEnclave> = init_enclave();
+}
 
 #[allow(dead_code)]
 extern "C" {
@@ -61,6 +65,8 @@ pub fn init_enclave() -> SgxResult<SgxEnclave> {
         misc_select: 0,
     };
 
+    println!("[DEBUG] Initialize enclave");
+
     SgxEnclave::create(
         format!("{}/{}", ENCLAVE_HOME, ENCLAVE_FILE),
         debug,
@@ -83,23 +89,17 @@ pub unsafe extern "C" fn handle_initialization_request(
             .read()
             .ok_or_else(|| Error::unset_arg(crate::cache::PB_REQUEST_ARG))?;
 
-        // Initialize enclave
-        let evm_enclave = match crate::enclave::init_enclave() {
-            Ok(r) => r,
-            Err(err) => {
-                println!("Got error: {:?}", err.as_str());
-                return Err(Error::vm_err("Cannot initialize SGXVM enclave"));
-            }
-        };
-        // Set enclave id to static variable to make it accessible across inner ecalls
-        crate::enclave::ENCLAVE_ID = Some(evm_enclave.geteid());
-
         let request = match protobuf::parse_from_bytes::<node::SetupRequest>(req_bytes) {
             Ok(request) => request,
             Err(e) => {
                 return Err(Error::protobuf_decode(e.to_string()));
             }
         };
+
+        let evm_enclave = crate::enclave::ENCLAVE_REF.as_ref().map_err(|status| {
+            println!("Got error: {:?}", status.as_str());
+            return Error::vm_err("Cannot initialize SGXVM enclave");
+        })?;
 
         let result = match request.req {
             Some(req) => {
@@ -223,10 +223,6 @@ pub unsafe extern "C" fn handle_initialization_request(
             }
             None => Err(Error::protobuf_decode("Request unwrapping failed")),
         };
-
-        // Destroy enclave after usage and set enclave id to None
-        evm_enclave.destroy();
-        crate::enclave::ENCLAVE_ID = None;
 
         result
     })

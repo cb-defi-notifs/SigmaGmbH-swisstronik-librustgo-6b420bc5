@@ -152,12 +152,13 @@ pub extern "C" fn ocall_query_raw(
         GoError::None => {
             let output = output.unwrap_or_default();
 
-            let enclave_eid = unsafe { crate::enclave::ENCLAVE_ID.expect("Enclave should be already initialized") };
+            let evm_enclave = crate::enclave::ENCLAVE_REF.as_ref().expect("Enclave should be already initialized");
+
             let mut allocation_result = std::mem::MaybeUninit::<Allocation>::uninit();
 
             let res = unsafe {
                 crate::enclave::ecall_allocate(
-                    enclave_eid,
+                    evm_enclave.geteid(),
                     allocation_result.as_mut_ptr(),
                     output.as_ptr(),
                     output.len(),
