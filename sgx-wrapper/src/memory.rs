@@ -239,7 +239,7 @@ impl UnmanagedVector {
     /// Takes this UnmanagedVector and turns it into a regular, managed Rust vector.
     /// Calling this on two copies of UnmanagedVector leads to double free crashes.
     pub fn consume(self) -> Option<Vec<u8>> {
-        if self.is_none {
+        if self.is_none || self.ptr.is_null() {
             None
         } else {
             Some(unsafe { Vec::from_raw_parts(self.ptr, self.len, self.cap) })
