@@ -547,7 +547,8 @@ impl rustls::ServerCertVerifier for ServerAuth {
             Ok(_) => {
                 return Ok(rustls::ServerCertVerified::assertion());
             }
-            Err(super::types::AuthResult::SwHardeningAndConfigurationNeeded) => {
+            Err(super::types::AuthResult::SwHardeningAndConfigurationNeeded) |
+            Err(super::types::AuthResult::GroupOutOfDate) => {
                 if self.outdated_ok {
                     println!("outdated_ok is set, overriding outdated error");
                     return Ok(rustls::ServerCertVerified::assertion());
