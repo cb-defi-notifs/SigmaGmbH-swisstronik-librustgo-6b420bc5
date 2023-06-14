@@ -1,4 +1,5 @@
 use std::panic::catch_unwind;
+use parking_lot::{Condvar, Mutex};
 
 use crate::memory::{ByteSliceView, UnmanagedVector};
 use crate::types::GoQuerier;
@@ -22,38 +23,28 @@ pub extern "C" fn make_pb_request(
             .read()
             .ok_or_else(|| Error::unset_arg(PB_REQUEST_ARG))?;
 
-        // Initialize enclave
-        let evm_enclave = match crate::enclave::init_enclave() {
-            Ok(r) => {r},
-            Err(err) => { 
-                println!("Got error: {:?}", err.as_str());
-                return Err(Error::vm_err("Cannot initialize SGXVM enclave")) 
-            },
-        };
-        // Set enclave id to static variable to make it accessible across inner ecalls
-        unsafe { crate::enclave::ENCLAVE_ID = Some(evm_enclave.geteid()) };
-        
+        let enclave_access_token = crate::enclave::ENCLAVE_DOORBELL
+            .get_access(1) // This can never be recursive
+            .ok_or(sgx_status_t::SGX_ERROR_BUSY)?;
+        let evm_enclave = (*enclave_access_token)?;
+
         // Prepare data for the enclave
         let request_vec = Vec::from(req_bytes);
         let mut querier = querier;
         let mut handle_request_result = std::mem::MaybeUninit::<AllocationWithResult>::uninit();
 
         // Call the enclave
-        let evm_res = unsafe { 
+        let evm_res = unsafe {
             crate::enclave::handle_request(
-                evm_enclave.geteid(), 
+                evm_enclave.geteid(),
                 handle_request_result.as_mut_ptr(),
                 &mut querier as *mut GoQuerier,
                 request_vec.as_ptr(),
                 request_vec.len(),
-            ) 
+            )
         };
 
         let handle_request_result = unsafe { handle_request_result.assume_init() };
-
-        // Destory enclave after usage and set enclave id to None
-        evm_enclave.destroy();
-        unsafe { crate::enclave::ENCLAVE_ID = None };
 
         // Parse execution result
         match handle_request_result.status {

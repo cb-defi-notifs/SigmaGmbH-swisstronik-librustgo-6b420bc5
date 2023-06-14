@@ -101,6 +101,12 @@ impl From<std::string::FromUtf8Error> for RustError {
     }
 }
 
+impl From<sgx_types::sgx_status_t> for RustError {
+    fn from(source: sgx_types::sgx_status_t) -> Self {
+        RustError::enclave_error(source.as_str())
+    }
+}
+
 /// cbindgen:prefix-with-name
 #[repr(i32)]
 enum ErrnoValue {
