@@ -224,31 +224,36 @@ impl KeyManager {
 
     /// Encrypts provided plaintext using DEOXYS-II
     fn encrypt_deoxys(encryption_key: &[u8; PRIVATE_KEY_SIZE], plaintext: Vec<u8>) -> Result<Vec<u8>, Error> {
+        // For now, nonce and ad values is deterministic. In future releases we will make
+        // them random, but right now it leads to wrong Block.Header.AppHash error
+
         // Generate nonce
-        let mut nonce_buffer = [0u8; NONCE_SIZE];
-        let result = unsafe { sgx_read_rand(&mut nonce_buffer as *mut u8, NONCE_SIZE) };
-        let nonce = match result {
-            sgx_status_t::SGX_SUCCESS => nonce_buffer,
-            _ => {
-                return Err(Error::encryption_err(format!(
-                    "Cannot generate nonce: {:?}",
-                    result.as_str()
-                )))
-            }
-        };
+        let nonce = [0u8; NONCE_SIZE];
+        // let mut nonce_buffer = [0u8; NONCE_SIZE];
+        // let result = unsafe { sgx_read_rand(&mut nonce_buffer as *mut u8, NONCE_SIZE) };
+        // let nonce = match result {
+        //     sgx_status_t::SGX_SUCCESS => nonce_buffer,
+        //     _ => {
+        //         return Err(Error::encryption_err(format!(
+        //             "Cannot generate nonce: {:?}",
+        //             result.as_str()
+        //         )))
+        //     }
+        // };
 
         // Generate additional data for authentication
-        let mut ad_buffer = [0u8; TAG_SIZE];
-        let result = unsafe { sgx_read_rand(&mut ad_buffer as *mut u8, TAG_SIZE) };
-        let ad = match result {
-            sgx_status_t::SGX_SUCCESS => ad_buffer,
-            _ => {
-                return Err(Error::encryption_err(format!(
-                    "Cannot generate ad: {:?}",
-                    result.as_str()
-                )))
-            }
-        };
+        let ad = [0u8; TAG_SIZE];
+        // let mut ad_buffer = [0u8; TAG_SIZE];
+        // let result = unsafe { sgx_read_rand(&mut ad_buffer as *mut u8, TAG_SIZE) };
+        // let ad = match result {
+        //     sgx_status_t::SGX_SUCCESS => ad_buffer,
+        //     _ => {
+        //         return Err(Error::encryption_err(format!(
+        //             "Cannot generate ad: {:?}",
+        //             result.as_str()
+        //         )))
+        //     }
+        // };
 
         // Construct cipher
         let cipher = DeoxysII::new(encryption_key);
