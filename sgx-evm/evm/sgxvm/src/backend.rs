@@ -147,7 +147,13 @@ impl<'state> EvmApplyBackend for Backend<'state> {
                         total_supply_sub =
                             total_supply_sub.checked_add(previous_account_data.balance - basic.balance).unwrap();
                     }
-                    self.state.insert_account(address, basic);
+                    
+                    let new_account = Basic {
+                        balance: basic.balance,
+                        nonce: previous_account_data.nonce,
+                    };
+                    // insert account data with updated balance and previous nonce (since it already updated by Ante Handler).
+                    self.state.insert_account(address, new_account);
 
                     // Handle contract updates
                     if let Some(code) = code {
