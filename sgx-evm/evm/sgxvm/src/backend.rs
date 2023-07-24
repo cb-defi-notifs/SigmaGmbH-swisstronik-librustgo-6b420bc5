@@ -43,6 +43,8 @@ impl<'state> ExtendedBackend for Backend<'state> {
 
 /// Implementation of trait `Backend` provided by evm crate
 /// This trait declares readonly functions for the backend
+/// 
+/// NOTE: IT IS *NOT* USED BY ACTUAL SWISSTRONIK CHAIN
 impl<'state> EvmBackend for Backend<'state> {
     fn gas_price(&self) -> U256 {
         U256::zero()
@@ -148,12 +150,8 @@ impl<'state> EvmApplyBackend for Backend<'state> {
                             total_supply_sub.checked_add(previous_account_data.balance - basic.balance).unwrap();
                     }
                     
-                    let new_account = Basic {
-                        balance: basic.balance,
-                        nonce: previous_account_data.nonce,
-                    };
                     // insert account data with updated balance and previous nonce (since it already updated by Ante Handler).
-                    self.state.insert_account(address, new_account);
+                    self.state.insert_account(address, basic);
 
                     // Handle contract updates
                     if let Some(code) = code {
