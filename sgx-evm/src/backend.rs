@@ -168,20 +168,7 @@ impl<'state> EvmApplyBackend for FFIBackend<'state> {
                         total_supply_sub =
                             total_supply_sub.checked_add(previous_account_data.balance - basic.balance).unwrap();
                     }
-
-                    if address == self.vicinity.origin {
-                    //     // insert account data with updated balance and previous nonce (since it already updated by Ante Handler).
-                    //     let new_account = Basic {
-                    //         balance: basic.balance,
-                    //         nonce: previous_account_data.nonce,
-                    //     };
-                    //     self.state.insert_account(address, new_account);
-                        println!("vicinity nonce: {:?}", self.vicinity.nonce.as_u32());
-                        println!("previous nonce: {:?}", previous_account_data.nonce);
-                        println!("new nonce: {:?}", basic.nonce);
-                    }
                     
-                    // if we're updating account data not for tx.origin, we use data provided by EVM
                     self.state.insert_account(address, basic);
 
                     // Handle contract updates
