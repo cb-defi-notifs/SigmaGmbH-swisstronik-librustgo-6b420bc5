@@ -263,7 +263,7 @@ func Call(
 	connector Connector,
 	from, to, data, value []byte,
 	accessList ethtypes.AccessList,
-	gasLimit uint64,
+	gasLimit, nonce uint64,
 	txContext *ffi.TransactionContext,
 	commit bool,
 ) (*ffi.HandleTransactionResponse, error) {
@@ -279,6 +279,7 @@ func Call(
 		Value:      value,
 		AccessList: convertAccessList(accessList),
 		Commit:     commit,
+		Nonce: 		nonce,
 	}
 
 	// Create protobuf encoded request
@@ -320,7 +321,7 @@ func Create(
 	connector Connector,
 	from, data, value []byte,
 	accessList ethtypes.AccessList,
-	gasLimit uint64,
+	gasLimit, nonce uint64,
 	txContext *ffi.TransactionContext,
 	commit bool,
 ) (*ffi.HandleTransactionResponse, error) {
@@ -335,6 +336,7 @@ func Create(
 		Value:      value,
 		AccessList: convertAccessList(accessList),
 		Commit:     commit,
+		Nonce: 		nonce,
 	}
 
 	// Create protobuf encoded request

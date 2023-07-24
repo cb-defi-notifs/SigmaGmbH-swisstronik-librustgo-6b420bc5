@@ -104,7 +104,13 @@ impl<'state> EvmBackend for FFIBackend<'state> {
     }
 
     fn basic(&self, address: H160) -> Basic {
-        self.state.get_account(&address)
+        if address == self.vicinity.origin {
+            let mut account_data = self.state.get_account(&address);
+            account_data.nonce = self.vicinity.nonce;
+            account_data
+        } else {
+            self.state.get_account(&address)
+        }
     }
 
     fn code(&self, address: H160) -> Vec<u8> {
@@ -164,15 +170,19 @@ impl<'state> EvmApplyBackend for FFIBackend<'state> {
                     }
 
                     if address == self.vicinity.origin {
-                        let new_account = Basic {
-                            balance: basic.balance,
-                            nonce: previous_account_data.nonce,
-                        };
-                        // insert account data with updated balance and previous nonce (since it already updated by Ante Handler).
-                        self.state.insert_account(address, new_account);
-                    } else {
-                        self.state.insert_account(address, basic);
+                    //     // insert account data with updated balance and previous nonce (since it already updated by Ante Handler).
+                    //     let new_account = Basic {
+                    //         balance: basic.balance,
+                    //         nonce: previous_account_data.nonce,
+                    //     };
+                    //     self.state.insert_account(address, new_account);
+                        println!("vicinity nonce: {:?}", self.vicinity.nonce.as_u32());
+                        println!("previous nonce: {:?}", previous_account_data.nonce);
+                        println!("new nonce: {:?}", basic.nonce);
                     }
+                    
+                    // if we're updating account data not for tx.origin, we use data provided by EVM
+                    self.state.insert_account(address, basic);
 
                     // Handle contract updates
                     if let Some(code) = code {

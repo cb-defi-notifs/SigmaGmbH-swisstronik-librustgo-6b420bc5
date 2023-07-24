@@ -1,5 +1,5 @@
 use crate::AllocationWithResult;
-use crate::encryption::{decrypt_transaction_data, extract_public_key_and_data, ENCRYPTED_DATA_LEN, encrypt_transaction_data};
+use crate::encryption::{decrypt_transaction_data, extract_public_key_and_data, encrypt_transaction_data};
 use crate::protobuf_generated::ffi::{
     AccessListItem, HandleTransactionResponse, Log,
     SGXVMCallRequest, SGXVMCreateRequest, Topic, TransactionContext as ProtoTransactionContext,
@@ -67,6 +67,7 @@ fn handle_call_request_inner(querier: *mut GoQuerier, data: SGXVMCallRequest) ->
 
     let vicinity = Vicinity {
         origin: H160::from_slice(&params.from),
+        nonce: U256::from(params.nonce),
     };
     let mut storage = crate::storage::FFIStorage::new(querier);
     let mut backend = backend::FFIBackend::new(
@@ -153,6 +154,7 @@ fn handle_create_request_inner(querier: *mut GoQuerier, data: SGXVMCreateRequest
 
     let vicinity = Vicinity {
         origin: H160::from_slice(&params.from),
+        nonce: U256::from(params.nonce),
     };
     let mut storage = crate::storage::FFIStorage::new(querier);
     let mut backend = backend::FFIBackend::new(

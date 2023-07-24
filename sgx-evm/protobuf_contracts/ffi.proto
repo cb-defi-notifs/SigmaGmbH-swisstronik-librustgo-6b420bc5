@@ -161,6 +161,7 @@ message SGXVMCallParams {
   bytes value = 5;
   repeated AccessListItem accessList = 6;
   bool commit = 7;
+  uint64 nonce = 8;
 }
 
 // Message with data required to execute `create` operation
@@ -171,6 +172,7 @@ message SGXVMCreateParams {
   bytes value = 4;
   repeated AccessListItem accessList = 5;
   bool commit = 6;
+  uint64 nonce = 7;
 }
 
 // Request to execute `call` operation
