@@ -104,7 +104,13 @@ impl<'state> EvmBackend for FFIBackend<'state> {
     }
 
     fn basic(&self, address: H160) -> Basic {
-        self.state.get_account(&address)
+        if address == self.vicinity.origin {
+            let mut account_data = self.state.get_account(&address);
+            account_data.nonce = self.vicinity.nonce;
+            account_data
+        } else {
+            self.state.get_account(&address)
+        }
     }
 
     fn code(&self, address: H160) -> Vec<u8> {
