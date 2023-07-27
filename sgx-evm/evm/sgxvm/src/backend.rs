@@ -18,6 +18,7 @@ pub static GASOMETER_CONFIG: Config = Config::london();
 #[derive(Clone, Default, PartialEq, Eq)]
 pub struct Vicinity {
     pub origin: H160,
+    pub nonce: U256,
 }
 
 /// Supertrait for our version of EVM Backend
