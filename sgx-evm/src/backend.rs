@@ -106,7 +106,13 @@ impl<'state> EvmBackend for FFIBackend<'state> {
     fn basic(&self, address: H160) -> Basic {
         if address == self.vicinity.origin {
             let mut account_data = self.state.get_account(&address);
-            account_data.nonce = self.vicinity.nonce;
+            let updated_nonce = account_data.nonce.checked_sub(U256::from(1u8)).unwrap_or(U256::zero());
+            if updated_nonce > self.vicinity.nonce {
+                account_data.nonce = updated_nonce;
+            } else {
+                account_data.nonce = self.vicinity.nonce;
+            }
+
             account_data
         } else {
             self.state.get_account(&address)
