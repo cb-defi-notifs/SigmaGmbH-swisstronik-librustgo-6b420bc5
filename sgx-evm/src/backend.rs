@@ -138,6 +138,10 @@ impl<'state> EvmBackend for FFIBackend<'state> {
     fn original_storage(&self, _address: H160, _index: H256) -> Option<H256> {
         None
     }
+
+    fn block_randomness(&self) -> Option<H256> {
+        None
+    }
 }
 
 /// Implementation of trait `Apply` provided by evm crate
