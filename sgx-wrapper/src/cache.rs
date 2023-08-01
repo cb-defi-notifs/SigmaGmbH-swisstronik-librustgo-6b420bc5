@@ -1,5 +1,4 @@
 use std::panic::catch_unwind;
-use parking_lot::{Condvar, Mutex};
 
 use crate::memory::{ByteSliceView, UnmanagedVector};
 use crate::types::GoQuerier;
