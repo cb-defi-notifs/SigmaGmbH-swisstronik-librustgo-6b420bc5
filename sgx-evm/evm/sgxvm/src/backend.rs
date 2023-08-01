@@ -89,6 +89,10 @@ impl<'state> EvmBackend for Backend<'state> {
         None
     }
 
+    fn block_randomness(&self) -> Option<H256> {
+        None
+    }
+
 	fn basic(&self, address: H160) -> Basic {
 		self.state.get_account(&address)
     }
