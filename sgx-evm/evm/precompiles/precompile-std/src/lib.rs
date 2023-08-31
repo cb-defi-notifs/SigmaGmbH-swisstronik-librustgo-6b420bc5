@@ -3,7 +3,7 @@
 extern crate sgx_tstd as std;
 
 pub use evm::{
-    executor::stack::{PrecompileFailure, PrecompileHandle, PrecompileOutput, PrecompileSet},
+    executor::stack::{PrecompileFailure, PrecompileHandle, PrecompileOutput, PrecompileSet, IsPrecompileResult},
     Context, ExitError, ExitRevert, ExitSucceed, Transfer,
 };
 use std::{vec::Vec};

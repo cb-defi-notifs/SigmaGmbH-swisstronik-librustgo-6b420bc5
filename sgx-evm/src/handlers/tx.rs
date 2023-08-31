@@ -67,6 +67,7 @@ fn handle_call_request_inner(querier: *mut GoQuerier, data: SGXVMCallRequest) ->
 
     let vicinity = Vicinity {
         origin: H160::from_slice(&params.from),
+        nonce: U256::from(params.nonce),
     };
     let mut storage = crate::storage::FFIStorage::new(querier);
     let mut backend = backend::FFIBackend::new(
@@ -153,6 +154,7 @@ fn handle_create_request_inner(querier: *mut GoQuerier, data: SGXVMCreateRequest
 
     let vicinity = Vicinity {
         origin: H160::from_slice(&params.from),
+        nonce: U256::from(params.nonce),
     };
     let mut storage = crate::storage::FFIStorage::new(querier);
     let mut backend = backend::FFIBackend::new(

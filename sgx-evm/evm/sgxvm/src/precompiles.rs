@@ -5,7 +5,7 @@ use evm_precompile_bn128::{Bn128Add, Bn128Mul, Bn128Pairing};
 use evm_precompile_modexp::Modexp;
 // use evm_precompile_curve25519::{Curve25519Add, Curve25519ScalarMul};
 use evm_precompile_simple::{ECRecover, Identity, Ripemd160, Sha256};
-use precompile_std::{Precompile, PrecompileHandle, PrecompileResult, PrecompileSet};
+use precompile_std::{Precompile, PrecompileHandle, PrecompileResult, PrecompileSet, IsPrecompileResult};
 use primitive_types::H160;
 
 // use evm_precompile_sha3fips::{Sha3FIPS256, Sha3FIPS512};
@@ -59,8 +59,11 @@ impl<R> PrecompileSet for EVMPrecompiles<R>
         }
     }
 
-    fn is_precompile(&self, address: H160) -> bool {
-        Self::used_addresses().contains(&address)
+    fn is_precompile(&self, address: H160, _gas: u64) -> IsPrecompileResult {
+		IsPrecompileResult::Answer {
+			is_precompile: Self::used_addresses().contains(&address),
+			extra_cost: 0,
+		}
     }
 }
 
