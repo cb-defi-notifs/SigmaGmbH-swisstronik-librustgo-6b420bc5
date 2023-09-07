@@ -69,11 +69,11 @@ func Call(
 	querier types.Connector,
 	from, to, data, value []byte,
 	accessList ethtypes.AccessList,
-	gasLimit uint64,
+	gasLimit, nonce uint64,
 	txContext *TransactionContext,
 	commit bool,
 ) (*ffi.HandleTransactionResponse, error) {
-	executionResult, err := api.Call(querier, from, to, data, value, accessList, gasLimit, txContext, commit)
+	executionResult, err := api.Call(querier, from, to, data, value, accessList, gasLimit, nonce, txContext, commit)
 	if err != nil {
 		return &ffi.HandleTransactionResponse{}, err
 	}
@@ -86,11 +86,11 @@ func Create(
 	querier types.Connector,
 	from, data, value []byte,
 	accessList ethtypes.AccessList,
-	gasLimit uint64,
+	gasLimit, nonce uint64,
 	txContext *TransactionContext,
 	commit bool,
 ) (*ffi.HandleTransactionResponse, error) {
-	executionResult, err := api.Create(querier, from, data, value, accessList, gasLimit, txContext, commit)
+	executionResult, err := api.Create(querier, from, data, value, accessList, gasLimit, nonce, txContext, commit)
 	if err != nil {
 		return &ffi.HandleTransactionResponse{}, err
 	}

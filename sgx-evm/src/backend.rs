@@ -104,7 +104,19 @@ impl<'state> EvmBackend for FFIBackend<'state> {
     }
 
     fn basic(&self, address: H160) -> Basic {
-        self.state.get_account(&address)
+        if address == self.vicinity.origin {
+            let mut account_data = self.state.get_account(&address);
+            let updated_nonce = account_data.nonce.checked_sub(U256::from(1u8)).unwrap_or(U256::zero());
+            if updated_nonce > self.vicinity.nonce {
+                account_data.nonce = updated_nonce;
+            } else {
+                account_data.nonce = self.vicinity.nonce;
+            }
+
+            account_data
+        } else {
+            self.state.get_account(&address)
+        }
     }
 
     fn code(&self, address: H160) -> Vec<u8> {
@@ -124,6 +136,10 @@ impl<'state> EvmBackend for FFIBackend<'state> {
     }
 
     fn original_storage(&self, _address: H160, _index: H256) -> Option<H256> {
+        None
+    }
+
+    fn block_randomness(&self) -> Option<H256> {
         None
     }
 }

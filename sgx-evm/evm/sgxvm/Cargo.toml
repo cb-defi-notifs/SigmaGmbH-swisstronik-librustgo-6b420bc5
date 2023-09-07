@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-evm = { version = "0.37.0", default-features = false }
+evm = { version = "0.39.0", default-features = false }
 sgx_tstd = { version="1.1.5", git = "https://github.com/apache/teaclave-sgx-sdk.git", branch="master" }
 primitive-types = { version = "^0.12", default-features = false, features = ["rlp"] }
 hex = { version = "0.4.3", default-features = false, features = ["alloc"] }
